@@ -1,3 +1,10 @@
+---
+name: etc
+about: refactoring or minor updates
+title: ''
+labels: ''
+assignees: ''
+---
 ## 개발 유형
 
 > 해당되는 항목을 선택해주세요.
