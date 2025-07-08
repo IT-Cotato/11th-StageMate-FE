@@ -1,11 +1,12 @@
 import '@/App.css';
-import ReactLogo from '@/assets/react.svg?react';
+import MainPage from './pages/MainPage';
 
 function App() {
   return (
-    <div className='flex flex-col justify-center items-center '>
-      <ReactLogo />
-      <div className='text-24 text-primary-50'>[testing] StageMate</div>
+    <div>
+      <div className='w-full sm:w-[600px] mx-auto  h-screen '>
+        <MainPage />
+      </div>
     </div>
   );
 }
