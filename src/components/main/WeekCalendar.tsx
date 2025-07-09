@@ -37,9 +37,27 @@ export default function WeekCalendar() {
     setWeekDates(generateWeekDates(selectedDate));
   }, [selectedDate]);
 
+  const handleDateClick = (date: Date) => {
+    setSelectedDate(date);
+  };
+
   return (
-    <div className='flex flex-col w-[570px] h-[263px] px-[38px] py-[22px] bg-white rounded-[20px] -mt-[20px] relative z-0 m-16 gap-[10px]'>
-      <span className='font-bold text'>전체 일정 달력</span>
+    <div className='flex flex-col w-[570px] h-[263px] px-[38px] py-[22px] bg-white rounded-[20px] -mt-[8px] relative z-0 m-16 gap-[10px]'>
+      <span className='font-bold text-[24px]'>전체 일정 달력</span>
+      <div className='flex justify-between w-full'>
+        {weekDates.map((day, idx) => (
+          <div
+            key={idx}
+            className={`flex flex-col gap-[12px] cursor-pointer transition-colors
+        ${day.isToday ? ' text-primary-30' : 'text-gray-30'}`}
+            onClick={() => handleDateClick(day.date)}>
+            <span className='font-medium text-[32px]'>{day.day}</span>
+            <span className='text-center font-normal text-[20px]'>
+              {day.dayName}
+            </span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
