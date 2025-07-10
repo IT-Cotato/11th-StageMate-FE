@@ -60,8 +60,8 @@ export default function WeekCalendar() {
           ))}
         </div>
       </div>
-      <button className='px-[142px] py-[5.5px] text-white font-bold text-[15px] bg-secondary-50 cursor-pointer'>
-        일정이 없습니다.로그인해주세요.
+      <button className='w-full py-[5.5px] text-white font-bold text-[15px] bg-secondary-50 cursor-pointer'>
+        일정이 없습니다. 로그인해주세요.
       </button>
     </div>
   );
