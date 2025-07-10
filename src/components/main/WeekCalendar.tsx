@@ -1,6 +1,9 @@
 import {format, startOfWeek, addDays, isSameDay, isToday} from 'date-fns';
 import {ko} from 'date-fns/locale';
 import {useEffect, useState} from 'react';
+import CalendarButton from './CalendarButton';
+import ScheduleList from './ScheduleList';
+import type {Schedule} from '@/types/schedule';
 
 export interface WeekDate {
   date: Date;
@@ -8,6 +11,14 @@ export interface WeekDate {
   dayName: string;
   isToday: boolean;
   isSelected: boolean;
+}
+
+interface WeekCalendarProps {
+  isLoggedIn: boolean;
+  schedules?: Schedule[];
+  onLikeClick?: (schedule: Schedule) => void;
+  onScheduleClick?: (schedule: Schedule) => void;
+  onViewMore?: () => void;
 }
 
 function generateWeekDates(currentDate: Date, selectedDate: Date): WeekDate[] {
@@ -25,7 +36,13 @@ function generateWeekDates(currentDate: Date, selectedDate: Date): WeekDate[] {
   });
 }
 
-export default function WeekCalendar() {
+export default function WeekCalendar({
+  isLoggedIn,
+  schedules = [],
+  onLikeClick,
+  onScheduleClick,
+  onViewMore,
+}: WeekCalendarProps) {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [weekDates, setWeekDates] = useState<WeekDate[]>([]);
 
@@ -37,8 +54,42 @@ export default function WeekCalendar() {
     setSelectedDate(date);
   };
 
+  // 선택된 날짜의 스케줄 필터링
+  const selectedDateSchedules = schedules.filter((schedule) =>
+    isSameDay(schedule.date, selectedDate)
+  );
+
+  const renderBottomContent = () => {
+    if (!isLoggedIn) {
+      return (
+        <CalendarButton
+          text='일정이 없습니다. 로그인해주세요'
+          variant='default'
+        />
+      );
+    }
+
+    if (selectedDateSchedules.length === 0) {
+      return (
+        <CalendarButton
+          text='일정이 없습니다. 추가해주세요'
+          variant='outline'
+        />
+      );
+    }
+
+    return (
+      <ScheduleList
+        schedules={selectedDateSchedules}
+        onLikeClick={onLikeClick}
+        onScheduleClick={onScheduleClick}
+        onViewMore={onViewMore}
+      />
+    );
+  };
+
   return (
-    <div className='flex flex-col w-[570px] h-[263px] px-[38px] py-[22px] bg-white rounded-[20px] -mt-[8px] relative z-0 m-16 gap-[10px]'>
+    <div className='flex flex-col w-[570px] min-h-[263px] px-[38px] py-[22px] bg-white rounded-[20px] -mt-[8px] relative z-0 m-16 gap-[10px]'>
       <div className='flex flex-col gap-[30px]'>
         <span className='font-bold text-[24px]'>전체 일정 달력</span>
         <div className='flex justify-between w-full'>
@@ -46,7 +97,7 @@ export default function WeekCalendar() {
             <div
               key={idx}
               className={`flex flex-col gap-[12px] cursor-pointer transition-colors
-                ${day.isToday ? 'text-primary-30' : 'text-gray-30'}`}
+                ${day.isSelected ? 'text-secondary-50' : 'text-gray-30'}`}
               onClick={() => handleDateClick(day.date)}>
               <span className='font-medium text-[32px]'>{day.day}</span>
               <span className='text-center font-normal text-[20px]'>
@@ -56,9 +107,8 @@ export default function WeekCalendar() {
           ))}
         </div>
       </div>
-      <button className='w-full py-[5.5px] text-white font-bold text-[15px] bg-secondary-50 cursor-pointer'>
-        일정이 없습니다. 로그인해주세요.
-      </button>
+
+      {renderBottomContent()}
     </div>
   );
 }
