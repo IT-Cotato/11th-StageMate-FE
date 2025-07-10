@@ -10,31 +10,27 @@ export interface WeekDate {
   isSelected: boolean;
 }
 
+function generateWeekDates(currentDate: Date, selectedDate: Date): WeekDate[] {
+  const weekStart = startOfWeek(currentDate, {weekStartsOn: 0});
+
+  return Array.from({length: 7}).map((_, i) => {
+    const date = addDays(weekStart, i);
+    return {
+      date,
+      day: date.getDate(),
+      dayName: format(date, 'E', {locale: ko}),
+      isToday: isToday(date),
+      isSelected: isSameDay(date, selectedDate),
+    };
+  });
+}
+
 export default function WeekCalendar() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [weekDates, setWeekDates] = useState<WeekDate[]>([]);
 
-  // 이번 주 날짜들 생성
-  const generateWeekDates = (currentDate: Date): WeekDate[] => {
-    const weekStart = startOfWeek(currentDate, {weekStartsOn: 0});
-    const dates: WeekDate[] = [];
-
-    for (let i = 0; i < 7; i++) {
-      const date = addDays(weekStart, i);
-      dates.push({
-        date,
-        day: date.getDate(),
-        dayName: format(date, 'E', {locale: ko}),
-        isToday: isToday(date),
-        isSelected: isSameDay(date, selectedDate),
-      });
-    }
-
-    return dates;
-  };
-
   useEffect(() => {
-    setWeekDates(generateWeekDates(selectedDate));
+    setWeekDates(generateWeekDates(new Date(), selectedDate));
   }, [selectedDate]);
 
   const handleDateClick = (date: Date) => {
@@ -50,7 +46,7 @@ export default function WeekCalendar() {
             <div
               key={idx}
               className={`flex flex-col gap-[12px] cursor-pointer transition-colors
-        ${day.isToday ? ' text-primary-30' : 'text-gray-30'}`}
+                ${day.isToday ? 'text-primary-30' : 'text-gray-30'}`}
               onClick={() => handleDateClick(day.date)}>
               <span className='font-medium text-[32px]'>{day.day}</span>
               <span className='text-center font-normal text-[20px]'>
