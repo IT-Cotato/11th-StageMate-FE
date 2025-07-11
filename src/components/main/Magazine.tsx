@@ -13,10 +13,8 @@ export default function Magazine() {
       <div className='w-full flex justify-between items-center'>
         <h1 className='text-gray-30 font-bold text-2xl'>오늘의 추천 공연</h1>
         <div className='flex items-center cursor-pointer mr-[27px]'>
-          <h2 className='text-[16px] font-medium text-primary-50'>
-            자세히 보기
-          </h2>
-          <ChevronRight className='text-primary-50' />
+          <h2 className='text-[16px] font-medium text-primary'>자세히 보기</h2>
+          <ChevronRight className='text-primary' />
         </div>
       </div>
 

@@ -16,8 +16,8 @@ export default function RecommendedPlayItem({title}: RecommendedPlayItemProps) {
           {title}
         </h2>
         <div className='flex flex-row cursor-pointer '>
-          <h2 className='font-medium text-[16px] text-primary-50'>보러가기</h2>
-          <ChevronRight className='text-primary-50' />
+          <h2 className='font-medium text-[16px] text-primary'>보러가기</h2>
+          <ChevronRight className='text-primary' />
         </div>
       </div>
     </li>
