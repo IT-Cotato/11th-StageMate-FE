@@ -49,7 +49,7 @@ export default function MainPage() {
   };
 
   return (
-    <div className='w-full max-w-[600px] bg-black flex flex-col items-center '>
+    <div className='bg-black flex flex-col items-center '>
       <Header isLoggedIn={isLoggedIn} username={username} />
       <div className='p-[14px] flex flex-col w-full gap-16'>
         <WeekCalendar
