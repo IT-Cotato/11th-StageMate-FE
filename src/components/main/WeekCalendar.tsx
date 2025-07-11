@@ -89,7 +89,7 @@ export default function WeekCalendar({
   };
 
   return (
-    <div className='flex flex-col w-[570px] min-h-[263px] px-[38px] py-[22px] bg-white rounded-[20px] -mt-[8px] relative z-0 m-16 gap-[10px]'>
+    <div className='flex flex-col w-full min-h-[263px] px-[38px] py-[22px] bg-white rounded-[20px] -mt-[20px] relative z-0 gap-[10px]'>
       <div className='flex flex-col gap-[30px]'>
         <span className='font-bold text-[24px]'>전체 일정 달력</span>
         <div className='flex justify-between w-full'>

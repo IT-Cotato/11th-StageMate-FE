@@ -2,6 +2,7 @@ import {useState} from 'react';
 import Header from '@/components/main/Header';
 import WeekCalendar from '@/components/main/WeekCalendar';
 import type {Schedule} from '@/types/schedule';
+import Magazine from '@/components/main/Magazine';
 
 export default function MainPage() {
   /** mock user data */
@@ -48,17 +49,20 @@ export default function MainPage() {
   };
 
   return (
-    <div className='w-full bg-black flex flex-col items-center '>
+    <div className='w-full max-w-[600px] bg-black flex flex-col items-center '>
       <Header isLoggedIn={isLoggedIn} username={username} />
-      <WeekCalendar
-        isLoggedIn={isLoggedIn}
-        schedules={schedules}
-        onLikeClick={handleLikeClick}
-        onScheduleClick={(schedule) =>
-          console.log('Schedule clicked:', schedule)
-        }
-        onViewMore={() => console.log('View more clicked')}
-      />
+      <div className='p-[14px] flex flex-col w-full gap-16'>
+        <WeekCalendar
+          isLoggedIn={isLoggedIn}
+          schedules={schedules}
+          onLikeClick={handleLikeClick}
+          onScheduleClick={(schedule) =>
+            console.log('Schedule clicked:', schedule)
+          }
+          onViewMore={() => console.log('View more clicked')}
+        />
+        <Magazine />
+      </div>
     </div>
   );
 }
