@@ -5,24 +5,19 @@
 import EmptyHeart from '@/assets/hearts/empty-heart.svg';
 import FullHeart from '@/assets/hearts/full-heart.svg';
 
-interface Schedule {
-  id: string;
-  category: string;
-  title: string;
-  isLike?: boolean;
-  date: Date;
-}
-
 interface ScheduleItemProps {
-  schedule: Schedule;
-  onLikeClick?: (schedule: Schedule) => void;
+  title: string;
+  category: string;
+  isLike?: boolean;
+  onLikeClick?: () => void;
 }
 
 export default function ScheduleItem({
-  schedule,
+  title,
+  category,
+  isLike,
   onLikeClick,
 }: ScheduleItemProps) {
-  const {category, title, isLike} = schedule;
   return (
     <div className='flex justify-between px-[12.5px] py-[6.5px] bg-[#FFFFFF]'>
       {/* 왼쪽: 카테고리 + 제목 */}
@@ -35,7 +30,7 @@ export default function ScheduleItem({
         </div>
       </div>
       {/* 오른쪽: 하트 */}
-      <button onClick={() => onLikeClick?.(schedule)}>
+      <button onClick={onLikeClick}>
         <img src={isLike ? FullHeart : EmptyHeart} alt='heart' />
       </button>
     </div>
