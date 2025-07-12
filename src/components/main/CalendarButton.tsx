@@ -19,8 +19,8 @@ export default function CalendarButton({
 
   const variantClass =
     variant === 'outline'
-      ? 'bg-[#ffffff] text-primary-40'
-      : 'bg-primary-40 text-white';
+      ? 'bg-[#ffffff] text-primary-2'
+      : 'bg-primary-2 text-white';
 
   return (
     <button className={`${baseClass} ${variantClass}`} onClick={onClick}>

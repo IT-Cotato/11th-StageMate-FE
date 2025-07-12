@@ -27,7 +27,7 @@ export default function ScheduleItem({
     <div className='flex justify-between px-[12.5px] py-[6.5px] bg-[#FFFFFF]'>
       {/* 왼쪽: 카테고리 + 제목 */}
       <div className='flex flex-row gap-[30px]'>
-        <div className='w-[62px] h-[40px] flex items-center justify-center text-[15px] font-bold text-white bg-primary-50 rounded-full'>
+        <div className='w-[62px] h-[40px] flex items-center justify-center text-[15px] font-bold text-white bg-primary rounded-full'>
           {category}
         </div>
         <div className='flex items-center leading-none font-bold text-black text-[20px]'>
