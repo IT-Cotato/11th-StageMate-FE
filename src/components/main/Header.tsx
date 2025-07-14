@@ -1,4 +1,5 @@
 import Logo from '@/assets/logos/main-logo.svg?react';
+import HeaderBackground from '@/assets/main-header-bg/header-bg.svg?url';
 import User from '@/assets/users/user.svg?react';
 import Bell from '@/assets/alerts-feedback/bell.svg?react';
 import SearchBox from './SearchBox';
@@ -10,13 +11,13 @@ interface HeaderProps {
   username?: string;
 }
 
-export default function Header({isLoggedIn, username}: HeaderProps) {
+const Header = ({isLoggedIn, username}: HeaderProps) => {
+  const headerHeight = isLoggedIn ? 'h-[318px]' : '[h-285px]';
   return (
     <div
-      className='w-full h-[368px] rounded-b-[50px] p-[15px] flex flex-col relative z-10'
+      className={`w-full ${headerHeight} rounded-b-[50px] p-[15px] flex flex-col relative z-10 gap-[12px] bg-cover`}
       style={{
-        background:
-          'linear-gradient(0deg, #7B4CFA 34.13%, #7B4CFA 74.42%, #CDBFF5 100%)',
+        backgroundImage: `url("${HeaderBackground}")`,
       }}>
       <div className='flex justify-between items-center'>
         <Logo />
@@ -27,7 +28,6 @@ export default function Header({isLoggedIn, username}: HeaderProps) {
       </div>
 
       <SearchBox />
-
       {isLoggedIn ? (
         <LoggedInHeader username={username} />
       ) : (
@@ -35,4 +35,6 @@ export default function Header({isLoggedIn, username}: HeaderProps) {
       )}
     </div>
   );
-}
+};
+
+export default Header;
