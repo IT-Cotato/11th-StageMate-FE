@@ -22,8 +22,10 @@ export default function ScheduleList({
       {schedules.map((schedule) => (
         <ScheduleItem
           key={schedule.id}
-          schedule={schedule}
-          onLikeClick={onLikeClick}
+          title={schedule.title}
+          category={schedule.category}
+          isLike={schedule.isLike}
+          onLikeClick={() => onLikeClick?.(schedule)}
         />
       ))}
 
