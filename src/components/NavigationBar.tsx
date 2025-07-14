@@ -17,7 +17,11 @@ const NavigationBar = () => {
     currentPath === path ? 'text-primary' : 'text-[#918F9D]';
 
   return (
+<<<<<<< HEAD
     <div className='w-full max-w-full flex flex-row items-center bg-black'>
+=======
+    <div className='w-full max-w-full **:flex flex-row items-center bg-black'>
+>>>>>>> f3b12b0446d7745b34ea1f5024b69d43ce549577
       <Link to='/' className={getLinkClass('/')}>
         <Home className={getIconClass('/')} />
       </Link>
