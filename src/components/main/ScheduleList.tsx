@@ -12,11 +12,11 @@ interface ScheduleListProps {
   onViewMore?: () => void;
 }
 
-export default function ScheduleList({
+const ScheduleList = ({
   schedules,
   onLikeClick,
   onViewMore,
-}: ScheduleListProps) {
+}: ScheduleListProps) => {
   return (
     <div className='flex flex-col gap-[10px]'>
       {schedules.map((schedule) => (
@@ -39,4 +39,6 @@ export default function ScheduleList({
       )}
     </div>
   );
-}
+};
+
+export default ScheduleList;
