@@ -1,16 +1,18 @@
 import Search from '@/assets/search.svg?react';
 import ChevronDown from '@/assets/chevrons/chevron-down.svg?react';
 
-export default function SearchBox() {
+const SearchBox = () => {
   return (
-    <div className='relative w-full h-[53px] mt-20 bg-[#f2f4f8] border-b-gray-10 flex flex-row items-center'>
-      <Search className='absolute left-16 top-1/2 -translate-y-1/2 text-[#697077]' />
+    <div className='relative w-full max-w-full h-[50px] bg-white flex flex-row items-center rounded-[10px] px-[20px]'>
+      <Search className='text-gray-2 shrink-0 ' />
       <input
         type='text'
         placeholder='오늘의 추천 검색어'
-        className='w-[474px] h-[22px] px-48 py-16 focus:outline-none'
+        className='w-full flex-1 focus:outline-none text-[20px] px-[20px] text-gray'
       />
-      <ChevronDown className='absolute right-16 cursor-pointer text-[#697077]' />
+      <ChevronDown className='cursor-pointer text-gray-2  shrink-0' />
     </div>
   );
-}
+};
+
+export default SearchBox;

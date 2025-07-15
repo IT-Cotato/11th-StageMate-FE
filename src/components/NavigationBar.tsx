@@ -4,7 +4,7 @@ import Archive from '@/assets/nav-icons/archive.svg?react';
 import Community from '@/assets/nav-icons/community.svg?react';
 import Settings from '@/assets/nav-icons/settings.svg?react';
 
-export default function NavigationBar() {
+const NavigationBar = () => {
   const location = useLocation();
   const currentPath = location.pathname;
 
@@ -14,25 +14,24 @@ export default function NavigationBar() {
     }`;
 
   const getIconClass = (path: string) =>
-    currentPath === path ? 'text-primary-50' : 'text-[#918F9D]';
+    currentPath === path ? 'text-primary' : 'text-[#918F9D]';
 
   return (
-    <div className='w-full flex flex-row items-center bg-black'>
+    <div className='w-full max-w-full flex flex-row items-center bg-black'>
       <Link to='/' className={getLinkClass('/')}>
         <Home className={getIconClass('/')} />
       </Link>
-
       <Link to='/archive' className={getLinkClass('/archive')}>
         <Archive className={getIconClass('/archive')} />
       </Link>
-
       <Link to='/community' className={getLinkClass('/community')}>
         <Community className={getIconClass('/community')} />
       </Link>
-
       <Link to='/settings' className={getLinkClass('/settings')}>
         <Settings className={getIconClass('/settings')} />
       </Link>
     </div>
   );
-}
+};
+
+export default NavigationBar;
