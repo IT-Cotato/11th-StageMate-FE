@@ -7,8 +7,14 @@ import CustomCheckbox from '@/components/ui/checkbox/CustomCheckbox';
 import {TermOfService} from '@/constant';
 import {useState} from 'react';
 
+interface CheckingState {
+  [key: `allowCondition${number}`]: boolean;
+  allowSMS: boolean;
+  allowEmail: boolean;
+}
+
 const SignupConditionPage = () => {
-  const [checking, setChecking] = useState({
+  const [checking, setChecking] = useState<CheckingState>({
     allowCondition1: false,
     allowCondition2: false,
     allowCondition3: false,
