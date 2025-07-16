@@ -7,7 +7,7 @@ import {mockSchedules} from '@/mocks/mockSchedules';
 
 export default function MainPage() {
   /** mock user data */
-  const isLoggedIn = true;
+  const isLoggedIn = false;
   const username = '민아';
 
   const [schedules, setSchedules] = useState<Schedule[]>(mockSchedules);
@@ -23,7 +23,7 @@ export default function MainPage() {
   return (
     <div className='bg-black flex flex-col items-center '>
       <Header isLoggedIn={isLoggedIn} username={username} />
-      <div className='p-[14px] flex flex-col w-full gap-16'>
+      <div className='p-[12px] flex flex-col w-full gap-[12px] '>
         <WeekCalendar
           isLoggedIn={isLoggedIn}
           schedules={schedules}

@@ -9,13 +9,13 @@ interface CalendarButtonProps {
   variant?: 'default' | 'outline';
 }
 
-export default function CalendarButton({
+const CalendarButton = ({
   text,
   onClick,
   variant = 'default',
-}: CalendarButtonProps) {
+}: CalendarButtonProps) => {
   const baseClass =
-    'flex justify-center items-center w-full py-[5.5px] text-[15px] font-bold cursor-pointer';
+    'flex justify-center items-center w-full py-[5.5px] text-[15px] font-bold cursor-pointer rounded-[10px]';
 
   const variantClass =
     variant === 'outline'
@@ -27,4 +27,6 @@ export default function CalendarButton({
       {text}
     </button>
   );
-}
+};
+
+export default CalendarButton;

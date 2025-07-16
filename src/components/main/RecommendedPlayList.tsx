@@ -16,7 +16,7 @@ interface RecommendedPlayProps {
   plays: Play[];
 }
 
-export default function RecommendedPlay({plays}: RecommendedPlayProps) {
+const RecommendedPlayList = ({plays}: RecommendedPlayProps) => {
   const listWrapperRef = useHorizontalScroll();
   return (
     <ul className='flex gap-18 overflow-x-auto ' ref={listWrapperRef}>
@@ -25,4 +25,6 @@ export default function RecommendedPlay({plays}: RecommendedPlayProps) {
       ))}
     </ul>
   );
-}
+};
+
+export default RecommendedPlayList;

@@ -1,9 +1,9 @@
 import ChevronRight from '@/assets/chevrons/chevron-right.svg?react';
 import PlayTag from './PlayTag';
-import RecommendedPlay from './RecommendedPlay';
+import RecommendedPlayList from './RecommendedPlayList';
 import {mockRecommendedPlays} from '@/mocks/mockRecommendedPlays';
 
-export default function Magazine() {
+const Magazine = () => {
   const categories = [
     ['창작 뮤지컬', '오리지널/내한 뮤지컬'],
     ['리미티드 런', '아동/가족 뮤지컬'],
@@ -21,7 +21,7 @@ export default function Magazine() {
       {categories.map((row, index) => (
         <div key={index} className='flex flex-col gap-19'>
           <PlayTag categories={row} />
-          <RecommendedPlay
+          <RecommendedPlayList
             plays={[
               ...mockRecommendedPlays[row[0]],
               ...mockRecommendedPlays[row[1]],
@@ -31,4 +31,6 @@ export default function Magazine() {
       ))}
     </div>
   );
-}
+};
+
+export default Magazine;

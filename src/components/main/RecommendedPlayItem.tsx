@@ -6,8 +6,8 @@ interface RecommendedPlayItemProps {
 
 export default function RecommendedPlayItem({title}: RecommendedPlayItemProps) {
   return (
-    <li className='flex flex-col min-w-[200px] gap-10 shrink-0'>
-      <div className='w-full min-h-[227px] bg-gray-10 rounded-[20px]'>
+    <li className='flex flex-col min-w-[190px] gap-10 shrink-0'>
+      <div className='w-full min-h-[250px] bg-gray-1 rounded-[20px]'>
         {/** 이미지 자리 */}
         추천극 임시
       </div>

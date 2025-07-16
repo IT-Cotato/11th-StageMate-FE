@@ -5,21 +5,21 @@ interface LoggedInHeaderProps {
   username?: string;
 }
 
-export default function LoggedInHeader({username}: LoggedInHeaderProps) {
+const LoggedInHeader = ({username}: LoggedInHeaderProps) => {
   return (
-    <div>
-      <div className='flex flex-row justify-between items-center'>
-        <h1 className='text-[28px] text-white font-bold mt-[19px] mb-[19px]'>
+    <div className='flex flex-col'>
+      <div className='flex flex-row justify-between items-center mb-[11px]'>
+        <h1 className='text-[20px] text-white font-bold'>
           {username} 님 안녕하세요!
         </h1>
-        <div className='flex flex-row items-center text-white cursor-pointer'>
+        <div className='flex flex-row items-center text-white text-[16px] cursor-pointer'>
           아카이빙 하러 가기
           <ChevronRight className='text-white' />
         </div>
       </div>
 
-      <div className='w-full flex flex-row justify-between items-center'>
-        <div className='flex flex-col gap-4'>
+      <div className='w-full flex flex-row justify-between items-start'>
+        <div className='flex flex-col'>
           <MainButton text='마이페이지' />
           <MainButton text='커뮤니티' />
         </div>
@@ -44,4 +44,6 @@ export default function LoggedInHeader({username}: LoggedInHeaderProps) {
       </div>
     </div>
   );
-}
+};
+
+export default LoggedInHeader;
