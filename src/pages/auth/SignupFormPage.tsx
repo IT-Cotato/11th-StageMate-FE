@@ -117,7 +117,9 @@ const SignupFormPage = () => {
       setIsInvalid((prev) => ({...prev, email: true}));
     }
   };
-  const handleCTFChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCertificationNumberChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const newValue = e.target.value;
     setFormValue((prev) => ({...prev, certificationNumber: newValue}));
     if (newValue.length > 0) {
@@ -295,7 +297,7 @@ const SignupFormPage = () => {
               <input
                 type='string'
                 value={formValue.certificationNumber}
-                onChange={handleCTFChange}
+                onChange={handleCertificationNumberChange}
                 placeholder='인증번호 입력*'
                 className='focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-gray-3 text-2xl leading-[140%]'
               />
