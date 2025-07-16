@@ -5,6 +5,7 @@ import CheckDefault from '@/assets/vector-check/vector-check-default.svg?react';
 import CheckConfirmed from '@/assets/vector-check/vector-check-confirmed.svg?react';
 import {useCallback, useState} from 'react';
 import {isValidId, isValidPw, isValidEmail} from '@/util/validation';
+import {useNavigate} from 'react-router-dom';
 
 type FormValue = {
   id: string;
@@ -30,6 +31,8 @@ type ValueState = {
 };
 
 const SignupFormPage = () => {
+  const navigate = useNavigate();
+
   const [formValue, setFormValue] = useState<FormValue>({
     id: '',
     pw: '',
@@ -165,7 +168,11 @@ const SignupFormPage = () => {
   return (
     <div className='w-full sm:w-[600px] mx-auto bg-white'>
       {/* 헤더 */}
-      <PageHeader title={'회원가입'} />
+      <PageHeader
+        title={'회원가입'}
+        onLeftClick={() => navigate('/signup-condition')}
+        onRightClick={() => navigate('/')}
+      />
 
       <div className='pt-40 px-16 flex flex-col gap-60'>
         <h1 className='text-[#141313] text-[32px] font-bold leading-[140%]'>

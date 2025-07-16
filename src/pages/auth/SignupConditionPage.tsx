@@ -6,6 +6,7 @@ import AccordionItem from '@/components/ui/accordion/AccordionItem';
 import CustomCheckbox from '@/components/ui/checkbox/CustomCheckbox';
 import {TermOfService} from '@/constant';
 import {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 
 interface CheckingState {
   [key: `allowCondition${number}`]: boolean;
@@ -14,6 +15,8 @@ interface CheckingState {
 }
 
 const SignupConditionPage = () => {
+  const navigate = useNavigate();
+
   const [checking, setChecking] = useState<CheckingState>({
     allowCondition1: false,
     allowCondition2: false,
@@ -24,7 +27,11 @@ const SignupConditionPage = () => {
 
   return (
     <div className='w-full sm:w-[600px] mx-auto bg-white'>
-      <PageHeader title='회원가입' />
+      <PageHeader
+        title='회원가입'
+        onLeftClick={() => navigate('/login')}
+        onRightClick={() => navigate('/')}
+      />
 
       <div className='pt-40 px-16 flex flex-col items-start gap-62 self-stretch'>
         <h1 className='text-[#141313] text-[32px] font-bold leading-[140%]'>

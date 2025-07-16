@@ -5,14 +5,21 @@ import ButtonStroke from '@/components/global/ButtonStroke';
 import ButtonFill from '@/components/global/ButtonFill';
 import BrandBadges from '@/components/auth/BrandBadges';
 import CustomCheckbox from '@/components/ui/checkbox/CustomCheckbox';
+import {useNavigate} from 'react-router-dom';
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+
   const [isStayingLoggedIn, setIsStayingLoggedIn] = useState(false);
 
   return (
     <div className='w-full sm:w-[600px] mx-auto bg-white'>
       {/* 헤더 */}
-      <PageHeader title={'로그인'} />
+      <PageHeader
+        title={'로그인'}
+        onLeftClick={() => navigate('/')}
+        onRightClick={() => navigate('/')}
+      />
 
       <div className='pt-32 px-16 flex flex-col items-center gap-20'>
         {/* content */}
