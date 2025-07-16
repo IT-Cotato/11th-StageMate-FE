@@ -14,11 +14,11 @@ const LoginPage = () => {
       {/* 헤더 */}
       <PageHeader title={'로그인'} />
 
-      <div className='flex flex-col items-center gap-20'>
+      <div className='pt-32 px-16 flex flex-col items-center gap-20'>
         {/* content */}
-        <div className='pt-32 px-16 flex flex-col items-start gap-40 self-stretch'>
+        <div className='flex flex-col items-start gap-40 self-stretch'>
           <div className='flex px-20 flex-col items-start gap-15'>
-            <h1 className='self-stretch text-[#141313] text-32 font-bold leading-[140%]'>
+            <h1 className='self-stretch text-[#141313] text-[32px] font-bold leading-[140%]'>
               공연의 시작은 여기서부터,
             </h1>
             <MainLogo />
@@ -39,9 +39,11 @@ const LoginPage = () => {
 
           <CustomCheckbox
             checked={isStayingLoggedIn}
-            onChange={setIsStayingLoggedIn}
-            children={'로그인 유지'}
-          />
+            onChange={setIsStayingLoggedIn}>
+            <p className='text-gray3 font-roboto leading-[140%] select-none'>
+              로그인 유지
+            </p>
+          </CustomCheckbox>
 
           <div className='w-full flex flex-col items-start gap-16 self-stretch'>
             <ButtonFill
