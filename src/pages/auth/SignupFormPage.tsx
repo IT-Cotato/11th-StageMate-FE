@@ -3,8 +3,8 @@ import ButtonFill from '@/components/global/ButtonFill';
 import PageHeader from '@/components/global/PageHeader';
 import CheckDefault from '@/assets/vector-check/vector-check-default.svg?react';
 import CheckConfirmed from '@/assets/vector-check/vector-check-confirmed.svg?react';
-import {useState} from 'react';
-import {isValidId, isValidPw} from '@/util/validation';
+import {useCallback, useState} from 'react';
+import {isValidId, isValidPw, isValidEmail} from '@/util/validation';
 
 type FormValue = {
   id: string;
@@ -14,6 +14,9 @@ type FormValue = {
   nickName: string;
   email: string;
   certificationNumber: string;
+  year: string;
+  month: string;
+  day: string;
 };
 
 type ValueState = {
@@ -35,6 +38,9 @@ const SignupFormPage = () => {
     nickName: '',
     email: '',
     certificationNumber: '',
+    year: '',
+    month: '',
+    day: '',
   });
   const [isInvalid, setIsInvalid] = useState<ValueState>({
     id: undefined,
@@ -84,6 +90,75 @@ const SignupFormPage = () => {
       setIsInvalid((prev) => ({...prev, pwCheck: true}));
     }
   };
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setFormValue((prev) => ({...prev, name: newValue}));
+    if (newValue.length > 0) {
+      setIsInvalid((prev) => ({...prev, name: false}));
+    } else {
+      setIsInvalid((prev) => ({...prev, name: true}));
+    }
+  };
+  const handleNickNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setFormValue((prev) => ({...prev, nickName: newValue}));
+    if (newValue.length > 0) {
+      setIsInvalid((prev) => ({...prev, nickName: false}));
+    } else {
+      setIsInvalid((prev) => ({...prev, nickName: true}));
+    }
+  };
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setFormValue((prev) => ({...prev, email: newValue}));
+    if (isValidEmail(newValue)) {
+      setIsInvalid((prev) => ({...prev, email: false}));
+    } else {
+      setIsInvalid((prev) => ({...prev, email: true}));
+    }
+  };
+  const handleCTFChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setFormValue((prev) => ({...prev, certificationNumber: newValue}));
+    if (newValue.length > 0) {
+      setIsInvalid((prev) => ({...prev, certificationNumber: false}));
+    } else {
+      setIsInvalid((prev) => ({...prev, certificationNumber: true}));
+    }
+  };
+  const handleYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setFormValue((prev) => ({...prev, year: newValue}));
+  };
+  const handleMonthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setFormValue((prev) => ({...prev, month: newValue}));
+  };
+  const handleDayChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setFormValue((prev) => ({...prev, day: newValue}));
+  };
+
+  const handleSignupClick = useCallback(() => {
+    if (
+      isInvalid.id === false &&
+      isInvalid.pw === false &&
+      isInvalid.pwCheck === false &&
+      isInvalid.name === false &&
+      isInvalid.nickName === false &&
+      isInvalid.email === false &&
+      isInvalid.certificationNumber === false
+    ) {
+      console.log(
+        '필수인 값들은 모두 입력됨',
+        formValue.year,
+        formValue.month,
+        formValue.day
+      );
+    } else {
+      console.log('입력이 필요한 필수 값이 있음!');
+    }
+  }, [isInvalid]);
 
   return (
     <div className='w-full sm:w-[600px] mx-auto bg-white'>
@@ -101,7 +176,6 @@ const SignupFormPage = () => {
           <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
-                required
                 type='string'
                 minLength={4}
                 maxLength={16}
@@ -129,7 +203,6 @@ const SignupFormPage = () => {
           <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
-                required
                 type='password'
                 minLength={4}
                 maxLength={16}
@@ -152,7 +225,6 @@ const SignupFormPage = () => {
           <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
-                required
                 type='password'
                 minLength={4}
                 maxLength={16}
@@ -176,8 +248,9 @@ const SignupFormPage = () => {
           <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
-                required
                 type='string'
+                value={formValue.name}
+                onChange={handleNameChange}
                 placeholder='이름*'
                 className='focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-gray-3 text-2xl leading-[140%]'
               />
@@ -188,8 +261,9 @@ const SignupFormPage = () => {
           <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
-                required
                 type='string'
+                value={formValue.nickName}
+                onChange={handleNickNameChange}
                 placeholder='닉네임*'
                 className='focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-gray-3 text-2xl leading-[140%]'
               />
@@ -205,11 +279,12 @@ const SignupFormPage = () => {
           <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
-                required
                 type='email'
+                value={formValue.email}
+                onChange={handleEmailChange}
                 placeholder='이메일*'
-                className='focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-gray-3 text-2xl leading-[140%]
-              invalid:text-secondary-50'
+                className={`focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-2xl leading-[140%]
+              ${isInvalid ? 'invalid:text-secondary-50' : ' text-gray-3'}`}
               />
             </div>
           </div>
@@ -218,11 +293,11 @@ const SignupFormPage = () => {
           <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
-                required
                 type='string'
+                value={formValue.certificationNumber}
+                onChange={handleCTFChange}
                 placeholder='인증번호 입력*'
-                className='focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-gray-3 text-2xl leading-[140%]
-              invalid:text-secondary-50'
+                className='focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-gray-3 text-2xl leading-[140%]'
               />
               <StateButtonStroke
                 text='인증번호 발송'
@@ -238,6 +313,8 @@ const SignupFormPage = () => {
             <input
               type='string'
               maxLength={4}
+              value={formValue.year}
+              onChange={handleYearChange}
               placeholder='생년월일/YYYY'
               className='w-0 focus:border-0 focus:outline-0 grow h-60 py-16 px-17 bg-gray-1 text-gray-3 text-2xl leading-[140%]
               invalid:text-secondary-50'
@@ -246,6 +323,8 @@ const SignupFormPage = () => {
             {/* MM */}
             <input
               type='string'
+              value={formValue.month}
+              onChange={handleMonthChange}
               maxLength={2}
               placeholder='MM'
               className='w-0 focus:border-0 focus:outline-0 grow h-60 py-16 px-17 bg-gray-1 text-gray-3 text-2xl leading-[140%]
@@ -255,6 +334,8 @@ const SignupFormPage = () => {
             {/* DD */}
             <input
               type='string'
+              value={formValue.day}
+              onChange={handleDayChange}
               maxLength={2}
               placeholder='DD'
               className='w-0 focus:border-0 focus:outline-0 grow h-60 py-16 px-17 bg-gray-1 text-gray-3 text-2xl leading-[140%]
@@ -264,10 +345,7 @@ const SignupFormPage = () => {
         </div>
 
         {/* 가입 버튼 */}
-        <ButtonFill
-          text='회원 가입하기'
-          onClick={() => console.log('입력 값 콘솔에 출력')}
-        />
+        <ButtonFill text='회원 가입하기' onClick={handleSignupClick} />
       </div>
     </div>
   );
