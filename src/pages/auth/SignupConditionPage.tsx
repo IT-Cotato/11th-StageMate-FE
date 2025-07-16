@@ -7,7 +7,7 @@ import CustomCheckbox from '@/components/ui/checkbox/CustomCheckbox';
 import {TermOfService} from '@/constant';
 import {useState} from 'react';
 
-const SignupCoditionPage = () => {
+const SignupConditionPage = () => {
   const [checking, setChecking] = useState({
     allowCodition01: false,
     allowCodition02: false,
@@ -158,4 +158,4 @@ const SignupCoditionPage = () => {
   );
 };
 
-export default SignupCoditionPage;
+export default SignupConditionPage;

@@ -6,7 +6,7 @@ import ArchivePage from './pages/ArchivePage';
 import CommunityPage from './pages/CommunityPage';
 import SettingsPage from './pages/SettingsPage';
 import LoginPage from './pages/auth/LoginPage';
-import SignupCoditionPage from './pages/auth/SignupCoditionPage';
+import SignupConditionPage from './pages/auth/SignupConditionPage';
 
 function App() {
   return (
@@ -22,7 +22,7 @@ function App() {
 
         {/* NavigationBar가 없어야하는 페이지 */}
         <Route path='/login' element={<LoginPage />} />
-        <Route path='/signup-condition' element={<SignupCoditionPage />} />
+        <Route path='/signup-condition' element={<SignupConditionPage />} />
       </Routes>
     </BrowserRouter>
   );
