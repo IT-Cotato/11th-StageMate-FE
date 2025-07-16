@@ -1,5 +1,6 @@
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import OnboardingModal from '@/components/modal/OnboardingModal/OnboardingModal';
+import useScrollLockWithRestore from '@/hooks/useScrollLockwithRestore';
 
 const onboardingPages = [
   {
@@ -29,6 +30,8 @@ export default function OnboardingWrapper({onDone}: {onDone: () => void}) {
   const [step, setStep] = useState(0);
   const {message, imageSrc, isLast} = onboardingPages[step];
 
+  useScrollLockWithRestore();
+
   const handleNext = () => {
     if (isLast) {
       onDone();
@@ -36,22 +39,6 @@ export default function OnboardingWrapper({onDone}: {onDone: () => void}) {
       setStep((prev) => prev + 1);
     }
   };
-
-  useEffect(() => {
-    const currentScroll = window.scrollY;
-    document.body.style.overflowY = 'hidden';
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${currentScroll}px`;
-    document.body.style.width = '100%';
-
-    return () => {
-      document.body.style.removeProperty('overflow');
-      document.body.style.removeProperty('position');
-      document.body.style.removeProperty('top');
-      document.body.style.removeProperty('width');
-      window.scrollTo(0, currentScroll);
-    };
-  }, []);
 
   return (
     <div className='absolute inset-0 z-50 flex items-start justify-center pt-[24px] bg-black/30'>
