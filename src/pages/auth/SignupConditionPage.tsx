@@ -9,9 +9,9 @@ import {useState} from 'react';
 
 const SignupConditionPage = () => {
   const [checking, setChecking] = useState({
-    allowCondition01: false,
-    allowCondition02: false,
-    allowCondition03: false,
+    allowCondition1: false,
+    allowCondition2: false,
+    allowCondition3: false,
     allowSMS: false,
     allowEmail: false,
   });
@@ -28,51 +28,25 @@ const SignupConditionPage = () => {
         <div className='flex flex-col self-stretch items-center gap-46'>
           {/* 약관 */}
           <div className='flex flex-col self-stretch items-start py-20 px-15 gap-5'>
-            <AccordionItem
-              checked={checking.allowCondition01}
-              title={TermOfService[0].title}
-              onChange={() =>
-                setChecking((prev) => ({
-                  ...prev,
-                  allowCondition01: !prev.allowCondition01,
-                }))
-              }>
-              <div className='flex pl-10 pr-47 pb-12 items-start gap-10'>
-                <p className='shrink-0 text-lg font-medium leading-22 font-lato break-words whitespace-pre-line w-full'>
-                  {TermOfService[0].content}
-                </p>
-              </div>
-            </AccordionItem>
-            <AccordionItem
-              checked={checking.allowCondition02}
-              title={TermOfService[1].title}
-              onChange={() =>
-                setChecking((prev) => ({
-                  ...prev,
-                  allowCondition02: !prev.allowCondition02,
-                }))
-              }>
-              <div className='flex pl-10 pr-47 pb-12 items-start gap-10'>
-                <p className='shrink-0 text-lg font-medium leading-22 font-lato break-words whitespace-pre-line w-full'>
-                  {TermOfService[1].content}
-                </p>
-              </div>
-            </AccordionItem>
-            <AccordionItem
-              checked={checking.allowCondition03}
-              title={TermOfService[2].title}
-              onChange={() =>
-                setChecking((prev) => ({
-                  ...prev,
-                  allowCondition03: !prev.allowCondition03,
-                }))
-              }>
-              <div className='flex pl-10 pr-47 pb-12 items-start gap-10'>
-                <p className='shrink-0 text-lg font-medium leading-22 font-lato break-words whitespace-pre-line w-full'>
-                  {TermOfService[2].content}
-                </p>
-              </div>
-            </AccordionItem>
+            {TermOfService.map((term, index) => (
+              <AccordionItem
+                key={index}
+                checked={checking[`allowCondition${index + 1}`]}
+                title={term.title}
+                onChange={() =>
+                  setChecking((prev) => ({
+                    ...prev,
+                    [`allowCondition${index + 1}`]:
+                      !prev[`allowCondition${index + 1}`],
+                  }))
+                }>
+                <div className='flex pl-10 pr-47 pb-12 items-start gap-10'>
+                  <p className='shrink-0 text-lg font-medium leading-22 font-lato break-words whitespace-pre-line w-full'>
+                    {term.content}
+                  </p>
+                </div>
+              </AccordionItem>
+            ))}
 
             <div className='flex pt-10 pb-20 px-10 gap-20'>
               <CustomCheckbox
@@ -101,23 +75,23 @@ const SignupConditionPage = () => {
             <div className='flex pt-10 pb-20 px-10 gap-20'>
               <CustomCheckbox
                 checked={
-                  checking.allowCondition01 &&
-                  checking.allowCondition02 &&
-                  checking.allowCondition03 &&
+                  checking.allowCondition1 &&
+                  checking.allowCondition2 &&
+                  checking.allowCondition3 &&
                   checking.allowSMS &&
                   checking.allowEmail
                 }
                 onChange={() => {
                   const allChecked =
-                    checking.allowCondition01 &&
-                    checking.allowCondition02 &&
-                    checking.allowCondition03 &&
+                    checking.allowCondition1 &&
+                    checking.allowCondition2 &&
+                    checking.allowCondition3 &&
                     checking.allowSMS &&
                     checking.allowEmail;
                   setChecking({
-                    allowCondition01: !allChecked,
-                    allowCondition02: !allChecked,
-                    allowCondition03: !allChecked,
+                    allowCondition1: !allChecked,
+                    allowCondition2: !allChecked,
+                    allowCondition3: !allChecked,
                     allowSMS: !allChecked,
                     allowEmail: !allChecked,
                   });
