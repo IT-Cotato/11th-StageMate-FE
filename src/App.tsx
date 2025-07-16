@@ -19,7 +19,7 @@ function App() {
         </Route>
 
         {/* NavigationBar가 없어야하는 페이지 */}
-        <Route path='/singup-form' element={<SignupFormPage />} />
+        <Route path='/signup-form' element={<SignupFormPage />} />
       </Routes>
     </BrowserRouter>
   );
