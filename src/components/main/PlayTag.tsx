@@ -8,7 +8,7 @@
 interface PlayTagProps {
   categories: string[];
 }
-export default function PlayTag({categories}: PlayTagProps) {
+const PlayTag = ({categories}: PlayTagProps) => {
   return (
     <div className='flex h-50 gap-10 overflow-x-auto scrollbar-hide'>
       {categories.map((category, index) => (
@@ -20,4 +20,6 @@ export default function PlayTag({categories}: PlayTagProps) {
       ))}
     </div>
   );
-}
+};
+
+export default PlayTag;

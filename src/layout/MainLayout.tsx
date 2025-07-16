@@ -1,9 +1,9 @@
 import NavigationBar from '@/components/NavigationBar';
 import {Outlet} from 'react-router-dom';
 
-export default function MainLayout() {
+const MainLayout = () => {
   return (
-    <div className='w-full min-h-screen flex justify-center'>
+    <div className='w-full min-h-screen flex justify-center overflow-x-hidden'>
       <div className='w-full max-w-[600px] pb-[90px]'>
         <Outlet />
       </div>
@@ -13,4 +13,6 @@ export default function MainLayout() {
       </footer>
     </div>
   );
-}
+};
+
+export default MainLayout;

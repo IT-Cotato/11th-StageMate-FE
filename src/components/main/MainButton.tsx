@@ -7,17 +7,19 @@ interface MainButtonProps {
   fullWidth?: boolean;
   fixedWidth?: number;
 }
-export default function MainButton({
-  text,
-  fullWidth,
-  fixedWidth,
-}: MainButtonProps) {
-  const widthClass = fullWidth ? 'w-full' : fixedWidth ? '' : 'w-[265px]';
+const MainButton = ({text, fullWidth, fixedWidth}: MainButtonProps) => {
+  const widthClass = fullWidth
+    ? 'w-full'
+    : fixedWidth
+      ? ''
+      : 'w-full md:w-[288px]';
   return (
     <button
-      className={`flex justify-center items-center ${widthClass} px-[24px] py-[13px] h-60 rounded-[14px] border-[1px] border-white bg-white text-2xl text-secondary-50 font-bold cursor-pointer mb-5`}
+      className={`flex justify-center items-center ${widthClass} px-[24px] py-[13px] h-40 rounded-[14px] border-[1px] border-white bg-white/20 text-[20px] text-white font-medium cursor-pointer mb-5`}
       style={fixedWidth ? {width: `${fixedWidth}px`} : {}}>
       {text}
     </button>
   );
-}
+};
+
+export default MainButton;

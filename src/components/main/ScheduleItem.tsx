@@ -12,12 +12,12 @@ interface ScheduleItemProps {
   onLikeClick?: () => void;
 }
 
-export default function ScheduleItem({
+const ScheduleItem = ({
   title,
   category,
   isLike,
   onLikeClick,
-}: ScheduleItemProps) {
+}: ScheduleItemProps) => {
   return (
     <div className='flex justify-between px-[12.5px] py-[6.5px] bg-[#FFFFFF]'>
       {/* 왼쪽: 카테고리 + 제목 */}
@@ -25,7 +25,7 @@ export default function ScheduleItem({
         <div className='w-[62px] h-[40px] flex items-center justify-center text-[15px] font-bold text-white bg-primary rounded-full'>
           {category}
         </div>
-        <div className='flex items-center leading-none font-bold text-black text-[20px]'>
+        <div className='flex items-center leading-none font-medium text-black text-[20px]'>
           {title}
         </div>
       </div>
@@ -35,4 +35,6 @@ export default function ScheduleItem({
       </button>
     </div>
   );
-}
+};
+
+export default ScheduleItem;
