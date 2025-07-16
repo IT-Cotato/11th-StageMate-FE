@@ -9,9 +9,9 @@ import {useState} from 'react';
 
 const SignupConditionPage = () => {
   const [checking, setChecking] = useState({
-    allowCodition01: false,
-    allowCodition02: false,
-    allowCodition03: false,
+    allowCondition01: false,
+    allowCondition02: false,
+    allowCondition03: false,
     allowSMS: false,
     allowEmail: false,
   });
@@ -29,12 +29,12 @@ const SignupConditionPage = () => {
           {/* 약관 */}
           <div className='flex flex-col self-stretch items-start py-20 px-15 gap-5'>
             <AccordionItem
-              checked={checking.allowCodition01}
+              checked={checking.allowCondition01}
               title={TermOfService[0].title}
               onChange={() =>
                 setChecking((prev) => ({
                   ...prev,
-                  allowCodition01: !prev.allowCodition01,
+                  allowCondition01: !prev.allowCondition01,
                 }))
               }>
               <div className='flex pl-10 pr-47 pb-12 items-start gap-10'>
@@ -44,12 +44,12 @@ const SignupConditionPage = () => {
               </div>
             </AccordionItem>
             <AccordionItem
-              checked={checking.allowCodition02}
+              checked={checking.allowCondition02}
               title={TermOfService[1].title}
               onChange={() =>
                 setChecking((prev) => ({
                   ...prev,
-                  allowCodition02: !prev.allowCodition02,
+                  allowCondition02: !prev.allowCondition02,
                 }))
               }>
               <div className='flex pl-10 pr-47 pb-12 items-start gap-10'>
@@ -59,12 +59,12 @@ const SignupConditionPage = () => {
               </div>
             </AccordionItem>
             <AccordionItem
-              checked={checking.allowCodition03}
+              checked={checking.allowCondition03}
               title={TermOfService[2].title}
               onChange={() =>
                 setChecking((prev) => ({
                   ...prev,
-                  allowCodition03: !prev.allowCodition03,
+                  allowCondition03: !prev.allowCondition03,
                 }))
               }>
               <div className='flex pl-10 pr-47 pb-12 items-start gap-10'>
@@ -101,23 +101,23 @@ const SignupConditionPage = () => {
             <div className='flex pt-10 pb-20 px-10 gap-20'>
               <CustomCheckbox
                 checked={
-                  checking.allowCodition01 &&
-                  checking.allowCodition02 &&
-                  checking.allowCodition03 &&
+                  checking.allowCondition01 &&
+                  checking.allowCondition02 &&
+                  checking.allowCondition03 &&
                   checking.allowSMS &&
                   checking.allowEmail
                 }
                 onChange={() => {
                   const allChecked =
-                    checking.allowCodition01 &&
-                    checking.allowCodition02 &&
-                    checking.allowCodition03 &&
+                    checking.allowCondition01 &&
+                    checking.allowCondition02 &&
+                    checking.allowCondition03 &&
                     checking.allowSMS &&
                     checking.allowEmail;
                   setChecking({
-                    allowCodition01: !allChecked,
-                    allowCodition02: !allChecked,
-                    allowCodition03: !allChecked,
+                    allowCondition01: !allChecked,
+                    allowCondition02: !allChecked,
+                    allowCondition03: !allChecked,
                     allowSMS: !allChecked,
                     allowEmail: !allChecked,
                   });

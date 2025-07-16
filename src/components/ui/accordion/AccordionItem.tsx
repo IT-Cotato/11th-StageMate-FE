@@ -2,19 +2,19 @@ import ChevronDown from '@/assets/chevrons/chevron-down.svg?react';
 import CustomCheckbox from '../checkbox/CustomCheckbox';
 import {useState} from 'react';
 
-interface AccordianItemProps {
+interface AccordionItemProps {
   checked: boolean;
   title: string;
   children: React.ReactNode;
   onChange: () => void;
 }
 
-const AccordianItem = ({
+const AccordionItem = ({
   title,
   children,
   onChange,
   checked = false,
-}: AccordianItemProps) => {
+}: AccordionItemProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -39,4 +39,4 @@ const AccordianItem = ({
   );
 };
 
-export default AccordianItem;
+export default AccordionItem;
