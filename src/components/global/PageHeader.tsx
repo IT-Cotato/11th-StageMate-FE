@@ -17,7 +17,7 @@ const PageHeader = ({title}: PageHeaderProps) => {
         <div className='flex justify-center items-center w-40 h-40 py-[9.6px] pl-[8.23px] pr-[9.48px]'>
           <HomeOutline
             onClick={() => console.log('PageHeader 오른쪽 홈버튼 클릭')}
-            className='w-full h-full'
+            className='w-[22.289px] h-[20.802px] shrink-0 aspect-[22.29/20.80]'
           />
         </div>
       </div>
