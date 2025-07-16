@@ -29,12 +29,16 @@ export const isValidMonth = (month: string): boolean => {
   if (month.length !== 2) return false;
 
   const regex = /^\d{2}$/;
-  return regex.test(month);
+  if (!regex.test(month)) return false;
+  const monthNumber = parseInt(month, 10);
+  return monthNumber >= 1 && monthNumber <= 12;
 };
 
 export const isValidDay = (day: string): boolean => {
   if (day.length !== 2) return false;
 
   const regex = /^\d{2}$/;
-  return regex.test(day);
+  if (!regex.test(day)) return false;
+  const dayNumber = parseInt(day, 10);
+  return dayNumber >= 1 && dayNumber <= 31;
 };
