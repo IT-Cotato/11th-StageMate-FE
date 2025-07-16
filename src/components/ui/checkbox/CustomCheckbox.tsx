@@ -41,16 +41,16 @@ const CustomCheckbox = ({
         className='sr-only'
       />
 
-      <div className='flex items-center gap-15'>
+      <div className='flex items-start gap-15 cursor-pointer'>
         {/* 커스텀 아이콘 */}
-        {checked ? <CheckboxFill /> : <CheckboxBlank />}
+        {checked ? (
+          <CheckboxFill className='w-34 h-34' />
+        ) : (
+          <CheckboxBlank className='w-34 h-34' />
+        )}
 
         {/* 라벨 텍스트 */}
-        {children && (
-          <span className='text-gray3 font-roboto leading-[140%] select-none'>
-            {children}
-          </span>
-        )}
+        {children}
       </div>
     </label>
   );
