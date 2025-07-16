@@ -204,7 +204,7 @@ const SignupFormPage = () => {
             <div className='flex gap-20 items-center'>
               <input
                 type='password'
-                minLength={4}
+                minLength={8}
                 maxLength={16}
                 value={formValue.pw}
                 onChange={handlePwChange}
@@ -217,7 +217,7 @@ const SignupFormPage = () => {
               className={`self-stretch text-xl leading-[140%] ${isInvalid.pw ? 'text-secondary-50' : 'text-[#3c3c3c]'}`}>
               {isInvalid.pw
                 ? '잘못된 값입니다. 다시 입력하세요.'
-                : '(영문 소문자와 대문자를 조합하여 4~16자)'}
+                : '(문자, 숫자, 특수문자를 조합하여 8~16자)'}
             </h1>
           </div>
 
@@ -226,7 +226,7 @@ const SignupFormPage = () => {
             <div className='flex gap-20 items-center'>
               <input
                 type='password'
-                minLength={4}
+                minLength={8}
                 maxLength={16}
                 value={formValue.pwCheck}
                 onChange={handlePwCheckChange}
