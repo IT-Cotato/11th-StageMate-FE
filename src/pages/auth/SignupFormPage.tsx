@@ -154,14 +154,10 @@ const SignupFormPage = () => {
       isInvalid.email === false &&
       isInvalid.certificationNumber === false
     ) {
-      console.log(
-        '필수인 값들은 모두 입력됨',
-        formValue.year,
-        formValue.month,
-        formValue.day
-      );
+      // todo : 회원가입 api 연동
+      navigate('/signup-complete');
     } else {
-      console.log('입력이 필요한 필수 값이 있음!');
+      alert('필수 입력 항목을 모두 작성해주세요.');
     }
   }, [isInvalid, formValue]);
 

@@ -55,11 +55,12 @@ const LoginPage = () => {
           <div className='w-full flex flex-col items-start gap-16 self-stretch'>
             <ButtonFill
               text='로그인'
+              // todo : 로그인 api 연동
               onClick={() => console.log('로그인 버튼 클릭')}
             />
             <ButtonStroke
               text='회원가입'
-              onClick={() => console.log('회원가입 버튼 클릭')}
+              onClick={() => navigate('/signup-condition')}
             />
           </div>
         </div>
