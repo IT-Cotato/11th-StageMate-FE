@@ -49,7 +49,9 @@ const SignupFormPage = () => {
   const handleIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setFormValue((prev) => ({...prev, id: newValue}));
-    if (isValidId(newValue)) {
+    if (newValue.length === 0) {
+      setIsInvalid((prev) => ({...prev, id: undefined}));
+    } else if (isValidId(newValue)) {
       setIsInvalid((prev) => ({...prev, id: false}));
     } else {
       setIsInvalid((prev) => ({...prev, id: true}));
@@ -58,16 +60,25 @@ const SignupFormPage = () => {
   const handlePwChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setFormValue((prev) => ({...prev, pw: newValue}));
-    if (isValidPw(newValue)) {
+    if (isValidPw(newValue) && isValidPw(newValue)) {
       setIsInvalid((prev) => ({...prev, pw: false}));
     } else {
       setIsInvalid((prev) => ({...prev, pw: true}));
+    }
+
+    // 비밀번호가 변경되면 비밀번호 확인 상태도 재검증
+    if (formValue.pwCheck.length > 0) {
+      if (newValue === formValue.pwCheck && isValidPw(newValue)) {
+        setIsInvalid((prev) => ({...prev, pwCheck: false}));
+      } else {
+        setIsInvalid((prev) => ({...prev, pwCheck: true}));
+      }
     }
   };
   const handlePwCheckChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setFormValue((prev) => ({...prev, pwCheck: newValue}));
-    if (formValue.pw === newValue) {
+    if (formValue.pw === newValue && isValidPw(newValue)) {
       setIsInvalid((prev) => ({...prev, pwCheck: false}));
     } else {
       setIsInvalid((prev) => ({...prev, pwCheck: true}));
@@ -90,7 +101,6 @@ const SignupFormPage = () => {
           <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
-                required
                 type='string'
                 minLength={4}
                 maxLength={16}
@@ -118,7 +128,6 @@ const SignupFormPage = () => {
           <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
-                required
                 type='password'
                 minLength={4}
                 maxLength={16}
@@ -141,16 +150,18 @@ const SignupFormPage = () => {
           <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
-                required
                 type='password'
+                minLength={4}
                 maxLength={16}
                 value={formValue.pwCheck}
                 onChange={handlePwCheckChange}
                 placeholder='비밀번호 확인*'
                 className={`focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-gray-3 text-2xl leading-[140%]
-              ${isInvalid.pwCheck ? 'text-secondary-50' : `text-gray-3`}`}
+                ${isInvalid.pwCheck ? 'text-secondary-50' : `text-gray-3`}`}
               />
-              {isInvalid.pwCheck ? (
+              {isInvalid.pwCheck === undefined ? (
+                <CheckDefault className='w-30 h-30 shrink-0 aspect-square' />
+              ) : isInvalid.pwCheck ? (
                 <CheckDefault className='w-30 h-30 shrink-0 aspect-square' />
               ) : (
                 <CheckConfirmed className='w-30 h-30 shrink-0 aspect-square' />
@@ -159,10 +170,9 @@ const SignupFormPage = () => {
           </div>
 
           {/* Name */}
-          <div className='flex flex-col gap-7'>
+          {/* <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
-                required
                 type='string'
                 minLength={4}
                 maxLength={16}
@@ -171,13 +181,12 @@ const SignupFormPage = () => {
               invalid:text-secondary-50'
               />
             </div>
-          </div>
+          </div> */}
 
           {/* NickName */}
-          <div className='flex flex-col gap-7'>
+          {/* <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
-                required
                 type='string'
                 placeholder='닉네임*'
                 className='focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-gray-3 text-2xl leading-[140%]
@@ -188,13 +197,12 @@ const SignupFormPage = () => {
                 onClick={() => console.log('닉네임 중복 확인 버튼 클릭')}
               />
             </div>
-          </div>
+          </div> */}
 
           {/* Email */}
-          <div className='flex flex-col gap-7'>
+          {/* <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
-                required
                 type='email'
                 minLength={4}
                 maxLength={16}
@@ -203,13 +211,12 @@ const SignupFormPage = () => {
               invalid:text-secondary-50'
               />
             </div>
-          </div>
+          </div> */}
 
           {/* CertificationNumber */}
-          <div className='flex flex-col gap-7'>
+          {/* <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
-                required
                 type='number'
                 placeholder='인증번호 입력*'
                 className='focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-gray-3 text-2xl leading-[140%]
@@ -220,7 +227,7 @@ const SignupFormPage = () => {
                 onClick={() => console.log('인증번호 발송 버튼 클릭')}
               />
             </div>
-          </div>
+          </div> */}
 
           {/* Birth */}
         </div>
