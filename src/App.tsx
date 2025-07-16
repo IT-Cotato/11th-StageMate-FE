@@ -5,6 +5,7 @@ import MainPage from './pages/MainPage';
 import ArchivePage from './pages/ArchivePage';
 import CommunityPage from './pages/CommunityPage';
 import SettingsPage from './pages/SettingsPage';
+import SignupFormPage from './pages/auth/SignupFormPage';
 
 function App() {
   return (
@@ -16,6 +17,9 @@ function App() {
           <Route path='/community' element={<CommunityPage />} />
           <Route path='/settings' element={<SettingsPage />} />
         </Route>
+
+        {/* NavigationBar가 없어야하는 페이지 */}
+        <Route path='/singup-form' element={<SignupFormPage />} />
       </Routes>
     </BrowserRouter>
   );
