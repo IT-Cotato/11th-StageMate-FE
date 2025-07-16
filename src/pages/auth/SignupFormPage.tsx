@@ -2,7 +2,9 @@ import StateButtonStroke from '@/components/auth/StateButtonStroke';
 import ButtonFill from '@/components/global/ButtonFill';
 import PageHeader from '@/components/global/PageHeader';
 import CheckDefault from '@/assets/vector-check/vector-check-default.svg?react';
+import CheckConfirmed from '@/assets/vector-check/vector-check-confirmed.svg?react';
 import {useState} from 'react';
+import {isValidId, isValidPw} from '@/util/validation';
 
 type FormValue = {
   id: string;
@@ -12,6 +14,16 @@ type FormValue = {
   nickName: string;
   email: string;
   certificationNumber: string;
+};
+
+type ValueState = {
+  id: undefined | boolean;
+  pw: undefined | boolean;
+  pwCheck: undefined | boolean;
+  name: undefined | boolean;
+  nickName: undefined | boolean;
+  email: undefined | boolean;
+  certificationNumber: undefined | boolean;
 };
 
 const SignupFormPage = () => {
@@ -24,10 +36,42 @@ const SignupFormPage = () => {
     email: '',
     certificationNumber: '',
   });
+  const [isInvalid, setIsInvalid] = useState<ValueState>({
+    id: undefined,
+    pw: undefined,
+    pwCheck: undefined,
+    name: undefined,
+    nickName: undefined,
+    email: undefined,
+    certificationNumber: undefined,
+  });
 
   const handleIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setFormValue((prev) => ({...prev, id: newValue}));
+    if (isValidId(newValue)) {
+      setIsInvalid((prev) => ({...prev, id: false}));
+    } else {
+      setIsInvalid((prev) => ({...prev, id: true}));
+    }
+  };
+  const handlePwChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setFormValue((prev) => ({...prev, pw: newValue}));
+    if (isValidPw(newValue)) {
+      setIsInvalid((prev) => ({...prev, pw: false}));
+    } else {
+      setIsInvalid((prev) => ({...prev, pw: true}));
+    }
+  };
+  const handlePwCheckChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setFormValue((prev) => ({...prev, pwCheck: newValue}));
+    if (formValue.pw === newValue) {
+      setIsInvalid((prev) => ({...prev, pwCheck: false}));
+    } else {
+      setIsInvalid((prev) => ({...prev, pwCheck: true}));
+    }
   };
 
   return (
@@ -46,6 +90,7 @@ const SignupFormPage = () => {
           <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
+                required
                 type='string'
                 minLength={4}
                 maxLength={16}
@@ -62,8 +107,10 @@ const SignupFormPage = () => {
               />
             </div>
             <h1
-              className={`self-stretch text-xl leading-[140%] text-[#3c3c3c]`}>
-              (영문 소문자와 대문자를 조합하여 4~16자)
+              className={`self-stretch text-xl leading-[140%] ${isInvalid.id ? 'text-secondary-50' : 'text-[#3c3c3c]'}`}>
+              {isInvalid.id
+                ? '잘못된 값입니다. 다시 입력하세요.'
+                : '(영문 소문자와 대문자를 조합하여 4~16자)'}
             </h1>
           </div>
 
@@ -71,16 +118,22 @@ const SignupFormPage = () => {
           <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
+                required
                 type='password'
                 minLength={4}
                 maxLength={16}
+                value={formValue.pw}
+                onChange={handlePwChange}
                 placeholder='비밀번호*'
                 className='focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-gray-3 text-2xl leading-[140%]
               invalid:text-secondary-50'
               />
             </div>
-            <h1 className='self-stretch text-[#3c3c3c] text-xl leading-[140%]'>
-              (영문 소문자와 대문자를 조합하여 4~16자)
+            <h1
+              className={`self-stretch text-xl leading-[140%] ${isInvalid.pw ? 'text-secondary-50' : 'text-[#3c3c3c]'}`}>
+              {isInvalid.pw
+                ? '잘못된 값입니다. 다시 입력하세요.'
+                : '(영문 소문자와 대문자를 조합하여 4~16자)'}
             </h1>
           </div>
 
@@ -88,14 +141,20 @@ const SignupFormPage = () => {
           <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
+                required
                 type='password'
-                minLength={4}
                 maxLength={16}
+                value={formValue.pwCheck}
+                onChange={handlePwCheckChange}
                 placeholder='비밀번호 확인*'
-                className='focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-gray-3 text-2xl leading-[140%]
-              invalid:text-secondary-50'
+                className={`focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-gray-3 text-2xl leading-[140%]
+              ${isInvalid.pwCheck ? 'text-secondary-50' : `text-gray-3`}`}
               />
-              <CheckDefault className='w-30 h-30 shrink-0 aspect-square' />
+              {isInvalid.pwCheck ? (
+                <CheckDefault className='w-30 h-30 shrink-0 aspect-square' />
+              ) : (
+                <CheckConfirmed className='w-30 h-30 shrink-0 aspect-square' />
+              )}
             </div>
           </div>
 
@@ -103,6 +162,7 @@ const SignupFormPage = () => {
           <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
+                required
                 type='string'
                 minLength={4}
                 maxLength={16}
@@ -117,6 +177,7 @@ const SignupFormPage = () => {
           <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
+                required
                 type='string'
                 placeholder='닉네임*'
                 className='focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-gray-3 text-2xl leading-[140%]
@@ -133,6 +194,7 @@ const SignupFormPage = () => {
           <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
+                required
                 type='email'
                 minLength={4}
                 maxLength={16}
@@ -147,6 +209,7 @@ const SignupFormPage = () => {
           <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
+                required
                 type='number'
                 placeholder='인증번호 입력*'
                 className='focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-gray-3 text-2xl leading-[140%]
