@@ -1,8 +1,10 @@
 export const isValidId = (id: string): boolean => {
   if (id.length < 4 || id.length > 16) return false;
 
-  const regex = /^[A-Za-z]{4,16}$/;
-  return regex.test(id);
+  const hasLowercase = /[a-z]/.test(id);
+  const hasUppercase = /[A-Z]/.test(id);
+  const onlyAlpha = /^[A-Za-z]{4,16}$/.test(id);
+  return hasLowercase && hasUppercase && onlyAlpha;
 };
 
 export const isValidPw = (pw: string): boolean => {
