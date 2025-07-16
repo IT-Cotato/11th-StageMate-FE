@@ -66,7 +66,7 @@ const SignupFormPage = () => {
   const handlePwChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setFormValue((prev) => ({...prev, pw: newValue}));
-    if (isValidPw(newValue) && isValidPw(newValue)) {
+    if (isValidPw(newValue)) {
       setIsInvalid((prev) => ({...prev, pw: false}));
     } else {
       setIsInvalid((prev) => ({...prev, pw: true}));
@@ -160,7 +160,7 @@ const SignupFormPage = () => {
     } else {
       console.log('입력이 필요한 필수 값이 있음!');
     }
-  }, [isInvalid]);
+  }, [isInvalid, formValue]);
 
   return (
     <div className='w-full sm:w-[600px] mx-auto bg-white'>
@@ -178,7 +178,7 @@ const SignupFormPage = () => {
           <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
-                type='string'
+                type='text'
                 minLength={4}
                 maxLength={16}
                 value={formValue.id}
@@ -250,7 +250,7 @@ const SignupFormPage = () => {
           <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
-                type='string'
+                type='text'
                 value={formValue.name}
                 onChange={handleNameChange}
                 placeholder='이름*'
@@ -263,7 +263,7 @@ const SignupFormPage = () => {
           <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
-                type='string'
+                type='text'
                 value={formValue.nickName}
                 onChange={handleNickNameChange}
                 placeholder='닉네임*'
@@ -286,7 +286,7 @@ const SignupFormPage = () => {
                 onChange={handleEmailChange}
                 placeholder='이메일*'
                 className={`focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-2xl leading-[140%]
-              ${isInvalid ? 'invalid:text-secondary-50' : ' text-gray-3'}`}
+              ${isInvalid.email ? 'invalid:text-secondary-50' : ' text-gray-3'}`}
               />
             </div>
           </div>
@@ -295,7 +295,7 @@ const SignupFormPage = () => {
           <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
-                type='string'
+                type='text'
                 value={formValue.certificationNumber}
                 onChange={handleCertificationNumberChange}
                 placeholder='인증번호 입력*'
@@ -313,7 +313,7 @@ const SignupFormPage = () => {
           <div className='flex gap-16'>
             {/* YYYY */}
             <input
-              type='string'
+              type='text'
               maxLength={4}
               value={formValue.year}
               onChange={handleYearChange}
@@ -324,7 +324,7 @@ const SignupFormPage = () => {
 
             {/* MM */}
             <input
-              type='string'
+              type='text'
               value={formValue.month}
               onChange={handleMonthChange}
               maxLength={2}
@@ -335,7 +335,7 @@ const SignupFormPage = () => {
 
             {/* DD */}
             <input
-              type='string'
+              type='text'
               value={formValue.day}
               onChange={handleDayChange}
               maxLength={2}
