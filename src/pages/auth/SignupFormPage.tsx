@@ -101,6 +101,7 @@ const SignupFormPage = () => {
           <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
+                required
                 type='string'
                 minLength={4}
                 maxLength={16}
@@ -128,6 +129,7 @@ const SignupFormPage = () => {
           <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
+                required
                 type='password'
                 minLength={4}
                 maxLength={16}
@@ -150,6 +152,7 @@ const SignupFormPage = () => {
           <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
+                required
                 type='password'
                 minLength={4}
                 maxLength={16}
@@ -170,66 +173,94 @@ const SignupFormPage = () => {
           </div>
 
           {/* Name */}
-          {/* <div className='flex flex-col gap-7'>
+          <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
+                required
                 type='string'
-                minLength={4}
-                maxLength={16}
                 placeholder='이름*'
-                className='focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-gray-3 text-2xl leading-[140%]
-              invalid:text-secondary-50'
+                className='focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-gray-3 text-2xl leading-[140%]'
               />
             </div>
-          </div> */}
+          </div>
 
           {/* NickName */}
-          {/* <div className='flex flex-col gap-7'>
+          <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
+                required
                 type='string'
                 placeholder='닉네임*'
-                className='focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-gray-3 text-2xl leading-[140%]
-              invalid:text-secondary-50'
+                className='focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-gray-3 text-2xl leading-[140%]'
               />
               <StateButtonStroke
                 text='중복확인'
+                // todo : 닉네임 중복 확인 api 연결
                 onClick={() => console.log('닉네임 중복 확인 버튼 클릭')}
               />
             </div>
-          </div> */}
+          </div>
 
           {/* Email */}
-          {/* <div className='flex flex-col gap-7'>
+          <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
+                required
                 type='email'
-                minLength={4}
-                maxLength={16}
                 placeholder='이메일*'
                 className='focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-gray-3 text-2xl leading-[140%]
               invalid:text-secondary-50'
               />
             </div>
-          </div> */}
+          </div>
 
           {/* CertificationNumber */}
-          {/* <div className='flex flex-col gap-7'>
+          <div className='flex flex-col gap-7'>
             <div className='flex gap-20 items-center'>
               <input
-                type='number'
+                required
+                type='string'
                 placeholder='인증번호 입력*'
                 className='focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-gray-3 text-2xl leading-[140%]
               invalid:text-secondary-50'
               />
               <StateButtonStroke
                 text='인증번호 발송'
+                // todo : 인증번호 발송 기능 연결
                 onClick={() => console.log('인증번호 발송 버튼 클릭')}
               />
             </div>
-          </div> */}
+          </div>
 
           {/* Birth */}
+          <div className='flex gap-16'>
+            {/* YYYY */}
+            <input
+              type='string'
+              maxLength={4}
+              placeholder='생년월일/YYYY'
+              className='w-0 focus:border-0 focus:outline-0 grow h-60 py-16 px-17 bg-gray-1 text-gray-3 text-2xl leading-[140%]
+              invalid:text-secondary-50'
+            />
+
+            {/* MM */}
+            <input
+              type='string'
+              maxLength={2}
+              placeholder='MM'
+              className='w-0 focus:border-0 focus:outline-0 grow h-60 py-16 px-17 bg-gray-1 text-gray-3 text-2xl leading-[140%]
+              invalid:text-secondary-50'
+            />
+
+            {/* DD */}
+            <input
+              type='string'
+              maxLength={2}
+              placeholder='DD'
+              className='w-0 focus:border-0 focus:outline-0 grow h-60 py-16 px-17 bg-gray-1 text-gray-3 text-2xl leading-[140%]
+              invalid:text-secondary-50'
+            />
+          </div>
         </div>
 
         {/* 가입 버튼 */}
