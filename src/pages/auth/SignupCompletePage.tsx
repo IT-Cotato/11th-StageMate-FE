@@ -9,7 +9,11 @@ const SignupCompletePage = () => {
 
   return (
     <div className='w-full sm:w-[600px] mx-auto bg-white'>
-      <PageHeader title='회원가입' />
+      <PageHeader
+        title='회원가입'
+        onLeftClick={() => navigate('/signup-form')}
+        onRightClick={() => navigate('/')}
+      />
 
       <div className='flex flex-col gap-64 pt-40 pl-16 pr-17'>
         <div className='flex flex-col px-20'>
