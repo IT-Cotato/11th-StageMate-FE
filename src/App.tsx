@@ -8,6 +8,7 @@ import SettingsPage from './pages/SettingsPage';
 import SignupFormPage from './pages/auth/SignupFormPage';
 import LoginPage from './pages/auth/LoginPage';
 import SignupConditionPage from './pages/auth/SignupConditionPage';
+import SignupCompletePage from './pages/auth/SignupCompletePage';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path='/signup-form' element={<SignupFormPage />} />
         <Route path='/login' element={<LoginPage />} />
         <Route path='/signup-condition' element={<SignupConditionPage />} />
+        <Route path='/signup-complete' element={<SignupCompletePage />} />
       </Routes>
     </BrowserRouter>
   );
