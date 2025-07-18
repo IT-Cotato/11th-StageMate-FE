@@ -2,16 +2,16 @@ import Logo from '@/assets/logos/main-logo.svg?react';
 import HeaderBackground from '@/assets/main-header-bg/header-bg.svg?url';
 import User from '@/assets/users/user.svg?react';
 import Bell from '@/assets/alerts-feedback/bell.svg?react';
-import SearchBox from './SearchBox';
+import SearchBox from '../global/SearchBox';
 import LoggedInHeader from './LoggedInHeader';
 import LoggedOutHeader from './LoggedOutHeader';
 
-interface HeaderProps {
+interface MainHeaderProps {
   isLoggedIn: boolean;
   username?: string;
 }
 
-const Header = ({isLoggedIn, username}: HeaderProps) => {
+const MainHeader = ({isLoggedIn, username}: MainHeaderProps) => {
   const headerHeight = isLoggedIn ? 'h-[318px]' : '[h-285px]';
   return (
     <div
@@ -37,4 +37,4 @@ const Header = ({isLoggedIn, username}: HeaderProps) => {
   );
 };
 
-export default Header;
+export default MainHeader;
