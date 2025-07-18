@@ -17,7 +17,7 @@ const PostItem = ({post}: PostItemProps) => {
     <div className='w-full h-48 flex flex-row items-center bg-[#ffffff] px-9 py-6 gap-10'>
       <div className='flex-1'>{post.title}</div>
       <div className='flex flex-row items-end'>
-        <button className='cursor-pointer'>
+        <button>
           {post.isLiked ? (
             <FullHeart width={25} height={25} />
           ) : (
