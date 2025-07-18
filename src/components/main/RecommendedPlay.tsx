@@ -3,7 +3,7 @@ import PlayTag from './PlayTag';
 import RecommendedPlayList from './RecommendedPlayList';
 import {mockRecommendedPlays} from '@/mocks/mockRecommendedPlays';
 
-const Magazine = () => {
+const RecommendedPlay = () => {
   const categories = [
     ['창작 뮤지컬', '오리지널/내한 뮤지컬'],
     ['리미티드 런', '아동/가족 뮤지컬'],
@@ -13,7 +13,7 @@ const Magazine = () => {
       <div className='w-full flex justify-between items-center'>
         <h1 className='text-gray-30 font-bold text-2xl'>오늘의 추천 공연</h1>
         <div className='flex items-center cursor-pointer mr-[27px]'>
-          <h2 className='text-[16px] font-medium text-primary'>자세히 보기</h2>
+          <h2 className='text-[16px] font-medium text-primary'>더 보기</h2>
           <ChevronRight className='text-primary' />
         </div>
       </div>
@@ -33,4 +33,4 @@ const Magazine = () => {
   );
 };
 
-export default Magazine;
+export default RecommendedPlay;
