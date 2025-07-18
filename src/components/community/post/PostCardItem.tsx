@@ -50,7 +50,7 @@ const PostCardItem = ({
           subtitle && <h2 className='font-semibold text-[18px]'>{subtitle}</h2>
         )}
 
-        <h1 className='font-normal text-[22px] truncate'>{title}</h1>
+        <h1 className='w-[204px] font-normal text-[22px] truncate'>{title}</h1>
       </div>
     </li>
   );
