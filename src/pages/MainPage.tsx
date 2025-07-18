@@ -1,8 +1,8 @@
 import {useState} from 'react';
-import Header from '@/components/main/Header';
+import MainHeader from '@/components/main/MainHeader';
 import WeekCalendar from '@/components/main/WeekCalendar';
 import type {Schedule} from '@/types/schedule';
-import Magazine from '@/components/main/Magazine';
+import RecommendedPlay from '@/components/main/RecommendedPlay';
 import {mockSchedules} from '@/mocks/mockSchedules';
 import OnboardingWrapper from '@/components/modal/OnboardingModal/OnboardingWrapper';
 
@@ -27,7 +27,7 @@ export default function MainPage() {
         <OnboardingWrapper onDone={() => setIsOnboardingDone(true)} />
       )}
       <div className='bg-black flex flex-col items-center'>
-        <Header isLoggedIn={isLoggedIn} username={username} />
+        <MainHeader isLoggedIn={isLoggedIn} username={username} />
         <div className='p-[12px] flex flex-col w-full gap-[12px]'>
           <WeekCalendar
             isLoggedIn={isLoggedIn}
@@ -38,7 +38,7 @@ export default function MainPage() {
             }
             onViewMore={() => console.log('View more clicked')}
           />
-          <Magazine />
+          <RecommendedPlay />
         </div>
       </div>
     </div>

@@ -90,7 +90,7 @@ const WeekCalendar = ({
   return (
     <div className='flex flex-col w-full min-h-[201px] px-[22px] py-[20px] bg-white rounded-[20px] relative z-0 gap-[10px]'>
       <div className='flex flex-col gap-[10px]'>
-        <span className='font-bold text-[24px]'>전체 일정 달력</span>
+        <span className='font-bold text-[24px]'>오늘의 일정</span>
         <div className='flex justify-between w-full'>
           {weekDates.map((day, idx) => (
             <div
