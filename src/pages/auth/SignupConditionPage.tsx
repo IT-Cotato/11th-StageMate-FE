@@ -6,6 +6,7 @@ import AccordionItem from '@/components/ui/accordion/AccordionItem';
 import CustomCheckbox from '@/components/ui/checkbox/CustomCheckbox';
 import {TermOfService} from '@/constant';
 import {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 
 interface CheckingState {
   [key: `allowCondition${number}`]: boolean;
@@ -14,6 +15,8 @@ interface CheckingState {
 }
 
 const SignupConditionPage = () => {
+  const navigate = useNavigate();
+
   const [checking, setChecking] = useState<CheckingState>({
     allowCondition1: false,
     allowCondition2: false,
@@ -22,9 +25,27 @@ const SignupConditionPage = () => {
     allowEmail: false,
   });
 
+  const handleNextClick = () => {
+    if (
+      checking.allowCondition1 &&
+      checking.allowCondition2 &&
+      checking.allowCondition3
+    ) {
+      navigate('/signup-form');
+    } else {
+      alert(
+        '필수 약관에 동의하지 않으면 해당 서비스 이용이 제한될 수 있습니다. '
+      );
+    }
+  };
+
   return (
     <div className='w-full sm:w-[600px] mx-auto bg-white'>
-      <PageHeader title='회원가입' />
+      <PageHeader
+        title='회원가입'
+        onLeftClick={() => navigate('/login')}
+        onRightClick={() => navigate('/')}
+      />
 
       <div className='pt-40 px-16 flex flex-col items-start gap-62 self-stretch'>
         <h1 className='text-[#141313] text-[32px] font-bold leading-[140%]'>
@@ -115,14 +136,8 @@ const SignupConditionPage = () => {
 
           {/* 다음/취소 버튼 */}
           <div className='flex py-20 gap-20 items-center self-stretch'>
-            <ButtonFill
-              text='다음'
-              onClick={() => console.log('다음 버튼 클릭')}
-            />
-            <ButtonStroke
-              text='취소'
-              onClick={() => console.log('취소 버튼 클릭')}
-            />
+            <ButtonFill text='다음' onClick={handleNextClick} />
+            <ButtonStroke text='취소' onClick={() => navigate('/login')} />
           </div>
 
           {/* brands */}

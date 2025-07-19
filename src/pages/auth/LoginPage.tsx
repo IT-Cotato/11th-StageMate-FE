@@ -5,14 +5,21 @@ import ButtonStroke from '@/components/global/ButtonStroke';
 import ButtonFill from '@/components/global/ButtonFill';
 import BrandBadges from '@/components/auth/BrandBadges';
 import CustomCheckbox from '@/components/ui/checkbox/CustomCheckbox';
+import {useNavigate} from 'react-router-dom';
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+
   const [isStayingLoggedIn, setIsStayingLoggedIn] = useState(false);
 
   return (
     <div className='w-full sm:w-[600px] mx-auto bg-white'>
       {/* 헤더 */}
-      <PageHeader title={'로그인'} />
+      <PageHeader
+        title={'로그인'}
+        onLeftClick={() => navigate('/')}
+        onRightClick={() => navigate('/')}
+      />
 
       <div className='pt-32 px-16 flex flex-col items-center gap-20'>
         {/* content */}
@@ -48,11 +55,12 @@ const LoginPage = () => {
           <div className='w-full flex flex-col items-start gap-16 self-stretch'>
             <ButtonFill
               text='로그인'
+              // todo : 로그인 api 연동
               onClick={() => console.log('로그인 버튼 클릭')}
             />
             <ButtonStroke
               text='회원가입'
-              onClick={() => console.log('회원가입 버튼 클릭')}
+              onClick={() => navigate('/signup-condition')}
             />
           </div>
         </div>
