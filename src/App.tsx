@@ -3,12 +3,14 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import MainLayout from './layout/MainLayout';
 import MainPage from './pages/MainPage';
 import ArchivePage from './pages/ArchivePage';
-import CommunityPage from './pages/CommunityPage';
+
 import SettingsPage from './pages/SettingsPage';
 import SignupFormPage from './pages/auth/SignupFormPage';
 import LoginPage from './pages/auth/LoginPage';
 import SignupConditionPage from './pages/auth/SignupConditionPage';
 import SignupCompletePage from './pages/auth/SignupCompletePage';
+import CommunityMainLayout from './layout/CommunityMainLayout';
+import CommunityMainPage from './pages/community/CommunityMainPage';
 
 function App() {
   return (
@@ -18,7 +20,9 @@ function App() {
         <Route element={<MainLayout />}>
           <Route path='/' element={<MainPage />} />
           <Route path='/archive' element={<ArchivePage />} />
-          <Route path='/community' element={<CommunityPage />} />
+          <Route element={<CommunityMainLayout />}>
+            <Route path='/community' element={<CommunityMainPage />} />
+          </Route>
           <Route path='/settings' element={<SettingsPage />} />
         </Route>
 
