@@ -2,7 +2,7 @@ import Heart from '@/assets/community/community-content-nav-heart.svg?react';
 import Chat from '@/assets/community/community-content-nav-chat.svg?react';
 import BookMark from '@/assets/community/bookmark.svg?react';
 
-const ContentNavigationBar = () => {
+const ContentFooterBar = () => {
   return (
     <div className='w-full flex justify-center bg-[#fff] sm:py-16 sm:px-90 px-45 py-8 border-t-[1px] border-primary'>
       <div className='flex w-full max-w-[413px] justify-between items-center'>
@@ -14,4 +14,4 @@ const ContentNavigationBar = () => {
   );
 };
 
-export default ContentNavigationBar;
+export default ContentFooterBar;

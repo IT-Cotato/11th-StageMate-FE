@@ -3,7 +3,7 @@
  */
 
 import ContentHeader from '@/components/community/content/ContentHeader';
-import ContentNavigationBar from '@/components/community/content/ContentNavigationBar';
+import ContentFooterBar from '@/components/community/content/ContentFooterBar';
 import {Outlet} from 'react-router-dom';
 
 const CommunityContentLayout = () => {
@@ -15,7 +15,7 @@ const CommunityContentLayout = () => {
           <Outlet />
         </main>
         <footer className='w-full max-w-[600px] fixed bottom-0 left-1/2 -translate-x-1/2'>
-          <ContentNavigationBar />
+          <ContentFooterBar />
         </footer>
       </div>
     </div>
