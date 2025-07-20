@@ -8,14 +8,14 @@ const EditorToggleSection = () => {
       <div className='flex flex-row items-center justify-between'>
         <div className='flex gap-20 items-center'>
           <Lock />
-          <p className='font-normal text-2xl'>회원 전용</p>
+          <p className='font-normal sm:text-2xl text-xl'>회원 전용</p>
         </div>
         <EditorToggleButton />
       </div>
       <div className='flex items-center justify-between'>
         <div className='flex gap-20 items-center'>
           <Bell />
-          <p className='font-normal text-2xl'>알림</p>
+          <p className='font-normal sm:text-2xl text-xl'>알림</p>
         </div>
         <EditorToggleButton />
       </div>

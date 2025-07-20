@@ -16,10 +16,10 @@ const ShareBadgeSection = ({
 }: ShareBadgeSectionProps) => {
   return (
     <div className='flex flex-col'>
-      <div className='flex flex-row justify-between items-center px-48 py-10'>
-        <div className='flex items-center gap-22'>
+      <div className='flex flex-row justify-between items-center sm:px-48 px-24 py-10'>
+        <div className='flex items-center sm:gap-22 gap-10'>
           <Check />
-          <p className='text-2xl'>공연 카테고리 선택</p>
+          <p className='sm:text-2xl text-[15px]'>공연 카테고리 선택</p>
         </div>
         <div className='flex gap-8'>
           {['연극', '뮤지컬'].map((text) => (
@@ -36,10 +36,10 @@ const ShareBadgeSection = ({
         </div>
       </div>
       <hr className='w-full h-[1px] bg-primary opacity-15 border-0' />
-      <div className='flex flex-row justify-between items-center px-48 py-10'>
-        <div className='flex gap-22 items-center '>
+      <div className='flex flex-row justify-between items-center sm:px-48 px-24 py-10'>
+        <div className='flex sm:gap-22 gap-10 items-center '>
           <Check />
-          <p className='text-2xl'>나눔 · 거래 방식 선택</p>
+          <p className='sm:text-2xl text-[15px]'>나눔 · 거래 방식 선택</p>
         </div>
         <div className='flex gap-8'>
           {['추첨나눔', '무료나눔', '판매'].map((text) => (

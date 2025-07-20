@@ -62,7 +62,7 @@ const CommunityEditPage = () => {
         <button
           type='submit'
           disabled={isSubmitting}
-          className={`rounded-[5px] border-[1px] text-2xl px-28 py-[8.5px] font-medium transition-colors duration-200 
+          className={`rounded-[5px] border-[1px] sm:text-2xl text-xl px-28 py-[8.5px] font-medium transition-colors duration-200 
         ${isSubmitting ? 'bg-primary text-[#fff] cursor-not-allowed' : 'bg-[#fff] text-primary cursor-pointer'}`}>
           등록하기
         </button>
