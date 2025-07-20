@@ -73,7 +73,7 @@ const ContentEditor = ({defaultContent}: ContentEditorProps) => {
     content: defaultContent,
     editorProps: {
       attributes: {
-        class: 'outline-none text-base text-2xl text-gray-2',
+        class: 'outline-none text-base text-2xl',
       },
     },
   });
