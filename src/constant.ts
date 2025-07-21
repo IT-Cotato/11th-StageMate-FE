@@ -45,3 +45,10 @@ export const ShareTemplate = `1. 공연명 / 배우
  예: 오픈채팅 링크 / 이메일 / 댓글 회신 등
  <br>
  ※ 연락 가능한 수단을 꼭 적어 주세요.`;
+
+export const MagazineOrder = [
+  {id: 0, text: '최근'},
+  {id: 1, text: '관련순'},
+  {id: 2, text: '인기순'},
+  {id: 3, text: '카테고리'},
+];
