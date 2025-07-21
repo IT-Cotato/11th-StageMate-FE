@@ -23,6 +23,7 @@ export interface Post {
   viewCount: number;
   nickname: string;
   date: string;
+  isScrapped: boolean;
 }
 
 export interface SharePost {
