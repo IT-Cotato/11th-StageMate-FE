@@ -1,6 +1,6 @@
 interface LoadMoreButtonProps {
+  onClick: () => void;
   variant?: 'full' | 'fixed';
-  onClick?: () => void;
 }
 
 const LoadMoreButton = ({variant = 'full', onClick}: LoadMoreButtonProps) => {
