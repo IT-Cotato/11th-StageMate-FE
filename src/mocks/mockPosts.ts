@@ -9,6 +9,8 @@ export const mockPosts: Post[] = [
     commentCount: 100,
     isLiked: false,
     viewCount: 458,
+    nickname: '무대위의밤비',
+    date: '25.06.28',
   },
   {
     id: 2,
@@ -18,6 +20,8 @@ export const mockPosts: Post[] = [
     commentCount: 100,
     isLiked: true,
     viewCount: 458,
+    nickname: '티켓팅의신',
+    date: '25.06.27',
   },
   {
     id: 3,
@@ -27,6 +31,8 @@ export const mockPosts: Post[] = [
     commentCount: 100,
     isLiked: false,
     viewCount: 218,
+    nickname: '공연러버',
+    date: '25.06.29',
   },
   {
     id: 4,
@@ -36,6 +42,8 @@ export const mockPosts: Post[] = [
     commentCount: 100,
     isLiked: false,
     viewCount: 458,
+    nickname: '티켓나눔천사',
+    date: '25.06.28',
   },
   {
     id: 5,
@@ -45,5 +53,7 @@ export const mockPosts: Post[] = [
     commentCount: 100,
     isLiked: false,
     viewCount: 458,
+    nickname: '주차의달인',
+    date: '25.06.26',
   },
 ];
