@@ -7,7 +7,7 @@ import {mockPosts} from '@/mocks/mockPosts';
 const ArchivePage = () => {
   const filteredPost = mockPosts.filter((post) => post.isScrapped);
   return (
-    <div className='flex flex-col gap-50'>
+    <div className='flex flex-col gap-50 sm:px-5 px-10'>
       <h1 className='text-[25px] font-semibold'>나의 공연 아카이빙</h1>
       <ArchiveCalendar />
       <div className='flex flex-col gap-20'>

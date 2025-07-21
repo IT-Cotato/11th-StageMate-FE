@@ -14,7 +14,7 @@ const TopRatedShowList = () => {
               임시 이미지
             </div>
             <div className='flex flex-col justify-between'>
-              <span className='text-xl'>{performance.title}</span>
+              <span className='sm:text-xl text-sm'>{performance.title}</span>
               <div className='text-[18px] flex flex-row'>
                 <Star />
                 {performance.rating.toFixed(1)}

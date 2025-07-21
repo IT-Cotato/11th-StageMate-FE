@@ -83,7 +83,8 @@ const ArchiveCalendar = () => {
               {months.map((month) => (
                 <li
                   key={month}
-                  className='text-[16px] text-primary font-medium cursor-pointer hover:bg-gray-100 hover:font-bold'
+                  className='text-[16px] text-primary font-medium cursor-pointer hover:bg-gray-100 hover:font-bold active:bg-gray-100 active:font-extrabold
+            focus:bg-gray-100 focus:font-bold'
                   onClick={() => handleSelectMonth(month)}>
                   {month}월
                 </li>
@@ -94,10 +95,10 @@ const ArchiveCalendar = () => {
 
         {/** 추가 버튼과 오늘 버튼 */}
         <div className='flex flex-row gap-22'>
-          <div className='w-38 h-38 flex items-center justify-center border border-primary rounded-full hover:bg-gray-100 cursor-pointer'>
+          <div className='w-38 h-38 flex items-center justify-center border border-primary rounded-full hover:bg-gray-100 active:bg-gray-100 cursor-pointer'>
             <Plus />
           </div>
-          <button className='text-primary-3 border-[1px] rounded-[10px] flex items-center justify-center text-xl px-50 py-5 hover:bg-gray-100 hover:text-primary-2 cursor-pointer hover:border-primary'>
+          <button className='text-primary-3 border-[1px] rounded-[10px] flex items-center justify-center text-xl px-50 py-5 hover:bg-gray-100 hover:text-primary-2 cursor-pointer hover:border-primary active:text-primary-2 active:border-primary-2'>
             오늘
           </button>
         </div>
