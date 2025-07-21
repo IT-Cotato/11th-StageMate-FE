@@ -20,6 +20,7 @@ export interface Post {
   likeCount: number;
   commentCount: number;
   isLiked: boolean;
+  viewCount: number;
 }
 
 export interface SharePost {

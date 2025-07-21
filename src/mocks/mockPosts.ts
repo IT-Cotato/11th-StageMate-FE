@@ -8,6 +8,7 @@ export const mockPosts: Post[] = [
     likeCount: 147,
     commentCount: 100,
     isLiked: false,
+    viewCount: 458,
   },
   {
     id: 2,
@@ -16,6 +17,7 @@ export const mockPosts: Post[] = [
     likeCount: 147,
     commentCount: 100,
     isLiked: true,
+    viewCount: 458,
   },
   {
     id: 3,
@@ -24,6 +26,7 @@ export const mockPosts: Post[] = [
     likeCount: 147,
     commentCount: 100,
     isLiked: false,
+    viewCount: 218,
   },
   {
     id: 4,
@@ -32,6 +35,7 @@ export const mockPosts: Post[] = [
     likeCount: 147,
     commentCount: 100,
     isLiked: false,
+    viewCount: 458,
   },
   {
     id: 5,
@@ -40,5 +44,6 @@ export const mockPosts: Post[] = [
     likeCount: 147,
     commentCount: 100,
     isLiked: false,
+    viewCount: 458,
   },
 ];
