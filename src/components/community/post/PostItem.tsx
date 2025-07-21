@@ -25,7 +25,7 @@ const PostItem = ({post}: PostItemProps) => {
           )}
         </button>
         <span>{post.likeCount}</span>
-        <Chat className='text-secondary-50 ml-14' />
+        <Chat className='text-secondary ml-14' />
         <span>{post.commentCount}</span>
       </div>
     </div>
