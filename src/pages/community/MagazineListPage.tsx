@@ -1,4 +1,5 @@
 import ChevronLeft from '@/assets/chevrons/chevron-left.svg?react';
+import MainMagazine from '@/components/community/magazine/MainMagazine';
 import {MagazineOrder} from '@/constant';
 import {useState} from 'react';
 
@@ -47,7 +48,9 @@ const MagazineListPage = () => {
       </div>
 
       {/* 리스트 */}
-      <div></div>
+      <div className='px-18 py-25'>
+        <MainMagazine />
+      </div>
 
       {/* 페이지네이션 */}
       {/* todo : 백엔드 api 연결  */}
