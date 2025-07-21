@@ -14,7 +14,7 @@ import CommunityMainPage from './pages/community/CommunityMainPage';
 import FilteredPostList from './components/community/post/FilteredPostList';
 import CommunityEditPage from './pages/community/CommunityEditPage';
 import CommunityHeaderOnlyLayout from './layout/CommunityHeaderOnlyLayout';
-import MagazineListPage from './pages/community/MagazineListPage';
+import MagazinePage from './pages/community/MagazinePage';
 import MagazineDetailPage from './pages/community/MagazineDetailPage';
 
 function App() {
@@ -28,7 +28,7 @@ function App() {
           <Route element={<CommunityMainLayout />}>
             <Route path='/community' element={<CommunityMainPage />} />
             <Route path='/community/:category' element={<FilteredPostList />} />
-            <Route path='/magazine' element={<MagazineListPage />} />
+            <Route path='/magazine' element={<MagazinePage />} />
             <Route path='/magazine/:id' element={<MagazineDetailPage />} />
           </Route>
           <Route path='/settings' element={<SettingsPage />} />

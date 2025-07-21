@@ -3,7 +3,7 @@ import MainMagazine from '@/components/community/magazine/MainMagazine';
 import {MagazineOrder} from '@/constant';
 import {useState} from 'react';
 
-const MagazineListPage = () => {
+const MagazinePage = () => {
   const [sortBy, setSortBy] = useState(0);
   const [isOrderOpen, setIsOrderOpen] = useState(false);
 
@@ -58,4 +58,4 @@ const MagazineListPage = () => {
   );
 };
 
-export default MagazineListPage;
+export default MagazinePage;
