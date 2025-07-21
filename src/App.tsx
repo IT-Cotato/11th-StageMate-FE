@@ -11,8 +11,10 @@ import SignupConditionPage from './pages/auth/SignupConditionPage';
 import SignupCompletePage from './pages/auth/SignupCompletePage';
 import CommunityMainLayout from './layout/CommunityMainLayout';
 import CommunityMainPage from './pages/community/CommunityMainPage';
+import FilteredPostList from './components/community/post/FilteredPostList';
 import CommunityContentLayout from './layout/CommunityContentLayout';
 import CommunityEditPage from './pages/community/CommunityEditPage';
+
 
 function App() {
   return (
@@ -24,6 +26,7 @@ function App() {
           <Route path='/archive' element={<ArchivePage />} />
           <Route element={<CommunityMainLayout />}>
             <Route path='/community' element={<CommunityMainPage />} />
+            <Route path='/community/:category' element={<FilteredPostList />} />
           </Route>
           <Route path='/settings' element={<SettingsPage />} />
         </Route>
