@@ -40,7 +40,7 @@ const FilteredPostList = () => {
         <div className='flex items-center'>
           <button
             className='flex items-center justify-center'
-            onClick={() => navigate(-1)}>
+            onClick={() => navigate(`/community`)}>
             <div className='w-[50px] h-[50px]'>
               <ChevronLeft className='w-full h-full' />
             </div>
