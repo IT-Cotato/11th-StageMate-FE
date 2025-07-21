@@ -8,6 +8,7 @@ import PostItem from './PostItem';
 import LoadMoreButton from '../common/LoadMoreButton';
 import CommunityCategory from '../common/CommunityCategory';
 import type {Post} from '@/types/community';
+import {useNavigate} from 'react-router-dom';
 
 type PostListVariant = 'hot' | 'tip' | 'daily';
 
@@ -19,6 +20,12 @@ interface PostListProps {
 }
 
 const PostList = ({icon, title, posts, variant = 'daily'}: PostListProps) => {
+  const navigate = useNavigate();
+
+  const handleLoadMoreClick = () => {
+    navigate(`/community/${variant}`);
+  };
+
   return (
     <div className='flex flex-col gap-10'>
       {/** title */}
@@ -46,7 +53,7 @@ const PostList = ({icon, title, posts, variant = 'daily'}: PostListProps) => {
         }
         return <PostItem key={post.id} post={post} />;
       })}
-      <LoadMoreButton />
+      <LoadMoreButton onClick={handleLoadMoreClick} />
     </div>
   );
 };
