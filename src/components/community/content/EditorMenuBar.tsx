@@ -1,3 +1,4 @@
+import Camera from '@/assets/community/editor-icons/editor-icon-camera.svg?react';
 import Image from '@/assets/community/editor-icons/editor-icon-image.svg?react';
 import BoldIcon from '@/assets/community/editor-icons/editor-icon-bold.svg?react';
 import UnderlineIcon from '@/assets/community/editor-icons/editor-icon-underline.svg?react';
@@ -14,6 +15,7 @@ import {HexColorPicker} from 'react-colorful';
 import {Editor} from '@tiptap/react';
 
 import {useEffect, useRef, useState} from 'react';
+import useModalStore from '@/stores/useModalStore';
 
 interface EditorMenuBarProps {
   editor: Editor;
@@ -28,7 +30,9 @@ const EditorMenuBar = ({editor, onImageUpload}: EditorMenuBarProps) => {
     strike: false,
     highlight: false,
   });
-
+  const setShowCameraModal = useModalStore((state) => state.setShowCameraModal);
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  const cameraInputRef = useRef<HTMLInputElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [hasLink, setHasLink] = useState(false);
 
@@ -187,13 +191,32 @@ const EditorMenuBar = ({editor, onImageUpload}: EditorMenuBarProps) => {
     e.target.value = '';
   };
 
+  const handleCameraClick = () => {
+    if (isMobile) {
+      cameraInputRef.current?.click();
+    } else {
+      setShowCameraModal(true);
+    }
+  };
+
   return (
-    <div className='flex flex-row gap-10 items-center relative sm:px-60 px-1 pt-40 pb-20'>
+    <div className='flex flex-row gap-10 items-center relative px-60 pt-40 pb-20 flex-wrap'>
+      <button className={`${baseButtonClass}`} onClick={handleCameraClick}>
+        <Camera className='w-25 h-25 sm:w-30 sm:h-30' />
+      </button>
       <button
         className={`${baseButtonClass}`}
         onClick={() => fileInputRef.current?.click()}>
-        <Image />
+        <Image className='w-25 h-25 sm:w-30 sm:h-30' />
       </button>
+      <input
+        ref={cameraInputRef}
+        type='file'
+        accept='image/'
+        className='hidden'
+        capture='environment'
+        onChange={handleFileChange}
+      />
       <input
         ref={fileInputRef}
         type='file'
@@ -201,32 +224,27 @@ const EditorMenuBar = ({editor, onImageUpload}: EditorMenuBarProps) => {
         className='hidden'
         multiple
         onChange={handleFileChange}
-      />
-
+      />{' '}
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
         className={`${activeMarks.bold ? 'bg-gray-1 rounded-[5px]' : ''} ${baseButtonClass}`}>
-        <BoldIcon />
+        <BoldIcon className='w-25 h-25 sm:w-30 sm:h-30' />
       </button>
-
       <button
         onClick={() => editor.chain().focus().toggleUnderline().run()}
         className={`${activeMarks.underline ? 'bg-gray-1 rounded-[5px]' : ''} ${baseButtonClass}`}>
-        <UnderlineIcon />
+        <UnderlineIcon className='w-25 h-25 sm:w-30 sm:h-30' />
       </button>
-
       <button
         onClick={() => editor.chain().focus().toggleItalic().run()}
         className={`${activeMarks.italic ? 'bg-gray-1 rounded-[5px]' : ''} ${baseButtonClass}`}>
-        <ItalicIcon />
+        <ItalicIcon className='w-25 h-25 sm:w-30 sm:h-30' />
       </button>
-
       <button
         onClick={() => editor.chain().focus().toggleStrike().run()}
         className={`${activeMarks.strike ? 'bg-gray-1 rounded-[5px]' : ''} ${baseButtonClass}`}>
-        <CrossIcon />
+        <CrossIcon className='w-17 h-17 sm:w-22 sm:h-22' />
       </button>
-
       {/* 텍스트 색상 선택기 */}
       <div className='relative flex items-center ' ref={colorPickerRef}>
         <button
@@ -234,37 +252,37 @@ const EditorMenuBar = ({editor, onImageUpload}: EditorMenuBarProps) => {
           className={` ${
             color ? 'bg-gray-1 rounded-[5px]' : ''
           } ${baseButtonClass}`}>
-          <ColorIcon />
+          <ColorIcon className='w-25 h-25 sm:w-30 sm:h-30' />
         </button>
 
         {showColorPicker && (
-          <div className='absolute z-20 top-full left-0 mt-1 bg-white p-2 rounded shadow-lg'>
+          <div className='absolute z-20 top-full left-0 mt-1 bg-white p-2 rounded shadow-lg '>
             <HexColorPicker
               color={tempColor || '#000000'}
               onChange={setTempColor}
+              style={{width: '140px', height: '140px'}}
             />
             <div className='flex justify-between mt-2 p-2'>
               <button
                 onClick={cancelColor}
-                className='px-20 py-1 border-[1px] border-gray-2 rounded hover:bg-gray-1'>
+                className='px-10 py-1 border-[1px] border-gray-2 rounded hover:bg-gray-1'>
                 취소
               </button>
               <button
                 onClick={applyColor}
-                className='px-20 py-1 bg-primary-2 text-white rounded hover:bg-primary'>
+                className='px-10 py-1 bg-primary-2 text-white rounded hover:bg-primary'>
                 확인
               </button>
             </div>
           </div>
         )}
       </div>
-
       {/* 하이라이트 색상 선택기 */}
       <div className='relative flex items-center' ref={highlightPickerRef}>
         <button
           onClick={() => setShowHighlightPicker((prev) => !prev)}
           className={`${isActiveHighlight ? 'bg-gray-1 rounded-[5px]' : ''} ${baseButtonClass}`}>
-          <BackgroundColorIcon />
+          <BackgroundColorIcon className='w-20 h-20 sm:w-25 sm:h-25' />
         </button>
 
         {showHighlightPicker && (
@@ -272,32 +290,31 @@ const EditorMenuBar = ({editor, onImageUpload}: EditorMenuBarProps) => {
             <HexColorPicker
               color={tempHighlightColor}
               onChange={setTempHighlightColor}
+              style={{width: '140px', height: '140px'}}
             />
             <div className='flex justify-between mt-2 p-2'>
               <button
                 onClick={cancelHighlight}
-                className='px-20 py-1 border-[1px] border-gray-2 rounded hover:bg-gray-1'>
+                className='px-10 py-1 border-[1px] border-gray-2 rounded hover:bg-gray-1'>
                 취소
               </button>
               <button
                 onClick={applyHighlight}
-                className='px-20 py-1 bg-primary-2 text-white rounded hover:bg-primary'>
+                className='px-10 py-1 bg-primary-2 text-white rounded hover:bg-primary'>
                 확인
               </button>
             </div>
           </div>
         )}
       </div>
-
       {/* 정렬 버튼들 */}
       <button
         onClick={() => editor.chain().focus().setTextAlign('left').run()}
         className={`${
           editor.isActive({textAlign: 'left'}) ? 'bg-gray-1 rounded-[5px]' : ''
         } ${baseButtonClass}`}>
-        <TextLeftIcon />
+        <TextLeftIcon className='w-25 h-25 sm:w-30 sm:h-30' />
       </button>
-
       <button
         onClick={() => editor.chain().focus().setTextAlign('center').run()}
         className={`${
@@ -305,24 +322,21 @@ const EditorMenuBar = ({editor, onImageUpload}: EditorMenuBarProps) => {
             ? 'bg-gray-1 rounded-[5px]'
             : ''
         } ${baseButtonClass}`}>
-        <TextCenterIcon />
+        <TextCenterIcon className='w-25 h-25 sm:w-30 sm:h-30' />
       </button>
-
       <button
         onClick={() => editor.chain().focus().setTextAlign('right').run()}
         className={`${
           editor.isActive({textAlign: 'right'}) ? 'bg-gray-1 rounded-[5px]' : ''
         } ${baseButtonClass}`}>
-        <TextRightIcon />
+        <TextRightIcon className='w-25 h-25 sm:w-30 sm:h-30' />
       </button>
-
       {/* 링크 */}
       <button
         onClick={addLink}
         className={`${hasLink ? 'bg-gray-1 rounded-[5px]' : ''} ${baseButtonClass}`}>
-        <LinkIcon />
+        <LinkIcon className='w-25 h-25 sm:w-30 sm:h-30' />
       </button>
-
       {/* 폰트 사이즈 선택기 */}
       <div className='relative inline-block' ref={fontSizePickerRef}>
         <button
@@ -334,7 +348,7 @@ const EditorMenuBar = ({editor, onImageUpload}: EditorMenuBarProps) => {
               ? 'bg-gray-1 rounded-[5px]'
               : ''
           }`}>
-          <TextSizeIcon />
+          <TextSizeIcon className='w-25 h-25 sm:w-30 sm:h-30' />
         </button>
 
         {showFontSizePicker && (
