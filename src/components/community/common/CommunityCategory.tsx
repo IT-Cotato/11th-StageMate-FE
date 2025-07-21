@@ -4,11 +4,13 @@
 
 interface CommunityCategoryProps {
   category: string;
+  isSelected?: boolean;
 }
 
-const CommunityCategory = ({category}: CommunityCategoryProps) => {
+const CommunityCategory = ({category, isSelected}: CommunityCategoryProps) => {
   return (
-    <div className='flex w-[93px] h-[36px] justify-center items-center rounded-[10px] border-[1px] border-[#7B4CFA] font-semibold bg-[#fff]'>
+    <div
+      className={`flex w-[93px] h-[36px] justify-center items-center rounded-[10px] border-[1px] border-[#7B4CFA] font-semibold bg-[#fff] ${isSelected ? 'bg-primary text-white' : ''}`}>
       {category}
     </div>
   );

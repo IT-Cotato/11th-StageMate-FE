@@ -62,3 +62,8 @@
 ::-webkit-scrollbar {
   display: none;
 }
+em {
+  font-style: normal;
+  transform: skew(-10deg);
+  display: inline-block;
+}
