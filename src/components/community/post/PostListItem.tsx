@@ -1,5 +1,6 @@
 import type {Post} from '@/types/community';
 import EmptyHeart from '@/assets/hearts/empty-heart.svg?react';
+import FullHeart from '@/assets/hearts/full-heart.svg?react';
 import Chat from '@/assets/community/community-chat.svg?react';
 
 interface PostListItemProps {
@@ -29,7 +30,11 @@ const PostListItem = ({post}: PostListItemProps) => {
 
         <div className='flex items-center justify-center gap-4 text-sm text-gray-500'>
           <span className='flex flex-col items-center gap-[3px]'>
-            <EmptyHeart className='w-[30px] h-[30px] text-secondary-50' />
+            {post.isLiked ? (
+              <FullHeart className='w-[30px] h-[30px] text-secondary-50' />
+            ) : (
+              <EmptyHeart className='w-[30px] h-[30px] text-secondary-50' />
+            )}
             <span className='text-black font-normal leading-[140%]'>
               {post.likeCount}
             </span>
