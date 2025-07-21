@@ -13,6 +13,8 @@ import CommunityMainLayout from './layout/CommunityMainLayout';
 import CommunityMainPage from './pages/community/CommunityMainPage';
 import CommunityContentLayout from './layout/CommunityContentLayout';
 import CommunityEditPage from './pages/community/CommunityEditPage';
+import MagazineListPage from './pages/community/MagazineListPage';
+import MagazineDetailPage from './pages/community/MagazineDetailPage';
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
           <Route path='/archive' element={<ArchivePage />} />
           <Route element={<CommunityMainLayout />}>
             <Route path='/community' element={<CommunityMainPage />} />
+            <Route path='/magazine' element={<MagazineListPage />} />
+            <Route path='/magazine/:id' element={<MagazineDetailPage />} />
           </Route>
           <Route path='/settings' element={<SettingsPage />} />
         </Route>
