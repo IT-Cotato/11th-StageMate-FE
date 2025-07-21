@@ -53,7 +53,7 @@ const FilteredPostList = () => {
         {/* 오른쪽: 게시글 작성 버튼 */}
         <button
           className='flex items-center gap-[8px]'
-          onClick={() => navigate(`/community/${category}/write`)}>
+          onClick={() => navigate(`/community/write`)}>
           <div className='w-[19px] h-[19px]'>
             <WritePost className='w-full h-full' />
           </div>
