@@ -14,7 +14,7 @@ import CommunityMainPage from './pages/community/CommunityMainPage';
 import FilteredPostList from './components/community/post/FilteredPostList';
 import CommunityContentLayout from './layout/CommunityContentLayout';
 import CommunityEditPage from './pages/community/CommunityEditPage';
-
+import ArchiveLayout from './layout/ArchiveLayout';
 
 function App() {
   return (
@@ -23,7 +23,10 @@ function App() {
         {/* NavigationBar가 필요한 페이지 */}
         <Route element={<MainLayout />}>
           <Route path='/' element={<MainPage />} />
-          <Route path='/archive' element={<ArchivePage />} />
+
+          <Route element={<ArchiveLayout />}>
+            <Route path='/archive' element={<ArchivePage />} />
+          </Route>
           <Route element={<CommunityMainLayout />}>
             <Route path='/community' element={<CommunityMainPage />} />
             <Route path='/community/:category' element={<FilteredPostList />} />
