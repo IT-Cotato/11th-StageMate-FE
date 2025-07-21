@@ -15,10 +15,17 @@ interface PostListProps {
   icon: React.ReactNode;
   title: string;
   posts: Post[];
+  onLoadMoreClick: () => void;
   variant?: PostListVariant;
 }
 
-const PostList = ({icon, title, posts, variant = 'daily'}: PostListProps) => {
+const PostList = ({
+  icon,
+  title,
+  posts,
+  onLoadMoreClick,
+  variant = 'daily',
+}: PostListProps) => {
   return (
     <div className='flex flex-col gap-10'>
       {/** title */}
@@ -46,7 +53,7 @@ const PostList = ({icon, title, posts, variant = 'daily'}: PostListProps) => {
         }
         return <PostItem key={post.id} post={post} />;
       })}
-      <LoadMoreButton />
+      <LoadMoreButton onClick={onLoadMoreClick} />
     </div>
   );
 };
