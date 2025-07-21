@@ -8,7 +8,7 @@ import {Outlet} from 'react-router-dom';
 
 const CommunityContentLayout = () => {
   return (
-    <div className='w-full min-h-screen flex justify-center overflow-x-hidden '>
+    <div className='w-full min-h-screen flex justify-center overflow-x-hidden'>
       <div className='relative w-full max-w-[600px] pb-[90px]'>
         <ContentHeader />
         <main>
