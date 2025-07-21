@@ -27,7 +27,7 @@ const CommunityEditPage = () => {
   };
 
   return (
-    <div>
+    <div className='w-full flex flex-col'>
       <div className='flex flex-row justify-between items-center px-20 py-12'>
         <div className='flex flex-row gap-10'>
           {['일상', '나눔 · 거래', '꿀팁'].map((category) => (
