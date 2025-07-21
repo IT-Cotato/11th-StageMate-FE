@@ -12,17 +12,17 @@ const PostListItem = ({post}: PostListItemProps) => {
     <article className='flex flex-col justify-center pb-8 border-b border-b-primary-5'>
       <div className='flex justify-between items-center px-16'>
         <div className='flex flex-col gap-6'>
-          <h2 className='text-2xl not-italic font-medium leading-[110%]'>
+          <h2 className='sm:text-2xl text-xl not-italic font-medium leading-[110%]'>
             {post.title}
           </h2>
           <div className='flex items-start gap-10'>
-            <span className='text-gray-2 text-[15px] font-light leading-[140%]'>
+            <span className='text-gray-2 sm:text-[15px] text-xs font-light leading-[140%]'>
               {post.nickname}
             </span>
-            <time className='text-gray-2 text-[15px] font-light leading-[140%]'>
+            <time className='text-gray-2 sm:text-[15px] text-xs font-light leading-[140%]'>
               {post.date}
             </time>
-            <span className='text-gray-2 text-[15px] font-light leading-[140%]'>
+            <span className='text-gray-2 sm:text-[15px] text-xs font-light leading-[140%]'>
               {post.viewCount}
             </span>
           </div>
