@@ -3,11 +3,18 @@ import PlayTag from './PlayTag';
 import RecommendedPlayList from './RecommendedPlayList';
 import {mockRecommendedPlays} from '@/mocks/mockRecommendedPlays';
 
+const categories = [
+  [
+    {id: 0, category: '창작 뮤지컬'},
+    {id: 1, category: '오리지널/내한 뮤지컬'},
+  ],
+  [
+    {id: 5, category: '리미티드 런'},
+    {id: 4, category: '아동/가족 뮤지컬'},
+  ],
+] as const;
+
 const RecommendedPlay = () => {
-  const categories = [
-    ['창작 뮤지컬', '오리지널/내한 뮤지컬'],
-    ['리미티드 런', '아동/가족 뮤지컬'],
-  ];
   return (
     <div className='flex flex-col w-full bg-white rounded-[20px] pt-[30px] pl-[22px] pb-[20px] gap-20'>
       <div className='w-full flex justify-between items-center'>
@@ -20,11 +27,15 @@ const RecommendedPlay = () => {
 
       {categories.map((row, index) => (
         <div key={index} className='flex flex-col gap-19'>
-          <PlayTag categories={row} />
+          <div className='flex h-50 gap-10 overflow-x-auto scrollbar-hide'>
+            {row.map((tag) => (
+              <PlayTag key={tag.id} text={tag.category} />
+            ))}
+          </div>
           <RecommendedPlayList
             plays={[
-              ...mockRecommendedPlays[row[0]],
-              ...mockRecommendedPlays[row[1]],
+              ...mockRecommendedPlays[row[0].category],
+              ...mockRecommendedPlays[row[1].category],
             ]}
           />
         </div>

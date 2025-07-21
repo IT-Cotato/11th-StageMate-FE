@@ -6,18 +6,12 @@
  */
 
 interface PlayTagProps {
-  categories: string[];
+  text: string;
 }
-const PlayTag = ({categories}: PlayTagProps) => {
+const PlayTag = ({text}: PlayTagProps) => {
   return (
-    <div className='flex h-50 gap-10 overflow-x-auto scrollbar-hide'>
-      {categories.map((category, index) => (
-        <div
-          key={index}
-          className='h-44 rounded-[10px] bg-primary-4 text-[20px] text-white font-normal whitespace-nowrap px-[21px] py-8 flex items-center'>
-          # {category}
-        </div>
-      ))}
+    <div className='h-38 rounded-[10px] bg-primary-4 text-[20px] text-white font-normal whitespace-nowrap px-[21px] py-8 flex items-center'>
+      # {text}
     </div>
   );
 };
