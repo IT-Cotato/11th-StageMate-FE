@@ -5,11 +5,15 @@
 import ContentHeader from '@/components/community/content/ContentHeader';
 import ContentFooterBar from '@/components/community/content/ContentFooterBar';
 import {Outlet} from 'react-router-dom';
+import useModalStore from '@/stores/useModalStore';
+import CameraUnavailableModal from '@/components/modal/CameraUnavailableModal';
 
 const CommunityContentLayout = () => {
+  const {showCameraModal, setShowCameraModal} = useModalStore();
+
   return (
     <div className='w-full min-h-screen flex justify-center overflow-x-hidden '>
-      <div className='w-full max-w-[600px] pb-[90px]'>
+      <div className='relative w-full max-w-[600px] pb-[90px]'>
         <ContentHeader />
         <main>
           <Outlet />
@@ -17,6 +21,9 @@ const CommunityContentLayout = () => {
         <footer className='w-full max-w-[600px] fixed bottom-0 left-1/2 -translate-x-1/2'>
           <ContentFooterBar />
         </footer>
+        {showCameraModal && (
+          <CameraUnavailableModal onClose={() => setShowCameraModal(false)} />
+        )}
       </div>
     </div>
   );
