@@ -1,6 +1,9 @@
 import ChevronLeft from '@/assets/chevrons/chevron-left.svg?react';
 import WritePost from '@/assets/nav-icons/write-post.svg?react';
 import {useNavigate, useParams} from 'react-router-dom';
+import PostListItem from './PostListItem';
+import {mockPosts} from '@/mocks/mockPosts';
+import {useMemo} from 'react';
 
 const CATEGORY_MAP = {
   tip: '꿀팁',
@@ -13,15 +16,24 @@ const FilteredPostList = () => {
   const {category} = useParams<{category?: keyof typeof CATEGORY_MAP}>();
   const navigate = useNavigate();
 
-  // category 유효성 체크
-  if (!category || !(category in CATEGORY_MAP)) {
+  const categoryLabel =
+    category && category in CATEGORY_MAP ? CATEGORY_MAP[category] : null;
+
+  const filteredPosts = useMemo(
+    () =>
+      categoryLabel
+        ? mockPosts.filter((post) => post.category === categoryLabel)
+        : [],
+    [categoryLabel]
+  );
+
+  // 카테고리가 잘못된 경우
+  if (!categoryLabel) {
     return <div className='p-4 font-semibold'>잘못된 경로입니다.</div>;
   }
 
-  const categoryLabel = CATEGORY_MAP[category];
-
   return (
-    <div className='pb-[20px]'>
+    <div>
       {/* 상단바 */}
       <div className='flex justify-between items-center'>
         {/* 왼쪽: 뒤로가기 버튼 + 카테고리명 */}
@@ -49,7 +61,12 @@ const FilteredPostList = () => {
         </button>
       </div>
 
-      {/* TODO: 게시글 리스트 들어갈 자리 */}
+      {/* 게시글 리스트 */}
+      <div className='flex flex-col mt-[22px] gap-[19px]'>
+        {filteredPosts.map((post) => (
+          <PostListItem key={post.id} post={post} />
+        ))}
+      </div>
     </div>
   );
 };
