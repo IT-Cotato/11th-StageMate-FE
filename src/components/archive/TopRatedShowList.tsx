@@ -4,10 +4,10 @@ import Star from '@/assets/archive/archive-star.svg?react';
 const TopRatedShowList = () => {
   return (
     <div className='flex items-center justify-center'>
-      <ul className='flex flex-row gap-50'>
+      <ul className='flex flex-row sm:gap-50 gap-25'>
         {topRatedPerformances.map((performance, index) => (
           <li key={performance.id} className='relative  gap-4 flex-col'>
-            <div className='bg-gray-1 w-[138px] h-[180px]  items-center flex justify-center'>
+            <div className='bg-gray-1 sm:w-[138px] sm:h-[180px] w-100 h-120 items-center flex justify-center'>
               <span className='absolute top-4 left-9 text-xl font-medium text-primary'>
                 {index + 1}
               </span>
