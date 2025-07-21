@@ -15,7 +15,7 @@ import {HexColorPicker} from 'react-colorful';
 import {Editor} from '@tiptap/react';
 
 import {useEffect, useRef, useState} from 'react';
-import useModalStore from '@/stores/useModalStore';
+import CameraUnavailableModal from '@/components/modal/CameraUnavailableModal';
 
 interface EditorMenuBarProps {
   editor: Editor;
@@ -30,7 +30,7 @@ const EditorMenuBar = ({editor, onImageUpload}: EditorMenuBarProps) => {
     strike: false,
     highlight: false,
   });
-  const setShowCameraModal = useModalStore((state) => state.setShowCameraModal);
+  const [showCameraModal, setShowCameraModal] = useState(false);
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const cameraInputRef = useRef<HTMLInputElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -224,7 +224,10 @@ const EditorMenuBar = ({editor, onImageUpload}: EditorMenuBarProps) => {
         className='hidden'
         multiple
         onChange={handleFileChange}
-      />{' '}
+      />
+      {showCameraModal && (
+        <CameraUnavailableModal onClose={() => setShowCameraModal(false)} />
+      )}
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
         className={`${activeMarks.bold ? 'bg-gray-1 rounded-[5px]' : ''} ${baseButtonClass}`}>
