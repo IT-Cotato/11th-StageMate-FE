@@ -111,7 +111,7 @@ const MagazineDetailPage = () => {
         <ul ref={listWrapperRef} className='w-full overflow-x-auto'>
           <div className='flex w-fit p-10 gap-20'>
             {mockSubMagazinePosts.map((sub) => (
-              <SubMagazine magazine={sub} />
+              <SubMagazine key={sub.id} magazine={sub} />
             ))}
           </div>
         </ul>
