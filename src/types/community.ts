@@ -13,6 +13,15 @@ export interface Magazine {
   isBookmarked: boolean;
 }
 
+export interface MagazinePostType {
+  id: number;
+  tag: string;
+  isMarked: boolean;
+  imgUrl: string | null;
+  title: string;
+  subTitle: string;
+}
+
 export interface Post {
   id: number;
   category: string;
