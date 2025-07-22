@@ -22,6 +22,14 @@ export interface MagazinePostType {
   subTitle: string;
 }
 
+export interface SubMagazinePostType {
+  id: number;
+  tag: string;
+  isMarked: boolean;
+  imgUrl: string | null;
+  title: string;
+}
+
 export interface Post {
   id: number;
   category: string;
