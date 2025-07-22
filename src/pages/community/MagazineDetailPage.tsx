@@ -6,9 +6,13 @@ import FullHeart from '@/assets/hearts/full-heart.svg?react';
 import BookMark from '@/assets/community/bookmark.svg?react';
 import Share from '@/assets/community/share.svg?react';
 import PlayTag from '@/components/main/PlayTag';
+import {mockSubMagazinePosts} from '@/mocks/mockSubMagazinePosts';
+import SubMagazine from '@/components/community/magazine/SubMagazine';
+import {useHorizontalScroll} from '@/hooks/useHorizontalScroll';
 
 const MagazineDetailPage = () => {
   const {magazineId} = useParams<{magazineId?: string}>();
+  const listWrapperRef = useHorizontalScroll();
 
   // todo : 매거진 디테일 api 연결
   const data = mockMagazineDetail.find(
@@ -100,7 +104,18 @@ const MagazineDetailPage = () => {
       </div>
 
       {/* 추천 매거진 */}
-      <div className='mt-10 rounded-[20px] bg-white'>df</div>
+      <div className='mt-10 rounded-[20px] bg-white flex flex-col px-5 py-18 gap-10'>
+        <h1 className='p-10 text-black font-roboto text-2xl font-bold leading-[110%]'>
+          추천 매거진
+        </h1>
+        <ul ref={listWrapperRef} className='w-full overflow-x-auto'>
+          <div className='flex w-fit p-10 gap-20'>
+            {mockSubMagazinePosts.map((sub) => (
+              <SubMagazine magazine={sub} />
+            ))}
+          </div>
+        </ul>
+      </div>
     </div>
   );
 };
