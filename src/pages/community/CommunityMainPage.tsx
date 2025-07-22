@@ -15,7 +15,6 @@ const CommunityMainPage = () => {
         icon={<Rocket />}
         title='HOT 게시물'
         posts={mockPosts}
-        onLoadMoreClick={() => console.log('핫 게시물 더보기 버튼 클릭시 동작')}
         variant='hot'
       />
 
@@ -30,9 +29,6 @@ const CommunityMainPage = () => {
         icon={<MusicalNote />}
         title='일상 게시물'
         posts={mockPosts.filter((post) => post.category === '일상')}
-        onLoadMoreClick={() =>
-          console.log('일상 게시물 더보기 버튼 클릭시 동작')
-        }
         variant='daily'
       />
 
@@ -41,9 +37,6 @@ const CommunityMainPage = () => {
         icon={<School />}
         title='꿀팁 게시물'
         posts={mockPosts.filter((post) => post.category === '꿀팁')}
-        onLoadMoreClick={() =>
-          console.log('꿀팁 게시물 더보기 버튼 클릭시 동작')
-        }
         variant='tip'
       />
 
