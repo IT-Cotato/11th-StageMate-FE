@@ -33,7 +33,7 @@ const PostListItem = ({post}: PostListItemProps) => {
             {post.isLiked ? (
               <FullHeart className='w-[30px] h-[30px] text-secondary-50' />
             ) : (
-              <EmptyHeart className='w-[30px] h-[30px] text-secondary-50' />
+              <EmptyHeart className='w-[30px] h-[30px] text-secondary-50 stroke-secondary' />
             )}
             <span className='text-black font-normal leading-[140%]'>
               {post.likeCount}

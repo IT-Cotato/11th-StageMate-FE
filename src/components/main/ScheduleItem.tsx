@@ -2,8 +2,8 @@
  * 스케줄 리스트의 단일 항목을 렌더링하는 컴포넌트
  * - 카테고리, 제목, 좋아요 버튼 포함
  */
-import EmptyHeart from '@/assets/hearts/empty-heart.svg';
-import FullHeart from '@/assets/hearts/full-heart.svg';
+import EmptyHeart from '@/assets/hearts/empty-heart.svg?react';
+import FullHeart from '@/assets/hearts/full-heart.svg?react';
 
 interface ScheduleItemProps {
   title: string;
@@ -31,7 +31,7 @@ const ScheduleItem = ({
       </div>
       {/* 오른쪽: 하트 */}
       <button onClick={onLikeClick}>
-        <img src={isLike ? FullHeart : EmptyHeart} alt='heart' />
+        {isLike ? <FullHeart /> : <EmptyHeart className='stroke-secondary' />}
       </button>
     </div>
   );
