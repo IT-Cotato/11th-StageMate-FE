@@ -62,7 +62,7 @@ const MagazineDetailPage = () => {
                   {data.isHearted ? (
                     <FullHeart className='w-27 h-27 aspect-square' />
                   ) : (
-                    <EmptyHeart className='w-27 h-27 aspect-square' />
+                    <EmptyHeart className='w-27 h-27 aspect-square stroke-2 stroke-black' />
                   )}
                   <p className='text-[#000] text-center font-roboto text-sm font-medium leading-[110%]'>
                     {data.heartCount}
