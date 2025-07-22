@@ -1,6 +1,7 @@
 import ChevronLeft from '@/assets/chevrons/chevron-left.svg?react';
 import MainMagazine from '@/components/community/magazine/MainMagazine';
 import {MagazineOrder} from '@/constant';
+import {mockMagazinePosts} from '@/mocks/mockMagazinePosts';
 import {useState} from 'react';
 
 const MagazinePage = () => {
@@ -48,8 +49,10 @@ const MagazinePage = () => {
       </div>
 
       {/* 리스트 */}
-      <div className='px-18 py-25'>
-        <MainMagazine />
+      <div className='px-18 py-25 grid grid-cols-2 justify-items-center items-center gap-y-20'>
+        {mockMagazinePosts.map((post) => (
+          <MainMagazine key={post.id} magazine={post} />
+        ))}
       </div>
 
       {/* 페이지네이션 */}
