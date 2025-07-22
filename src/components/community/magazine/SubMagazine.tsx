@@ -3,11 +3,11 @@ import type {SubMagazinePostType} from '@/types/community';
 import {useNavigate} from 'react-router-dom';
 import BookMark from '@/assets/community/bookmark.svg?react';
 
-interface SubMagazine {
+interface SubMagazineProps {
   magazine: SubMagazinePostType;
 }
 
-const SubMagazine = ({magazine}: SubMagazine) => {
+const SubMagazine = ({magazine}: SubMagazineProps) => {
   const navigate = useNavigate();
 
   return (

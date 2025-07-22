@@ -3,11 +3,11 @@ import PlayTag from '@/components/main/PlayTag';
 import type {MagazinePostType} from '@/types/community';
 import {useNavigate} from 'react-router-dom';
 
-interface MainMagazine {
+interface MainMagazineProps {
   magazine: MagazinePostType;
 }
 
-const MainMagazine = ({magazine}: MainMagazine) => {
+const MainMagazine = ({magazine}: MainMagazineProps) => {
   const navigate = useNavigate();
 
   return (
