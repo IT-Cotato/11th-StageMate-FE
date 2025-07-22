@@ -8,7 +8,7 @@ interface MainMagazine {
 
 const MainMagazine = ({magazine}: MainMagazine) => {
   return (
-    <div className='flex w-272 flex-col items-start gap-12'>
+    <div className='flex w-[95%] flex-col items-start gap-12'>
       {/* 매거진 이미지 */}
       <div
         className='flex flex-col w-full h-378 justify-start items-center gap-10 px-16 py-13 bg-[#DDE1E6] rounded-[10px] bg-no-repeat bg-center bg-cover'
@@ -17,7 +17,7 @@ const MainMagazine = ({magazine}: MainMagazine) => {
         }>
         <div className='flex w-full justify-between items-center'>
           <PlayTag text={magazine.tag} />
-          <BookMark className={`${magazine.isMarked && 'text-secondary-50'}`} />
+          <BookMark className={`${magazine.isMarked && 'text-secondary'}`} />
         </div>
       </div>
 
