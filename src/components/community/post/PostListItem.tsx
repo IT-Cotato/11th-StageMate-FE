@@ -1,3 +1,4 @@
+// 게시글 목록 아이템 컴포넌트
 import type {Post} from '@/types/community';
 import EmptyHeart from '@/assets/hearts/empty-heart.svg?react';
 import FullHeart from '@/assets/hearts/full-heart.svg?react';
