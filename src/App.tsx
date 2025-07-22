@@ -12,9 +12,10 @@ import SignupCompletePage from './pages/auth/SignupCompletePage';
 import CommunityMainLayout from './layout/CommunityMainLayout';
 import CommunityMainPage from './pages/community/CommunityMainPage';
 import FilteredPostList from './components/community/post/FilteredPostList';
-import CommunityContentLayout from './layout/CommunityContentLayout';
 import CommunityEditPage from './pages/community/CommunityEditPage';
 import ArchiveLayout from './layout/ArchiveLayout';
+import CommunityHeaderOnlyLayout from './layout/CommunityHeaderOnlyLayout';
+
 
 function App() {
   return (
@@ -39,7 +40,7 @@ function App() {
         <Route path='/login' element={<LoginPage />} />
         <Route path='/signup-condition' element={<SignupConditionPage />} />
         <Route path='/signup-complete' element={<SignupCompletePage />} />
-        <Route element={<CommunityContentLayout />}>
+        <Route element={<CommunityHeaderOnlyLayout />}>
           <Route path='/community/write' element={<CommunityEditPage />} />
         </Route>
       </Routes>

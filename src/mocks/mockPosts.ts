@@ -12,6 +12,7 @@ export const mockPosts: Post[] = [
     nickname: '무대위의밤비',
     date: '25.06.28',
     isScrapped: true,
+    bookmarkCount: 10,
   },
   {
     id: 2,
@@ -24,6 +25,7 @@ export const mockPosts: Post[] = [
     nickname: '티켓팅의신',
     date: '25.06.27',
     isScrapped: true,
+    bookmarkCount: 5,
   },
   {
     id: 3,
@@ -36,6 +38,7 @@ export const mockPosts: Post[] = [
     nickname: '공연러버',
     date: '25.06.29',
     isScrapped: true,
+    bookmarkCount: 3,
   },
   {
     id: 4,
@@ -48,6 +51,7 @@ export const mockPosts: Post[] = [
     nickname: '티켓나눔천사',
     date: '25.06.28',
     isScrapped: false,
+    bookmarkCount: 8,
   },
   {
     id: 5,
@@ -60,5 +64,6 @@ export const mockPosts: Post[] = [
     nickname: '주차의달인',
     date: '25.06.26',
     isScrapped: true,
+    bookmarkCount: 12,
   },
 ];

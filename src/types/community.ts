@@ -24,6 +24,7 @@ export interface Post {
   nickname: string;
   date: string;
   isScrapped: boolean;
+  bookmarkCount: number;
 }
 
 export interface SharePost {
