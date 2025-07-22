@@ -17,7 +17,7 @@ const MagazinePage = () => {
   return (
     <div className='relative'>
       {/* 정렬 선택 */}
-      <div className='flex flex-col justify-start items-end absolute top-0 right-15'>
+      <div className='flex flex-col justify-start items-end absolute top-[-20px] right-15'>
         <div className='flex flex-col items-start w-93 gap-1'>
           <div
             onClick={() => setIsOrderOpen((prev) => !prev)}
