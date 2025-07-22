@@ -10,7 +10,7 @@ interface PlayTagProps {
 }
 const PlayTag = ({text}: PlayTagProps) => {
   return (
-    <div className='h-38 rounded-[10px] bg-primary-4 text-[20px] text-white font-normal whitespace-nowrap px-[21px] py-8 flex items-center'>
+    <div className='h-38 w-fit rounded-[10px] bg-primary-4 text-[20px] text-white font-normal whitespace-nowrap px-[21px] py-8 flex items-center'>
       # {text}
     </div>
   );
