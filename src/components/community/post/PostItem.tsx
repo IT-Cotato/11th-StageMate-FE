@@ -21,7 +21,7 @@ const PostItem = ({post}: PostItemProps) => {
           {post.isLiked ? (
             <FullHeart width={25} height={25} />
           ) : (
-            <EmptyHeart width={25} height={25} />
+            <EmptyHeart className='stroke-secondary' width={25} height={25} />
           )}
         </button>
         <span>{post.likeCount}</span>
