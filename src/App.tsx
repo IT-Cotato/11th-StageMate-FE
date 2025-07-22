@@ -14,6 +14,8 @@ import CommunityMainPage from './pages/community/CommunityMainPage';
 import FilteredPostList from './components/community/post/FilteredPostList';
 import CommunityEditPage from './pages/community/CommunityEditPage';
 import CommunityHeaderOnlyLayout from './layout/CommunityHeaderOnlyLayout';
+import CommunityPostPage from './pages/community/CommunityPostPage';
+import CommunityContentLayout from './layout/CommunityContentLayout';
 
 function App() {
   return (
@@ -37,6 +39,12 @@ function App() {
         <Route path='/signup-complete' element={<SignupCompletePage />} />
         <Route element={<CommunityHeaderOnlyLayout />}>
           <Route path='/community/write' element={<CommunityEditPage />} />
+        </Route>
+        <Route element={<CommunityContentLayout />}>
+          <Route
+            path='/community/post/:postId'
+            element={<CommunityPostPage />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>
