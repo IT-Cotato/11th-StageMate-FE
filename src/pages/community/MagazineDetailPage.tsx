@@ -31,15 +31,15 @@ const MagazineDetailPage = () => {
   if (!data) return <div>존재하지 않는 매거진입니다.</div>;
 
   return (
-    <div className='bg-black'>
-      <div className='bg-white'>
+    <div className='bg-black h-full'>
+      <div className='rounded-b-2xl bg-white'>
         {/* 헤더 */}
         <ContentHeader />
 
         {/* 매거진 내용 */}
-        <div className='rounded-b-[20px] mt-10 px-15 py-21 flex flex-col gap-20'>
+        <div className='mt-10 px-15 py-21 flex flex-col gap-20'>
           {/* 포스터 */}
-          <img src={data.imgUrl ?? undefined} alt={data.title ?? undefined} />
+          {data.imgUrl && <img src={data.imgUrl} alt={data.title} />}
 
           {/* 매거진 컨텐츠 헤더 */}
           <div className='flex justify-between'>
@@ -100,7 +100,7 @@ const MagazineDetailPage = () => {
       </div>
 
       {/* 추천 매거진 */}
-      <div></div>
+      <div className='mt-10 rounded-[20px] bg-white'>df</div>
     </div>
   );
 };
