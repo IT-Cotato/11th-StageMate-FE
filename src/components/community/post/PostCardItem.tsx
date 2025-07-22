@@ -25,7 +25,7 @@ const PostCardItem = ({
 }: PostCardItemProps) => {
   return (
     <li className='flex flex-col'>
-      <div className='relative w-[204px] h-[209px] bg-gray-1 rounded-[7px]'>
+      <div className='relative sm:w-[204px] sm:h-[209px] w-150 h-150 bg-gray-1 rounded-[7px]'>
         <BookMark
           className={`absolute top-9 right-9 ${isBookmarked ? 'text-secondary-50' : ''}`}
         />
@@ -47,10 +47,14 @@ const PostCardItem = ({
                 : `${price.toLocaleString()}원`}
           </div>
         ) : (
-          subtitle && <h2 className='font-semibold text-[18px]'>{subtitle}</h2>
+          subtitle && (
+            <h2 className='font-semibold sm:text-[18px] text-xs'>{subtitle}</h2>
+          )
         )}
 
-        <h1 className='w-[204px] font-normal text-[22px] truncate'>{title}</h1>
+        <h1 className='sm:w-[204px] w-100 font-normal sm:text-[22px] text-sm truncate'>
+          {title}
+        </h1>
       </div>
     </li>
   );
