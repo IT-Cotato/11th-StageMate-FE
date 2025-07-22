@@ -188,7 +188,7 @@ const SignupFormPage = () => {
                 onChange={handleIdChange}
                 placeholder='아이디*'
                 className='focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-gray-3 text-2xl leading-[140%]
-              invalid:text-secondary-50'
+              invalid:text-secondary'
               />
               <StateButtonStroke
                 text={'중복확인'}
@@ -197,7 +197,7 @@ const SignupFormPage = () => {
               />
             </div>
             <h1
-              className={`self-stretch text-xl leading-[140%] ${isInvalid.id ? 'text-secondary-50' : 'text-[#3c3c3c]'}`}>
+              className={`self-stretch text-xl leading-[140%] ${isInvalid.id ? 'text-secondary' : 'text-[#3c3c3c]'}`}>
               {isInvalid.id
                 ? '잘못된 값입니다. 다시 입력하세요.'
                 : '(영문 소문자와 대문자를 조합하여 4~16자)'}
@@ -215,11 +215,11 @@ const SignupFormPage = () => {
                 onChange={handlePwChange}
                 placeholder='비밀번호*'
                 className='focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-gray-3 text-2xl leading-[140%]
-              invalid:text-secondary-50'
+              invalid:text-secondary'
               />
             </div>
             <h1
-              className={`self-stretch text-xl leading-[140%] ${isInvalid.pw ? 'text-secondary-50' : 'text-[#3c3c3c]'}`}>
+              className={`self-stretch text-xl leading-[140%] ${isInvalid.pw ? 'text-secondary' : 'text-[#3c3c3c]'}`}>
               {isInvalid.pw
                 ? '잘못된 값입니다. 다시 입력하세요.'
                 : '(문자, 숫자, 특수문자를 조합하여 8~16자)'}
@@ -237,7 +237,7 @@ const SignupFormPage = () => {
                 onChange={handlePwCheckChange}
                 placeholder='비밀번호 확인*'
                 className={`focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-gray-3 text-2xl leading-[140%]
-                ${isInvalid.pwCheck ? 'text-secondary-50' : `text-gray-3`}`}
+                ${isInvalid.pwCheck ? 'text-secondary' : `text-gray-3`}`}
               />
               {isInvalid.pwCheck === undefined ? (
                 <CheckDefault className='w-30 h-30 shrink-0 aspect-square' />
@@ -289,7 +289,7 @@ const SignupFormPage = () => {
                 onChange={handleEmailChange}
                 placeholder='이메일*'
                 className={`focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-2xl leading-[140%]
-              ${isInvalid.email ? 'invalid:text-secondary-50' : ' text-gray-3'}`}
+              ${isInvalid.email ? 'invalid:text-secondary' : ' text-gray-3'}`}
               />
             </div>
           </div>
@@ -322,7 +322,7 @@ const SignupFormPage = () => {
               onChange={handleYearChange}
               placeholder='생년월일/YYYY'
               className='w-0 focus:border-0 focus:outline-0 grow h-60 py-16 px-17 bg-gray-1 text-gray-3 text-2xl leading-[140%]
-              invalid:text-secondary-50'
+              invalid:text-secondary'
             />
 
             {/* MM */}
@@ -333,7 +333,7 @@ const SignupFormPage = () => {
               maxLength={2}
               placeholder='MM'
               className='w-0 focus:border-0 focus:outline-0 grow h-60 py-16 px-17 bg-gray-1 text-gray-3 text-2xl leading-[140%]
-              invalid:text-secondary-50'
+              invalid:text-secondary'
             />
 
             {/* DD */}
@@ -344,7 +344,7 @@ const SignupFormPage = () => {
               maxLength={2}
               placeholder='DD'
               className='w-0 focus:border-0 focus:outline-0 grow h-60 py-16 px-17 bg-gray-1 text-gray-3 text-2xl leading-[140%]
-              invalid:text-secondary-50'
+              invalid:text-secondary'
             />
           </div>
         </div>

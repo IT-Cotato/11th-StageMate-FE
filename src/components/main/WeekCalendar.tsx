@@ -96,7 +96,7 @@ const WeekCalendar = ({
             <div
               key={idx}
               className={`flex flex-col gap-[12px] cursor-pointer transition-colors
-                ${day.isSelected ? 'text-secondary-50' : 'text-gray-30'}`}
+                ${day.isSelected ? 'text-secondary' : 'text-gray-30'}`}
               onClick={() => handleDateClick(day.date)}>
               <span className='font-medium text-[32px]'>{day.day}</span>
               <span className='text-center font-normal text-[20px]'>

@@ -10,7 +10,7 @@ const CategoryBadge = ({text, variant = 'default'}: CategoryBadgeProps) => {
       style={{
         width: '62px',
         height: '40px',
-        backgroundColor: isEditor ? '#FFFFFF' : '#6449DD',
+        backgroundColor: isEditor ? '#FFFFFF' : '#836DE4',
         color: isEditor ? '#6449DD' : '#FFFFFF',
         fontWeight: 'bold',
         fontSize: '15px',
