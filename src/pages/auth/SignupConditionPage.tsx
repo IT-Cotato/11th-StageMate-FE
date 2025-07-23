@@ -1,4 +1,4 @@
-import BrandBadges from '@/components/auth/BrandBadges';
+import AuthBrandBadges from '@/components/auth/AuthBrandBadges';
 import ButtonFill from '@/components/global/ButtonFill';
 import ButtonStroke from '@/components/global/ButtonStroke';
 import PageHeader from '@/components/global/PageHeader';
@@ -141,12 +141,7 @@ const SignupConditionPage = () => {
           </div>
 
           {/* brands */}
-          <BrandBadges
-            onFacebookClick={() => console.log('facebook 버튼 클릭')}
-            onGoogleFuncClick={() => console.log('google 버튼 클릭')}
-            onTwitterFuncClick={() => console.log('twitter 버튼 클릭')}
-            onAppleFuncClick={() => console.log('apple 버튼 클릭')}
-          />
+          <AuthBrandBadges />
         </div>
       </div>
     </div>

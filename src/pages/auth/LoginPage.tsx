@@ -3,9 +3,9 @@ import PageHeader from '@/components/global/PageHeader';
 import MainLogo from '@/assets/logos/main-logo.svg?react';
 import ButtonStroke from '@/components/global/ButtonStroke';
 import ButtonFill from '@/components/global/ButtonFill';
-import BrandBadges from '@/components/auth/BrandBadges';
 import CustomCheckbox from '@/components/ui/checkbox/CustomCheckbox';
 import {useNavigate} from 'react-router-dom';
+import AuthBrandBadges from '@/components/auth/AuthBrandBadges';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -66,12 +66,7 @@ const LoginPage = () => {
         </div>
 
         {/* brands */}
-        <BrandBadges
-          onFacebookClick={() => console.log('facebook 버튼 클릭')}
-          onGoogleFuncClick={() => console.log('google 버튼 클릭')}
-          onTwitterFuncClick={() => console.log('twitter 버튼 클릭')}
-          onAppleFuncClick={() => console.log('apple 버튼 클릭')}
-        />
+        <AuthBrandBadges />
       </div>
     </div>
   );
