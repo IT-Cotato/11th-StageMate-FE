@@ -24,6 +24,7 @@ export interface Post {
   nickname: string;
   date: string;
   bookmarkCount: number;
+  imgUrls?: string[]; // 게시글 이미지 URL, 선택적
 }
 
 export interface SharePost {
