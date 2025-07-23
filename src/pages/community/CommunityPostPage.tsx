@@ -46,8 +46,11 @@ const CommunityPostPage = () => {
                   className='min-w-[220px] h-[220px] bg-gray-1 rounded-md shrink-0 flex items-center justify-center text-sm text-black'>
                   게시글 사진
                 </li>
-              ))}{' '}
+              ))}
       </ul>
+      <p className='font-normal text-[16px] leading-[110%] white-space: whitespace-pre-wrap break-words'>
+        {post.content}
+      </p>
     </div>
   );
 };
