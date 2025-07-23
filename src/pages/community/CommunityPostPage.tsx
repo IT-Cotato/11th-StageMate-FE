@@ -1,10 +1,11 @@
 // 커뮤니티 게시글 상세 페이지
 import {useParams} from 'react-router-dom';
 import {mockPosts} from '@/mocks/mockPosts';
+import {mockComments} from '@/mocks/mockComments';
 import {useHorizontalScroll} from '@/hooks/useHorizontalScroll';
 import CommunityCategory from '@/components/community/common/CommunityCategory';
 import PostHeaderInfo from '@/components/community/post/PostHeaderInfo';
-import EllipsisHorizontal from '@/assets/ellipsis/ellipsis-horizontal.svg?react';
+import EllipsisVertical from '@/assets/ellipsis/ellipsis-vertical.svg?react';
 
 const CommunityPostPage = () => {
   const {postId} = useParams();
@@ -19,7 +20,7 @@ const CommunityPostPage = () => {
     <div className='flex flex-col gap-[21px] pt-[13px] pb-[40px] px-[33px]'>
       <div className='flex justify-between items-center'>
         <CommunityCategory category={post.category} />
-        <EllipsisHorizontal className='w-[26px] h-[26px]' />
+        <EllipsisVertical className='w-[26px] h-[26px]' />
       </div>
 
       <PostHeaderInfo
