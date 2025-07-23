@@ -35,3 +35,18 @@ export interface SharePost {
   title: string;
   isBookmarked: boolean;
 }
+
+export interface Comment {
+  id: number;
+  nickname: string;
+  content: string;
+  createdAt: string;
+  replies: Reply[];
+}
+
+export interface Reply {
+  id: number;
+  nickname: string;
+  content: string;
+  createdAt: string;
+}
