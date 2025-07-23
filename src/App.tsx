@@ -42,7 +42,7 @@ function App() {
         </Route>
         <Route element={<CommunityContentLayout />}>
           <Route
-            path='/community/post/:postId'
+            path='/community/:category/:postId'
             element={<CommunityPostPage />}
           />
         </Route>
