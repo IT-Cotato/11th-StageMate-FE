@@ -226,7 +226,9 @@ const EditorMenuBar = ({editor, onImageUpload}: EditorMenuBarProps) => {
         onChange={handleFileChange}
       />
       {showCameraModal && (
-        <CameraUnavailableModal onClose={() => setShowCameraModal(false)} />
+        <div className='fixed inset-0 z-50 flex items-center justify-center'>
+          <CameraUnavailableModal onClose={() => setShowCameraModal(false)} />
+        </div>
       )}
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
