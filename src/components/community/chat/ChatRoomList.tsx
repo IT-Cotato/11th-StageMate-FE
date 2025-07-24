@@ -14,7 +14,9 @@ const ChatRoomList = () => {
       {mockChatRooms.map((room) => (
         <ChatRoomItem key={room.id} room={room} />
       ))}
-      <LoadMoreButton />
+      <LoadMoreButton
+        onClick={() => console.log('채팅방 리스트 페이지로 연결')}
+      />
     </div>
   );
 };

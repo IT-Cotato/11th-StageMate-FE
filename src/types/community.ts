@@ -13,6 +13,23 @@ export interface Magazine {
   isBookmarked: boolean;
 }
 
+export interface MagazinePostType {
+  id: number;
+  tag: string;
+  isMarked: boolean;
+  imgUrl: string | null;
+  title: string;
+  subTitle: string;
+}
+
+export interface SubMagazinePostType {
+  id: number;
+  tag: string;
+  isMarked: boolean;
+  imgUrl: string | null;
+  title: string;
+}
+
 export interface Post {
   id: number;
   category: string;
@@ -23,6 +40,7 @@ export interface Post {
   viewCount: number;
   nickname: string;
   date: string;
+  isScrapped: boolean;
   bookmarkCount: number;
   imgUrls?: string[]; // 게시글 이미지 URL, 선택적
   content?: string; // 게시글 내용, 선택적

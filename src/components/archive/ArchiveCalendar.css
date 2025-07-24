@@ -1,0 +1,46 @@
+.rbc-off-range {
+  color: inherit !important;
+  opacity: 1 !important;
+  background-color: transparent !important;
+}
+
+.rbc-day-bg,
+.rbc-header,
+.rbc-month-row,
+.rbc-month-view,
+.rbc-row,
+.rbc-date-cell,
+.rbc-date-cell > a {
+  border: none !important;
+  font-size: 18px;
+}
+.rbc-date-cell {
+  font-size: 18px;
+  text-align: center;
+}
+.rbc-off-range {
+  color: darkgray !important;
+  opacity: 1 !important;
+  background-color: transparent !important;
+}
+.rbc-date-cell a {
+  padding: 0 !important;
+  font-variant-numeric: normal !important;
+}
+.rbc-month-view,
+.rbc-row-content {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.rbc-off-range-bg {
+  background-color: transparent !important;
+}
+
+.rbc-row {
+  min-height: 80px;
+}
+.rbc-today {
+  background-color: transparent !important;
+  color: inherit !important;
+  border: none !important;
+}
