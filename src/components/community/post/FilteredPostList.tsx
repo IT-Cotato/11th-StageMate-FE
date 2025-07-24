@@ -1,3 +1,4 @@
+// 리스트에서 특정 카테고리의 게시글만 필터링하여 보여주는 컴포넌트
 import ChevronLeft from '@/assets/chevrons/chevron-left.svg?react';
 import WritePost from '@/assets/nav-icons/write-post.svg?react';
 import {useNavigate, useParams} from 'react-router-dom';
@@ -39,7 +40,7 @@ const FilteredPostList = () => {
         {/* 왼쪽: 뒤로가기 버튼 + 카테고리명 */}
         <div className='flex items-center'>
           <button
-            className='flex items-center justify-center'
+            className='flex items-center justify-center cursor-pointer'
             onClick={() => navigate(`/community`)}>
             <div className='w-[50px] h-[50px]'>
               <ChevronLeft className='w-full h-full' />
@@ -54,7 +55,7 @@ const FilteredPostList = () => {
         <button
           className='flex items-center gap-[8px]'
           onClick={() => navigate(`/community/write`)}>
-          <div className='w-[19px] h-[19px]'>
+          <div className='w-[19px] h-[19px] cursor-pointer'>
             <WritePost className='w-full h-full' />
           </div>
           <span className='font-bold text-xl leading-[140%]'>게시글 작성</span>

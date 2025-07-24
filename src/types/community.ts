@@ -42,6 +42,8 @@ export interface Post {
   date: string;
   isScrapped: boolean;
   bookmarkCount: number;
+  imgUrls?: string[]; // 게시글 이미지 URL, 선택적
+  content?: string; // 게시글 내용, 선택적
 }
 
 export interface SharePost {
@@ -50,4 +52,21 @@ export interface SharePost {
   price: number | '추첨 나눔'; // 0원인 경우 무료 나눔
   title: string;
   isBookmarked: boolean;
+}
+
+export interface Comment {
+  id: number;
+  nickname: string;
+  profileImgUrl?: string;
+  content: string;
+  createdAt: string;
+  replies: Reply[];
+}
+
+export interface Reply {
+  id: number;
+  nickname: string;
+  profileImgUrl?: string;
+  content: string;
+  createdAt: string;
 }
