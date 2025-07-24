@@ -11,7 +11,7 @@ const CommunityContentLayout = () => {
     <div className='w-full min-h-screen flex justify-center overflow-x-hidden'>
       <div className='relative w-full max-w-[600px] pb-[90px]'>
         <ContentHeader />
-        <main className='p-[16px]'>
+        <main className='px-[16px]'>
           <Outlet />
         </main>
         <footer className='w-full max-w-[600px] fixed bottom-0 left-1/2 -translate-x-1/2'>

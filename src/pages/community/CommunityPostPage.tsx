@@ -7,6 +7,7 @@ import PostHeaderInfo from '@/components/community/post/PostHeaderInfo';
 import EllipsisVertical from '@/assets/ellipsis/ellipsis-vertical.svg?react';
 import PostImageList from '@/components/community/post/PostImageList';
 import PostComment from '@/components/community/post/PostComment';
+import CommentInput from '@/components/community/post/CommentInput';
 
 const CommunityPostPage = () => {
   const {postId} = useParams();
@@ -18,7 +19,7 @@ const CommunityPostPage = () => {
   }
 
   return (
-    <div className='flex flex-col gap-[21px] pt-[13px] pb-[40px]'>
+    <div className='flex flex-col gap-[21px] pt-[13px] pb-[25px]'>
       <div className='flex flex-col gap-[21px] px-[17px]'>
         <div className='flex justify-between items-center '>
           <CommunityCategory category={post.category} />
@@ -41,6 +42,7 @@ const CommunityPostPage = () => {
       </div>
 
       <PostComment />
+      <CommentInput />
     </div>
   );
 };
