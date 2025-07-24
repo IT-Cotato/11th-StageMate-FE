@@ -39,6 +39,7 @@ export interface SharePost {
 export interface Comment {
   id: number;
   nickname: string;
+  profileImgUrl?: string;
   content: string;
   createdAt: string;
   replies: Reply[];
@@ -47,6 +48,7 @@ export interface Comment {
 export interface Reply {
   id: number;
   nickname: string;
+  profileImgUrl?: string;
   content: string;
   createdAt: string;
 }
