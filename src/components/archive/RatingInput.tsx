@@ -14,7 +14,7 @@ const RatingInput = ({rating, setRating}: RatingInputProps) => {
       rating === currentValue - 0.5
         ? currentValue
         : rating === currentValue
-          ? 0
+          ? currentValue - 1
           : currentValue - 0.5;
 
     setRating(nextRating);
