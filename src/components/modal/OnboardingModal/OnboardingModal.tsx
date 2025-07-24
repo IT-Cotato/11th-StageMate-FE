@@ -1,5 +1,7 @@
+import type {ReactNode} from 'react';
+
 interface OnboardingModalProps {
-  message: string;
+  message: ReactNode;
   imageSrc: string;
   onPrev?: () => void;
   onNext?: () => void;
