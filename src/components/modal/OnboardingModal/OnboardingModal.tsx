@@ -1,5 +1,5 @@
 interface OnboardingModalProps {
-  message: string;
+  message: React.ReactNode;
   imageSrc: string;
   onPrev?: () => void;
   onNext?: () => void;
