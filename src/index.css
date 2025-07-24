@@ -1,5 +1,69 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+@import 'tailwindcss';
+
+:root {
+  font-family: Pretendard;
+  background-color: #f5f5f5;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
 @theme {
   --spacing: 1px;
+
+  --font-roboto: 'Roboto', sans-serif;
+  --font-lato: 'Lato', sans-serif;
+
+  --color-gray-1: #dde1e6;
+  --color-gray-2: #918f9d;
+  --color-gray-3: #3c3c3c;
+  --color-white: #f5f5f5;
+  --color-alert: #ff6ec0;
+  --color-black: #0d062c;
+  --color-secondary: #a63ccc;
+  --color-secondary-2: #c933ff;
+  --color-secondary-3: #d666ff;
+  --color-secondary-4: #e499ff;
+  --color-secondary-5: #f1ccff;
+  --color-primary: #6449dd;
+  --color-primary-2: #836de4;
+  --color-primary-3: #a292eb;
+  --color-primary-4: #c1b6f2;
+  --color-primary-5: #e0dbf8;
+}
+
+@layer base {
+  :root {
+    --color-gray-1: #dde1e6;
+    --color-gray-2: #918f9d;
+    --color-gray-3: #3c3c3c;
+    --color-white: #f5f5f5;
+    --color-alert: #ff6ec0;
+    --color-black: #0d062c;
+    --color-secondary: #a63ccc;
+    --color-secondary-2: #c933ff;
+    --color-secondary-3: #d666ff;
+    --color-secondary-4: #e499ff;
+    --color-secondary-5: #f1ccff;
+    --color-primary: #6449dd;
+    --color-primary-2: #836de4;
+    --color-primary-3: #a292eb;
+    --color-primary-4: #c1b6f2;
+    --color-primary-5: #e0dbf8;
+  }
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+em {
+  font-style: normal;
+  transform: skew(-10deg);
+  display: inline-block;
 }
