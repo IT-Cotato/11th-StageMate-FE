@@ -7,14 +7,17 @@ import Settings from '@/assets/nav-icons/settings.svg?react';
 const MainNavigationBar = () => {
   const location = useLocation();
   const currentPath = location.pathname;
-
+  const isActive = (path: string) => {
+    if (path === '/') return currentPath === '/';
+    return currentPath.startsWith(path);
+  };
   const getLinkClass = (path: string) =>
     `w-[150px] sm:h-[60px] h-[45px] flex items-center justify-center ${
-      currentPath === path ? 'bg-white' : ''
+      isActive(path) ? 'bg-white' : ''
     }`;
 
   const getIconClass = (path: string) =>
-    currentPath === path ? 'text-primary' : 'text-[#918F9D]';
+    isActive(path) ? 'text-primary' : 'text-[#918F9D]';
 
   return (
     <div className='w-full max-w-full sm:h-[60px] h-[45px] flex flex-row items-center bg-black'>
