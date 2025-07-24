@@ -13,7 +13,6 @@ const PostListItem = ({post}: PostListItemProps) => {
   return (
     <article className='flex flex-col justify-center pb-8 border-b border-b-primary-5'>
       <div className='flex justify-between items-center px-16'>
-
         {/* 왼쪽: 제목 + 작성자 + 날짜 + 조회수 */}
         <PostHeaderInfo
           title={post.title}
@@ -22,9 +21,6 @@ const PostListItem = ({post}: PostListItemProps) => {
           viewCount={post.viewCount}
           variant='list'
         />
-
-        </div>
-</article>
 
         {/* 오른쪽: 좋아요 + 댓글 */}
         <div className='flex items-center justify-center gap-4 text-sm text-gray-500'>
