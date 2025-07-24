@@ -84,7 +84,7 @@ const TicketAddModal = ({
             className='hidden'
             capture='environment'
             ref={cameraInputRef}
-            onChange={handleCameraClick}
+            onChange={handleFileChange}
           />
         </div>
       </div>
