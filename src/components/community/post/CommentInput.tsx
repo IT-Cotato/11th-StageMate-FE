@@ -4,10 +4,24 @@ import Send from '@/assets/community/send.svg?react';
 const CommentInput = () => {
   const [comment, setComment] = useState('');
 
-  const handleSubmit = () => {
-    if (!comment.trim()) return;
-    // TODO: 댓글 등록 API 연결
-    setComment('');
+  const handleSubmit = async () => {
+    const trimmed = comment.trim();
+    if (!trimmed) return;
+
+    try {
+      // TODO: 댓글 등록 API 연결
+      console.log('댓글 등록:', trimmed);
+      setComment('');
+    } catch (error) {
+      console.error('댓글 등록 실패:', error);
+      // TODO: 사용자에게 알림 처리
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSubmit();
+    }
   };
 
   return (
@@ -24,11 +38,17 @@ const CommentInput = () => {
           placeholder='댓글을 입력하세요.'
           value={comment}
           onChange={(e) => setComment(e.target.value)}
-          className='font-normal text-[16px] leading-[110%] text-gray-2'
+          onKeyDown={handleKeyDown}
+          className='w-full text-base text-gray-2 outline-none'
         />
       </div>
 
-      <Send onClick={handleSubmit} className='inline-block mr-1' />
+      <Send
+        onClick={handleSubmit}
+        className='inline-block cursor-pointer'
+        role='button'
+        aria-label='댓글 등록'
+      />
     </div>
   );
 };
