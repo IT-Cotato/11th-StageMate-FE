@@ -18,7 +18,7 @@ const SearchBox = ({variant = 'main'}: SearchBoxProps) => {
     },
     community: {
       wrapper:
-        'w-full max-w-[325px] h-[52px] bg-white flex flex-row items-center rounded-[3px] px-[17px]',
+        'w-full max-w-[325px] h-[52px] flex flex-row items-center rounded-[3px] px-[17px]',
       input: 'w-full flex-1 focus:outline-none text-[16px] px-20 text-gray',
     },
   };

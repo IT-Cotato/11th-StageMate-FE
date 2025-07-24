@@ -20,8 +20,15 @@ const LoggedInHeader = ({username}: LoggedInHeaderProps) => {
 
       <div className='w-full flex flex-row justify-between items-start'>
         <div className='flex flex-col'>
-          <MainButton text='마이페이지' />
-          <MainButton text='커뮤니티' />
+          {/* todo : fix -> MainButton의 onClick 작성  */}
+          <MainButton
+            text='마이페이지'
+            onClick={() => console.log('todo : fix')}
+          />
+          <MainButton
+            text='커뮤니티'
+            onClick={() => console.log('todo : fix')}
+          />
         </div>
         {/** 목업용 임시 포스터 */}
         <div className='flex flex-row gap-10'>
