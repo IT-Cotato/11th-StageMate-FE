@@ -34,6 +34,7 @@ const CommunityPostPage = () => {
           variant='detail'
         />
         <PostImageList
+          imgUrls={post.imgUrls}
           wrapperRef={listWrapperRef as React.RefObject<HTMLUListElement>}
         />
         <p className='font-normal text-[16px] leading-[110%] white-space: whitespace-pre-wrap break-words '>

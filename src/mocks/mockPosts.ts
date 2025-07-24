@@ -11,7 +11,6 @@ export const mockPosts: Post[] = [
     viewCount: 458,
     nickname: '무대위의밤비',
     date: '25.06.28',
-    isScrapped: true,
     bookmarkCount: 10,
     content: `안녕하세요!! 방금 <웃는 남자> 막공 보고 온 따끈따끈 관극러입니다ㅠㅠ\n
 오늘 커튼콜 진짜 레전드였어요...\n
@@ -22,6 +21,13 @@ export const mockPosts: Post[] = [
 진짜 오늘 거 커튼콜 찍은 분 계신가요?\n
 저는 너무 떨려서 손 떨려서 망했어요 ㅋㅋㅋ 공유 가능하시면 댓글 부탁드립니다!!!\n
 참고로 전 아직도 현실 복귀 못 함...`,
+    imgUrls: [
+      'https://placehold.co/220x220?text=post_image1&fontsize=16',
+      'https://placehold.co/220x220?text=post_image2&fontsize=16',
+      'https://placehold.co/220x220?text=post_image3&fontsize=16',
+      'https://placehold.co/220x220?text=post_image4&fontsize=16',
+    ],
+    isScrapped: false,
   },
   {
     id: 2,
@@ -33,8 +39,13 @@ export const mockPosts: Post[] = [
     viewCount: 458,
     nickname: '티켓팅의신',
     date: '25.06.27',
-    isScrapped: true,
     bookmarkCount: 5,
+    imgUrls: [
+      'https://placehold.co/220x220?text=post_image1&fontsize=16',
+      'https://placehold.co/220x220?text=post_image2&fontsize=16',
+      'https://placehold.co/220x220?text=post_image3&fontsize=16',
+    ],
+    isScrapped: false,
   },
   {
     id: 3,
@@ -46,8 +57,12 @@ export const mockPosts: Post[] = [
     viewCount: 218,
     nickname: '공연러버',
     date: '25.06.29',
-    isScrapped: true,
     bookmarkCount: 3,
+    imgUrls: [
+      'https://placehold.co/220x220?text=post_image1&fontsize=16',
+      'https://placehold.co/220x220?text=post_image2&fontsize=16',
+    ],
+    isScrapped: false,
   },
   {
     id: 4,
@@ -59,8 +74,13 @@ export const mockPosts: Post[] = [
     viewCount: 458,
     nickname: '티켓나눔천사',
     date: '25.06.28',
-    isScrapped: false,
     bookmarkCount: 8,
+    imgUrls: [
+      'https://placehold.co/220x220?text=post_image1&fontsize=16',
+      'https://placehold.co/220x220?text=post_image2&fontsize=16',
+      'https://placehold.co/220x220?text=post_image3&fontsize=16',
+    ],
+    isScrapped: false,
   },
   {
     id: 5,
@@ -72,7 +92,8 @@ export const mockPosts: Post[] = [
     viewCount: 458,
     nickname: '주차의달인',
     date: '25.06.26',
-    isScrapped: true,
     bookmarkCount: 12,
+    imgUrls: ['https://placehold.co/220x220?text=post_image&fontsize=16'],
+    isScrapped: false,
   },
 ];
