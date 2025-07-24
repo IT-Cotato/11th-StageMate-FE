@@ -18,11 +18,11 @@ const CommunityMainHeader = () => {
 
   return (
     <div
-      className={`fixed top-0 max-w-[600px] w-full h-[65px] bg-white z-50 flex flex-row items-center justify-between px-15 transition-shadow duration-300 ${hasBorder ? 'shadow-2xs bg-white/95' : ''}`}>
+      className={`fixed top-0 max-w-[600px] w-full h-[65px] bg-white z-50 flex flex-row items-center justify-between px-20 transition-shadow duration-300 ${hasBorder ? 'shadow-2xs bg-white/95' : ''}`}>
       <div
-        className={`absolute bottom-0 left-0 w-full h-px bg-gray-200 transition-opacity duration-300 ${hasBorder ? 'opacity-100' : 'opacity-0'}`}
+        className={`absolute bottom-0 left-0 w-full bg-gray-200 transition-opacity duration-300 ${hasBorder ? 'opacity-100' : 'opacity-0'}`}
       />
-      <CommunityLogo />
+      <CommunityLogo className='w-37' />
       <SearchBox variant='community' />
       <div className='flex flex-row gap-18'>
         <Bell className='cursor-pointer sm:w-30 sm:h-30 w-25 h-25' />
