@@ -12,18 +12,18 @@ interface MainHeaderProps {
 }
 
 const MainHeader = ({isLoggedIn, username}: MainHeaderProps) => {
-  const headerHeight = isLoggedIn ? 'h-[318px]' : '[h-285px]';
+  const headerHeight = isLoggedIn ? 'sm:h-[318px] h-270' : 'sm:h-[285px] h-240';
   return (
     <div
-      className={`w-full ${headerHeight} rounded-b-[50px] p-[15px] flex flex-col relative z-10 gap-[12px] bg-cover`}
+      className={`w-full ${headerHeight} rounded-b-[50px] py-15 px-20 flex flex-col relative z-10 gap-[12px] bg-cover`}
       style={{
         backgroundImage: `url("${HeaderBackground}")`,
       }}>
       <div className='flex justify-between items-center'>
-        <Logo />
+        <Logo className='sm:w-150 w-120' />
         <div className='gap-[18px] flex flex-row'>
-          <Bell className='cursor-pointer' />
-          <User className='cursor-pointer' />
+          <Bell className='cursor-pointer sm:w-30 sm:h-30 w-25 h-25' />
+          <User className='cursor-pointer sm:w-30 sm:h-30 w-25 h-25' />
         </div>
       </div>
 

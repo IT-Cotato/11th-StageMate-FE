@@ -44,3 +44,11 @@
   color: inherit !important;
   border: none !important;
 }
+.rbc-month-view {
+  z-index: 0 !important;
+}
+.rbc-month-view .rbc-event {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}

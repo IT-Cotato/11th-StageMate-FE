@@ -2,7 +2,7 @@ import '@/App.css';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import MainLayout from './layout/MainLayout';
 import MainPage from './pages/MainPage';
-import ArchivePage from './pages/ArchivePage';
+import ArchivePage from './pages/archive/ArchivePage';
 
 import SettingsPage from './pages/SettingsPage';
 import SignupFormPage from './pages/auth/SignupFormPage';
@@ -15,9 +15,11 @@ import FilteredPostList from './components/community/post/FilteredPostList';
 import CommunityEditPage from './pages/community/CommunityEditPage';
 import ArchiveLayout from './layout/ArchiveLayout';
 import CommunityHeaderOnlyLayout from './layout/CommunityHeaderOnlyLayout';
+import CommunityPostPage from './pages/community/CommunityPostPage';
+import CommunityContentLayout from './layout/CommunityContentLayout';
 import MagazinePage from './pages/community/MagazinePage';
 import MagazineDetailPage from './pages/community/MagazineDetailPage';
-
+import ArchiveWritePage from './pages/archive/ArchiveWritePage';
 
 function App() {
   return (
@@ -28,7 +30,11 @@ function App() {
           <Route path='/' element={<MainPage />} />
 
           <Route element={<ArchiveLayout />}>
-            <Route path='/archive' element={<ArchivePage />} />
+            <Route path='archive'>
+              <Route index element={<ArchivePage />} />
+              <Route path='write' element={<ArchiveWritePage />} />
+              <Route path=':id' element={<ArchiveWritePage />} />
+            </Route>
           </Route>
           <Route element={<CommunityMainLayout />}>
             <Route path='/community' element={<CommunityMainPage />} />
@@ -49,6 +55,12 @@ function App() {
         <Route path='/signup-complete' element={<SignupCompletePage />} />
         <Route element={<CommunityHeaderOnlyLayout />}>
           <Route path='/community/write' element={<CommunityEditPage />} />
+        </Route>
+        <Route element={<CommunityContentLayout />}>
+          <Route
+            path='/community/:category/:postId'
+            element={<CommunityPostPage />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>

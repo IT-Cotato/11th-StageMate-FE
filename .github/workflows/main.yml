@@ -1,0 +1,109 @@
+name: deployment to gcp cloud storage
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  ARTIFACT_NAME: build-output
+  BUILD_DIR: dist
+  GCP_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+  GCP_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+  GCP_BUCKET_NAME: ${{ secrets.GCP_BUCKET_NAME }}
+  GCP_CDN_LOAD_BALANCER_NAME: ${{ secrets.GCP_CDN_LOAD_BALANCER_NAME }}
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Set Environment Variables
+        run: |
+          echo "VITE_TEST=${{ secrets.VITE_TEST }}" >> $GITHUB_ENV
+
+      - name: Build
+        run: |
+          npm run build
+          ls -R
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ env.BUILD_DIR }}
+
+  cd:
+    needs: ci
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: Checkout
+        id: 'checkout'
+        uses: 'actions/checkout@v4'
+
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ env.BUILD_DIR }}
+
+      # 다운로드 후 폴더 존재 여부 확인
+      # - name: Verify downloaded build files
+      #   run: |
+      #     echo "--- Current working directory after artifact download ---"
+      #     pwd # 현재 디렉토리 출력
+      #     echo "--- Listing contents of current directory (.): ---"
+      #     ls -F # 현재 디렉토리의 파일/폴더 목록 출력
+      #     echo "--- Listing contents recursively from current directory (.): ---"
+      #     ls -R # 현재 디렉토리 하위의 모든 파일/폴더 출력.
+
+      #     EXPECTED_DOWNLOAD_DIR=${{ env.BUILD_DIR }}
+
+      #     if [ ! -d "$EXPECTED_DOWNLOAD_DIR" ]; then
+      #       echo "Error: '$EXPECTED_DOWNLOAD_DIR' directory not found after downloading artifact. Download likely failed."
+      #       exit 1
+      #     fi
+
+      #     # 다운로드된 폴더가 비어있는지 확인
+      #     if [ -z "$(ls -A $EXPECTED_DOWNLOAD_DIR)" ]; then
+      #       echo "Error: '$EXPECTED_DOWNLOAD_DIR' directory is empty after download!"
+      #       exit 1
+      #     fi
+
+      #     echo "Found downloaded content at '$EXPECTED_DOWNLOAD_DIR'. Proceeding with upload."
+
+      - name: Auth
+        id: 'auth'
+        uses: 'google-github-actions/auth@v2'
+        with:
+          workload_identity_provider: ${{ env.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ env.GCP_SERVICE_ACCOUNT }}
+
+      - name: Upload Folder
+        id: 'upload-folder'
+        uses: 'google-github-actions/upload-cloud-storage@v2'
+        with:
+          path: ${{ env.BUILD_DIR }}
+          destination: ${{ env.GCP_BUCKET_NAME }}
+          parent: false
+
+      - name: Invalidate Cloud CDN Cache
+        run: |
+          gcloud compute url-maps invalidate-cdn-cache ${{ env.GCP_CDN_LOAD_BALANCER_NAME }} \
+            --path "/*"

@@ -4,7 +4,7 @@ import {Outlet} from 'react-router-dom';
 const MainLayout = () => {
   return (
     <div className='w-full min-h-screen flex justify-center overflow-x-hidden'>
-      <div className='w-full max-w-[600px] sm:pb-60 pb-44'>
+      <div className='w-full max-w-[600px] sm:pb-60 pb-44 shadow-2xl'>
         <Outlet />
       </div>
 
