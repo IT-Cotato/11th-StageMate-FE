@@ -201,6 +201,8 @@ const ArchiveCalendar = () => {
                 dragConstraints={{top: 0, bottom: 100}}
                 onDragEnd={(event, info) => {
                   if (info.point.y > 300) closeModal();
+                  // todo : fix -> event
+                  console.log(event);
                 }}>
                 <SelectDateModal
                   onClick={(selectedDate) => {
