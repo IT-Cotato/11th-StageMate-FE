@@ -27,7 +27,7 @@ export const mockPosts: Post[] = [
       'https://placehold.co/220x220?text=post_image3&fontsize=16',
       'https://placehold.co/220x220?text=post_image4&fontsize=16',
     ],
-    isScrapped: false,
+    isScrapped: true,
   },
   {
     id: 2,
@@ -62,7 +62,7 @@ export const mockPosts: Post[] = [
       'https://placehold.co/220x220?text=post_image1&fontsize=16',
       'https://placehold.co/220x220?text=post_image2&fontsize=16',
     ],
-    isScrapped: false,
+    isScrapped: true,
   },
   {
     id: 4,

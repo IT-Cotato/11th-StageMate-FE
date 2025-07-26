@@ -1,35 +1,25 @@
 import {useEffect, useState} from 'react';
-import Pagination from 'react-js-pagination';
 import ChevronLeft from '@/assets/chevrons/chevron-left.svg?react';
-import {mockMagazine} from '@/mocks/mockMagazine';
 import {useNavigate} from 'react-router-dom';
-import PostCardItem from '../community/post/PostCardItem';
+import Pagination from 'react-js-pagination';
+import {mockPosts} from '@/mocks/mockPosts';
+import PostListItem from '../community/post/PostListItem';
+const ITEMS_PER_PAGE = 9;
 
-const ITEMS_PER_PAGE = 6;
-
-const ScrappedMagazineList = () => {
+const ScrappedPostList = () => {
   const navigate = useNavigate();
-  const scrappedMagazine = mockMagazine.filter(
-    (magazine) => magazine.isBookmarked
-  );
-
-  useEffect(() => {
-    window.scrollTo({top: 0, behavior: 'smooth'});
-  }, []);
+  const scrappedPost = mockPosts.filter((post) => post.isScrapped === true);
   const [currentPage, setCurrentPage] = useState(1);
-  const totalItemsCount = scrappedMagazine.length;
-
+  const totalItemsCount = scrappedPost.length;
   const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
   const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
-  const currentItems = scrappedMagazine.slice(
-    indexOfFirstItem,
-    indexOfLastItem
-  );
-
+  const currentItems = scrappedPost.slice(indexOfFirstItem, indexOfLastItem);
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
-
+  useEffect(() => {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }, []);
   return (
     <div className='flex flex-col px-20 gap-40'>
       {/* 상단 */}
@@ -38,20 +28,13 @@ const ScrappedMagazineList = () => {
           className='w-50 h-50 cursor-pointer'
           onClick={() => navigate(-1)}
         />
-        <span className='text-xl font-extrabold'>스크랩한 매거진 모아보기</span>
+        <span className='text-xl font-extrabold'>스크랩한 글 모아보기</span>
       </div>
 
       {/* 리스트 */}
-      <ul className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-y-60 gap-x-24'>
-        {currentItems.map((magazine, idx) => (
-          <PostCardItem
-            key={idx}
-            title={magazine.title}
-            subtitle={magazine.subtitle}
-            category={magazine.category}
-            isBookmarked={magazine.isBookmarked}
-            placeholderText='매거진 임시 이미지'
-          />
+      <ul className='flex flex-col gap-10'>
+        {currentItems.map((post, idx) => (
+          <PostListItem key={idx} post={post} />
         ))}
       </ul>
 
@@ -75,5 +58,4 @@ const ScrappedMagazineList = () => {
     </div>
   );
 };
-
-export default ScrappedMagazineList;
+export default ScrappedPostList;

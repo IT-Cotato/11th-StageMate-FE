@@ -1,7 +1,4 @@
-import type {ReactNode} from 'react';
-
 interface OnboardingModalProps {
-
   message: React.ReactNode;
 
   imageSrc: string;

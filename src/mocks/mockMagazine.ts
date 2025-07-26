@@ -36,4 +36,32 @@ export const mockMagazine: Magazine[] = [
     subtitle: '매거진 부제목5',
     isBookmarked: true,
   },
+  {
+    id: 6,
+    category: '뮤지컬',
+    title: '매거진 제목6',
+    subtitle: '매거진 부제목6',
+    isBookmarked: true,
+  },
+  {
+    id: 7,
+    category: '뮤지컬',
+    title: '매거진 제목7',
+    subtitle: '매거진 부제목7',
+    isBookmarked: true,
+  },
+  {
+    id: 8,
+    category: '뮤지컬',
+    title: '매거진 제목8',
+    subtitle: '매거진 부제목8',
+    isBookmarked: true,
+  },
+  {
+    id: 9,
+    category: '뮤지컬',
+    title: '매거진 제목9',
+    subtitle: '매거진 부제목9',
+    isBookmarked: true,
+  },
 ];
