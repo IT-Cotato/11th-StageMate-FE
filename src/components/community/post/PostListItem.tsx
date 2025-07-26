@@ -7,12 +7,15 @@ import PostHeaderInfo from './PostHeaderInfo';
 
 interface PostListItemProps {
   post: Post;
+  onClick?: () => void;
 }
 
-const PostListItem = ({post}: PostListItemProps) => {
+const PostListItem = ({post, onClick}: PostListItemProps) => {
   return (
     <article className='flex flex-col justify-center pb-8 border-b border-b-primary-5'>
-      <div className='flex justify-between items-center px-16'>
+      <div
+        className='flex justify-between items-center px-16 cursor-pointer'
+        onClick={onClick}>
         {/* 왼쪽: 제목 + 작성자 + 날짜 + 조회수 */}
         <PostHeaderInfo
           title={post.title}
