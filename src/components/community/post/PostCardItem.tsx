@@ -25,9 +25,9 @@ const PostCardItem = ({
 }: PostCardItemProps) => {
   return (
     <li className='flex flex-col'>
-      <div className='relative sm:w-[204px] sm:h-[209px] w-150 h-150 bg-gray-1 rounded-[7px]'>
+      <div className='relative sm:w-[160px] sm:h-[209px] w-130 h-170 bg-gray-1 rounded-[7px]'>
         <BookMark
-          className={`absolute top-9 right-9 ${isBookmarked ? 'text-secondary-50' : ''}`}
+          className={`absolute top-9 right-9 ${isBookmarked ? 'text-secondary' : ''}`}
         />
         <div className='w-full h-full flex items-center justify-center text-sm text-gray-500'>
           {placeholderText}
