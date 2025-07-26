@@ -23,7 +23,7 @@ const CommunityMainPage = () => {
       />
 
       {/** 나눔 거래 게시판 */}
-      <SharePostList variant='share' />
+      <SharePostList />
 
       {/** 실시간 채팅방 */}
       <ChatRoomList />
