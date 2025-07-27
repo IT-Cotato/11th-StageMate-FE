@@ -4,8 +4,10 @@
  * - 대댓글이 존재할 경우 재귀적으로 CommentItem을 호출해 렌더링
  */
 import EllipsisVertical from '@/assets/ellipsis/ellipsis-vertical.svg?react';
-import ArrowReply from '@/assets/community/arrow-reply.svg?react';
+import ArrowReply from '@/assets/community/modal-icons/arrow-reply.svg?react';
 import type {Comment, Reply} from '@/types/community';
+import PostOptionModal from '@/components/modal/PostOptionModal';
+import {useState} from 'react';
 
 interface CommentItemProps {
   comment: Comment | Reply;
@@ -14,13 +16,14 @@ interface CommentItemProps {
 
 const CommentItem = ({comment, depth = 0}: CommentItemProps) => {
   const isReply = depth > 0;
+  const [showOptions, setShowOptions] = useState(false);
 
   return (
     <>
       <div
         className={`flex justify-between items-center py-10 border-t border-primary-5 ${
           isReply ? 'pl-[22px] pr-8' : 'px-8'
-        }`}>
+        } relative`}>
         <div className='flex items-center gap-6'>
           {isReply && (
             // 대댓글인 경우 화살표 아이콘 표시
@@ -43,7 +46,19 @@ const CommentItem = ({comment, depth = 0}: CommentItemProps) => {
             </span>
           </div>
         </div>
-        <EllipsisVertical className='w-[24px] h-[24px]' />
+
+        <EllipsisVertical
+          className='w-[24px] h-[24px] cursor-pointer'
+          onClick={() => {
+            setShowOptions((prev) => !prev);
+          }}
+        />
+
+        {showOptions && (
+          <div className='absolute z-40 top-full right-0'>
+            <PostOptionModal showReply showReport showBlock />
+          </div>
+        )}
       </div>
 
       {'replies' in comment &&
