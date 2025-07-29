@@ -278,22 +278,23 @@ const ChatRoomPage = () => {
         </div>
       </div>
 
-      {/* 배경 오버레이 */}
+      {/* 배경 오버레이 for 메시지 점3개 메뉴 */}
       {openMenuId && (
         <div
           className='fixed inset-0 bg-[#979797]/44 z-[9999] max-w-[600px] m-auto backdrop-blur-[2px]'
           onClick={() => {
+            setIsMessageMenuShow(false);
             setOpenMenuId(null);
           }}
         />
       )}
 
       {/* 메시지 점3개 메뉴 */}
-      {isMessageMenuShow && (
+      {isMessageMenuShow && openMenuId && (
         <Portal>
           <div
             ref={menuRef}
-            className='fixed bg-[#fff] rounded-[5px] z-50'
+            className='fixed bg-[#fff] rounded-[5px] z-[10001]'
             style={{
               top: menuPosition.top,
               left: menuPosition.left,
@@ -349,7 +350,10 @@ const ChatRoomPage = () => {
           rightText='네, 확인했어요'
           onLeftClick={() => handleBlockPopupLeftClick()}
           onRightClick={() => handleBlockPopupRightClick()}
-          onBackdropClick={() => handleBlockPopupLeftClick()}
+          onBackdropClick={() => {
+            setIsMessageMenuShow(false);
+            handleBlockPopupLeftClick();
+          }}
           closeOnBackdrop={true}
           closeOnEscape={true}
         />
