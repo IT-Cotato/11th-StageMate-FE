@@ -7,10 +7,28 @@
 
 interface PlayTagProps {
   text: string;
+  selected?: boolean;
+  onClick?: (text: string) => void;
+  variant?: 'default' | 'search';
 }
-const PlayTag = ({text}: PlayTagProps) => {
+const PlayTag = ({
+  text,
+  selected,
+  onClick,
+  variant = 'default',
+}: PlayTagProps) => {
+  const baseStyle =
+    'sm:h-38 h-30 w-fit rounded-[10px] sm:text-[20px] text-[16px] font-normal sm:px-[21px] px-10 py-8 flex items-center cursor-pointer';
+
+  const styleByVariant =
+    variant === 'search'
+      ? `border border-primary-2 text-primary-2 ${selected ? 'bg-primary-1' : 'bg-[#fff]'}`
+      : `${selected ? 'bg-primary-3 text-white' : 'bg-primary-4 text-white'}`;
+
   return (
-    <div className='h-38 w-fit rounded-[10px] bg-primary-4 text-[20px] text-white font-normal whitespace-nowrap px-[21px] py-8 flex items-center'>
+    <div
+      onClick={() => onClick?.(text)}
+      className={`${baseStyle} ${styleByVariant}`}>
       # {text}
     </div>
   );
