@@ -1,16 +1,10 @@
+import {genreGroups} from '@/constant';
 import PlayTag from '../main/PlayTag';
 interface SelectGenreModalProps {
   selectedGenre: string | null;
   setSelectedGenre: React.Dispatch<React.SetStateAction<string | null>>;
   onClose: () => void;
 }
-
-const genreGroups = [
-  ['창작 뮤지컬', '오리지널/내한 뮤지컬', '라이선스 뮤지컬'],
-  ['넌버벌 퍼포먼스', '아동/가족 뮤지컬', '코미디'],
-  ['드라마', '스릴러', '로맨스'],
-  ['가족', '판타지'],
-];
 
 const SelectGenreModal = ({
   selectedGenre,
