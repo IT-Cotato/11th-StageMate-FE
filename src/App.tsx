@@ -46,7 +46,7 @@ function App() {
             <Route path='/community' element={<CommunityMainPage />} />
             <Route path='/community/:category' element={<FilteredPostList />} />
             <Route path='/magazine' element={<MagazinePage />} />
-            <Route path='/chatroom' element={<ChatRoomPage />} />
+            <Route path='/chatRoom/:id' element={<ChatRoomPage />} />
           </Route>
           <Route
             path='/magazine/:magazineId'

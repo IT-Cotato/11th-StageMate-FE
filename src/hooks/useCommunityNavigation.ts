@@ -20,8 +20,7 @@ const useCommunityNavigation = () => {
   };
 
   const goToChatRoomDetail = (id: number) => {
-    // 채팅방 상세 페이지가 생기면 여기 수정
-    navigate(`/chat/${id}`);
+    navigate(`/chatRoom/${id}`);
   };
 
   return {

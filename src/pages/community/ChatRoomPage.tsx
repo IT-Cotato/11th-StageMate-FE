@@ -8,10 +8,12 @@ import BubbleWhiteTail from '@/assets/community/bubble/bubble-white-tail.svg?rea
 import BubblePrimary4Tail from '@/assets/community/bubble/bubble-primary4-tail.svg?react';
 import Popup from '@/components/global/Popup';
 import {PopupChatCaution} from '@/constant';
+import {useParams} from 'react-router-dom';
 
 const ChatRoomPage = () => {
+  const {id} = useParams<{id: string}>();
   const [messages, setMessages] = useState<ChatMessage[]>(
-    dummyChatRoom.messages
+    dummyChatRoom.id === Number(id) ? dummyChatRoom.messages : []
   );
   const [inputMessage, setInputMessage] = useState('');
   const [isPopupShow, setIsPopupShow] = useState(true);
@@ -26,7 +28,7 @@ const ChatRoomPage = () => {
       const newMessage: ChatMessage = {
         id: Date.now().toString(),
         user: {
-          id: 'me',
+          id: 4,
           name: '둘리',
           avatar: '/img/profile/mock-profile6.svg',
         },
