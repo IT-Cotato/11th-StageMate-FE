@@ -57,7 +57,7 @@ const Popup = ({
   return (
     <Portal>
       <div
-        className='fixed inset-0 z-[9999] max-w-[600px] m-auto bg-gray-600/70 flex justify-center items-center'
+        className='fixed inset-0 max-w-[600px] m-auto bg-[#979797]/44 flex justify-center items-center backdrop-blur-[2px]'
         onClick={handleBackdropClick}
         role='dialog'
         aria-modal='true'>
