@@ -58,8 +58,8 @@ const ChatRoomPage = () => {
         {/* 헤더 */}
         <div className='bg-white flex items-center justify-between'>
           <div className='inline-flex items-center'>
-            <button>
-              <ChevronLeft className='w-58 h-51' />
+            <button onClick={() => window.history.back()}>
+              <ChevronLeft className='w-58 h-51 hover:cursor-pointer' />
             </button>
             <h1 className='text-[#000] text-xl font-bold leading-[140%]'>
               {dummyChatRoom.name}
