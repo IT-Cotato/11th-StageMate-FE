@@ -4,7 +4,7 @@ export const dummyMessages: ChatMessage[] = [
   {
     id: '1',
     user: {
-      id: 'user1',
+      id: 1,
       name: '또봤다또',
       avatar: '/img/profile/mock-profile1.svg',
     },
@@ -15,7 +15,7 @@ export const dummyMessages: ChatMessage[] = [
   {
     id: '2',
     user: {
-      id: 'user2',
+      id: 2,
       name: '객석101',
       avatar: '/img/profile/mock-profile2.svg',
     },
@@ -26,7 +26,7 @@ export const dummyMessages: ChatMessage[] = [
   {
     id: '3',
     user: {
-      id: 'user3',
+      id: 3,
       name: '넘버수집가',
       avatar: '/img/profile/mock-profile3.svg',
     },
@@ -38,7 +38,7 @@ export const dummyMessages: ChatMessage[] = [
   {
     id: '4',
     user: {
-      id: 'me',
+      id: 4,
       name: '둘리',
       avatar: '/img/profile/mock-profile6.svg',
     },
@@ -49,7 +49,7 @@ export const dummyMessages: ChatMessage[] = [
   {
     id: '5',
     user: {
-      id: 'user4',
+      id: 5,
       name: '웃남러',
       avatar: '/img/profile/mock-profile4.svg',
     },
@@ -61,7 +61,7 @@ export const dummyMessages: ChatMessage[] = [
   {
     id: '6',
     user: {
-      id: 'user5',
+      id: 6,
       name: '무대밖현생',
       avatar: '/img/profile/mock-profile5.svg',
     },
@@ -73,7 +73,7 @@ export const dummyMessages: ChatMessage[] = [
   {
     id: '7',
     user: {
-      id: 'tester',
+      id: 7,
       name: 'testertestertester',
       avatar: '/img/profile/mock-profile5.svg',
     },
@@ -84,7 +84,7 @@ export const dummyMessages: ChatMessage[] = [
   {
     id: '8',
     user: {
-      id: 'tester',
+      id: 7,
       name: 'testertestertester',
       avatar: '/img/profile/mock-profile5.svg',
     },
@@ -95,7 +95,7 @@ export const dummyMessages: ChatMessage[] = [
   {
     id: '9',
     user: {
-      id: 'tester',
+      id: 7,
       name: 'testertestertester',
       avatar: '/img/profile/mock-profile5.svg',
     },
@@ -106,7 +106,7 @@ export const dummyMessages: ChatMessage[] = [
   {
     id: '10',
     user: {
-      id: 'tester',
+      id: 7,
       name: 'testertestertester',
       avatar: '/img/profile/mock-profile5.svg',
     },
@@ -117,7 +117,7 @@ export const dummyMessages: ChatMessage[] = [
 ];
 
 export const dummyChatRoom: ChatRoom = {
-  id: '1',
+  id: 1,
   name: '레베카',
   messages: dummyMessages,
 };

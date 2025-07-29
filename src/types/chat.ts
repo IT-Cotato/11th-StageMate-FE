@@ -1,5 +1,5 @@
 export type User = {
-  id: string;
+  id: number;
   name: string;
   avatar: string;
 };
@@ -13,7 +13,7 @@ export type ChatMessage = {
 };
 
 export type ChatRoom = {
-  id: string;
+  id: number;
   name: string;
   messages: ChatMessage[];
 };
