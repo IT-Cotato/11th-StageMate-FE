@@ -1,46 +1,44 @@
+// 게시글 목록 아이템 컴포넌트
 import type {Post} from '@/types/community';
 import EmptyHeart from '@/assets/hearts/empty-heart.svg?react';
 import FullHeart from '@/assets/hearts/full-heart.svg?react';
 import Chat from '@/assets/community/community-chat.svg?react';
+import PostHeaderInfo from './PostHeaderInfo';
 
 interface PostListItemProps {
   post: Post;
+  onClick?: () => void;
 }
 
-const PostListItem = ({post}: PostListItemProps) => {
+const PostListItem = ({post, onClick}: PostListItemProps) => {
   return (
     <article className='flex flex-col justify-center pb-8 border-b border-b-primary-5'>
-      <div className='flex justify-between items-center px-16'>
-        <div className='flex flex-col gap-6'>
-          <h2 className='sm:text-2xl text-xl not-italic font-medium leading-[110%]'>
-            {post.title}
-          </h2>
-          <div className='flex items-start gap-10'>
-            <span className='text-gray-2 sm:text-[15px] text-xs font-light leading-[140%]'>
-              {post.nickname}
-            </span>
-            <time className='text-gray-2 sm:text-[15px] text-xs font-light leading-[140%]'>
-              {post.date}
-            </time>
-            <span className='text-gray-2 sm:text-[15px] text-xs font-light leading-[140%]'>
-              {post.viewCount}
-            </span>
-          </div>
-        </div>
+      <div
+        className='flex justify-between items-center px-16 cursor-pointer'
+        onClick={onClick}>
+        {/* 왼쪽: 제목 + 작성자 + 날짜 + 조회수 */}
+        <PostHeaderInfo
+          title={post.title}
+          nickname={post.nickname}
+          date={post.date}
+          viewCount={post.viewCount}
+          variant='list'
+        />
 
+        {/* 오른쪽: 좋아요 + 댓글 */}
         <div className='flex items-center justify-center gap-4 text-sm text-gray-500'>
           <span className='flex flex-col items-center gap-[3px]'>
             {post.isLiked ? (
-              <FullHeart className='w-[30px] h-[30px] text-secondary-50' />
+              <FullHeart className='w-[30px] h-[30px]' />
             ) : (
-              <EmptyHeart className='w-[30px] h-[30px] text-secondary-50 stroke-secondary' />
+              <EmptyHeart className='w-[30px] h-[30px] stroke-secondary' />
             )}
             <span className='text-black font-normal leading-[140%]'>
               {post.likeCount}
             </span>
           </span>
           <span className='flex flex-col items-center gap-[3px]'>
-            <Chat className='w-[30px] h-[30px] text-secondary-50' />
+            <Chat className='w-[30px] h-[30px] text-secondary' />
             <span className='text-black font-normal leading-[140%]'>
               {post.commentCount}
             </span>

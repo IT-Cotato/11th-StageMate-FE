@@ -13,6 +13,7 @@ interface PostCardItemProps {
   category: string;
   isBookmarked: boolean;
   placeholderText: string;
+  onClick?: () => void;
 }
 
 const PostCardItem = ({
@@ -22,12 +23,13 @@ const PostCardItem = ({
   category,
   isBookmarked,
   placeholderText,
+  onClick,
 }: PostCardItemProps) => {
   return (
-    <li className='flex flex-col'>
+    <li className='flex flex-col cursor-pointer' onClick={onClick}>
       <div className='relative sm:w-[204px] sm:h-[209px] w-150 h-150 bg-gray-1 rounded-[7px]'>
         <BookMark
-          className={`absolute top-9 right-9 ${isBookmarked ? 'text-secondary-50' : ''}`}
+          className={`absolute top-9 right-9 ${isBookmarked ? 'text-secondary' : ''}`}
         />
         <div className='w-full h-full flex items-center justify-center text-sm text-gray-500'>
           {placeholderText}

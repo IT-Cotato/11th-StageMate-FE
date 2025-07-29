@@ -1,14 +1,17 @@
 /**
- * 메인 페이지 - 나눔 거래 리스트 컴포넌트
+ * 메인 페이지 - 나눔 · 거래 리스트 컴포넌트
  */
 
 import Diamond from '@/assets/community/share-post-diamond.svg?react';
 import {mockSharePosts} from '@/mocks/mockSharePosts';
 import {useHorizontalScroll} from '@/hooks/useHorizontalScroll';
 import PostCardItem from './PostCardItem';
+import LoadMoreButton from '../common/LoadMoreButton';
+import useCommunityListNavigation from '@/hooks/useCommunityListNavigation';
 
 const SharePostList = () => {
   const listWrapperRef = useHorizontalScroll();
+  const {goToShareList} = useCommunityListNavigation();
   return (
     <div className='flex flex-col gap-10'>
       {/** title */}
@@ -20,6 +23,7 @@ const SharePostList = () => {
       <ul className='flex flex-row gap-12 overflow-x-auto' ref={listWrapperRef}>
         {mockSharePosts.map((post) => (
           <PostCardItem
+            key={post.id}
             title={post.title}
             price={post.price}
             category={post.category}
@@ -28,6 +32,8 @@ const SharePostList = () => {
           />
         ))}
       </ul>
+      {/** 더보기 버튼 */}
+      <LoadMoreButton onClick={goToShareList} />
     </div>
   );
 };
