@@ -7,6 +7,7 @@ import EllipsisVertical from '@/assets/ellipsis/ellipsis-vertical.svg?react';
 import ArrowReply from '@/assets/community/modal-icons/arrow-reply.svg?react';
 import type {Comment, Reply} from '@/types/community';
 import PostOptionModal from '@/components/modal/PostOptionModal';
+import ConfirmModal from '@/components/modal/ConfirmModal';
 import {useState} from 'react';
 
 interface CommentItemProps {
@@ -17,6 +18,9 @@ interface CommentItemProps {
 const CommentItem = ({comment, depth = 0}: CommentItemProps) => {
   const isReply = depth > 0;
   const [showOptions, setShowOptions] = useState(false);
+  const [confirmType, setConfirmType] = useState<
+    null | 'delete' | 'report' | 'block'
+  >(null);
 
   return (
     <>
@@ -56,10 +60,30 @@ const CommentItem = ({comment, depth = 0}: CommentItemProps) => {
 
         {showOptions && (
           <div className='absolute z-40 top-full right-0'>
-            <PostOptionModal showReply showReport showBlock />
+            <PostOptionModal
+              showReply
+              showReport
+              showBlock
+              onClose={() => setShowOptions(false)}
+              onSelect={(type) => {
+                setConfirmType(type);
+                setShowOptions(false);
+              }}
+            />
           </div>
         )}
       </div>
+
+      {confirmType && (
+        <ConfirmModal
+          type={confirmType}
+          onCancel={() => setConfirmType(null)}
+          onConfirm={() => {
+            // 여기서 삭제/신고/차단 기능 실행
+            setConfirmType(null);
+          }}
+        />
+      )}
 
       {'replies' in comment &&
         comment.replies?.map((reply) => (
