@@ -22,6 +22,7 @@ import MagazineDetailPage from './pages/community/MagazineDetailPage';
 import ArchiveWritePage from './pages/archive/ArchiveWritePage';
 import ScrappedPostList from './components/archive/ScrappedPostList';
 import ScrappedMagazineList from './components/archive/ScrappedMagazineList';
+import ChatRoomPage from './pages/community/ChatRoomPage';
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
             <Route path='/community' element={<CommunityMainPage />} />
             <Route path='/community/:category' element={<FilteredPostList />} />
             <Route path='/magazine' element={<MagazinePage />} />
+            <Route path='/chatroom' element={<ChatRoomPage />} />
           </Route>
           <Route
             path='/magazine/:magazineId'
