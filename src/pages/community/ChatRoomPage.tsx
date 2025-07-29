@@ -20,7 +20,9 @@ const ChatRoomPage = () => {
     dummyChatRoom.id === Number(id) ? dummyChatRoom.messages : []
   );
   const [inputMessage, setInputMessage] = useState('');
-  const [isPopupShow, setIsPopupShow] = useState(true);
+  const [isCautionPopupShow, setIsCautionPopupShow] = useState(true);
+  const [isBlockPopupShow, setIsBlockPopupShow] = useState(false);
+  const [isMessageMenuShow, setIsMessageMenuShow] = useState(false);
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const [menuPosition, setMenuPosition] = useState<{
     top: number;
@@ -61,6 +63,7 @@ const ChatRoomPage = () => {
     };
   }, [openMenuId]);
 
+  // 메시지 전송
   const handleSendMessage = () => {
     if (
       inputMessage.trim() // && isConnected
@@ -92,10 +95,15 @@ const ChatRoomPage = () => {
     }
   };
 
-  const handleMenuClick = (event: React.MouseEvent, messageId: string) => {
+  // 메시지 점 3개 메뉴 클릭
+  const handleMessageMenuClick = (
+    event: React.MouseEvent,
+    messageId: string
+  ) => {
     event.stopPropagation();
 
     if (openMenuId === messageId) {
+      setIsMessageMenuShow(false);
       setOpenMenuId(null);
       return;
     }
@@ -105,35 +113,45 @@ const ChatRoomPage = () => {
     ).getBoundingClientRect();
     const scrollY = window.scrollY;
 
-    // 메뉴 위치 계산
     let top = buttonRect.bottom + scrollY + 20;
-    let left = buttonRect.left - 110; // 메뉴 너비만큼 왼쪽으로
+    let left = buttonRect.left - 110;
 
-    // 화면 경계 체크 및 조정
     if (left < 10) {
-      left = buttonRect.right + 10; // 버튼 오른쪽에 표시
+      left = buttonRect.right + 10;
     }
 
     if (top + 70 > window.innerHeight + scrollY - 120) {
-      // 버튼 우측에 표시
       top = buttonRect.bottom + scrollY - 70;
       left = buttonRect.right;
     }
 
     setMenuPosition({top, left});
+    setIsMessageMenuShow(true);
     setOpenMenuId(messageId);
   };
 
-  const handleReport = (messageId: string) => {
-    console.log('신고하기:', messageId);
-    // todo : 신고 API 호출
+  // 신고하기
+  const handleReport = () => {
+    console.log('todo : 신고 API 호출');
+    setIsMessageMenuShow(false);
     setOpenMenuId(null);
   };
 
-  const handleBlock = (messageId: string) => {
-    console.log('차단하기:', messageId);
-    // todo : 차단 API 호출
+  // 차단하기
+  const handleBlock = () => {
+    setIsBlockPopupShow(true);
+    setIsMessageMenuShow(false);
+  };
+
+  const handleBlockPopupLeftClick = () => {
     setOpenMenuId(null);
+    setIsBlockPopupShow(false);
+  };
+
+  const handleBlockPopupRightClick = () => {
+    console.log('todo : 차단 API 호출', '>', openMenuId);
+    setOpenMenuId(null);
+    setIsBlockPopupShow(false);
   };
 
   return (
@@ -201,7 +219,7 @@ const ChatRoomPage = () => {
 
                 {!message.isMe && openMenuId !== message.id && (
                   <button
-                    onClick={(e) => handleMenuClick(e, message.id)}
+                    onClick={(e) => handleMessageMenuClick(e, message.id)}
                     className='relative hover:cursor-pointer'
                     aria-label='메시지 메뉴'>
                     <EllipsisVertical className='w-24 h-24' />
@@ -270,8 +288,8 @@ const ChatRoomPage = () => {
         />
       )}
 
-      {/* 드롭다운 메뉴 */}
-      {openMenuId && (
+      {/* 메시지 점3개 메뉴 */}
+      {isMessageMenuShow && (
         <Portal>
           <div
             ref={menuRef}
@@ -283,8 +301,8 @@ const ChatRoomPage = () => {
             role='menu'
             aria-label='메시지 옵션'>
             <button
-              onClick={() => handleReport(openMenuId)}
-              className='w-full px-7 py-5 hover:cursor-pointer flex items-center justify-start gap-15'
+              onClick={() => handleReport()}
+              className='w-full px-7 py-5 hover:cursor-pointer flex items-center justify-start gap-15 border-b-[0.7px] border-solid border-[#dfe7ef]'
               role='menuitem'>
               <div className='flex gap-7 justify-center items-center'>
                 <Exclamation />
@@ -294,9 +312,8 @@ const ChatRoomPage = () => {
               </div>
               <ChevronRight />
             </button>
-            <div className='self-stretch border-b-[0.7px] border-solid border-[#dfe7ef]' />
             <button
-              onClick={() => handleBlock(openMenuId)}
+              onClick={() => handleBlock()}
               className='w-full px-7 py-5 hover:cursor-pointer flex items-center justify-start gap-15'
               role='menuitem'>
               <div className='flex gap-7  justify-center items-center'>
@@ -310,16 +327,31 @@ const ChatRoomPage = () => {
         </Portal>
       )}
 
-      {/* 팝업 */}
-      {isPopupShow && (
+      {/* 주의 팝업 */}
+      {isCautionPopupShow && (
         <Popup
           content={PopupChatCaution.content}
           contentRed={PopupChatCaution.contentRed}
           rightText='네, 확인했어요'
-          onRightClick={() => setIsPopupShow(false)}
-          onBackdropClick={() => setIsPopupShow(false)} // 배경 클릭으로도 닫기
+          onRightClick={() => setIsCautionPopupShow(false)}
+          onBackdropClick={() => setIsCautionPopupShow(false)} // 배경 클릭으로도 닫기
           closeOnBackdrop={true} // 배경 클릭 허용
           closeOnEscape={true} // ESC 키로 닫기 허용
+        />
+      )}
+
+      {/* 차단 팝업 */}
+      {isBlockPopupShow && (
+        <Popup
+          content={PopupChatCaution.content}
+          contentRed={PopupChatCaution.contentRed}
+          leftText='아니오'
+          rightText='네, 확인했어요'
+          onLeftClick={() => handleBlockPopupLeftClick()}
+          onRightClick={() => handleBlockPopupRightClick()}
+          onBackdropClick={() => handleBlockPopupLeftClick()}
+          closeOnBackdrop={true}
+          closeOnEscape={true}
         />
       )}
     </>
