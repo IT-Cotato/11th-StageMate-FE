@@ -59,7 +59,10 @@ function App() {
         <Route path='/signup-condition' element={<SignupConditionPage />} />
         <Route path='/signup-complete' element={<SignupCompletePage />} />
         <Route element={<CommunityHeaderOnlyLayout />}>
-          <Route path='/community/write' element={<CommunityEditPage />} />
+          <Route
+            path='/community/:category/write'
+            element={<CommunityEditPage />}
+          />
         </Route>
         <Route element={<CommunityContentLayout />}>
           <Route

@@ -8,7 +8,8 @@ import PostItem from './PostItem';
 import LoadMoreButton from '../common/LoadMoreButton';
 import CommunityCategory from '../common/CommunityCategory';
 import type {Post} from '@/types/community';
-import {useNavigate} from 'react-router-dom';
+import useCommunityListNavigation from '@/hooks/useCommunityListNavigation';
+import useCommunityNavigation from '@/hooks/useCommunityNavigation';
 
 type PostListVariant = 'hot' | 'tip' | 'daily';
 
@@ -16,25 +17,24 @@ interface PostListProps {
   icon: React.ReactNode;
   title: string;
   posts: Post[];
-  variant?: PostListVariant;
+  variant: PostListVariant;
+  onClick: () => void; // 카테고리별로 이동하는 함수
 }
 
-const PostList = ({icon, title, posts, variant = 'daily'}: PostListProps) => {
-  const navigate = useNavigate();
-
-  const handleLoadMoreClick = () => {
-    navigate(`/community/${variant}`);
-  };
+const PostList = ({icon, title, posts, variant, onClick}: PostListProps) => {
+  const {goToCommunityCategory} = useCommunityListNavigation();
+  const {goToPostDetail} = useCommunityNavigation();
 
   return (
     <div className='flex flex-col gap-10'>
-      {/** title */}
       <div className='flex flex-row gap-6 items-center'>
         {icon}
         <h1 className='text-xl font-bold'>{title}</h1>
       </div>
-      {/** 게시물 리스트 */}
+
       {posts.map((post) => {
+        const handleClick = () => goToPostDetail(post.category, post.id);
+
         {
           /** hot 게시물 */
         }
@@ -42,7 +42,8 @@ const PostList = ({icon, title, posts, variant = 'daily'}: PostListProps) => {
           return (
             <div
               key={post.id}
-              className='w-full h-48 flex flex-row items-center bg-[#fff] px-9 py-6 gap-10'>
+              className='w-full h-48 flex flex-row items-center bg-[#fff] px-9 py-6 gap-10'
+              onClick={handleClick}>
               <CommunityCategory category={post.category} />
               <PostItem post={post} />
             </div>
@@ -51,9 +52,11 @@ const PostList = ({icon, title, posts, variant = 'daily'}: PostListProps) => {
         {
           /** 일상, 꿀팁 게시물 */
         }
-        return <PostItem key={post.id} post={post} />;
+        return <PostItem key={post.id} post={post} onPostClick={handleClick} />;
       })}
-      <LoadMoreButton onClick={handleLoadMoreClick} />
+      <LoadMoreButton
+        onClick={onClick ?? (() => goToCommunityCategory(variant))}
+      />
     </div>
   );
 };
