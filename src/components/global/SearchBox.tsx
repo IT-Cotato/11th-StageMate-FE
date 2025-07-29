@@ -1,5 +1,7 @@
 import Search from '@/assets/search.svg?react';
 import ChevronDown from '@/assets/chevrons/chevron-down.svg?react';
+import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 /**
  * Main, Community 에서 쓰이는 검색창 variant로 구분
  */
@@ -10,6 +12,18 @@ interface SearchBoxProps {
 }
 
 const SearchBox = ({variant = 'main'}: SearchBoxProps) => {
+  const [keyword, setKeyword] = useState('');
+  const navigate = useNavigate();
+  const handleSearch = () => {
+    const trimmed = keyword.trim();
+    navigate(`/search?keyword=${encodeURIComponent(trimmed)}`);
+  };
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   const variantStyles = {
     main: {
       wrapper:
@@ -24,11 +38,16 @@ const SearchBox = ({variant = 'main'}: SearchBoxProps) => {
   };
 
   return (
-    <div className={`relative ${variantStyles[variant].wrapper}`}>
-      <Search className='text-gray-2 shrink-0' />
+    <div
+      className={`relative ${variantStyles[variant].wrapper}`}
+      onDoubleClick={handleSearch}>
+      <Search className='text-gray-2 shrink-0' onClick={handleSearch} />
       <input
         type='text'
         placeholder='오늘의 추천 검색어'
+        value={keyword}
+        onChange={(e) => setKeyword(e.target.value)}
+        onKeyDown={handleKeyDown}
         className={variantStyles[variant].input}
       />
       <ChevronDown className='cursor-pointer text-gray-2  shrink-0' />

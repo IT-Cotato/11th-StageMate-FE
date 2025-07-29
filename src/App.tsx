@@ -20,6 +20,9 @@ import CommunityContentLayout from './layout/CommunityContentLayout';
 import MagazinePage from './pages/community/MagazinePage';
 import MagazineDetailPage from './pages/community/MagazineDetailPage';
 import ArchiveWritePage from './pages/archive/ArchiveWritePage';
+import ScrappedPostList from './components/archive/ScrappedPostList';
+import ScrappedMagazineList from './components/archive/ScrappedMagazineList';
+import SearchPage from './pages/SearchPage';
 
 function App() {
   return (
@@ -28,12 +31,14 @@ function App() {
         {/* NavigationBar가 필요한 페이지 */}
         <Route element={<MainLayout />}>
           <Route path='/' element={<MainPage />} />
-
+          <Route path='/search' element={<SearchPage />} />
           <Route element={<ArchiveLayout />}>
             <Route path='archive'>
               <Route index element={<ArchivePage />} />
               <Route path='write' element={<ArchiveWritePage />} />
               <Route path=':id' element={<ArchiveWritePage />} />
+              <Route path='scrap-magazine' element={<ScrappedMagazineList />} />
+              <Route path='scrap-post' element={<ScrappedPostList />} />
             </Route>
           </Route>
           <Route element={<CommunityMainLayout />}>
