@@ -2,6 +2,7 @@ import {dummyChatRoom} from '@/mocks/mockChat';
 import type {ChatMessage} from '@/types/chat';
 import {useEffect, useRef, useState} from 'react';
 import ChevronLeft from '@/assets/arrows/chevron-left.svg?react';
+import ChevronRight from '@/assets/arrows/chevron-right.svg?react';
 import EllipsisVertical from '@/assets/ellipsis/ellipsis-vertical.svg?react';
 import Send from '@/assets/community/send.svg?react';
 import BubbleWhiteTail from '@/assets/community/bubble/bubble-white-tail.svg?react';
@@ -9,6 +10,9 @@ import BubblePrimary4Tail from '@/assets/community/bubble/bubble-primary4-tail.s
 import Popup from '@/components/global/Popup';
 import {PopupChatCaution} from '@/constant';
 import {useParams} from 'react-router-dom';
+import Portal from '@/components/global/Portal';
+import Ban from '@/assets/community/modal-icons/ban.svg?react';
+import Exclamation from '@/assets/community/modal-icons/exclamation.svg?react';
 
 const ChatRoomPage = () => {
   const {id} = useParams<{id: string}>();
@@ -17,14 +21,50 @@ const ChatRoomPage = () => {
   );
   const [inputMessage, setInputMessage] = useState('');
   const [isPopupShow, setIsPopupShow] = useState(true);
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+  const [menuPosition, setMenuPosition] = useState<{
+    top: number;
+    left: number;
+  }>({
+    top: 0,
+    left: 0,
+  });
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({behavior: 'smooth'});
   }, [messages]);
 
+  // 외부 클릭 및 ESC 키 감지
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setOpenMenuId(null);
+      }
+    };
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setOpenMenuId(null);
+      }
+    };
+
+    if (openMenuId) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleEscape);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [openMenuId]);
+
   const handleSendMessage = () => {
-    if (inputMessage.trim()) {
+    if (
+      inputMessage.trim() // && isConnected
+    ) {
       const newMessage: ChatMessage = {
         id: Date.now().toString(),
         user: {
@@ -50,6 +90,50 @@ const ChatRoomPage = () => {
       e.preventDefault();
       handleSendMessage();
     }
+  };
+
+  const handleMenuClick = (event: React.MouseEvent, messageId: string) => {
+    event.stopPropagation();
+
+    if (openMenuId === messageId) {
+      setOpenMenuId(null);
+      return;
+    }
+
+    const buttonRect = (
+      event.currentTarget as HTMLElement
+    ).getBoundingClientRect();
+    const scrollY = window.scrollY;
+
+    // 메뉴 위치 계산
+    let top = buttonRect.bottom + scrollY + 20;
+    let left = buttonRect.left - 110; // 메뉴 너비만큼 왼쪽으로
+
+    // 화면 경계 체크 및 조정
+    if (left < 10) {
+      left = buttonRect.right + 10; // 버튼 오른쪽에 표시
+    }
+
+    if (top + 70 > window.innerHeight + scrollY - 120) {
+      // 버튼 우측에 표시
+      top = buttonRect.bottom + scrollY - 70;
+      left = buttonRect.right;
+    }
+
+    setMenuPosition({top, left});
+    setOpenMenuId(messageId);
+  };
+
+  const handleReport = (messageId: string) => {
+    console.log('신고하기:', messageId);
+    // todo : 신고 API 호출
+    setOpenMenuId(null);
+  };
+
+  const handleBlock = (messageId: string) => {
+    console.log('차단하기:', messageId);
+    // todo : 차단 API 호출
+    setOpenMenuId(null);
   };
 
   return (
@@ -95,7 +179,8 @@ const ChatRoomPage = () => {
               )}
 
               {/* 메시지 */}
-              <div className='flex items-end pt-18'>
+              <div
+                className={`flex items-end pt-18 ${openMenuId === message.id ? 'relative z-[10000]' : ''}`}>
                 <div
                   className={`relative max-w-327 ${message.isMe ? 'mr-11' : 'ml-11'}`}>
                   {message.isMe ? (
@@ -114,8 +199,11 @@ const ChatRoomPage = () => {
                   </div>
                 </div>
 
-                {!message.isMe && (
-                  <button>
+                {!message.isMe && openMenuId !== message.id && (
+                  <button
+                    onClick={(e) => handleMenuClick(e, message.id)}
+                    className='relative hover:cursor-pointer'
+                    aria-label='메시지 메뉴'>
                     <EllipsisVertical className='w-24 h-24' />
                   </button>
                 )}
@@ -171,6 +259,56 @@ const ChatRoomPage = () => {
           </button>
         </div>
       </div>
+
+      {/* 배경 오버레이 */}
+      {openMenuId && (
+        <div
+          className='fixed inset-0 bg-[#979797]/44 z-[9999] max-w-[600px] m-auto backdrop-blur-[2px]'
+          onClick={() => {
+            setOpenMenuId(null);
+          }}
+        />
+      )}
+
+      {/* 드롭다운 메뉴 */}
+      {openMenuId && (
+        <Portal>
+          <div
+            ref={menuRef}
+            className='fixed bg-[#fff] rounded-[5px] z-50'
+            style={{
+              top: menuPosition.top,
+              left: menuPosition.left,
+            }}
+            role='menu'
+            aria-label='메시지 옵션'>
+            <button
+              onClick={() => handleReport(openMenuId)}
+              className='w-full px-7 py-5 hover:cursor-pointer flex items-center justify-start gap-15'
+              role='menuitem'>
+              <div className='flex gap-7 justify-center items-center'>
+                <Exclamation />
+                <span className='text-red text-[15px] font-medium leading-[110%]'>
+                  신고
+                </span>
+              </div>
+              <ChevronRight />
+            </button>
+            <div className='self-stretch border-b-[0.7px] border-solid border-[#dfe7ef]' />
+            <button
+              onClick={() => handleBlock(openMenuId)}
+              className='w-full px-7 py-5 hover:cursor-pointer flex items-center justify-start gap-15'
+              role='menuitem'>
+              <div className='flex gap-7  justify-center items-center'>
+                <Ban />
+                <span className='text-red text-[15px] font-medium leading-[110%]'>
+                  차단
+                </span>
+              </div>
+            </button>
+          </div>
+        </Portal>
+      )}
 
       {/* 팝업 */}
       {isPopupShow && (
