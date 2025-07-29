@@ -10,14 +10,14 @@ const CommunityContentLayout = () => {
   return (
     <div className='w-full min-h-screen flex justify-center overflow-x-hidden'>
       <div className='relative w-full max-w-[600px] pb-[90px]'>
-        <header className='w-full max-w-[600px] fixed top-0 left-1/2 -translate-x-1/2'>
+        <header className='w-full max-w-[600px] fixed top-0 left-1/2 -translate-x-1/2 z-50'>
           <ContentHeader showShare={true} />
         </header>
 
         <main className='px-[16px] pt-[93px]'>
           <Outlet />
         </main>
-        <footer className='w-full max-w-[600px] fixed bottom-0 left-1/2 -translate-x-1/2'>
+        <footer className='w-full max-w-[600px] fixed bottom-0 left-1/2 -translate-x-1/2 z-50'>
           <ContentFooterBar />
         </footer>
       </div>

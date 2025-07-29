@@ -17,11 +17,13 @@ const PlayMagazine = () => {
       <ul className='flex flex-row gap-12 overflow-x-auto' ref={listWrapperRef}>
         {mockMagazine.map((post) => (
           <PostCardItem
+            key={post.id}
             title={post.title}
             subtitle={post.subtitle}
             category={post.category}
             isBookmarked={post.isBookmarked}
             placeholderText='공연 매거진 임시 이미지'
+            onClick={() => navigate(`/magazine/${post.id}`)}
           />
         ))}
       </ul>

@@ -1,17 +1,23 @@
 .react-datepicker {
-  border-radius: 12px !important;
+  border-radius: 20px !important;
+  box-sizing: border-box;
+  width: 100%;
   overflow: hidden;
+
   border: 1px solid var(--color-gray-1);
   font-family: 'Pretendard', sans-serif !important;
-  width: 280px; /* 기본 너비 */
 }
 
 @media (min-width: 640px) {
   .react-datepicker {
-    width: 320px;
+    width: 382px;
   }
 }
-
+@media (max-width: 640px) {
+  .react-datepicker {
+    width: 310px;
+  }
+}
 .react-datepicker__header {
   background-color: transparent !important;
   border-bottom: none !important;
@@ -22,10 +28,12 @@
   margin-top: 2px !important;
   padding-left: 10px;
   padding-right: 10px;
+  padding-bottom: 5px;
 
   @media (min-width: 640px) {
     padding-left: 16px;
     padding-right: 16px;
+    padding-bottom: 5px;
   }
 }
 
@@ -34,7 +42,7 @@
   display: flex;
   justify-content: center;
   gap: 6px;
-  padding: 0 10px;
+  padding: 0 4px;
 
   @media (min-width: 640px) {
     gap: 10px;
@@ -54,7 +62,7 @@
   gap: 6px;
 
   @media (min-width: 640px) {
-    height: 30px;
+    height: 40px;
     margin: 8px 0;
     gap: 10px;
   }
@@ -63,15 +71,20 @@
 /* 요일, 날짜 공통 */
 .react-datepicker__day-name,
 .react-datepicker__day {
-  width: 24px !important;
-  height: 24px;
+  width: 30px !important;
+  height: 30px !important;
   font-size: 14px;
   color: #000000 !important;
   font-family: Pretendard;
   background-color: #ffffff;
+  display: inline-flex !important;
+  justify-content: center;
+  align-items: center;
 
   @media (min-width: 640px) {
     font-size: 18px;
+    width: 34px !important;
+    height: 34px !important;
   }
 }
 
@@ -79,18 +92,6 @@
 .react-datepicker__day--selected {
   background-color: var(--color-primary-3) !important;
   border-radius: 50% !important;
-  display: flex !important;
-  justify-content: center;
-  align-items: center;
-  width: 24px !important;
-  height: 24px !important;
-  line-height: 24px !important;
-
-  @media (min-width: 640px) {
-    width: 28px !important;
-    height: 28px !important;
-    line-height: 28px !important;
-  }
 }
 
 /* 키보드 포커스 스타일 제거 */

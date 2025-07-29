@@ -53,6 +53,13 @@ export const MagazineOrder = [
   {id: 3, text: '카테고리'},
 ];
 
+export const genreGroups = [
+  ['창작 뮤지컬', '오리지널/내한 뮤지컬', '라이선스 뮤지컬'],
+  ['넌버벌 퍼포먼스', '아동/가족 뮤지컬', '코미디'],
+  ['드라마', '스릴러', '로맨스'],
+  ['가족', '판타지'],
+];
+
 export const PopupChatCaution = {
   content: `채팅방은 누구나 자유롭게 참여할 수 있는 열린 공간입니다.
     다만, 쾌적한 소통을 위해 다음 사항을 꼭 지켜주세요.`,

@@ -26,6 +26,7 @@
     "axios": "^1.10.0",
     "date-fns": "^4.1.0",
     "framer-motion": "^12.23.6",
+    "i": "^0.3.7",
     "react": "^19.1.0",
     "react-big-calendar": "^1.19.4",
     "react-datepicker": "^8.4.0",
