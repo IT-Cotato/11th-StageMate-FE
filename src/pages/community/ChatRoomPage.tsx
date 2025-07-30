@@ -200,26 +200,31 @@ const ChatRoomPage = () => {
       setOpenMenuId(null);
     };
 
-  // 차단하기
-  const handleBlock = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    setIsBlockPopupShow(true);
-    setIsMessageMenuShow(false);
-  };
+  /**
+   * 차단하기
+   */
+  const handleBlock = // 채팅 메뉴 - 차단하기 클릭
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+      setIsBlockPopupShow(true);
+      setIsMessageMenuShow(false);
+    };
 
-  const handleBlockPopupLeftClick = () => {
-    resetAllMenuStates();
-  };
+  const handleBlockPopupLeftClick = // 차단 팝업 - 아니오
+    () => {
+      resetAllMenuStates();
+    };
 
-  const handleBlockPopupRightClick = () => {
-    if (!openMenuId) {
-      console.error('Missing openMenuId for block action');
-      return;
-    }
+  const handleBlockPopupRightClick = // 차단 팝업 - 차단하기
+    () => {
+      if (!openMenuId) {
+        console.error('Missing openMenuId for block action');
+        return;
+      }
 
-    console.log('todo : 차단 API 호출', '>', openMenuId);
-    resetAllMenuStates();
-  };
+      console.log('todo : 차단 API 호출', '>', openMenuId);
+      resetAllMenuStates();
+    };
 
   return (
     <>
@@ -350,7 +355,7 @@ const ChatRoomPage = () => {
         </div>
       </div>
 
-      {/* 메시지 점3개 메뉴 */}
+      {/* 채팅 (메시지 점3개) 메뉴 */}
       {isMessageMenuShow && (
         <div
           className='fixed inset-0 bg-[#979797]/44 z-[9999] max-w-[600px] m-auto backdrop-blur-[2px]'
