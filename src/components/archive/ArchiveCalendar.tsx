@@ -25,7 +25,8 @@ const ArchiveCalendar = () => {
 
   // 달력 헤더 월 선택 상태
   const today = new Date();
-  const [selectedYear] = useState(today.getFullYear());
+  const [currentDate, setCurrentDate] = useState(today);
+  const [selectedYear, setSelectedYear] = useState(today.getFullYear());
   const [selectedMonth, setSelectedMonth] = useState(today.getMonth() + 1);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -36,11 +37,12 @@ const ArchiveCalendar = () => {
   const months = Array.from({length: 12}, (_, i) => i + 1);
 
   const handleSelectMonth = (month: number) => {
+    const updatedDate = new Date(selectedYear, month - 1, 1);
     setSelectedMonth(month);
+    setCurrentDate(updatedDate);
     setIsDropdownOpen(false);
   };
 
-  // zustand에서 records 가져오기
   const records = useArchiveStore((state) => state.records);
 
   // zustand records를 events 타입으로 변환
@@ -128,8 +130,6 @@ const ArchiveCalendar = () => {
                 dragConstraints={{top: 0, bottom: 100}}
                 onDragEnd={(event, info) => {
                   if (info.point.y > 300) closeModal();
-                  // todo : fix -> event
-                  console.log(event);
                 }}>
                 <SelectDateModal
                   onClick={(selectedDate) => {
@@ -167,7 +167,12 @@ const ArchiveCalendar = () => {
             events={events}
             startAccessor='start'
             endAccessor='end'
-            date={new Date(selectedYear, selectedMonth - 1, 1)}
+            date={currentDate}
+            onNavigate={(date) => {
+              setCurrentDate(date);
+              setSelectedYear(date.getFullYear());
+              setSelectedMonth(date.getMonth() + 1);
+            }}
             views={['month']}
             defaultView='month'
             style={{height: 600}}
@@ -180,6 +185,7 @@ const ArchiveCalendar = () => {
                     {...props}
                     events={events}
                     onDateClick={handleDateClick}
+                    showImages={true}
                   />
                 ),
                 event: () => null,
