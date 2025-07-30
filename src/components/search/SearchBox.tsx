@@ -1,10 +1,8 @@
-import Search from '@/assets/search.svg?react';
-import ChevronDown from '@/assets/chevrons/chevron-down.svg?react';
 import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-/**
- * Main, Community 에서 쓰이는 검색창 variant로 구분
- */
+import Search from '@/assets/search.svg?react';
+import ChevronDown from '@/assets/chevrons/chevron-down.svg?react';
+
 type SearchBoxVariant = 'main' | 'community';
 
 interface SearchBoxProps {
@@ -13,13 +11,26 @@ interface SearchBoxProps {
 
 const SearchBox = ({variant = 'main'}: SearchBoxProps) => {
   const [keyword, setKeyword] = useState('');
+
   const navigate = useNavigate();
+
   const handleSearch = () => {
     const trimmed = keyword.trim();
-    navigate(`/search?keyword=${encodeURIComponent(trimmed)}`);
+    if (trimmed) {
+      navigate(`/search?keyword=${encodeURIComponent(trimmed)}`);
+    }
   };
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+  const handleDoubleClick = () => {
+    const trimmed = keyword.trim();
+    if (!trimmed) {
+      navigate('/search');
+    } else {
       handleSearch();
     }
   };
@@ -40,7 +51,7 @@ const SearchBox = ({variant = 'main'}: SearchBoxProps) => {
   return (
     <div
       className={`relative ${variantStyles[variant].wrapper}`}
-      onDoubleClick={handleSearch}>
+      onDoubleClick={handleDoubleClick}>
       <Search className='text-gray-2 shrink-0' onClick={handleSearch} />
       <input
         type='text'
