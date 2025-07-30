@@ -85,13 +85,13 @@ const Popup = ({
             {leftText && (
               <button
                 onClick={onLeftClick}
-                className='flex w-112 h-36 py-5 justify-center items-center text-center text-gray-2 text-[17px] leading-[140%] rounded-[5px] bg-white'>
+                className='flex w-112 h-36 py-5 justify-center items-center text-center text-gray-2 text-[17px] leading-[140%] rounded-[5px] bg-white hover:cursor-pointer'>
                 {leftText}
               </button>
             )}
             <button
               onClick={onRightClick}
-              className='flex w-112 h-36 py-5 justify-center items-center text-center text-white text-[17px] leading-[140%] rounded-[5px] bg-primary'>
+              className='flex w-112 h-36 py-5 justify-center items-center text-center text-white text-[17px] leading-[140%] rounded-[5px] bg-primary hover:cursor-pointer'>
               {rightText}
             </button>
           </div>
