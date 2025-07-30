@@ -1,13 +1,11 @@
 import ChevronDown from '@/assets/chevrons/chevron-down.svg?react';
 import ChevronUp from '@/assets/chevrons/chevron-up.svg?react';
 import Plus from '@/assets/archive/archive-plus.svg?react';
-import {Calendar, dateFnsLocalizer} from 'react-big-calendar';
-import {format} from 'date-fns/format';
-import {parse} from 'date-fns/parse';
-import {startOfWeek} from 'date-fns/startOfWeek';
-import {getDay} from 'date-fns/getDay';
-import {ko} from 'date-fns/locale/ko';
+import {Calendar} from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import CustomWeekHeader from '@/components/calendar/CustomWeekHeader';
+import CustomDateHeader from '@/components/calendar/CustomDateHeader';
+import localizer from '@/components/calendar/localizer';
 import {motion} from 'framer-motion';
 import {useMemo, useRef, useState} from 'react';
 import '../styles/react-big-calendar-custom.css';
@@ -15,75 +13,7 @@ import SelectDateModal from '../modal/SelectDateModal';
 import TicketAddModal from '../modal/TicketAddModal';
 import CameraUnavailableModal from '../modal/CameraUnavailableModal';
 import {useNavigate} from 'react-router-dom';
-import {isSameDay} from 'date-fns';
 import {useArchiveStore} from '@/stores/useArchiveStore';
-
-const localizer = dateFnsLocalizer({
-  format,
-  parse,
-  startOfWeek,
-  getDay,
-  locales: {ko},
-  locale: 'ko',
-});
-
-const shortDayNames = ['일', '월', '화', '수', '목', '금', '토'];
-
-const CustomWeekHeader = ({date}: {date: Date}) => {
-  const day = date.getDay();
-  return (
-    <div className='rbc-header text-center font-medium text-sm py-2 mr-5'>
-      {shortDayNames[day]}
-    </div>
-  );
-};
-
-const CustomDateHeader = ({
-  label,
-  date,
-  events,
-  onDateClick,
-}: {
-  label: string;
-  date: Date;
-  events: Array<{
-    start: string | Date;
-    imageUrl?: string;
-    [key: string]: unknown;
-  }>;
-  onDateClick: (date: Date) => void;
-}) => {
-  const day = parseInt(label, 10);
-  const navigate = useNavigate();
-
-  // 현재 셀에 해당하는 이벤트만 필터링
-  const dayEvents = useMemo(
-    () => events.filter((event) => isSameDay(new Date(event.start), date)),
-    [events, date]
-  );
-
-  return (
-    <div
-      className='rbc-date-cell text-sm text-right pr-2 pt-2'
-      onClick={() => onDateClick(date)}>
-      {day}
-      <div className='flex flex-col items-center mt-1 gap-1'>
-        {dayEvents.map(
-          (event, index) =>
-            event.imageUrl && (
-              <img
-                key={index}
-                src={event.imageUrl}
-                alt='티켓'
-                className='w-[50px] h-[65px] object-cover'
-                onClick={() => navigate(`/archive/${event.id}`)}
-              />
-            )
-        )}
-      </div>
-    </div>
-  );
-};
 
 const ArchiveCalendar = () => {
   const navigate = useNavigate();
