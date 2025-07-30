@@ -35,8 +35,10 @@ const EditorMenuBar = ({editor, onImageUpload}: EditorMenuBarProps) => {
   const baseButtonClass =
     'cursor-pointer h-[33px] w-[33px] flex items-center justify-center';
 
-  useClickOutside(fontSizePickerRef, () => setShowFontSizePicker(false));
-
+  useClickOutside({
+    ref: fontSizePickerRef,
+    onClickOutside: () => setShowFontSizePicker(false),
+  });
   useEffect(() => {
     if (!editor) return;
 

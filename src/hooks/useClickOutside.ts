@@ -1,12 +1,23 @@
 import {useEffect} from 'react';
 
-const useClickOutside = (
-  ref: React.RefObject<HTMLDivElement | null>,
-  onClickOutside: () => void
-) => {
+type UseClickOutsideProps = {
+  ref: React.RefObject<HTMLElement | null>;
+  onClickOutside: () => void;
+  exclude?: (target: HTMLElement) => boolean;
+};
+
+const useClickOutside = ({
+  ref,
+  onClickOutside,
+  exclude,
+}: UseClickOutsideProps) => {
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (ref.current?.contains(e.target as Node) === false) {
+      const target = e.target as HTMLElement;
+
+      if (exclude?.(target)) return;
+
+      if (ref.current?.contains(target) === false) {
         onClickOutside();
       }
     };
@@ -15,7 +26,7 @@ const useClickOutside = (
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [ref, onClickOutside]);
+  }, [ref, onClickOutside, exclude]);
 };
 
 export default useClickOutside;
