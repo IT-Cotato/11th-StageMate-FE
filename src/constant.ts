@@ -73,3 +73,19 @@ export const PopupBlock = {
   content: `신고는 검토 후 운영정책에 따라 처리됩니다.
     허위 신고 또는 악의적인 신고 시 이용 제한 및 법적 책임이 따를 수 있습니다.`,
 };
+
+export const MenuReport = [
+  {id: 0, text: '낚시 / 놀림 / 도배'},
+  {id: 1, text: '유출 / 사칭 / 사기'},
+  {id: 2, text: '상업적 광고 및 판매'},
+  {id: 3, text: '불법촬영물 등의 유통'},
+  {id: 4, text: '음란물 / 불건전한 대화'},
+  {id: 5, text: '욕설 / 비하'},
+];
+
+export const PopupReport = {
+  title: `신고를 진행하시겠습니까?`,
+  content: `신고는 검토 후 운영정책에 따라 처리됩니다.
+    허위 신고 또는 악의적인 신고 시 이용 제한 및 법적 책임이 따를 수 있습니다.
+`,
+};
