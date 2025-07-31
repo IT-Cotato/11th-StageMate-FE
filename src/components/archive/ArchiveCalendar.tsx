@@ -168,16 +168,13 @@ const ArchiveCalendar = () => {
           </div>
         )}
 
-        {/* 추가 + 오늘 버튼 */}
-        <div className='flex flex-row gap-22'>
-          <div
-            onClick={() => setIsModalOpen(true)}
-            className='sm:w-38 sm:h-38 w-30 h-30 flex items-center justify-center border border-primary rounded-full hover:bg-gray-100 cursor-pointer'>
-            <Plus className='sm:w-20 sm:h-20 w-15 h-15' />
-          </div>
-          <button className='text-primary-3 border-[1px] rounded-[10px] sm:text-xl text-[16px] sm:px-50 sm:py-5 px-20 hover:bg-gray-100 cursor-pointer'>
-            오늘
-          </button>
+        {/* 기록하기 버튼 */}
+
+        <div
+          onClick={() => setIsModalOpen(true)}
+          className='flex flex-row gap-10 items-center justify-center border border-primary text-primary rounded-[20px] hover:font-bold cursor-pointer px-10 py-5 shadow-xs'>
+          <Plus className='w-15 h-15' />
+          <span>기록하기</span>
         </div>
 
         {/* 모달 렌더링 */}

@@ -38,8 +38,9 @@ const SearchBox = ({variant = 'main'}: SearchBoxProps) => {
   const variantStyles = {
     main: {
       wrapper:
-        'w-full max-w-full h-[50px] bg-white flex flex-row items-center rounded-[10px] px-20',
-      input: 'w-full flex-1 focus:outline-none text-xl px-20 text-gray',
+        'w-full max-w-full sm:h-[50px] h-40 bg-white flex flex-row items-center rounded-[10px] px-20',
+      input:
+        'w-full flex-1 focus:outline-none sm:text-xl text-[16px] px-20 text-gray',
     },
     community: {
       wrapper:
@@ -52,7 +53,10 @@ const SearchBox = ({variant = 'main'}: SearchBoxProps) => {
     <div
       className={`relative ${variantStyles[variant].wrapper}`}
       onDoubleClick={handleDoubleClick}>
-      <Search className='text-gray-2 shrink-0' onClick={handleSearch} />
+      <Search
+        className='text-gray-2 shrink-0 sm:w-25 w-20'
+        onClick={handleSearch}
+      />
       <input
         type='text'
         placeholder='오늘의 추천 검색어'
@@ -61,7 +65,7 @@ const SearchBox = ({variant = 'main'}: SearchBoxProps) => {
         onKeyDown={handleKeyDown}
         className={variantStyles[variant].input}
       />
-      <ChevronDown className='cursor-pointer text-gray-2  shrink-0' />
+      <ChevronDown className='cursor-pointer text-gray-2 shrink-0 sm:w-25 w-20' />
     </div>
   );
 };

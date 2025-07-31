@@ -20,7 +20,7 @@ const PostItem = ({post, onPostClick, onLikeClick}: PostItemProps) => {
       className='w-full h-48 flex flex-row items-center bg-[#ffffff] px-9 py-6 gap-10 cursor-pointer'
       onClick={onPostClick}>
       <div className='flex-1'>{post.title}</div>
-      <div className='flex flex-row items-end'>
+      <div className='flex flex-row gap-2'>
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -29,11 +29,11 @@ const PostItem = ({post, onPostClick, onLikeClick}: PostItemProps) => {
           {post.isLiked ? (
             <FullHeart width={25} height={25} />
           ) : (
-            <EmptyHeart className='stroke-secondary' width={25} height={25} />
+            <EmptyHeart className='stroke-secondary' width={23} height={25} />
           )}
         </button>
         <span>{post.likeCount}</span>
-        <Chat className='stroke-secondary ml-14' />
+        <Chat className='text-secondary ml-14' />
         <span>{post.commentCount}</span>
       </div>
     </div>
