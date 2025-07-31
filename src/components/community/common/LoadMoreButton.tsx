@@ -8,7 +8,7 @@ const LoadMoreButton = ({onClick, variant = 'full'}: LoadMoreButtonProps) => {
   return (
     <button
       onClick={onClick}
-      className={`flex ${widthClass} h-[25px] items-center justify-center bg-[#ffffff] cursor-pointer hover:bg-primary-2 hover:text-white active:bg-primary-2 active:text-white`}>
+      className={`flex ${widthClass} h-[25px] items-center justify-center bg-[#ffffff] cursor-pointer hover:font-bold active:font-bold shadow-xs`}>
       더보기
     </button>
   );
