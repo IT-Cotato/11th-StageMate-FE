@@ -12,7 +12,7 @@ interface MainHeaderProps {
 }
 
 const MainHeader = ({isLoggedIn, username}: MainHeaderProps) => {
-  const headerHeight = isLoggedIn ? 'sm:h-[318px] h-280' : 'sm:h-[285px] h-240';
+  const headerHeight = isLoggedIn ? 'sm:h-[318px] h-250' : 'sm:h-[285px] h-240';
   return (
     <div
       className={`w-full ${headerHeight} rounded-b-[50px] py-15 px-20 flex flex-col relative z-10 gap-[12px] bg-cover`}
