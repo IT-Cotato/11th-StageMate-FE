@@ -1,5 +1,6 @@
 import {useEffect} from 'react';
 import Portal from '@/components/global/Portal';
+import useScrollLockWithRestore from '@/hooks/useScrollLockwithRestore';
 
 interface PopupProps {
   title?: string;
@@ -26,6 +27,9 @@ const Popup = ({
   closeOnEscape = true,
   closeOnBackdrop = false,
 }: PopupProps) => {
+  // 스크롤 방지
+  useScrollLockWithRestore;
+
   // ESC 키 처리
   useEffect(() => {
     if (!closeOnEscape) return;
@@ -39,14 +43,6 @@ const Popup = ({
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
   }, [closeOnEscape, onBackdropClick]);
-
-  // 스크롤 방지
-  useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, []);
 
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget && closeOnBackdrop) {
