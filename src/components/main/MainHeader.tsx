@@ -2,7 +2,7 @@ import Logo from '@/assets/logos/main-logo.svg?react';
 import HeaderBackground from '@/assets/main-header-bg/header-bg.svg?url';
 import User from '@/assets/users/user.svg?react';
 import Bell from '@/assets/alerts-feedback/bell.svg?react';
-import SearchBox from '../global/SearchBox';
+import SearchBox from '../search/SearchBox';
 import LoggedInHeader from './LoggedInHeader';
 import LoggedOutHeader from './LoggedOutHeader';
 

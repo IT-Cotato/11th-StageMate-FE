@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import CommunityLogo from '@/assets/logos/community-logo.svg?react';
 import Bell from '@/assets/alerts-feedback/bell.svg?react';
 import User from '@/assets/users/user.svg?react';
-import SearchBox from '../../global/SearchBox';
+import SearchBox from '../../search/SearchBox';
 
 const CommunityMainHeader = () => {
   const [hasBorder, setHasBorder] = useState(false);
