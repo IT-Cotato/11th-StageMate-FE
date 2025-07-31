@@ -7,7 +7,7 @@ import EllipsisVertical from '@/assets/ellipsis/ellipsis-vertical.svg?react';
 import Send from '@/assets/community/send.svg?react';
 import BubbleWhiteTail from '@/assets/community/bubble/bubble-white-tail.svg?react';
 import BubblePrimary4Tail from '@/assets/community/bubble/bubble-primary4-tail.svg?react';
-import Popup from '@/components/global/Popup';
+import Modal from '@/components/global/Modal';
 import {MenuReport, PopupChatCaution, PopupReport} from '@/constant';
 import {useParams} from 'react-router-dom';
 import Portal from '@/components/global/Portal';
@@ -438,7 +438,7 @@ const ChatRoomPage = () => {
 
       {/* 주의 팝업 */}
       {isCautionPopupShow && (
-        <Popup
+        <Modal
           content={PopupChatCaution.content}
           contentRed={PopupChatCaution.contentRed}
           rightText='네, 확인했어요'
@@ -451,7 +451,7 @@ const ChatRoomPage = () => {
 
       {/* 차단 팝업 */}
       {isBlockPopupShow && (
-        <Popup
+        <Modal
           content={PopupChatCaution.content}
           contentRed={PopupChatCaution.contentRed}
           leftText='아니오'
@@ -466,7 +466,7 @@ const ChatRoomPage = () => {
 
       {/* 신고 팝업 */}
       {isReportPopupShow && (
-        <Popup
+        <Modal
           title={PopupReport.title}
           content={PopupReport.content}
           leftText='아니오'

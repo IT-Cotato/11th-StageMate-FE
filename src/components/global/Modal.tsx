@@ -2,7 +2,7 @@ import {useEffect} from 'react';
 import Portal from '@/components/global/Portal';
 import useScrollLockWithRestore from '@/hooks/useScrollLockwithRestore';
 
-interface PopupProps {
+interface ModalProps {
   title?: string;
   content?: string;
   contentRed?: string;
@@ -15,7 +15,7 @@ interface PopupProps {
   closeOnBackdrop?: boolean; // 배경 클릭으로 닫기 (기본값: false)
 }
 
-const Popup = ({
+const Modal = ({
   title,
   content,
   contentRed,
@@ -26,7 +26,7 @@ const Popup = ({
   onBackdropClick,
   closeOnEscape = true,
   closeOnBackdrop = false,
-}: PopupProps) => {
+}: ModalProps) => {
   // 스크롤 방지
   useScrollLockWithRestore;
 
@@ -97,4 +97,4 @@ const Popup = ({
   );
 };
 
-export default Popup;
+export default Modal;
