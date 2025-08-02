@@ -157,7 +157,7 @@ const CalendarPage = () => {
       {isModalOpen && (
         <>
           <div
-            className='fixed top-[230px] left-1/2 -translate-x-1/2 w-[600px] h-[500px] bg-gray-3/10 z-40 rounded-[10px]'
+            className='fixed top-[65px] left-1/2 -translate-x-1/2 w-[600px] h-[500px] bg-gray-3/10 z-40 rounded-[10px]'
             onClick={closeModal}
           />
           {modalStep === 'selectDate' ? (
