@@ -8,6 +8,7 @@ import SelectDateModal from '@/components/modal/SelectDateModal';
 import SelectGenreModal from '@/components/modal/SelectGenreModal';
 import ChevronDown from '@/assets/chevrons/chevron-down.svg?react';
 import {motion} from 'framer-motion';
+import TagBadge from '@/components/global/TagBadge';
 
 const CalendarPage = () => {
   const navigate = useNavigate();
@@ -34,11 +35,20 @@ const CalendarPage = () => {
   );
 
   const displayDate = selectedDate ?? currentDate;
-  const filteredSchedules = useMemo(() => {
+  const allSchedulesForDate = useMemo(() => {
     return mockSchedules.filter(
       (s) => s.date.toDateString() === displayDate.toDateString()
     );
-  }, [selectedDate, currentDate]);
+  }, [displayDate]);
+
+  const filteredSchedules = useMemo(() => {
+    if (!selectedGenre) return allSchedulesForDate;
+    return allSchedulesForDate.filter((s) => s.category === selectedGenre);
+  }, [allSchedulesForDate, selectedGenre]);
+
+  const uniqueCategories = useMemo(() => {
+    return [...new Set(allSchedulesForDate.map((s) => s.category))];
+  }, [allSchedulesForDate]);
 
   const handleDateClick = (date: Date) => {
     window.scrollTo(0, 0);
@@ -98,8 +108,8 @@ const CalendarPage = () => {
         }}
       />
       {displayDate && (
-        <div className='mt-10'>
-          <div className='flex justify-between items-center mb-4'>
+        <div className='mt-10 px-22'>
+          <div className='flex justify-between items-center mb-10'>
             <h2 className='text-xl font-bold'>
               {displayDate.toLocaleDateString()} 전체 스케줄
             </h2>
@@ -112,7 +122,34 @@ const CalendarPage = () => {
               관심태그 추가
             </button>
           </div>
-          <ScheduleList schedules={filteredSchedules} />
+          <div className='flex flex-col gap-20'>
+            {/* 카테고리 태그 렌더링 */}
+            {uniqueCategories.length > 0 && (
+              <div className='flex flex-wrap gap-10 '>
+                {uniqueCategories.map((category) => (
+                  <TagBadge
+                    key={category}
+                    label={category}
+                    variant={selectedGenre === category ? 'filled' : 'outlined'}
+                    onClick={() =>
+                      setSelectedGenre((prev) =>
+                        prev === category ? null : category
+                      )
+                    }
+                  />
+                ))}
+              </div>
+            )}
+            <ScheduleList
+              schedules={filteredSchedules}
+              showViewMoreButton={false}
+            />
+            <button
+              className='bg-primary font-bold text-[15px] text-white w-full py-5.5 rounded-[10px]'
+              onClick={() => navigate('/calendar/report')}>
+              다른 스테줄 제보하기
+            </button>
+          </div>
         </div>
       )}
 
