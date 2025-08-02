@@ -8,7 +8,12 @@ import Send from '@/assets/community/send.svg?react';
 import BubbleWhiteTail from '@/assets/community/bubble/bubble-white-tail.svg?react';
 import BubblePrimary4Tail from '@/assets/community/bubble/bubble-primary4-tail.svg?react';
 import Modal from '@/components/global/Modal';
-import {MenuReport, PopupChatCaution, PopupReport} from '@/constant';
+import {
+  MenuReport,
+  PopupBlock,
+  PopupChatCaution,
+  PopupReport,
+} from '@/constant';
 import {useParams} from 'react-router-dom';
 import Portal from '@/components/global/Portal';
 import Ban from '@/assets/community/modal-icons/ban.svg?react';
@@ -452,8 +457,7 @@ const ChatRoomPage = () => {
       {/* 차단 팝업 */}
       {isBlockPopupShow && (
         <Modal
-          content={PopupChatCaution.content}
-          contentRed={PopupChatCaution.contentRed}
+          content={PopupBlock.content}
           leftText='아니오'
           rightText='네, 확인했어요'
           onLeftClick={handleBlockPopupLeftClick}
