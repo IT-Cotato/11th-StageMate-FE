@@ -1,6 +1,11 @@
 import {type ReactNode, useEffect, useState} from 'react';
 import {createPortal} from 'react-dom';
 
+/**
+ * Keeps track of how many Portal instances are using each portalId
+ */
+const refCounts: Record<string, number> = {};
+
 interface PortalProps {
   children: ReactNode;
   portalId?: string;
@@ -20,11 +25,15 @@ const Portal = ({children, portalId = 'portal-root'}: PortalProps) => {
       document.body.appendChild(element);
     }
 
+    refCounts[portalId] = (refCounts[portalId] || 0) + 1;
     setPortalElement(element);
-
     return () => {
-      if (element && element.children.length === 0) {
-        document.body.removeChild(element);
+      refCounts[portalId] -= 1;
+      if (refCounts[portalId] === 0) {
+        delete refCounts[portalId];
+        if (element && element.children.length === 0) {
+          document.body.removeChild(element);
+        }
       }
     };
   }, [portalId]);
