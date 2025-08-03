@@ -2,7 +2,7 @@ import {genreGroups} from '@/constant';
 import PlayTag from '../main/PlayTag';
 interface SelectGenreModalProps {
   selectedGenre: string | null;
-  setSelectedGenre: React.Dispatch<React.SetStateAction<string | null>>;
+  setSelectedGenre: (genre: string | null) => void;
   onClose: () => void;
 }
 

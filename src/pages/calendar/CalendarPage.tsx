@@ -19,10 +19,12 @@ const CalendarPage = () => {
   const [selectedYear, setSelectedYear] = useState(today.getFullYear());
   const [selectedMonth, setSelectedMonth] = useState(today.getMonth() + 1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedGenre, setSelectedGenre] = useState<string | null>('');
+  const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
   const [modalStep, setModalStep] = useState<'selectDate' | 'selectGenre'>(
     'selectDate'
   );
+  // 추가된 관심태그들을 별도로 관리
+  const [addedGenres, setAddedGenres] = useState<Set<string>>(new Set());
 
   const events = useMemo(
     () =>
@@ -42,17 +44,23 @@ const CalendarPage = () => {
   }, [displayDate]);
 
   const filteredSchedules = useMemo(() => {
+    // selectedGenre가 null이면 전체 스케줄 반환
     if (!selectedGenre) return allSchedulesForDate;
     return allSchedulesForDate.filter((s) => s.category === selectedGenre);
   }, [allSchedulesForDate, selectedGenre]);
 
   const uniqueCategories = useMemo(() => {
-    return [...new Set(allSchedulesForDate.map((s) => s.category))];
-  }, [allSchedulesForDate]);
+    // 현재 날짜의 실제 카테고리들
+    const dateCategories = new Set(allSchedulesForDate.map((s) => s.category));
+    // 추가된 관심태그들과 합치기
+    const allCategories = new Set([...dateCategories, ...addedGenres]);
+    return [...allCategories];
+  }, [allSchedulesForDate, addedGenres]);
 
   const handleDateClick = (date: Date) => {
     window.scrollTo(0, 0);
     setSelectedDate(date);
+    setSelectedGenre(null); // 날짜 변경 시 태그 선택 초기화
   };
 
   const goToToday = () => {
@@ -60,6 +68,7 @@ const CalendarPage = () => {
     setCurrentDate(today);
     setSelectedYear(today.getFullYear());
     setSelectedMonth(today.getMonth() + 1);
+    setSelectedGenre(null); // 오늘 버튼 클릭 시에도 태그 선택 초기화
   };
 
   const closeModal = () => {
@@ -99,12 +108,14 @@ const CalendarPage = () => {
 
       <CalendarLayout
         events={events}
+        selectedDate={selectedDate}
         currentDate={currentDate}
         onDateClick={handleDateClick}
         onNavigateDate={(date) => {
           setCurrentDate(date);
           setSelectedYear(date.getFullYear());
           setSelectedMonth(date.getMonth() + 1);
+          setSelectedGenre(null); // 달력 네비게이션 시에도 태그 선택 초기화
         }}
       />
       {displayDate && (
@@ -185,7 +196,14 @@ const CalendarPage = () => {
             <div className='fixed bottom-0 left-1/2 -translate-x-1/2 z-50 w-[600px]'>
               <SelectGenreModal
                 selectedGenre={selectedGenre}
-                setSelectedGenre={setSelectedGenre}
+                setSelectedGenre={(genre: string | null) => {
+                  // 새로운 장르가 추가되면 addedGenres에도 추가
+                  if (genre) {
+                    setAddedGenres((prev) => new Set([...prev, genre]));
+                    setSelectedGenre(null);
+                  }
+                  closeModal();
+                }}
                 onClose={closeModal}
               />
             </div>
