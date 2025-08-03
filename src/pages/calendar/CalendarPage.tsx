@@ -23,7 +23,6 @@ const CalendarPage = () => {
   const [modalStep, setModalStep] = useState<'selectDate' | 'selectGenre'>(
     'selectDate'
   );
-  // 추가된 관심태그들을 별도로 관리
   const [addedGenres, setAddedGenres] = useState<Set<string>>(new Set());
 
   const events = useMemo(
@@ -50,15 +49,12 @@ const CalendarPage = () => {
   }, [displayDate]);
 
   const filteredSchedules = useMemo(() => {
-    // selectedGenre가 null이면 전체 스케줄 반환
     if (!selectedGenre) return allSchedulesForDate;
     return allSchedulesForDate.filter((s) => s.category === selectedGenre);
   }, [allSchedulesForDate, selectedGenre]);
 
   const uniqueCategories = useMemo(() => {
-    // 현재 날짜의 실제 카테고리들
     const dateCategories = new Set(allSchedulesForDate.map((s) => s.category));
-    // 추가된 관심태그들과 합치기
     const allCategories = new Set([...dateCategories, ...addedGenres]);
     return [...allCategories];
   }, [allSchedulesForDate, addedGenres]);
@@ -67,7 +63,7 @@ const CalendarPage = () => {
     window.scrollTo(0, 0);
     setSelectedDate(date);
     setCurrentDate(date);
-    setSelectedGenre(null); // 날짜 변경 시 태그 선택 초기화
+    setSelectedGenre(null);
   };
 
   const goToToday = () => {
@@ -76,7 +72,7 @@ const CalendarPage = () => {
     setSelectedDate(null);
     setSelectedYear(today.getFullYear());
     setSelectedMonth(today.getMonth() + 1);
-    setSelectedGenre(null); // 오늘 버튼 클릭 시에도 태그 선택 초기화
+    setSelectedGenre(null);
   };
 
   const closeModal = () => {
@@ -92,7 +88,6 @@ const CalendarPage = () => {
         className='pt-0'
       />
 
-      {/* 날짜 표시 + 오늘 버튼 */}
       <div className='flex justify-between items-center py-20'>
         <div
           className='flex items-center gap-1 cursor-pointer'
@@ -122,9 +117,10 @@ const CalendarPage = () => {
           setCurrentDate(date);
           setSelectedYear(date.getFullYear());
           setSelectedMonth(date.getMonth() + 1);
-          setSelectedGenre(null); // 달력 네비게이션 시에도 태그 선택 초기화
+          setSelectedGenre(null);
         }}
       />
+
       {displayDate && (
         <div className='mt-10 px-22'>
           <div className='flex justify-between items-center mb-10'>
@@ -141,7 +137,6 @@ const CalendarPage = () => {
             </button>
           </div>
           <div className='flex flex-col gap-20'>
-            {/* 카테고리 태그 렌더링 */}
             {uniqueCategories.length > 0 && (
               <div className='flex flex-wrap gap-10 '>
                 {uniqueCategories.map((category) => (
@@ -163,21 +158,21 @@ const CalendarPage = () => {
               showViewMoreButton={false}
             />
             <button
-              className='bg-primary font-bold text-[15px] text-white w-full py-5.5 rounded-[10px]'
+              className='bg-primary font-bold text-[15px] text-white w-full py-5.5 rounded-[10px] cursor-pointer'
               onClick={() => navigate('/calendar/report')}>
-              다른 스테줄 제보하기
+              다른 스케줄 제보하기
             </button>
           </div>
         </div>
       )}
 
-      {/* 모달 렌더링 */}
       {isModalOpen && (
         <>
           <div
             className='fixed top-[65px] left-1/2 -translate-x-1/2 w-[600px] h-[500px] bg-gray-3/10 z-40 rounded-[10px]'
             onClick={closeModal}
           />
+
           {modalStep === 'selectDate' ? (
             <motion.div
               className='fixed bottom-0 left-1/2 -translate-x-1/2 z-50 w-[600px]'
@@ -189,6 +184,7 @@ const CalendarPage = () => {
               dragElastic={0}
               dragMomentum={false}
               dragConstraints={{top: 0, bottom: 100}}
+              onClick={(e) => e.stopPropagation()}
               onDragEnd={(_, info) => {
                 if (info.point.y > 300) closeModal();
               }}>
@@ -201,16 +197,16 @@ const CalendarPage = () => {
               />
             </motion.div>
           ) : (
-            <div className='fixed bottom-0 left-1/2 -translate-x-1/2 z-50 w-[600px]'>
+            <div
+              className='fixed bottom-0 left-1/2 -translate-x-1/2 z-50 w-[600px]'
+              onClick={(e) => e.stopPropagation()}>
               <SelectGenreModal
                 selectedGenre={selectedGenre}
                 setSelectedGenre={(genre: string | null) => {
-                  // 새로운 장르가 추가되면 addedGenres에도 추가
                   if (genre) {
                     setAddedGenres((prev) => new Set([...prev, genre]));
                     setSelectedGenre(null);
                   }
-                  closeModal();
                 }}
                 onClose={closeModal}
               />
