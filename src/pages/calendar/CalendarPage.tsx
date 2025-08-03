@@ -1,4 +1,4 @@
-import {useMemo, useState} from 'react';
+import {useMemo, useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {mockSchedules} from '@/mocks/mockSchedules';
 import CalendarLayout from '@/components/calendar/CalendarLayout';
@@ -36,6 +36,12 @@ const CalendarPage = () => {
     []
   );
 
+  useEffect(() => {
+    const base = selectedDate ?? currentDate;
+    setSelectedYear(base.getFullYear());
+    setSelectedMonth(base.getMonth() + 1);
+  }, [selectedDate, currentDate]);
+
   const displayDate = selectedDate ?? currentDate;
   const allSchedulesForDate = useMemo(() => {
     return mockSchedules.filter(
@@ -60,12 +66,14 @@ const CalendarPage = () => {
   const handleDateClick = (date: Date) => {
     window.scrollTo(0, 0);
     setSelectedDate(date);
+    setCurrentDate(date);
     setSelectedGenre(null); // 날짜 변경 시 태그 선택 초기화
   };
 
   const goToToday = () => {
     const today = new Date();
     setCurrentDate(today);
+    setSelectedDate(null);
     setSelectedYear(today.getFullYear());
     setSelectedMonth(today.getMonth() + 1);
     setSelectedGenre(null); // 오늘 버튼 클릭 시에도 태그 선택 초기화
@@ -73,7 +81,6 @@ const CalendarPage = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setModalStep('selectDate');
   };
 
   return (
@@ -188,7 +195,8 @@ const CalendarPage = () => {
               <SelectDateModal
                 onClick={(date) => {
                   setSelectedDate(date);
-                  setModalStep('selectGenre');
+                  setCurrentDate(date);
+                  closeModal();
                 }}
               />
             </motion.div>
