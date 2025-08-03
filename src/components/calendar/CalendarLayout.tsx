@@ -17,6 +17,7 @@ type CalendarLayoutProps = {
   onDateClick: (date: Date) => void;
   onEventClick?: (event: CalendarEvent) => void;
   currentDate: Date;
+  selectedDate: Date | null;
   onNavigateDate?: (date: Date) => void;
 };
 
@@ -25,6 +26,7 @@ const CalendarLayout = ({
   onDateClick,
   onEventClick,
   currentDate,
+  selectedDate,
   onNavigateDate,
 }: CalendarLayoutProps) => {
   const handleNavigate = (date: Date) => {
@@ -54,6 +56,7 @@ const CalendarLayout = ({
                 onDateClick={onDateClick}
                 showImages={true}
                 localizer={localizer}
+                selectedDate={selectedDate}
               />
             ),
             event: () => null,
