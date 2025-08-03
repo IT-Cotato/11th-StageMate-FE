@@ -109,6 +109,7 @@ const ArchiveCalendar = () => {
         <div className='w-[1000px]'>
           <CalendarLayout
             events={events}
+            selectedDate={selectedDate}
             currentDate={currentDate}
             onDateClick={handleDateClick}
             onEventClick={(event) => {
@@ -147,7 +148,7 @@ const ArchiveCalendar = () => {
               dragElastic={0}
               dragMomentum={false}
               dragConstraints={{top: 0, bottom: 100}}
-              onDragEnd={(event, info) => {
+              onDragEnd={(_, info) => {
                 if (info.point.y > 300) closeModal();
               }}>
               <SelectDateModal

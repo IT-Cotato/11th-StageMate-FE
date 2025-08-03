@@ -182,7 +182,7 @@ const CalendarPage = () => {
               dragElastic={0}
               dragMomentum={false}
               dragConstraints={{top: 0, bottom: 100}}
-              onDragEnd={(event, info) => {
+              onDragEnd={(_, info) => {
                 if (info.point.y > 300) closeModal();
               }}>
               <SelectDateModal
