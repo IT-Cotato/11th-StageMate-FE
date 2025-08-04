@@ -25,7 +25,7 @@ import ScrappedMagazineList from './components/archive/ScrappedMagazineList';
 import SearchPage from './pages/SearchPage';
 import ChatRoomPage from './pages/community/ChatRoomPage';
 import ChatPage from './pages/community/ChatPage';
-
+import CalendarPage from './pages/calendar/CalendarPage';
 
 function App() {
   return (

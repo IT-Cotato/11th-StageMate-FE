@@ -27,10 +27,10 @@ const CalendarPage = () => {
 
   const events = useMemo(
     () =>
-      mockSchedules.map((s) => ({
-        ...s,
-        start: s.date,
-        end: s.date,
+      mockSchedules.map((schedule) => ({
+        ...schedule,
+        start: schedule.date,
+        end: schedule.date,
       })),
     []
   );
@@ -44,17 +44,21 @@ const CalendarPage = () => {
   const displayDate = selectedDate ?? currentDate;
   const allSchedulesForDate = useMemo(() => {
     return mockSchedules.filter(
-      (s) => s.date.toDateString() === displayDate.toDateString()
+      (schedule) => schedule.date.toDateString() === displayDate.toDateString()
     );
   }, [displayDate]);
 
   const filteredSchedules = useMemo(() => {
     if (!selectedGenre) return allSchedulesForDate;
-    return allSchedulesForDate.filter((s) => s.category === selectedGenre);
+    return allSchedulesForDate.filter(
+      (schedule) => schedule.category === selectedGenre
+    );
   }, [allSchedulesForDate, selectedGenre]);
 
   const uniqueCategories = useMemo(() => {
-    const dateCategories = new Set(allSchedulesForDate.map((s) => s.category));
+    const dateCategories = new Set(
+      allSchedulesForDate.map((schedule) => schedule.category)
+    );
     const allCategories = new Set([...dateCategories, ...addedGenres]);
     return [...allCategories];
   }, [allSchedulesForDate, addedGenres]);
