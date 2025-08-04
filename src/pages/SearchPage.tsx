@@ -19,7 +19,7 @@ const SearchPage = () => {
   const navigate = useNavigate();
 
   const [startDate, setStartDate] = useState<Date>(new Date());
-  const [selectedGenre, setSelectedGenre] = useState<string | null>('');
+  const [selectedGenre, setSelectedGenre] = useState<string[]>([]);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isGenreOpen, setIsGenreOpen] = useState(false);
@@ -33,6 +33,12 @@ const SearchPage = () => {
     onClickOutside: () => setIsGenreOpen(false),
     exclude: (target) => target.closest('.chevron-toggle') !== null,
   });
+
+  const toggleGenre = (genre: string) => {
+    setSelectedGenre((prev) =>
+      prev.includes(genre) ? prev.filter((g) => g !== genre) : [...prev, genre]
+    );
+  };
 
   const handleToggleGenre = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -103,9 +109,9 @@ const SearchPage = () => {
               <span className='text-xl ml-20 font-semibold'>장르 선택</span>
               <div className='h-60 bg-[#fff] rounded-[20px] flex items-center px-20 justify-between border-gray-1 border-[1px]'>
                 <span
-                  className={`text-base ${selectedGenre ? 'text-black' : 'text-gray-400'}`}>
-                  {selectedGenre
-                    ? `# ${selectedGenre}`
+                  className={`text-base ${selectedGenre.length > 0 ? 'text-black' : 'text-gray-400'}`}>
+                  {selectedGenre.length > 0
+                    ? selectedGenre.map((g) => `#${g}`).join(', ')
                     : '장르를 선택해 주세요.'}
                 </span>
                 <ChevronDown
@@ -138,7 +144,7 @@ const SearchPage = () => {
                       }}>
                       <SelectGenreModal
                         selectedGenre={selectedGenre}
-                        setSelectedGenre={setSelectedGenre}
+                        setSelectedGenre={toggleGenre}
                         onClose={() => setIsGenreOpen(false)}
                       />
                     </motion.div>
