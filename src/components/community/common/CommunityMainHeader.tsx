@@ -11,14 +11,13 @@ const CommunityMainHeader = () => {
     const handleScroll = () => {
       setHasBorder(window.scrollY > 0);
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
     <div
-      className={`fixed top-0 max-w-[600px] w-full h-[65px] bg-white z-50 flex flex-row items-center justify-between px-20 transition-shadow duration-300 ${hasBorder ? 'shadow-2xs bg-white/95' : ''}`}>
+      className={`w-full h-[65px] bg-white flex flex-row items-center justify-between px-20 transition-shadow duration-300 ${hasBorder ? 'shadow-2xs bg-white/95' : ''}`}>
       <div
         className={`absolute bottom-0 left-0 w-full bg-gray-200 transition-opacity duration-300 ${hasBorder ? 'opacity-100' : 'opacity-0'}`}
       />
