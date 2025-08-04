@@ -1,6 +1,6 @@
 import {format, startOfWeek, addDays, isSameDay, isToday} from 'date-fns';
 import {ko} from 'date-fns/locale';
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useMemo, useCallback} from 'react';
 import CalendarButton from './CalendarButton';
 import ScheduleList from './ScheduleList';
 import type {Schedule} from '@/types/schedule';
@@ -46,16 +46,18 @@ const WeekCalendar = ({
   const [weekDates, setWeekDates] = useState<WeekDate[]>([]);
 
   useEffect(() => {
-    setWeekDates(generateWeekDates(new Date(), selectedDate));
+    setWeekDates(generateWeekDates(selectedDate, selectedDate));
   }, [selectedDate]);
 
-  const handleDateClick = (date: Date) => {
+  const handleDateClick = useCallback((date: Date) => {
     setSelectedDate(date);
-  };
+  }, []);
 
   // 선택된 날짜의 스케줄 필터링
-  const selectedDateSchedules = schedules.filter((schedule) =>
-    isSameDay(schedule.date, selectedDate)
+  const selectedDateSchedules = useMemo(
+    () =>
+      schedules.filter((schedule) => isSameDay(schedule.date, selectedDate)),
+    [schedules, selectedDate]
   );
 
   const renderBottomContent = () => {

@@ -13,6 +13,7 @@ const ArchiveLayout = () => {
         <main className='pt-90 px-20'>
           <Outlet />
         </main>
+
         <footer className='w-full max-w-[600px] fixed bottom-0 left-1/2 -translate-x-1/2'>
           <MainNavigationBar />
         </footer>

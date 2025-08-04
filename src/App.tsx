@@ -29,6 +29,7 @@ import CalendarReportPage from './pages/calendar/CalendarReportPage';
 import CalendarReportLocationPage from './pages/calendar/CalendarReportLocation';
 import CalendarReportPerformancePage from './pages/calendar/CalendarReportPerformancePage';
 import CalendarLayout from './layout/CalendarLayout';
+import CalendarPage from './pages/calendar/CalendarPage';
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
               <Route path='scrap-magazine' element={<ScrappedMagazineList />} />
               <Route path='scrap-post' element={<ScrappedPostList />} />
             </Route>
+            <Route path='/calendar' element={<CalendarPage />} />
           </Route>
           <Route element={<CalendarLayout />}>
             <Route path='/calendar/report' element={<CalendarReportPage />} />
