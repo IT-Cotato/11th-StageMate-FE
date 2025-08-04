@@ -25,6 +25,10 @@ import ScrappedMagazineList from './components/archive/ScrappedMagazineList';
 import SearchPage from './pages/SearchPage';
 import ChatRoomPage from './pages/community/ChatRoomPage';
 import ChatPage from './pages/community/ChatPage';
+import CalendarReportPage from './pages/calendar/CalendarReportPage';
+import CalendarReportLocationPage from './pages/calendar/CalendarReportLocation';
+import CalendarReportPerformancePage from './pages/calendar/CalendarReportPerformancePage';
+import CalendarLayout from './layout/CalendarLayout';
 
 function App() {
   return (
@@ -42,6 +46,17 @@ function App() {
               <Route path='scrap-magazine' element={<ScrappedMagazineList />} />
               <Route path='scrap-post' element={<ScrappedPostList />} />
             </Route>
+          </Route>
+          <Route element={<CalendarLayout />}>
+            <Route path='/calendar/report' element={<CalendarReportPage />} />
+            <Route
+              path='/calendar/report/location'
+              element={<CalendarReportLocationPage />}
+            />
+            <Route
+              path='/calendar/report/performance'
+              element={<CalendarReportPerformancePage />}
+            />
           </Route>
           <Route element={<CommunityMainLayout />}>
             <Route path='/community' element={<CommunityMainPage />} />
