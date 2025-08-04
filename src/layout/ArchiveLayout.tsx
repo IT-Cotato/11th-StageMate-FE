@@ -6,10 +6,13 @@ const ArchiveLayout = () => {
   return (
     <div className='w-full min-h-screen flex justify-center overflow-x-hidden'>
       <div className='relative w-full max-w-[600px] pb-[90px]'>
-        <CommunityMainHeader />
+        <div className='fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-[600px] z-50'>
+          <CommunityMainHeader />
+        </div>
         <main className='pt-90 px-20'>
           <Outlet />
         </main>
+
         <footer className='w-full max-w-[600px] fixed bottom-0 left-1/2 -translate-x-1/2'>
           <MainNavigationBar />
         </footer>

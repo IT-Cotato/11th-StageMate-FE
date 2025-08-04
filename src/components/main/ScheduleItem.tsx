@@ -4,6 +4,7 @@
  */
 import EmptyHeart from '@/assets/hearts/empty-heart.svg?react';
 import FullHeart from '@/assets/hearts/full-heart.svg?react';
+import CategoryBadge from '../global/CategoryBadge';
 
 interface ScheduleItemProps {
   title: string;
@@ -22,9 +23,7 @@ const ScheduleItem = ({
     <div className='flex justify-between px-[12.5px] py-[6.5px] bg-[#FFFFFF]'>
       {/* 왼쪽: 카테고리 + 제목 */}
       <div className='flex flex-row gap-[30px]'>
-        <div className='w-[62px] h-[40px] flex items-center justify-center text-[15px] font-bold text-white bg-primary rounded-full'>
-          {category}
-        </div>
+        <CategoryBadge text={category} />
         <div className='flex items-center leading-none font-medium text-black text-[20px]'>
           {title}
         </div>

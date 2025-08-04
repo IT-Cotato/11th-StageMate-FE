@@ -25,6 +25,7 @@ import ScrappedMagazineList from './components/archive/ScrappedMagazineList';
 import SearchPage from './pages/SearchPage';
 import ChatRoomPage from './pages/community/ChatRoomPage';
 import ChatPage from './pages/community/ChatPage';
+import CalendarPage from './pages/calendar/CalendarPage';
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
               <Route path='scrap-magazine' element={<ScrappedMagazineList />} />
               <Route path='scrap-post' element={<ScrappedPostList />} />
             </Route>
+            <Route path='/calendar' element={<CalendarPage />} />
           </Route>
           <Route element={<CommunityMainLayout />}>
             <Route path='/community' element={<CommunityMainPage />} />
