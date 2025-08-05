@@ -7,6 +7,7 @@ interface PageHeaderProps {
   onRightClick?: () => void;
   showHomeIcon?: boolean;
   className?: string;
+  showBottomLine?: boolean;
 }
 
 const PageHeader = ({
@@ -14,6 +15,7 @@ const PageHeader = ({
   onLeftClick,
   onRightClick,
   showHomeIcon = true,
+  showBottomLine = true,
   className = '',
 }: PageHeaderProps) => {
   return (
@@ -37,10 +39,12 @@ const PageHeader = ({
           <div className='w-40 h-40' />
         )}
       </div>
-      <div
-        className='w-full h-3 shrink-0 
-        bg-linear-[90deg,var(--color-white)_0%,var(--color-primary-2)_31.73%,var(--color-primary-2)_75.48%,var(--color-white)_100%]'
-      />
+      {showBottomLine && (
+        <div
+          className='w-full h-3 shrink-0 
+          bg-linear-[90deg,var(--color-white)_0%,var(--color-primary-2)_31.73%,var(--color-primary-2)_75.48%,var(--color-white)_100%]'
+        />
+      )}
     </div>
   );
 };
