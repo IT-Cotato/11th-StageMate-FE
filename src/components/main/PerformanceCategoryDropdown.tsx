@@ -55,7 +55,7 @@ const PerformanceCategoryDropdown = ({
                 e.stopPropagation();
                 handleMainCategoryClick(category as '뮤지컬' | '연극');
               }}
-              className='w-full text-left px-4 py-2 hover:font-bold text-[12px]'>
+              className='w-full text-left px-4 py-2 hover:font-bold sm:text-[12px] text-[10px]'>
               {category}
             </button>
           ))}
@@ -73,7 +73,7 @@ const PerformanceCategoryDropdown = ({
                 e.stopPropagation();
                 handleSubCategoryClick(sub);
               }}
-              className='w-full text-left px-4 py-2 hover:font-bold text-[12px]'>
+              className='w-full text-left px-4 py-2 hover:font-bold sm:text-[12px] text-[10px]'>
               {sub}
             </button>
           ))}
@@ -82,7 +82,7 @@ const PerformanceCategoryDropdown = ({
               e.stopPropagation();
               handleBackToMain();
             }}
-            className='w-full text-left px-4 py-2 text-gray-500 text-[12px] hover:text-black'>
+            className='w-full text-left px-4 py-2 text-gray-500 sm:text-[12px] text-[10px] hover:text-black'>
             이전
           </button>
         </>
@@ -92,14 +92,14 @@ const PerformanceCategoryDropdown = ({
 
   return (
     <div
-      className='flex flex-row relative text-primary cursor-pointer justify-end gap-36'
+      className='flex flex-row relative text-primary cursor-pointer justify-end sm:gap-36 gap-10'
       ref={dropdownRef}
       onClick={toggleDropDown}>
-      <span className='text-[18px] font-medium'>
+      <span className='sm:text-[18px] text-[14px] font-medium'>
         {selectedSubCategory ?? selectedMainCategory}
       </span>
       <ChevronDown
-        className={`chevron-toggle transition-transform duration-300 cursor-pointer ${
+        className={`chevron-toggle transition-transform duration-300 cursor-pointer sm:h-25 h-20 ${
           isDropdownOpen ? 'rotate-180' : ''
         }`}
       />

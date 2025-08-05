@@ -21,7 +21,7 @@ const PerformanceCardList = () => {
 
   return (
     <div className='flex flex-col items-center gap-10'>
-      <div className='grid grid-cols-3 gap-x-10 gap-y-20 px-4'>
+      <div className='grid grid-cols-3 gap-x-10 sm:gap-y-20 gap-y-15 px-4'>
         {currentItems.map((performance, index) => (
           <PerformanceCard key={index} {...performance} />
         ))}
