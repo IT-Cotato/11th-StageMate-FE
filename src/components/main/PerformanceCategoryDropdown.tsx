@@ -92,17 +92,21 @@ const PerformanceCategoryDropdown = ({
 
   return (
     <div
-      className='flex flex-row relative text-primary cursor-pointer justify-end sm:gap-36 gap-10'
-      ref={dropdownRef}
-      onClick={toggleDropDown}>
-      <span className='sm:text-[18px] text-[14px] font-medium'>
-        {selectedSubCategory ?? selectedMainCategory}
-      </span>
-      <ChevronDown
-        className={`chevron-toggle transition-transform duration-300 cursor-pointer sm:h-25 h-20 ${
-          isDropdownOpen ? 'rotate-180' : ''
-        }`}
-      />
+      className='flex flex-row relative text-primary justify-end'
+      ref={dropdownRef}>
+      <div
+        onClick={toggleDropDown}
+        className='flex flex-row cursor-pointer sm:gap-36 gap-10'>
+        <span className='sm:text-[18px] text-[14px] font-medium'>
+          {selectedSubCategory ?? selectedMainCategory}
+        </span>
+        <ChevronDown
+          className={`chevron-toggle transition-transform duration-300 sm:h-25 h-20 ${
+            isDropdownOpen ? 'rotate-180' : ''
+          }`}
+        />
+      </div>
+
       {isDropdownOpen && (
         <div className='absolute top-full mt-2 right-0 z-10 w-93 rounded-[10px] bg-white shadow-lg border border-gray-200 py-2'>
           {renderDropdown()}
