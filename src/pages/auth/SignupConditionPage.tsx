@@ -1,3 +1,4 @@
+import {getTempUserKey, postAgree} from '@/api/authApi';
 import AuthBrandBadges from '@/components/auth/AuthBrandBadges';
 import ButtonFill from '@/components/global/ButtonFill';
 import ButtonStroke from '@/components/global/ButtonStroke';
@@ -27,17 +28,21 @@ const SignupConditionPage = () => {
     emailNotification: false,
   });
 
-  const handleNextClick = () => {
-    if (
-      checking.allowCondition1 &&
-      checking.allowCondition2 &&
-      checking.allowCondition3
-    ) {
+  const handleNextClick = async () => {
+    await getTempUserKey();
+    const result = await postAgree(
+      checking.serviceTerms,
+      checking.privacyPolicy,
+      checking.marketing,
+      checking.smsNotification,
+      checking.emailNotification
+    );
+
+    if (result.success) {
+      console.log('동의 완료:', result.data);
       navigate('/signup-form');
     } else {
-      alert(
-        '필수 약관에 동의하지 않으면 해당 서비스 이용이 제한될 수 있습니다. '
-      );
+      console.error(result.error);
     }
   };
 
