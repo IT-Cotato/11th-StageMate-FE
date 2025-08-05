@@ -6,7 +6,7 @@ import {mockPerformance} from '@/mocks/mockPerformance';
 const ITEMS_PER_PAGE = 9;
 
 const PerformanceCardList = () => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const totalItemsCount = mockPerformance.length;
 
