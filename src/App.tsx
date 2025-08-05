@@ -26,6 +26,7 @@ import SearchPage from './pages/SearchPage';
 import ChatRoomPage from './pages/community/ChatRoomPage';
 import ChatPage from './pages/community/ChatPage';
 import CalendarPage from './pages/calendar/CalendarPage';
+import PerformanceAllPage from './pages/main/PerformanceAllPage';
 
 function App() {
   return (
@@ -50,7 +51,8 @@ function App() {
             <Route path='/community/:category' element={<FilteredPostList />} />
             <Route path='/magazine' element={<MagazinePage />} />
             <Route path='/chat' element={<ChatPage />} />
-            <Route path='/chatRoom/:id' element={<ChatRoomPage />} />
+            <Route path='/chatRoom/:id' element={<ChatRoomPage />} />{' '}
+            <Route path='/performance' element={<PerformanceAllPage />} />
           </Route>
           <Route
             path='/magazine/:magazineId'
