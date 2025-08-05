@@ -9,20 +9,22 @@ import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 
 interface CheckingState {
-  [key: `allowCondition${number}`]: boolean;
-  allowSMS: boolean;
-  allowEmail: boolean;
+  serviceTerms: boolean;
+  privacyPolicy: boolean;
+  marketing: boolean;
+  smsNotification: boolean;
+  emailNotification: boolean;
 }
 
 const SignupConditionPage = () => {
   const navigate = useNavigate();
 
   const [checking, setChecking] = useState<CheckingState>({
-    allowCondition1: false,
-    allowCondition2: false,
-    allowCondition3: false,
-    allowSMS: false,
-    allowEmail: false,
+    serviceTerms: false,
+    privacyPolicy: false,
+    marketing: false,
+    smsNotification: false,
+    emailNotification: false,
   });
 
   const handleNextClick = () => {
@@ -55,42 +57,74 @@ const SignupConditionPage = () => {
         <div className='flex flex-col self-stretch items-center gap-46'>
           {/* 약관 */}
           <div className='flex flex-col self-stretch items-start py-20 px-15 gap-5'>
-            {TermOfService.map((term, index) => (
-              <AccordionItem
-                key={index}
-                checked={checking[`allowCondition${index + 1}`]}
-                title={term.title}
-                onChange={() =>
-                  setChecking((prev) => ({
-                    ...prev,
-                    [`allowCondition${index + 1}`]:
-                      !prev[`allowCondition${index + 1}`],
-                  }))
-                }>
-                <div className='flex pl-10 pr-47 pb-12 items-start gap-10'>
-                  <p className='shrink-0 text-lg font-medium leading-22 font-lato break-words whitespace-pre-line w-full'>
-                    {term.content}
-                  </p>
-                </div>
-              </AccordionItem>
-            ))}
+            <AccordionItem
+              key={TermOfService[0].id}
+              checked={checking.serviceTerms}
+              title={TermOfService[0].title}
+              onChange={() =>
+                setChecking((prev) => ({
+                  ...prev,
+                  serviceTerms: !prev.serviceTerms,
+                }))
+              }>
+              <div className='flex pl-10 pr-47 pb-12 items-start gap-10'>
+                <p className='shrink-0 text-lg font-medium leading-22 font-lato break-words whitespace-pre-line w-full'>
+                  {TermOfService[0].content}
+                </p>
+              </div>
+            </AccordionItem>
+            <AccordionItem
+              key={TermOfService[1].id}
+              checked={checking.privacyPolicy}
+              title={TermOfService[1].title}
+              onChange={() =>
+                setChecking((prev) => ({
+                  ...prev,
+                  privacyPolicy: !prev.privacyPolicy,
+                }))
+              }>
+              <div className='flex pl-10 pr-47 pb-12 items-start gap-10'>
+                <p className='shrink-0 text-lg font-medium leading-22 font-lato break-words whitespace-pre-line w-full'>
+                  {TermOfService[1].content}
+                </p>
+              </div>
+            </AccordionItem>
+            <AccordionItem
+              key={TermOfService[2].id}
+              checked={checking.marketing}
+              title={TermOfService[2].title}
+              onChange={() =>
+                setChecking((prev) => ({
+                  ...prev,
+                  marketing: !prev.marketing,
+                }))
+              }>
+              <div className='flex pl-10 pr-47 pb-12 items-start gap-10'>
+                <p className='shrink-0 text-lg font-medium leading-22 font-lato break-words whitespace-pre-line w-full'>
+                  {TermOfService[2].content}
+                </p>
+              </div>
+            </AccordionItem>
 
             <div className='flex pt-10 pb-20 px-10 gap-20'>
               <CustomCheckbox
-                checked={checking.allowSMS}
+                checked={checking.smsNotification}
                 onChange={() =>
-                  setChecking((prev) => ({...prev, allowSMS: !prev.allowSMS}))
+                  setChecking((prev) => ({
+                    ...prev,
+                    smsNotification: !prev.smsNotification,
+                  }))
                 }>
                 <p className='text-[22px] leading-[140%] text-[#141313] select-none'>
                   SMS 수신동의
                 </p>
               </CustomCheckbox>
               <CustomCheckbox
-                checked={checking.allowEmail}
+                checked={checking.emailNotification}
                 onChange={() =>
                   setChecking((prev) => ({
                     ...prev,
-                    allowEmail: !prev.allowEmail,
+                    emailNotification: !prev.emailNotification,
                   }))
                 }>
                 <p className='text-[22px] leading-[140%] text-[#141313] select-none'>
@@ -102,25 +136,25 @@ const SignupConditionPage = () => {
             <div className='flex pt-10 pb-20 px-10 gap-20'>
               <CustomCheckbox
                 checked={
-                  checking.allowCondition1 &&
-                  checking.allowCondition2 &&
-                  checking.allowCondition3 &&
-                  checking.allowSMS &&
-                  checking.allowEmail
+                  checking.serviceTerms &&
+                  checking.privacyPolicy &&
+                  checking.marketing &&
+                  checking.smsNotification &&
+                  checking.emailNotification
                 }
                 onChange={() => {
                   const allChecked =
-                    checking.allowCondition1 &&
-                    checking.allowCondition2 &&
-                    checking.allowCondition3 &&
-                    checking.allowSMS &&
-                    checking.allowEmail;
+                    checking.serviceTerms &&
+                    checking.privacyPolicy &&
+                    checking.marketing &&
+                    checking.smsNotification &&
+                    checking.emailNotification;
                   setChecking({
-                    allowCondition1: !allChecked,
-                    allowCondition2: !allChecked,
-                    allowCondition3: !allChecked,
-                    allowSMS: !allChecked,
-                    allowEmail: !allChecked,
+                    serviceTerms: !allChecked,
+                    privacyPolicy: !allChecked,
+                    marketing: !allChecked,
+                    smsNotification: !allChecked,
+                    emailNotification: !allChecked,
                   });
                 }}>
                 <p className='text-[22px] leading-[140%] text-[#141313] select-none'>
