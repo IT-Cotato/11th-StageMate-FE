@@ -5,9 +5,9 @@ import useClickOutside from '@/hooks/useClickOutside';
 
 type Props = {
   selectedMainCategory: '전체' | '뮤지컬' | '연극';
-  setSelectedMainCategory: (cat: '전체' | '뮤지컬' | '연극') => void;
+  setSelectedMainCategory: (category: '전체' | '뮤지컬' | '연극') => void;
   selectedSubCategory: string | null;
-  setSelectedSubCategory: (cat: string | null) => void;
+  setSelectedSubCategory: (category: string | null) => void;
 };
 
 const PerformanceCategoryDropdown = ({
@@ -16,7 +16,7 @@ const PerformanceCategoryDropdown = ({
   selectedSubCategory,
   setSelectedSubCategory,
 }: Props) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [stage, setStage] = useState<'main' | 'sub'>('main');
   const dropdownRef = useRef(null);
 
