@@ -47,7 +47,6 @@ function App() {
               <Route path='scrap-magazine' element={<ScrappedMagazineList />} />
               <Route path='scrap-post' element={<ScrappedPostList />} />
             </Route>
-            <Route path='/calendar' element={<CalendarPage />} />
           </Route>
           <Route element={<CalendarLayout />}>
             <Route path='/calendar/report' element={<CalendarReportPage />} />
@@ -59,6 +58,7 @@ function App() {
               path='/calendar/report/performance'
               element={<CalendarReportPerformancePage />}
             />
+            <Route path='/calendar' element={<CalendarPage />} />
           </Route>
           <Route element={<CommunityMainLayout />}>
             <Route path='/community' element={<CommunityMainPage />} />
