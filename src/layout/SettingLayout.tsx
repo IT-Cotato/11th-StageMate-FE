@@ -1,4 +1,4 @@
-import SettingTabBar from '@/components/mypage/SettingTabBar';
+import SettingTabBar from '@/components/setting/SettingTabBar';
 import {Outlet} from 'react-router-dom';
 
 // 임시 프로필 사진 url
