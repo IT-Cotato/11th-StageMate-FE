@@ -1,4 +1,5 @@
 import SettingTabBar from '@/components/mypage/SettingTabBar';
+import {Outlet} from 'react-router-dom';
 
 // 임시 프로필 사진 url
 const imgUrl =
@@ -13,6 +14,9 @@ const SettingLayout = () => {
           닉네임
         </h1>
         <SettingTabBar />
+        <div className='px-28'>
+          <Outlet />
+        </div>
       </div>
 
       {/* profile */}

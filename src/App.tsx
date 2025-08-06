@@ -26,6 +26,9 @@ import ChatRoomPage from './pages/community/ChatRoomPage';
 import ChatPage from './pages/community/ChatPage';
 import CalendarPage from './pages/calendar/CalendarPage';
 import SettingLayout from './layout/SettingLayout';
+import SettingAccountPage from './pages/setting/SettingAccountPage';
+import SettingActivityPage from './pages/setting/SettingActivityPage';
+import SettingSupportPage from './pages/setting/SettingSupportPage';
 
 function App() {
   return (
@@ -53,7 +56,11 @@ function App() {
             <Route path='/chatRoom/:id' element={<ChatRoomPage />} />
 
             {/* settings */}
-            <Route path='/settings/account' element={<SettingLayout />}></Route>
+            <Route path='/settings' element={<SettingLayout />}>
+              <Route path='account' element={<SettingAccountPage />} />
+              <Route path='activity' element={<SettingActivityPage />} />
+              <Route path='support' element={<SettingSupportPage />} />
+            </Route>
           </Route>
           <Route
             path='/magazine/:magazineId'
