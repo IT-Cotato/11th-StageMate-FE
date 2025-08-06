@@ -27,7 +27,9 @@ const SettingSupportPage = () => {
           <ChevronRight className='w-30 h-30' />
         </div>
         <div className='h-1 bg-[#000] my-12' />
-        <div className='flex justify-between items-center hover:cursor-pointer'>
+        <div
+          className='flex justify-between items-center hover:cursor-pointer'
+          onClick={() => navigate('/settings/policy-terms')}>
           <p className='text-xl font-semibold leading-[140%]'>이용약관</p>
           <ChevronRight className='w-30 h-30' />
         </div>
