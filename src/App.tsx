@@ -26,6 +26,7 @@ import SearchPage from './pages/SearchPage';
 import ChatRoomPage from './pages/community/ChatRoomPage';
 import ChatPage from './pages/community/ChatPage';
 import CalendarPage from './pages/calendar/CalendarPage';
+import SettingLayout from './layout/SettingLayout';
 
 function App() {
   return (
@@ -51,12 +52,14 @@ function App() {
             <Route path='/magazine' element={<MagazinePage />} />
             <Route path='/chat' element={<ChatPage />} />
             <Route path='/chatRoom/:id' element={<ChatRoomPage />} />
+
+            {/* settings */}
+            <Route path='/settings/account' element={<SettingLayout />}></Route>
           </Route>
           <Route
             path='/magazine/:magazineId'
             element={<MagazineDetailPage />}
           />
-          <Route path='/settings' element={<SettingsPage />} />
         </Route>
 
         {/* NavigationBar가 없어야하는 페이지 */}
