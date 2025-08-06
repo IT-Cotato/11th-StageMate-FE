@@ -4,7 +4,6 @@ import MainLayout from './layout/MainLayout';
 import MainPage from './pages/MainPage';
 import ArchivePage from './pages/archive/ArchivePage';
 
-import SettingsPage from './pages/SettingsPage';
 import SignupFormPage from './pages/auth/SignupFormPage';
 import LoginPage from './pages/auth/LoginPage';
 import SignupConditionPage from './pages/auth/SignupConditionPage';
