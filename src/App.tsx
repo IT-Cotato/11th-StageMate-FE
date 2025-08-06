@@ -30,6 +30,7 @@ import SettingSupportPage from './pages/setting/SettingSupportPage';
 import PerformanceAllPage from './pages/main/PerformanceAllPage';
 import MainPage from './pages/main/MainPage';
 import AnnouncementPage from './pages/setting/AnnouncementPage';
+import AnnouncementDetailPage from './pages/setting/AnnouncementDetailPage';
 
 function App() {
   return (
@@ -71,6 +72,10 @@ function App() {
 
           {/* settings */}
           <Route path='/settings/announcement' element={<AnnouncementPage />} />
+          <Route
+            path='/settings/announcement/:id'
+            element={<AnnouncementDetailPage />}
+          />
         </Route>
 
         {/* NavigationBar가 없어야하는 페이지 */}
