@@ -1,9 +1,7 @@
 import '@/App.css';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import MainLayout from './layout/MainLayout';
-import MainPage from './pages/MainPage';
 import ArchivePage from './pages/archive/ArchivePage';
-
 import SignupFormPage from './pages/auth/SignupFormPage';
 import LoginPage from './pages/auth/LoginPage';
 import SignupConditionPage from './pages/auth/SignupConditionPage';
@@ -29,6 +27,8 @@ import SettingLayout from './layout/SettingLayout';
 import SettingAccountPage from './pages/setting/SettingAccountPage';
 import SettingActivityPage from './pages/setting/SettingActivityPage';
 import SettingSupportPage from './pages/setting/SettingSupportPage';
+import PerformanceAllPage from './pages/main/PerformanceAllPage';
+import MainPage from './pages/main/MainPage';
 
 function App() {
   return (
@@ -54,6 +54,7 @@ function App() {
             <Route path='/magazine' element={<MagazinePage />} />
             <Route path='/chat' element={<ChatPage />} />
             <Route path='/chatRoom/:id' element={<ChatRoomPage />} />
+            <Route path='/performance' element={<PerformanceAllPage />} />
 
             {/* settings */}
             <Route path='/settings' element={<SettingLayout />}>
