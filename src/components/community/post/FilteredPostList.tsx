@@ -32,7 +32,7 @@ const FilteredPostList = () => {
   }
 
   return (
-    <div>
+    <div className='px-16'>
       {/* 상단바 */}
       <div className='flex justify-between items-center'>
         {/* 왼쪽: 뒤로가기 버튼 + 카테고리명 */}
