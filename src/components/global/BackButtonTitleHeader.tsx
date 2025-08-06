@@ -16,7 +16,7 @@ const BackButtonTitleHeader = ({
 
   return (
     <div
-      className={`h-79 flex justify-${between ? 'between' : 'start'} items-center ${borderBottom ? 'border-b border-solid border-primary-5' : ''}`}>
+      className={`h-79 px-20 flex justify-${between ? 'between' : 'start'} items-center ${borderBottom ? 'border-b border-solid border-primary-5' : ''}`}>
       <ChevronLeft
         className='w-58 h-51 ml-[-20px] hover:cursor-pointer'
         onClick={() => navigate(-1)}
