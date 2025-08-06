@@ -38,7 +38,7 @@ const MainNavigationBar = () => {
       </Link>
       <Link to='/settings/account' className={getLinkClass('/settings')}>
         <Settings
-          className={`${getIconClass('/settings/account')} w-[18px] h-[18px] sm:w-[25px] sm:h-[25px]`}
+          className={`${getIconClass('/settings')} w-[18px] h-[18px] sm:w-[25px] sm:h-[25px]`}
         />
       </Link>
     </div>

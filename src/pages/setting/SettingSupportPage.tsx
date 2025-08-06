@@ -30,10 +30,10 @@ const SettingSupportPage = () => {
 
       {/* logout & secession */}
       <div className='flex justify-end gap-20'>
-        <button className='py-4 px-10 min-x-80 border border-solid border-primary bg-white_1 text-[15px] leading-[140%] text-primary'>
+        <button className='py-4 px-10 min-w-80 border border-solid border-primary bg-white_1 text-[15px] leading-[140%] text-primary'>
           로그아웃
         </button>
-        <button className='py-4 px-10 min-x-80 border border-solid border-primary bg-white_1 text-[15px] leading-[140%] text-primary'>
+        <button className='py-4 px-10 min-w-80 border border-solid border-primary bg-white_1 text-[15px] leading-[140%] text-primary'>
           회원탈퇴
         </button>
       </div>

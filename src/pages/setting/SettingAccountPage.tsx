@@ -41,7 +41,7 @@ const SettingAccountPage = () => {
 
       {/* change pw */}
       <div className='flex justify-end'>
-        <button className='py-4 px-10 min-x-80 border border-solid border-primary bg-white_1 text-[15px] leading-[140%] text-primary'>
+        <button className='py-4 px-10 min-w-80 border border-solid border-primary bg-white_1 text-[15px] leading-[140%] text-primary'>
           비밀번호 변경
         </button>
       </div>
