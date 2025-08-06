@@ -1,4 +1,4 @@
-export type PolicyTermsType = {
+export type PolicyType = {
   title: string;
   content: string;
 };
