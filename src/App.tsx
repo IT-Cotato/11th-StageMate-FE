@@ -1,9 +1,7 @@
 import '@/App.css';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import MainLayout from './layout/MainLayout';
-import MainPage from './pages/MainPage';
 import ArchivePage from './pages/archive/ArchivePage';
-
 import SettingsPage from './pages/SettingsPage';
 import SignupFormPage from './pages/auth/SignupFormPage';
 import LoginPage from './pages/auth/LoginPage';
@@ -27,6 +25,7 @@ import ChatRoomPage from './pages/community/ChatRoomPage';
 import ChatPage from './pages/community/ChatPage';
 import CalendarPage from './pages/calendar/CalendarPage';
 import PerformanceAllPage from './pages/main/PerformanceAllPage';
+import MainPage from './pages/main/MainPage';
 
 function App() {
   return (
