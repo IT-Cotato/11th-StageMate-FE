@@ -5,12 +5,18 @@
 interface CommunityCategoryProps {
   category: string;
   isSelected?: boolean;
+  onClick?: () => void;
 }
 
-const CommunityCategory = ({category, isSelected}: CommunityCategoryProps) => {
+const CommunityCategory = ({
+  category,
+  isSelected,
+  onClick,
+}: CommunityCategoryProps) => {
   return (
     <div
-      className={`flex w-[93px] h-[36px] justify-center items-center rounded-[10px] border-[1px] border-[#7B4CFA] font-semibold bg-[#fff] ${isSelected ? 'bg-primary text-white' : ''}`}>
+      onClick={onClick}
+      className={`flex w-[93px] h-[36px] justify-center items-center rounded-[10px] border-[1px] cursor-pointer border-[#7B4CFA] font-semibold bg-[#fff] ${isSelected ? 'bg-primary text-white' : ''}`}>
       {category}
     </div>
   );
