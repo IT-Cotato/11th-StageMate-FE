@@ -14,9 +14,7 @@ const SettingLayout = () => {
           닉네임
         </h1>
         <SettingTabBar />
-        <div className='px-28'>
-          <Outlet />
-        </div>
+        <Outlet />
       </div>
 
       {/* profile */}

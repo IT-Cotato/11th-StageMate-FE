@@ -11,7 +11,7 @@ const SettingAccountPage = () => {
   return (
     <div className='flex flex-col gap-29'>
       {/* info */}
-      <div className='py-37 px-33 flex flex-col gap-26 bg-[#d9d9d9]'>
+      <div className='mx-28 py-37 px-33 flex flex-col gap-26 bg-[#d9d9d9]'>
         <div className='border-b border-solid border-[#000]'>
           <p>{accountInfo.id || '아이디'}</p>
         </div>
