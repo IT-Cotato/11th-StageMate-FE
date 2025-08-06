@@ -1,9 +1,9 @@
 import ChevronLeft from '@/assets/chevrons/chevron-left.svg?react';
 import HomeOutline from '@/assets/bottomNavigationBar/home-outline.svg?react';
+import {useNavigate} from 'react-router-dom';
 
 export interface PageHeaderProps {
   title?: string;
-  onLeftClick?: () => void;
   onRightClick?: () => void;
   showHomeIcon?: boolean;
   showBottomLine?: boolean;
@@ -12,19 +12,21 @@ export interface PageHeaderProps {
 
 const PageHeader = ({
   title,
-  onLeftClick,
   onRightClick,
   showHomeIcon = true,
   showBottomLine = true,
   className = '',
 }: PageHeaderProps) => {
+  const navigate = useNavigate();
   return (
     <div
       className={`flex flex-col pr-10 pl-6 justify-end items-center shrink-0 bg-white gap-20 z-50 ${className}`}>
       <div className='flex w-full justify-between items-center h-40'>
         <ChevronLeft
-          onClick={onLeftClick}
-          className='w-40 h-40 aspect-square'
+          onClick={() => {
+            navigate(-1);
+          }}
+          className='w-40 h-40 aspect-square cursor-pointer'
         />
         <p className='text-[#141313] text-2xl leading-[140%]'>{title}</p>
         {showHomeIcon ? (
