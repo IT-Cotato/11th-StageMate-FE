@@ -4,15 +4,29 @@ import {useState} from 'react';
 import {ShareTemplate} from '@/constant';
 import ShareBadgeSection from '@/components/community/content/ShareBadgeSection';
 import EditorToggleSection from '@/components/community/content/EditorToggleSection';
+import {useNavigate, useParams} from 'react-router-dom';
+import {
+  categoryList,
+  getCategoryNameFromUrl,
+  getUrlFromCategoryName,
+} from '@/util/categoryMapper';
 
 const CommunityEditPage = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const selectedCategory = '나눔 · 거래'; // 임시 설정
+  const navigate = useNavigate();
+  const {category} = useParams();
+  const rawCategory = getCategoryNameFromUrl(category ?? '');
+  const selectedCategory = rawCategory === 'HOT' ? '일상' : rawCategory;
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
   const [clickedPlayBadge, setClickedPlayBadge] = useState<string | null>(null);
   const [clickedCategoryBadge, setClickedCategoryBadge] = useState<
     string | null
   >(null);
 
+  const handleCategoryClick = (categoryName: string) => {
+    const urlSlug = getUrlFromCategoryName(categoryName);
+    navigate(`/community/${urlSlug}/write`);
+  };
   const togglePlayBadge = (text: string) => {
     setClickedPlayBadge((prev) => (prev === text ? null : text));
   };
@@ -30,13 +44,16 @@ const CommunityEditPage = () => {
     <div className='w-full flex flex-col'>
       <div className='flex flex-row justify-between items-center px-20 py-12'>
         <div className='flex flex-row gap-10'>
-          {['일상', '나눔 · 거래', '꿀팁'].map((category) => (
-            <CommunityCategory
-              key={category}
-              category={category}
-              isSelected={selectedCategory === category}
-            />
-          ))}
+          {categoryList
+            .filter((categoryName) => categoryName !== 'HOT')
+            .map((categoryName) => (
+              <CommunityCategory
+                key={categoryName}
+                category={categoryName}
+                isSelected={selectedCategory === categoryName}
+                onClick={() => handleCategoryClick(categoryName)}
+              />
+            ))}
         </div>
       </div>
 
