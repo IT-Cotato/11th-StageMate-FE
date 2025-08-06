@@ -2,7 +2,6 @@ import '@/App.css';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import MainLayout from './layout/MainLayout';
 import ArchivePage from './pages/archive/ArchivePage';
-import SettingsPage from './pages/SettingsPage';
 import SignupFormPage from './pages/auth/SignupFormPage';
 import LoginPage from './pages/auth/LoginPage';
 import SignupConditionPage from './pages/auth/SignupConditionPage';
@@ -24,6 +23,10 @@ import SearchPage from './pages/SearchPage';
 import ChatRoomPage from './pages/community/ChatRoomPage';
 import ChatPage from './pages/community/ChatPage';
 import CalendarPage from './pages/calendar/CalendarPage';
+import SettingLayout from './layout/SettingLayout';
+import SettingAccountPage from './pages/setting/SettingAccountPage';
+import SettingActivityPage from './pages/setting/SettingActivityPage';
+import SettingSupportPage from './pages/setting/SettingSupportPage';
 import PerformanceAllPage from './pages/main/PerformanceAllPage';
 import MainPage from './pages/main/MainPage';
 
@@ -50,14 +53,20 @@ function App() {
             <Route path='/community/:category' element={<FilteredPostList />} />
             <Route path='/magazine' element={<MagazinePage />} />
             <Route path='/chat' element={<ChatPage />} />
-            <Route path='/chatRoom/:id' element={<ChatRoomPage />} />{' '}
+            <Route path='/chatRoom/:id' element={<ChatRoomPage />} />
             <Route path='/performance' element={<PerformanceAllPage />} />
+
+            {/* settings */}
+            <Route path='/settings' element={<SettingLayout />}>
+              <Route path='account' element={<SettingAccountPage />} />
+              <Route path='activity' element={<SettingActivityPage />} />
+              <Route path='support' element={<SettingSupportPage />} />
+            </Route>
           </Route>
           <Route
             path='/magazine/:magazineId'
             element={<MagazineDetailPage />}
           />
-          <Route path='/settings' element={<SettingsPage />} />
         </Route>
 
         {/* NavigationBar가 없어야하는 페이지 */}
