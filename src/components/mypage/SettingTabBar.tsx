@@ -32,7 +32,7 @@ const SettingTabBar = () => {
   return (
     <div className='w-full'>
       {/* tab line */}
-      <div className='w-full h-2 bg-gray-3 relative'>
+      <div className='w-full h-2 mb-8 bg-gray-3 relative'>
         <div
           className={`w-1/3 h-2 bg-secondary absolute transition-all duration-300 ease-in-out`}
           style={{left: `${translateX}%`}}
