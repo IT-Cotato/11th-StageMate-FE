@@ -33,6 +33,7 @@ import AnnouncementPage from './pages/setting/AnnouncementPage';
 import AnnouncementDetailPage from './pages/setting/AnnouncementDetailPage';
 import PolicyTermsPage from './pages/setting/PolicyTermsPage';
 import PolicyPrivacyPage from './pages/setting/PolicyPrivacyPage';
+import EnquirePage from './pages/setting/EnquirePage';
 
 function App() {
   return (
@@ -78,6 +79,7 @@ function App() {
             path='/settings/announcement/:id'
             element={<AnnouncementDetailPage />}
           />
+          <Route path='/settings/enquire' element={<EnquirePage />} />
           <Route path='/settings/policy-terms' element={<PolicyTermsPage />} />
           <Route
             path='/settings/policy-privacy'
