@@ -29,6 +29,7 @@ import SettingActivityPage from './pages/setting/SettingActivityPage';
 import SettingSupportPage from './pages/setting/SettingSupportPage';
 import PerformanceAllPage from './pages/main/PerformanceAllPage';
 import MainPage from './pages/main/MainPage';
+import AnnouncementPage from './pages/setting/AnnouncementPage';
 
 function App() {
   return (
@@ -67,6 +68,9 @@ function App() {
             path='/magazine/:magazineId'
             element={<MagazineDetailPage />}
           />
+
+          {/* settings */}
+          <Route path='/settings/announcement' element={<AnnouncementPage />} />
         </Route>
 
         {/* NavigationBar가 없어야하는 페이지 */}

@@ -1,11 +1,16 @@
 import ChevronRight from '@/assets/arrows/chevron-right.svg?react';
+import {useNavigate} from 'react-router-dom';
 
 const SettingSupportPage = () => {
+  const navigate = useNavigate();
+
   return (
     <div className='flex flex-col gap-29'>
       {/* info */}
       <div className='mx-28 py-37 px-33 flex flex-col bg-[#d9d9d9]'>
-        <div className='flex justify-between items-center hover:cursor-pointer'>
+        <div
+          className='flex justify-between items-center hover:cursor-pointer'
+          onClick={() => navigate('/settings/announcement')}>
           <p className='text-xl font-semibold leading-[140%]'>공지사항</p>
           <ChevronRight className='w-30 h-30' />
         </div>
