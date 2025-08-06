@@ -32,6 +32,7 @@ import MainPage from './pages/main/MainPage';
 import AnnouncementPage from './pages/setting/AnnouncementPage';
 import AnnouncementDetailPage from './pages/setting/AnnouncementDetailPage';
 import PolicyTermsPage from './pages/setting/PolicyTermsPage';
+import PolicyPrivacyPage from './pages/setting/PolicyPrivacyPage';
 
 function App() {
   return (
@@ -78,6 +79,10 @@ function App() {
             element={<AnnouncementDetailPage />}
           />
           <Route path='/settings/policy-terms' element={<PolicyTermsPage />} />
+          <Route
+            path='/settings/policy-privacy'
+            element={<PolicyPrivacyPage />}
+          />
         </Route>
 
         {/* NavigationBar가 없어야하는 페이지 */}
