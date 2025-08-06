@@ -1,4 +1,4 @@
-import {NavLink} from 'react-router-dom';
+import {NavLink, useLocation} from 'react-router-dom';
 
 const TabMenu = [
   {
@@ -16,11 +16,27 @@ const TabMenu = [
 ];
 
 const SettingTabBar = () => {
+  const location = useLocation();
+
+  /**
+   * 현재 TabMenu 경로가 TabMenu의 몇 번째 index인지 반환하는 함수
+   */
+  const getCurrentIndex = () => {
+    const currentPath = location.pathname;
+    return TabMenu.findIndex((menu) => menu.path === currentPath);
+  };
+
+  const activeIndex = getCurrentIndex();
+  const translateX = activeIndex >= 0 ? (activeIndex * 100) / 3 : 0;
+
   return (
     <div className='w-full'>
       {/* tab line */}
       <div className='w-full h-2 bg-gray-3 relative'>
-        <div className='w-1/3 h-2 bg-secondary absolute' />
+        <div
+          className={`w-1/3 h-2 bg-secondary absolute transition-all duration-300 ease-in-out`}
+          style={{left: `${translateX}%`}}
+        />
       </div>
 
       {/* menu */}
