@@ -5,8 +5,10 @@ import {useNavigate, useParams} from 'react-router-dom';
 import PostListItem from './PostListItem';
 import {mockPosts} from '@/mocks/mockPosts';
 import {useMemo} from 'react';
-import {CATEGORY_MAP} from '@/types/categoryMap';
-import type {CategoryKey, CategoryLabel} from '@/types/categoryMap';
+import {
+  getCategoryNameFromUrl,
+  getUrlFromCategoryName,
+} from '@/util/categoryMapper';
 import useCommunityNavigation from '@/hooks/useCommunityNavigation';
 
 const FilteredPostList = () => {
@@ -14,12 +16,7 @@ const FilteredPostList = () => {
   const navigate = useNavigate();
   const {goToPostDetail} = useCommunityNavigation();
 
-  const categoryLabel: CategoryLabel | null = useMemo(() => {
-    if (category && category in CATEGORY_MAP) {
-      return CATEGORY_MAP[category as CategoryKey];
-    }
-    return null;
-  }, [category]);
+  const categoryLabel = category ? getCategoryNameFromUrl(category) : null;
 
   const filteredPosts = useMemo(() => {
     return categoryLabel
@@ -52,7 +49,11 @@ const FilteredPostList = () => {
         {/* 오른쪽: 게시글 작성 버튼 */}
         <button
           className='flex items-center gap-[8px] cursor-pointer'
-          onClick={() => navigate(`/community/${category}/write`)}>
+          onClick={() =>
+            navigate(
+              `/community/${getUrlFromCategoryName(categoryLabel)}/write`
+            )
+          }>
           <div className='w-[19px] h-[19px]'>
             <WritePost className='w-full h-full' />
           </div>
@@ -63,7 +64,8 @@ const FilteredPostList = () => {
       {/* 게시글 리스트 */}
       <div className='flex flex-col mt-[22px] gap-[19px]'>
         {filteredPosts.map((post) => {
-          const handleClick = () => goToPostDetail(category as string, post.id);
+          const handleClick = () =>
+            goToPostDetail(getUrlFromCategoryName(categoryLabel), post.id);
           return (
             <PostListItem key={post.id} post={post} onClick={handleClick} />
           );
