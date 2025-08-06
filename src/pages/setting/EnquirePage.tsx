@@ -6,6 +6,7 @@ import useClickOutside from '@/hooks/useClickOutside';
 
 const EnquirePage = () => {
   const [openDropdown, setOpenDropdown] = useState<boolean>(false);
+  const [category, setCategory] = useState<string>('');
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useClickOutside({
@@ -38,10 +39,15 @@ const EnquirePage = () => {
             <div
               className='h-25 border border-solid border-[#000] focus:outline-0 text-[#000] text-xl leading-[110%] flex justify-between items-center overflow-hidden'
               onClick={() => setOpenDropdown((prev) => !prev)}>
-              <p>선택된 내용</p>
+              <p>{category}</p>
               <ChevronRight className='rotate-90 w-30 h-30' />
             </div>
-            {openDropdown && <CategoryDropdown />}
+            {openDropdown && (
+              <CategoryDropdown
+                setCategory={setCategory}
+                setOpenDropdown={setOpenDropdown}
+              />
+            )}
           </div>
         </div>
 
@@ -76,11 +82,23 @@ const EnquirePage = () => {
   );
 };
 
-const CategoryDropdown = () => {
+const CategoryDropdown = ({
+  setCategory,
+  setOpenDropdown,
+}: {
+  setCategory: (category: string) => void;
+  setOpenDropdown: (open: boolean) => void;
+}) => {
   return (
     <div className='absolute w-full grow flex flex-col py-3 px-7 bg-[#e7e7e7]'>
       {enquiryCategories.map((category) => (
-        <p key={category.id} className='hover:cursor-pointer'>
+        <p
+          key={category.id}
+          className='hover:cursor-pointer'
+          onClick={() => {
+            setCategory(category.category);
+            setOpenDropdown(false);
+          }}>
           {category.category}
         </p>
       ))}
