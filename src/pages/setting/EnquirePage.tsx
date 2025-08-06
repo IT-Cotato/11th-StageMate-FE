@@ -1,8 +1,18 @@
 import BackButtonTitleHeader from '@/components/global/BackButtonTitleHeader';
 import ChevronRight from '@/assets/arrows/chevron-right.svg?react';
 import {enquiryCategories} from '@/constants/enquiry';
+import {useRef, useState} from 'react';
+import useClickOutside from '@/hooks/useClickOutside';
 
 const EnquirePage = () => {
+  const [openDropdown, setOpenDropdown] = useState<boolean>(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useClickOutside({
+    ref: dropdownRef,
+    onClickOutside: () => setOpenDropdown(false),
+  });
+
   return (
     <div>
       {/* header */}
@@ -24,12 +34,14 @@ const EnquirePage = () => {
           <p className='text-[#000] text-xl font-medium leading-[110%]'>
             카테고리
           </p>
-          <div className='relative max-w-436 grow'>
-            <div className='h-25 border border-solid border-[#000] focus:outline-0 text-[#000] text-xl leading-[110%] flex justify-between items-center overflow-hidden'>
+          <div ref={dropdownRef} className='relative max-w-436 grow'>
+            <div
+              className='h-25 border border-solid border-[#000] focus:outline-0 text-[#000] text-xl leading-[110%] flex justify-between items-center overflow-hidden'
+              onClick={() => setOpenDropdown((prev) => !prev)}>
               <p>선택된 내용</p>
               <ChevronRight className='rotate-90 w-30 h-30' />
             </div>
-            <CategoryDropdown />
+            {openDropdown && <CategoryDropdown />}
           </div>
         </div>
 
