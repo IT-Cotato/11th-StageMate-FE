@@ -12,6 +12,7 @@ interface PostCardItemProps {
   price?: number | string;
   category: string;
   isBookmarked: boolean;
+  isScrapMagazine?: boolean;
   placeholderText: string;
   onClick?: () => void;
 }
@@ -22,12 +23,15 @@ const PostCardItem = ({
   price,
   category,
   isBookmarked,
+  isScrapMagazine = false,
   placeholderText,
   onClick,
 }: PostCardItemProps) => {
   return (
     <li className='flex flex-col cursor-pointer' onClick={onClick}>
-      <div className='relative sm:w-[204px] sm:h-[209px] w-150 h-150 bg-gray-1 rounded-[7px]'>
+      <div
+        className={`relative 
+        ${isScrapMagazine ? 'sm:w-[160px]' : 'sm:w-[204px]'} sm:h-[209px] w-150 h-150 bg-gray-1 rounded-[7px]`}>
         <BookMark
           className={`absolute top-9 right-9 ${isBookmarked ? 'text-secondary' : ''}`}
         />
