@@ -26,20 +26,24 @@ const PostListItem = ({post, onClick}: PostListItemProps) => {
         />
 
         {/* 오른쪽: 좋아요 + 댓글 */}
-        <div className='flex items-center justify-center gap-4 text-sm text-gray-500'>
+        <div className='flex items-center justify-center gap-16 text-sm text-gray-500'>
           <span className='flex flex-col items-center gap-[3px]'>
-            {post.isLiked ? (
-              <FullHeart className='w-[30px] h-[30px]' />
-            ) : (
-              <EmptyHeart className='w-[30px] h-[30px] stroke-secondary' />
-            )}
-            <span className='text-black font-normal leading-[140%]'>
+            <span className='w-20 h-20 flex items-center justify-center'>
+              {post.isLiked ? (
+                <FullHeart className='w-full h-full' />
+              ) : (
+                <EmptyHeart className='w-full h-full stroke-secondary' />
+              )}
+            </span>
+            <span className='text-black font-normal text-[12px] leading-[140%]'>
               {post.likeCount}
             </span>
           </span>
           <span className='flex flex-col items-center gap-[3px]'>
-            <Chat className='w-[30px] h-[30px] text-secondary' />
-            <span className='text-black font-normal leading-[140%]'>
+            <span className='w-20 h-20 flex items-center justify-center'>
+              <Chat className='w-full h-full text-secondary mb-[2px]' />
+            </span>
+            <span className='text-black font-normal text-[12px] leading-[140%]'>
               {post.commentCount}
             </span>
           </span>
