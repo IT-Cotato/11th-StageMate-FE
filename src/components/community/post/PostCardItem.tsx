@@ -41,7 +41,7 @@ const PostCardItem = ({
 
       <div className='w-full h-[56px] flex flex-col'>
         {price !== undefined ? (
-          <div className='text-[18px] font-semibold'>
+          <div className='text-[16px] font-semibold'>
             {price === 0
               ? '무료 나눔'
               : typeof price === 'string'
@@ -50,11 +50,11 @@ const PostCardItem = ({
           </div>
         ) : (
           subtitle && (
-            <h2 className='font-semibold sm:text-[18px] text-xs'>{subtitle}</h2>
+            <h2 className='font-semibold sm:text-[16px] text-xs'>{subtitle}</h2>
           )
         )}
 
-        <h1 className='sm:w-[204px] w-100 font-normal sm:text-[22px] text-sm truncate'>
+        <h1 className='sm:w-[204px] w-100 font-normal sm:text-[20px] text-sm truncate'>
           {title}
         </h1>
       </div>
