@@ -21,7 +21,7 @@ type Selectable = {
 type PerformanceCardProps = BaseProps & (External | Selectable);
 
 const baseWrapper =
-  'group flex flex-col justify-start block sm:w-180 w-110 sm:h-[314px] rounded-[20px] bg-white transition duration-200 border border-transparent hover:border-primary hover:bg-primary-5';
+  'group flex flex-col justify-start block sm:w-180 w-110 sm:h-[314px] rounded-[20px] text-center transition duration-200 border border-transparent hover:border-primary hover:bg-primary-5';
 
 const CardContent = ({
   performanceName,
