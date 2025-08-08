@@ -46,7 +46,6 @@ const CalendarReportPage = () => {
           className='bg-gray-1 placeholder:text-gray-2 px-17 py-16 rounded-[10px]'
           placeholder='공연 제목을 입력해주세요(필수)'
         />
-
         {/* 설명 */}
         <div className='flex flex-col gap-7'>
           <textarea
@@ -63,7 +62,6 @@ const CalendarReportPage = () => {
             <span>{description.length}/100</span>
           </div>
         </div>
-
         {/* 장소 */}
         <div
           onClick={() => navigate('/calendar/report/location')}
@@ -74,7 +72,6 @@ const CalendarReportPage = () => {
             <span className='text-gray-2'>장소를 입력해주세요.</span>
           )}
         </div>
-
         {/* URL */}
         <input
           type='text'
@@ -83,7 +80,6 @@ const CalendarReportPage = () => {
           placeholder='관련 URL을 입력해주세요.'
           className='px-17 py-16 rounded-[10px] bg-gray-1  placeholder:text-gray-2 border-0'
         />
-
         <div
           onClick={() => navigate('/calendar/report/performance')}
           className='px-17 py-16 h-[260] rounded-[10px] bg-gray-1 border-0 text-left cursor-pointer'>
@@ -96,7 +92,6 @@ const CalendarReportPage = () => {
             </div>
           )}
         </div>
-
         {/* 날짜 선택 */}
         <div
           onClick={() => setIsDateModalOpen(true)}
@@ -110,7 +105,6 @@ const CalendarReportPage = () => {
             </div>
           )}
         </div>
-
         {/* 장르 선택 */}
         <div
           onClick={() => setIsGenreModalOpen(true)}
@@ -133,9 +127,13 @@ const CalendarReportPage = () => {
             </div>
           )}
         </div>
-
         {/* 제출 버튼 */}
-        <ButtonFill text='제보하기' onClick={() => {}} />
+        <ButtonFill
+          text='제보하기'
+          onClick={() => {
+            navigate(-1);
+          }}
+        />
       </div>
 
       <div className='fixed bottom-0 left-1/2 -translate-x-1/2 z-40 rounded-[10px] w-full max-w-[600px]'>
