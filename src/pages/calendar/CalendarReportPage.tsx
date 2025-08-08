@@ -7,6 +7,7 @@ import SelectDateModal from '@/components/modal/SelectDateModal';
 import SelectGenreModal from '@/components/modal/SelectGenreModal';
 import {useNavigate} from 'react-router-dom';
 import ChevronUp from '@/assets/chevrons/chevron-up.svg?react';
+import TagBadge from '@/components/global/TagBadge';
 
 const CalendarReportPage = () => {
   const {setHeaderProps} = useOutletContext<{
@@ -94,9 +95,18 @@ const CalendarReportPage = () => {
         {/* 장르 선택 */}
         <div
           onClick={() => setIsGenreModalOpen(true)}
-          className='px-17 py-16 rounded-[10px] bg-gray-1 border-0 text-left cursor-pointer'>
+          className='px-[17px] py-[16px] rounded-[10px] bg-gray-1 border-0 text-left cursor-pointer'>
           {form.genre && form.genre.length > 0 ? (
-            <span className='text-black'>{form.genre.join(', ')}</span>
+            <div className='flex flex-wrap gap-[10px] pointer-events-none'>
+              {form.genre.map((g) => (
+                <TagBadge
+                  key={g}
+                  label={`#${g}`}
+                  size='large'
+                  variant='filled'
+                />
+              ))}
+            </div>
           ) : (
             <span className='text-gray-2'>카테고리를 선택해주세요.</span>
           )}

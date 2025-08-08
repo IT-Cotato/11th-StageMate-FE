@@ -33,10 +33,22 @@ const CalendarPage = () => {
   const [selectedMonth, setSelectedMonth] = useState(today.getMonth() + 1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
+  const [selectedGenres, setSelectedGenres] = useState<Set<string>>(new Set()); // 추가된 장르들을 위한 상태
   const [modalStep, setModalStep] = useState<'selectDate' | 'selectGenre'>(
     'selectDate'
   );
-  const [addedGenres, setAddedGenres] = useState<Set<string>>(new Set());
+
+  const toggleGenre = (genre: string) => {
+    setSelectedGenres((prevGenres) => {
+      const newGenres = new Set(prevGenres);
+      if (newGenres.has(genre)) {
+        newGenres.delete(genre);
+      } else {
+        newGenres.add(genre);
+      }
+      return newGenres;
+    });
+  };
 
   const events = useMemo(
     () =>
@@ -72,9 +84,9 @@ const CalendarPage = () => {
     const dateCategories = new Set(
       allSchedulesForDate.map((schedule) => schedule.category)
     );
-    const allCategories = new Set([...dateCategories, ...addedGenres]);
+    const allCategories = new Set([...dateCategories, ...selectedGenres]);
     return [...allCategories];
-  }, [allSchedulesForDate, addedGenres]);
+  }, [allSchedulesForDate, selectedGenres]);
 
   const handleDateClick = (date: Date) => {
     window.scrollTo(0, 0);
@@ -153,6 +165,7 @@ const CalendarPage = () => {
                   <TagBadge
                     key={category}
                     label={category}
+                    size='small'
                     variant={selectedGenre === category ? 'filled' : 'outlined'}
                     onClick={() =>
                       setSelectedGenre((prev) =>
@@ -211,13 +224,8 @@ const CalendarPage = () => {
               className='fixed bottom-0 left-1/2 -translate-x-1/2 z-50 w-[600px]'
               onClick={(e) => e.stopPropagation()}>
               <SelectGenreModal
-                selectedGenre={selectedGenre}
-                setSelectedGenre={(genre: string | null) => {
-                  if (genre) {
-                    setAddedGenres((prev) => new Set([...prev, genre]));
-                    setSelectedGenre(null);
-                  }
-                }}
+                selectedGenre={[...selectedGenres]}
+                setSelectedGenre={(genre) => toggleGenre(genre)}
                 onClose={closeModal}
               />
             </div>
