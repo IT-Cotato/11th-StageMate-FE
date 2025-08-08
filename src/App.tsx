@@ -62,6 +62,7 @@ function App() {
               element={<CalendarReportPerformancePage />}
             />
             <Route path='/calendar' element={<CalendarPage />} />
+            <Route path='/performance' element={<PerformanceAllPage />} />
           </Route>
           <Route element={<CommunityMainLayout />}>
             <Route path='/community' element={<CommunityMainPage />} />
@@ -69,7 +70,6 @@ function App() {
             <Route path='/magazine' element={<MagazinePage />} />
             <Route path='/chat' element={<ChatPage />} />
             <Route path='/chatRoom/:id' element={<ChatRoomPage />} />
-            <Route path='/performance' element={<PerformanceAllPage />} />
 
             {/* settings */}
             <Route path='/settings' element={<SettingLayout />}>
