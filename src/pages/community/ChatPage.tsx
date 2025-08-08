@@ -7,7 +7,7 @@ const ChatPage = () => {
   const {goToChatRoomDetail} = useCommunityNavigation();
 
   return (
-    <div>
+    <div className='px-16'>
       {/* 헤더 */}
       <div className='flex justify-between items-center'>
         <h1 className='p-10 text-[#000] text-3xl font-bold leading-[140%]'>

@@ -33,14 +33,16 @@ const PageHeader = ({
       <div className='flex w-full justify-between items-center h-40'>
         <ChevronLeft
           onClick={handleLeftClick}
-          className='w-40 h-40 aspect-square cursor-pointer'
+          className='sm:w-40 sm:h-40 w-30 aspect-square'
         />
-        <p className='text-[#141313] text-2xl leading-[140%]'>{title}</p>
+        <p className='text-[#141313] sm:text-2xl text-xl leading-[140%]'>
+          {title}
+        </p>
         {showHomeIcon ? (
           <div className='flex justify-center items-center w-40 h-40'>
             <HomeOutline
               onClick={onRightClick}
-              className='w-[22.289px] h-[20.802px]'
+              className='sm:w-[22.289px] sm:h-[20.802px] w-17 shrink-0 aspect-[22.29/20.80]'
             />
           </div>
         ) : (
@@ -51,7 +53,7 @@ const PageHeader = ({
       {showBottomLine && (
         <div
           className='w-full h-3 shrink-0 
-    bg-[linear-gradient(90deg,var(--color-white)_0%,var(--color-primary-2)_31.73%,var(--color-primary-2)_75.48%,var(--color-white)_100%)]'
+          bg-linear-[90deg,var(--color-white)_0%,var(--color-primary-2)_31.73%,var(--color-primary-2)_75.48%,var(--color-white)_100%]'
         />
       )}
     </div>

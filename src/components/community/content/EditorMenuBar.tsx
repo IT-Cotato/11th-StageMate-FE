@@ -27,9 +27,9 @@ const EditorMenuBar = ({editor, onImageUpload}: EditorMenuBarProps) => {
   });
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [hasLink, setHasLink] = useState(false);
+  const [hasLink, setHasLink] = useState<boolean>(false);
 
-  const [showFontSizePicker, setShowFontSizePicker] = useState(false);
+  const [showFontSizePicker, setShowFontSizePicker] = useState<boolean>(false);
   const fontSizePickerRef = useRef<HTMLDivElement>(null);
 
   const baseButtonClass =
@@ -39,6 +39,7 @@ const EditorMenuBar = ({editor, onImageUpload}: EditorMenuBarProps) => {
     ref: fontSizePickerRef,
     onClickOutside: () => setShowFontSizePicker(false),
   });
+
   useEffect(() => {
     if (!editor) return;
 
@@ -110,22 +111,22 @@ const EditorMenuBar = ({editor, onImageUpload}: EditorMenuBarProps) => {
       />
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
-        className={`${activeMarks.bold ? 'bg-gray-1 rounded-[5px]' : ''} ${baseButtonClass}`}>
+        className={`${activeMarks.bold ? 'bg-gray-200/50 rounded-[5px]' : ''} ${baseButtonClass}`}>
         <BoldIcon className='w-25 h-25 sm:w-30 sm:h-30' />
       </button>
       <button
         onClick={() => editor.chain().focus().toggleUnderline().run()}
-        className={`${activeMarks.underline ? 'bg-gray-1 rounded-[5px]' : ''} ${baseButtonClass}`}>
+        className={`${activeMarks.underline ? 'bg-gray-200/50 rounded-[5px]' : ''} ${baseButtonClass}`}>
         <UnderlineIcon className='w-25 h-25 sm:w-30 sm:h-30' />
       </button>
       <button
         onClick={() => editor.chain().focus().toggleItalic().run()}
-        className={`${activeMarks.italic ? 'bg-gray-1 rounded-[5px]' : ''} ${baseButtonClass}`}>
+        className={`${activeMarks.italic ? 'bg-gray-200/50 rounded-[5px]' : ''} ${baseButtonClass}`}>
         <ItalicIcon className='w-25 h-25 sm:w-30 sm:h-30' />
       </button>
       <button
         onClick={() => editor.chain().focus().toggleStrike().run()}
-        className={`${activeMarks.strike ? 'bg-gray-1 rounded-[5px]' : ''} ${baseButtonClass}`}>
+        className={`${activeMarks.strike ? 'bg-gray-200/50 rounded-[5px]' : ''} ${baseButtonClass}`}>
         <CrossIcon className='w-17 h-17 sm:w-22 sm:h-22' />
       </button>
 
@@ -133,7 +134,9 @@ const EditorMenuBar = ({editor, onImageUpload}: EditorMenuBarProps) => {
       <button
         onClick={() => editor.chain().focus().setTextAlign('left').run()}
         className={`${
-          editor.isActive({textAlign: 'left'}) ? 'bg-gray-1 rounded-[5px]' : ''
+          editor.isActive({textAlign: 'left'})
+            ? 'bg-gray-200/50 rounded-[5px]'
+            : ''
         } ${baseButtonClass}`}>
         <TextLeftIcon className='w-25 h-25 sm:w-30 sm:h-30' />
       </button>
@@ -141,7 +144,7 @@ const EditorMenuBar = ({editor, onImageUpload}: EditorMenuBarProps) => {
         onClick={() => editor.chain().focus().setTextAlign('center').run()}
         className={`${
           editor.isActive({textAlign: 'center'})
-            ? 'bg-gray-1 rounded-[5px]'
+            ? 'bg-gray-200/50 rounded-[5px]'
             : ''
         } ${baseButtonClass}`}>
         <TextCenterIcon className='w-25 h-25 sm:w-30 sm:h-30' />
@@ -149,14 +152,16 @@ const EditorMenuBar = ({editor, onImageUpload}: EditorMenuBarProps) => {
       <button
         onClick={() => editor.chain().focus().setTextAlign('right').run()}
         className={`${
-          editor.isActive({textAlign: 'right'}) ? 'bg-gray-1 rounded-[5px]' : ''
+          editor.isActive({textAlign: 'right'})
+            ? 'bg-gray-200/50 rounded-[5px]'
+            : ''
         } ${baseButtonClass}`}>
         <TextRightIcon className='w-25 h-25 sm:w-30 sm:h-30' />
       </button>
       {/* 링크 */}
       <button
         onClick={addLink}
-        className={`${hasLink ? 'bg-gray-1 rounded-[5px]' : ''} ${baseButtonClass}`}>
+        className={`${hasLink ? 'bg-gray-200/50 rounded-[5px]' : ''} ${baseButtonClass}`}>
         <LinkIcon className='w-25 h-25 sm:w-30 sm:h-30' />
       </button>
       {/* 폰트 사이즈 선택기 */}
@@ -167,14 +172,22 @@ const EditorMenuBar = ({editor, onImageUpload}: EditorMenuBarProps) => {
             ['12px', '16px', '20px', '24px'].some((size) =>
               editor?.isActive('textStyle', {fontSize: size})
             )
-              ? 'bg-gray-1 rounded-[5px]'
+              ? 'bg-gray-200/50 rounded-[5px]'
               : ''
           }`}>
           <TextSizeIcon className='w-25 h-25 sm:w-30 sm:h-30' />
         </button>
 
         {showFontSizePicker && (
-          <div className='absolute top-full left-0 z-20 mt- h-[210px] overflow-y-auto bg-white p-2 rounded shadow-lg w-[70px] text-sm'>
+          <div
+            style={{
+              overflowY: 'scroll',
+              scrollbarWidth: 'thin',
+            }}
+            className='absolute top-full left-0 z-20 mt-1 h-[210px] bg-white p-2 rounded shadow-lg w-[70px] text-sm'>
+            <div className='w-full px-3 py-3 text-center text-gray-400 cursor-default select-none text-[12px]'>
+              글자 크기
+            </div>
             {[
               '11px',
               '13px',
@@ -190,7 +203,7 @@ const EditorMenuBar = ({editor, onImageUpload}: EditorMenuBarProps) => {
               <button
                 key={size}
                 onClick={() => changeFontSize(size)}
-                className='w-full px-3 py-3 text-center hover:bg-gray-1 rounded'>
+                className='w-full px-3 py-3 text-center hover:bg-gray-200/50 hover:font-semibold rounded'>
                 {size}
               </button>
             ))}

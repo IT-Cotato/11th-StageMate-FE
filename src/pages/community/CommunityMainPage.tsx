@@ -12,7 +12,7 @@ const CommunityMainPage = () => {
   const {goToCommunityCategory} = useCommunityListNavigation();
 
   return (
-    <div className='flex flex-col gap-30 mb-12'>
+    <div className='flex flex-col gap-30 mb-12 px-16'>
       {/** hot 게시물 */}
       <PostList
         icon={<Rocket />}
