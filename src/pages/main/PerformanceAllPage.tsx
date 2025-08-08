@@ -29,7 +29,7 @@ const PerformanceAllPage = () => {
         setSelectedSubCategory={setSelectedSubCategory}
       />
 
-      <PerformanceCardList />
+      <PerformanceCardList mode='external' />
     </div>
   );
 };
