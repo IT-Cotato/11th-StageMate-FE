@@ -19,13 +19,17 @@ const PerformanceCard = ({
   url,
 }: PerformanceProps) => {
   return (
-    <div className='sm:w-180 w-110 sm:h-[314px] flex flex-col gap-2 text-center'>
-      {/** 이미지 클릭 시 예매 url 링크 연동 */}
+    <div
+      className='
+  group sm:w-180 w-110 sm:h-[314px] flex flex-col gap-2 text-center
+  rounded-[20px] hover:bg-primary-5 hover:border hover:border-primary
+  transition duration-200
+'>
       <a href={url} target='_blank' rel='noopener noreferrer'>
         <img
           src={imageUrl}
           alt={performanceName}
-          className='sm:w-180 w-110 sm:h-200 object-cover rounded-[20px] hover:opacity-80 transition-opacity duration-200'
+          className='sm:w-180 w-110 sm:h-200 object-cover rounded-[20px] p-4'
         />
       </a>
       <p className='font-bold sm:text-[16px] text-[12px] truncate'>
