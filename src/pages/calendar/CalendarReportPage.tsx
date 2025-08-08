@@ -78,6 +78,19 @@ const CalendarReportPage = () => {
           className='px-17 py-16 rounded-[10px] bg-gray-1  placeholder:text-gray-2 border-0'
         />
 
+        <div
+          onClick={() => navigate('/calendar/report/performance')}
+          className='px-17 py-16 h-[260] rounded-[10px] bg-gray-1 border-0 text-left cursor-pointer'>
+          {form.performance ? (
+            <span className='text-black'>{form.performance}</span>
+          ) : (
+            <div className='flex justify-between'>
+              <span className='text-gray-2'>관련 공연을 선택해 주세요.</span>
+              <ChevronUp className='text-gray-2' />
+            </div>
+          )}
+        </div>
+
         {/* 날짜 선택 */}
         <div
           onClick={() => setIsDateModalOpen(true)}
@@ -108,7 +121,10 @@ const CalendarReportPage = () => {
               ))}
             </div>
           ) : (
-            <span className='text-gray-2'>카테고리를 선택해주세요.</span>
+            <div className='flex justify-between'>
+              <span className='text-gray-2'>카테고리를 선택해주세요.</span>
+              <ChevronUp className='text-gray-2' />
+            </div>
           )}
         </div>
 
