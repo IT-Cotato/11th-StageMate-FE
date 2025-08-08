@@ -14,15 +14,21 @@ const CalendarReportPage = () => {
     setHeaderProps: React.Dispatch<React.SetStateAction<PageHeaderProps>>;
   }>();
 
+  const {resetForm} = useReportFormStore();
+  const navigate = useNavigate();
+
   useEffect(() => {
     setHeaderProps({
       title: '공연 일정 제보하기',
       showHomeIcon: false,
       showBottomLine: false,
+      onLeftClick: () => {
+        resetForm();
+        navigate(-1);
+      },
     });
-  }, [setHeaderProps]);
+  }, [setHeaderProps, resetForm, navigate]);
 
-  const navigate = useNavigate();
   const {form, setForm, setDate, toggleGenre} = useReportFormStore();
   const [description, setDescription] = useState(form.description ?? '');
   const [isDateModalOpen, setIsDateModalOpen] = useState(false);
