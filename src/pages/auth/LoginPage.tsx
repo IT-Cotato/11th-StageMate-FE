@@ -36,12 +36,12 @@ const LoginPage = () => {
             <input
               type='text'
               placeholder='ID'
-              className='flex h-60 py-16 px-17 items-center gap-10 self-stretch bg-gray-1 placeholder:text-[#918F9D] placeholder:text-xl placeholder:leading-[140%]'
+              className='flex h-60 py-16 px-17 items-center gap-10 self-stretch bg-gray-1 placeholder:text-[#918F9D] placeholder:text-xl placeholder:leading-[140%] focus:outline-0'
             />
             <input
               type='password'
               placeholder='PW'
-              className='flex h-60 py-16 px-17 items-center gap-10 self-stretch bg-gray-1 placeholder:text-[#918F9D] placeholder:text-xl placeholder:leading-[140%]'
+              className='flex h-60 py-16 px-17 items-center gap-10 self-stretch bg-gray-1 placeholder:text-[#918F9D] placeholder:text-xl placeholder:leading-[140%] focus:outline-0'
             />
           </div>
 
