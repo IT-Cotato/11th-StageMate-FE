@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type {SignupInfoType, VerifyCodeType} from '@/types/auth';
-import {publicAxios} from './axios';
+import type {LoginInfoType, SignupInfoType, VerifyCodeType} from '@/types/auth';
+import {privateAxios, publicAxios} from './axios';
 import {ENDPOINT} from './urls';
 import getErrorMessage from '@/util/getErrorMessage';
 
@@ -116,6 +116,50 @@ export const postSignupInfo = async (data: SignupInfoType) => {
     localStorage.setItem('refreshToken', refreshToken);
 
     return response.data.data;
+  } catch (error: any) {
+    // const status = error.response.data.status;
+    const code = error.response.data.code;
+    const errorMessage = getErrorMessage(code);
+    console.error('An unexpected error occurred:', error);
+    throw new Error(errorMessage);
+  }
+};
+
+export const postLogin = async (data: LoginInfoType) => {
+  try {
+    const response = await publicAxios.post(ENDPOINT.AUTH_LOGIN, data);
+    const {accessToken, refreshToken} = response.data.data;
+
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
+
+    return response.data.data;
+  } catch (error: any) {
+    // const status = error.response.data.status;
+    const code = error.response.data.code;
+    const errorMessage = getErrorMessage(code);
+    console.error('An unexpected error occurred:', error);
+    throw new Error(errorMessage);
+  }
+};
+
+export const postLogout = async () => {
+  try {
+    const response = await privateAxios.post(ENDPOINT.AUTH_LOGOUT);
+    return response;
+  } catch (error: any) {
+    // const status = error.response.data.status;
+    const code = error.response.data.code;
+    const errorMessage = getErrorMessage(code);
+    console.error('An unexpected error occurred:', error);
+    throw new Error(errorMessage);
+  }
+};
+
+export const deleteWithdraw = async () => {
+  try {
+    const response = await privateAxios.delete(ENDPOINT.AUTH_WITHDRAW);
+    return response;
   } catch (error: any) {
     // const status = error.response.data.status;
     const code = error.response.data.code;

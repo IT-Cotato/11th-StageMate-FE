@@ -13,6 +13,15 @@ export const ENDPOINT = {
   AUTH_EMAIL_VERIFY_CODE: 'api/v1/email/verify-code',
   AUTH_SIGNUP_INFO: 'api/v1/auth/sign-up/info',
 
+  // login
+  AUTH_LOGIN: 'api/v1/auth/login',
+
+  // logout
+  AUTH_LOGOUT: 'api/v1/auth/logout',
+
+  // withdraw
+  AUTH_WITHDRAW: 'api/v1/auth/withdraw',
+
   // mypage
   MYPAGE_INFO: 'api/v1/mypage/account-info',
 };
