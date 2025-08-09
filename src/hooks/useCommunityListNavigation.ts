@@ -12,7 +12,7 @@ const useCommunityListNavigation = () => {
   };
 
   const goToShareList = () => {
-    navigate('/share');
+    navigate('/community/share');
   };
 
   const goToChatRoomList = () => {
