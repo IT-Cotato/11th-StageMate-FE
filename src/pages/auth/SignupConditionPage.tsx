@@ -29,20 +29,25 @@ const SignupConditionPage = () => {
   });
 
   const handleNextClick = async () => {
-    await getTempUserKey();
-    const result = await postAgree(
-      checking.serviceTerms,
-      checking.privacyPolicy,
-      checking.marketing,
-      checking.smsNotification,
-      checking.emailNotification
-    );
+    try {
+      // 1. 임시 사용자 키 가져오기
+      await getTempUserKey();
 
-    if (result.success) {
-      console.log('동의 완료:', result.data);
+      // 2. 사용자가 동의한 약관 정보 전송하기
+      const agreementResult = await postAgree(
+        checking.serviceTerms,
+        checking.privacyPolicy,
+        checking.marketing,
+        checking.smsNotification,
+        checking.emailNotification
+      );
+
+      // 3. 두 단계 모두 성공적으로 완료되었을 때
+      console.log('동의 완료:', agreementResult);
       navigate('/signup-form');
-    } else {
-      console.error(result.error);
+    } catch (error) {
+      console.error('약관 동의 처리 중 오류가 발생했습니다:', error);
+      alert('서비스 이용에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.');
     }
   };
 
