@@ -1,37 +1,53 @@
-/**
- * 스케줄 배열을 리스트로 렌더링하는 컴포넌트
- */
 import CalendarButton from './CalendarButton';
 import ScheduleItem from './ScheduleItem';
-import type {Schedule} from '@/types/schedule';
 
-interface ScheduleListProps {
-  schedules: Schedule[];
-  onLikeClick?: (schedule: Schedule) => void;
-  onScheduleClick?: (schedule: Schedule) => void;
+type ListRow = {
+  id: number | string;
+  title: string;
+  category: string;
+  isLike?: boolean;
+};
+
+interface ScheduleListProps<RowType extends ListRow = ListRow> {
+  schedules: RowType[];
+  onLikeClick?: (row: RowType) => void;
+  onScheduleClick?: (row: RowType) => void;
   onViewMore?: () => void;
   showViewMoreButton?: boolean;
+  showLike?: boolean;
+  gap?: number;
+  className?: string;
+  selectedRowId?: string | number | null;
+  isSelectable?: boolean;
 }
 
-const ScheduleList = ({
+const ScheduleList = <RowType extends ListRow = ListRow>({
   schedules,
   onLikeClick,
+  onScheduleClick,
   onViewMore,
   showViewMoreButton = true,
-}: ScheduleListProps) => {
+  showLike = true,
+  gap = 10,
+  className = '',
+  selectedRowId = null,
+  isSelectable = false,
+}: ScheduleListProps<RowType>) => {
   return (
-    <div className='flex flex-col gap-[10px]'>
-      {schedules.map((schedule) => (
+    <div className={`flex flex-col ${className}`} style={{rowGap: gap}}>
+      {schedules.map((row) => (
         <ScheduleItem
-          key={schedule.id}
-          title={schedule.title}
-          category={schedule.category}
-          isLike={schedule.isLike}
-          onLikeClick={() => onLikeClick?.(schedule)}
+          key={row.id}
+          title={row.title}
+          category={row.category}
+          showLike={showLike}
+          isLike={row.isLike}
+          onLikeClick={() => onLikeClick?.(row)}
+          onClick={() => onScheduleClick?.(row)}
+          selected={selectedRowId === row.id}
+          isSelectable={isSelectable}
         />
       ))}
-
-      {/* 더보기 버튼 */}
       {showViewMoreButton && schedules.length > 0 && (
         <CalendarButton
           text='더 많은 스케줄 더보기'
@@ -43,4 +59,5 @@ const ScheduleList = ({
   );
 };
 
+export type {ListRow, ScheduleListProps};
 export default ScheduleList;

@@ -1,16 +1,29 @@
+import {useOutletContext} from 'react-router-dom';
 import {useMemo, useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {mockSchedules} from '@/mocks/mockSchedules';
 import CalendarLayout from '@/components/calendar/CalendarLayout';
 import ScheduleList from '@/components/main/ScheduleList';
-import PageHeader from '@/components/global/PageHeader';
 import SelectDateModal from '@/components/modal/SelectDateModal';
 import SelectGenreModal from '@/components/modal/SelectGenreModal';
 import ChevronDown from '@/assets/chevrons/chevron-down.svg?react';
 import {motion} from 'framer-motion';
 import TagBadge from '@/components/global/TagBadge';
+import type {PageHeaderProps} from '@/components/global/PageHeader';
 
 const CalendarPage = () => {
+  const {setHeaderProps} = useOutletContext<{
+    setHeaderProps: React.Dispatch<React.SetStateAction<PageHeaderProps>>;
+  }>();
+
+  useEffect(() => {
+    setHeaderProps({
+      title: '전체 일정 달력',
+      showHomeIcon: false,
+      showBottomLine: true,
+    });
+  }, [setHeaderProps]);
+
   const navigate = useNavigate();
   const today = new Date();
 
@@ -20,10 +33,22 @@ const CalendarPage = () => {
   const [selectedMonth, setSelectedMonth] = useState(today.getMonth() + 1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
+  const [selectedGenres, setSelectedGenres] = useState<Set<string>>(new Set()); // 추가된 장르들을 위한 상태
   const [modalStep, setModalStep] = useState<'selectDate' | 'selectGenre'>(
     'selectDate'
   );
-  const [addedGenres, setAddedGenres] = useState<Set<string>>(new Set());
+
+  const toggleGenre = (genre: string) => {
+    setSelectedGenres((prevGenres) => {
+      const newGenres = new Set(prevGenres);
+      if (newGenres.has(genre)) {
+        newGenres.delete(genre);
+      } else {
+        newGenres.add(genre);
+      }
+      return newGenres;
+    });
+  };
 
   const events = useMemo(
     () =>
@@ -59,9 +84,9 @@ const CalendarPage = () => {
     const dateCategories = new Set(
       allSchedulesForDate.map((schedule) => schedule.category)
     );
-    const allCategories = new Set([...dateCategories, ...addedGenres]);
+    const allCategories = new Set([...dateCategories, ...selectedGenres]);
     return [...allCategories];
-  }, [allSchedulesForDate, addedGenres]);
+  }, [allSchedulesForDate, selectedGenres]);
 
   const handleDateClick = (date: Date) => {
     window.scrollTo(0, 0);
@@ -85,13 +110,6 @@ const CalendarPage = () => {
 
   return (
     <div className='w-full max-w-[1000px] mx-auto'>
-      <PageHeader
-        title='전체 일정 달력'
-        onLeftClick={() => navigate('/')}
-        showHomeIcon={false}
-        className='pt-0'
-      />
-
       <div className='flex justify-between items-center py-20'>
         <div
           className='flex items-center gap-1 cursor-pointer'
@@ -147,6 +165,7 @@ const CalendarPage = () => {
                   <TagBadge
                     key={category}
                     label={category}
+                    size='small'
                     variant={selectedGenre === category ? 'filled' : 'outlined'}
                     onClick={() =>
                       setSelectedGenre((prev) =>
@@ -205,13 +224,8 @@ const CalendarPage = () => {
               className='fixed bottom-0 left-1/2 -translate-x-1/2 z-50 w-[600px]'
               onClick={(e) => e.stopPropagation()}>
               <SelectGenreModal
-                selectedGenre={selectedGenre}
-                setSelectedGenre={(genre: string | null) => {
-                  if (genre) {
-                    setAddedGenres((prev) => new Set([...prev, genre]));
-                    setSelectedGenre(null);
-                  }
-                }}
+                selectedGenre={[...selectedGenres]}
+                setSelectedGenre={(genre) => toggleGenre(genre)}
                 onClose={closeModal}
               />
             </div>

@@ -9,8 +9,11 @@ import {Outlet} from 'react-router-dom';
 const CommunityMainLayout = () => {
   return (
     <div className='w-full'>
-      <CommunityMainHeader />
-      <main className='pt-90'>
+      <div className='fixed top-0 max-w-[600px] w-full bg-white z-50'>
+        <CommunityMainHeader />
+      </div>
+
+      <main className='pt-90 px-16'>
         <Outlet />
       </main>
     </div>

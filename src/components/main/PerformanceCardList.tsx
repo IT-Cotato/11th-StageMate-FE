@@ -5,7 +5,20 @@ import {mockPerformance} from '@/mocks/mockPerformance';
 
 const ITEMS_PER_PAGE = 9;
 
-const PerformanceCardList = () => {
+type Perf = (typeof mockPerformance)[number];
+
+interface PerformanceCardListProps {
+  mode: 'external' | 'selectable';
+  onSelect?: (item: Perf) => void;
+  selectedKey?: string | null;
+  items?: Perf[];
+}
+
+const PerformanceCardList = ({
+  mode,
+  onSelect,
+  selectedKey = null,
+}: PerformanceCardListProps) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const totalItemsCount = mockPerformance.length;
@@ -20,11 +33,34 @@ const PerformanceCardList = () => {
   };
 
   return (
-    <div className='flex flex-col items-center gap-10'>
+    <div className='flex flex-col gap-10'>
       <div className='grid grid-cols-3 gap-x-10 sm:gap-y-20 gap-y-15 px-4'>
-        {currentItems.map((performance, index) => (
-          <PerformanceCard key={index} {...performance} />
-        ))}
+        {currentItems.map((p) =>
+          mode === 'external' ? (
+            <PerformanceCard
+              key={p.performanceName}
+              variant='external'
+              url={p.url || '#'}
+              performanceName={p.performanceName}
+              imageUrl={p.imageUrl}
+              theaterName={p.theaterName}
+              startDate={p.startDate}
+              endDate={p.endDate}
+            />
+          ) : (
+            <PerformanceCard
+              key={p.performanceName}
+              variant='selectable'
+              selected={selectedKey === p.performanceName}
+              onSelect={() => onSelect?.(p)}
+              performanceName={p.performanceName}
+              imageUrl={p.imageUrl}
+              theaterName={p.theaterName}
+              startDate={p.startDate}
+              endDate={p.endDate}
+            />
+          )
+        )}
       </div>
 
       <div className='flex justify-center mt-6'>
