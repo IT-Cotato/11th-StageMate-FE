@@ -28,6 +28,7 @@ import SettingAccountPage from './pages/setting/SettingAccountPage';
 import SettingActivityPage from './pages/setting/SettingActivityPage';
 import SettingSupportPage from './pages/setting/SettingSupportPage';
 import PerformanceAllPage from './pages/main/PerformanceAllPage';
+import SharePostsPage from './pages/community/SharePostsPage';
 import MainPage from './pages/main/MainPage';
 
 function App() {
@@ -55,6 +56,7 @@ function App() {
             <Route path='/chat' element={<ChatPage />} />
             <Route path='/chatRoom/:id' element={<ChatRoomPage />} />
             <Route path='/performance' element={<PerformanceAllPage />} />
+            <Route path='/community/share' element={<SharePostsPage />} />
 
             {/* settings */}
             <Route path='/settings' element={<SettingLayout />}>
