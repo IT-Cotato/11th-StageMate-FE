@@ -34,6 +34,8 @@ const getErrorMessage = (code: string): string => {
       return '세션 만료 혹은 잘못된 세션입니다.';
     case 'COMMON-004':
       return '이미 존재하는 리소스입니다.';
+    case 'COMMON-007':
+      return '아이디 또는 비밀번호가 일치하지 않습니다.';
     case 'COMMON-009':
       return '인증이 필요합니다.';
 

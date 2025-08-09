@@ -22,6 +22,11 @@ export type SignupInfoType = {
   birthdate: string;
 };
 
+export type LoginInfoType = {
+  userId: string;
+  password: string;
+};
+
 type FieldState = {
   value: string;
   isValid: boolean;
