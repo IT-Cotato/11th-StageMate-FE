@@ -6,11 +6,35 @@ import ButtonFill from '@/components/global/ButtonFill';
 import CustomCheckbox from '@/components/ui/checkbox/CustomCheckbox';
 import {useNavigate} from 'react-router-dom';
 import AuthBrandBadges from '@/components/auth/AuthBrandBadges';
+import {postLogin} from '@/api/authApi';
+import {useMutation} from '@tanstack/react-query';
+import {useAuthStore} from '@/stores/authStore';
+import {getMypageInfo} from '@/api/mypageApi';
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const {login} = useAuthStore();
 
   const [isStayingLoggedIn, setIsStayingLoggedIn] = useState(false);
+  const [id, setId] = useState('');
+  const [pw, setPw] = useState('');
+
+  const loginMutation = useMutation({
+    mutationFn: async () => {
+      const loginRes = await postLogin({userId: id, password: pw});
+
+      const mypageRes = await getMypageInfo();
+      const userInfo = mypageRes.data;
+
+      login(loginRes.accessToken, loginRes.refreshToken, userInfo);
+      navigate('/');
+    },
+    onError: (error) => alert(error.message),
+  });
+
+  const handleLoginClick = () => {
+    loginMutation.mutate();
+  };
 
   return (
     <div className='w-full sm:w-[600px] mx-auto bg-white'>
@@ -35,11 +59,15 @@ const LoginPage = () => {
           <div className='flex flex-col items-start gap-20 self-stretch'>
             <input
               type='text'
+              value={id}
+              onChange={(e) => setId(e.target.value)}
               placeholder='ID'
               className='flex h-60 py-16 px-17 items-center gap-10 self-stretch bg-gray-1 placeholder:text-[#918F9D] placeholder:text-xl placeholder:leading-[140%] focus:outline-0'
             />
             <input
               type='password'
+              value={pw}
+              onChange={(e) => setPw(e.target.value)}
               placeholder='PW'
               className='flex h-60 py-16 px-17 items-center gap-10 self-stretch bg-gray-1 placeholder:text-[#918F9D] placeholder:text-xl placeholder:leading-[140%] focus:outline-0'
             />
@@ -54,11 +82,7 @@ const LoginPage = () => {
           </CustomCheckbox>
 
           <div className='w-full flex flex-col items-start gap-16 self-stretch'>
-            <ButtonFill
-              text='로그인'
-              // todo : 로그인 api 연동
-              onClick={() => console.log('로그인 버튼 클릭')}
-            />
+            <ButtonFill text='로그인' onClick={handleLoginClick} />
             <ButtonStroke
               text='회원가입'
               onClick={() => navigate('/signup-condition')}
