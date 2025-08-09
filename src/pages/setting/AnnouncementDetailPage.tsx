@@ -4,8 +4,21 @@ import {useParams} from 'react-router-dom';
 
 const AnnouncementDetailPage = () => {
   const {id} = useParams();
+  const index = Number(id);
+  const data = mockAnnouncementDetail[index];
 
-  const data = mockAnnouncementDetail[Number(id)];
+  if (!data) {
+    return (
+      <div>
+        <BackButtonTitleHeader title='공지사항' borderBottom />
+        <div className='py-24 px-20 flex flex-col justify-start items-start gap-29'>
+          <h1 className='text-[#000] text-[34px] font-bold leading-[110%]'>
+            공지사항을 찾을 수 없습니다.
+          </h1>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
