@@ -1,6 +1,40 @@
+import {deleteWithdraw, postLogout} from '@/api/authApi';
 import ChevronRight from '@/assets/arrows/chevron-right.svg?react';
+import {useAuthStore} from '@/stores/authStore';
+import {useMutation} from '@tanstack/react-query';
+import {useNavigate} from 'react-router-dom';
 
 const SettingSupportPage = () => {
+  const navigate = useNavigate();
+  const {logout} = useAuthStore();
+
+  const logoutMutation = useMutation({
+    mutationFn: async () => {
+      await postLogout();
+      logout();
+      navigate('/');
+    },
+    onError: (error) => alert(error.message),
+  });
+
+  const withdrawMutation = useMutation({
+    mutationFn: async () => {
+      await deleteWithdraw();
+      logout();
+      alert('회원 탈퇴가 완료되었습니다.');
+      navigate('/');
+    },
+    onError: (error) => alert(error.message),
+  });
+
+  const handleLogoutClick = () => {
+    logoutMutation.mutate();
+  };
+
+  const handlewithdrawClick = () => {
+    withdrawMutation.mutate();
+  };
+
   return (
     <div className='flex flex-col gap-29'>
       {/* info */}
@@ -30,10 +64,14 @@ const SettingSupportPage = () => {
 
       {/* logout & secession */}
       <div className='flex justify-end gap-20'>
-        <button className='py-4 px-10 min-w-80 border border-solid border-primary bg-white_1 text-[15px] leading-[140%] text-primary'>
+        <button
+          onClick={handleLogoutClick}
+          className='py-4 px-10 min-w-80 border border-solid border-primary bg-white_1 text-[15px] leading-[140%] text-primary hover:cursor-pointer'>
           로그아웃
         </button>
-        <button className='py-4 px-10 min-w-80 border border-solid border-primary bg-white_1 text-[15px] leading-[140%] text-primary'>
+        <button
+          onClick={handlewithdrawClick}
+          className='py-4 px-10 min-w-80 border border-solid border-primary bg-white_1 text-[15px] leading-[140%] text-primary hover:cursor-pointer'>
           회원탈퇴
         </button>
       </div>
