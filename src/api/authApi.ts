@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import type {SignupInfoType, VerifyCodeType} from '@/types/auth';
 import {publicAxios} from './axios';
 import {ENDPOINT} from './urls';
+import getErrorMessage from '@/util/getErrorMessage';
 
 export const getTempUserKey = async () => {
   const response = await publicAxios.get(ENDPOINT.AUTH_SIGNUP_TEMPUSERKEY);
@@ -25,7 +27,7 @@ export const postAgree = async (
       throw new Error('필수 약관에 동의해주세요.');
     }
 
-    const requestData = {
+    const response = await publicAxios.post(ENDPOINT.AUTH_SIGNUP_AGREE, {
       tempUserKey,
       consents: {
         SERVICE_TERMS,
@@ -34,44 +36,91 @@ export const postAgree = async (
         SMS_NOTIFICATION,
         EMAIL_NOTIFICATION,
       },
-    };
+    });
 
-    const response = await publicAxios.post(
-      ENDPOINT.AUTH_SIGNUP_AGREE,
-      JSON.stringify(requestData),
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-
-    return {
-      success: true,
-      data: response.data,
-      statusCode: response.status,
-    };
+    return response.data;
   } catch (error: any) {
+    // const status = error.response.data.status;
     const code = error.response.data.code;
-    switch (code) {
-      case 'COMMON-001':
-        alert('세션 만료 혹은 잘못된 세션입니다.');
-        // window.location.reload();
-        break;
-      case 'AUTH-001':
-        alert(
-          '필수 약관에 동의하지 않으면 해당 서비스 이용이 제한될 수 있습니다.'
-        );
-        break;
-      default:
-        console.error('An unexpected error occurred:', error);
-        alert('서비스 이용에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.');
-        break;
-    }
+    const errorMessage = getErrorMessage(code);
+    console.error('An unexpected error occurred:', error);
+    throw new Error(errorMessage);
+  }
+};
 
-    return {
-      success: false,
-      error: error,
-    };
+export const getCheckUserId = async (userId: string) => {
+  try {
+    const response = await publicAxios.get(ENDPOINT.AUTH_CHECK_USERID(userId));
+    return response.data;
+  } catch (error: any) {
+    // const status = error.response.data.status;
+    const code = error.response.data.code;
+    const errorMessage = getErrorMessage(code);
+    console.error('An unexpected error occurred:', error);
+    throw new Error(errorMessage);
+  }
+};
+
+export const getCheckNickname = async (nickname: string) => {
+  try {
+    const response = await publicAxios.get(
+      ENDPOINT.AUTH_CHECK_NICKNAME(nickname)
+    );
+    return response.data;
+  } catch (error: any) {
+    // const status = error.response.data.status;
+    const code = error.response.data.code;
+    const errorMessage = getErrorMessage(code);
+    console.error('An unexpected error occurred:', error);
+    throw new Error(errorMessage);
+  }
+};
+
+export const postEmailSendCode = async (email: string) => {
+  try {
+    const response = await publicAxios.post(ENDPOINT.AUTH_EMAIL_SEND_CODE, {
+      email,
+    });
+    return response.data;
+  } catch (error: any) {
+    // const status = error.response.data.status;
+    const code = error.response.data.code;
+    const errorMessage = getErrorMessage(code);
+    console.error('An unexpected error occurred:', error);
+    throw new Error(errorMessage);
+  }
+};
+
+export const postEmailVerifyCode = async (data: VerifyCodeType) => {
+  try {
+    const response = await publicAxios.post(
+      ENDPOINT.AUTH_EMAIL_VERIFY_CODE,
+      data
+    );
+    return response.data;
+  } catch (error: any) {
+    // const status = error.response.data.status;
+    const code = error.response.data.code;
+    const errorMessage = getErrorMessage(code);
+    console.error('An unexpected error occurred:', error);
+    throw new Error(errorMessage);
+  }
+};
+
+export const postSignupInfo = async (data: SignupInfoType) => {
+  try {
+    const response = await publicAxios.post(ENDPOINT.AUTH_SIGNUP_INFO, data);
+    const {accessToken, refreshToken} = response.data.data;
+
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
+
+    return response.data.data;
+  } catch (error: any) {
+    // const status = error.response.data.status;
+    const code = error.response.data.code;
+    const errorMessage = getErrorMessage(code);
+    console.error('An unexpected error occurred:', error);
+    throw new Error(errorMessage);
   }
 };
