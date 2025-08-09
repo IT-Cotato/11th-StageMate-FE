@@ -61,9 +61,10 @@ const EnquirePage = () => {
           className='flex flex-col items-center gap-14 self-stretch'
           onSubmit={(e) => {
             e.preventDefault();
-            console.log('ok');
+            console.log('todo : 문의 api 연동하기');
           }}>
           <textarea
+            aria-label='enquiry-content'
             name='enquiry-content'
             id='enquiry-content'
             placeholder='문의 내용을 작성하세요.'
