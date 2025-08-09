@@ -2,17 +2,14 @@ import {deleteWithdraw, postLogout} from '@/api/authApi';
 import ChevronRight from '@/assets/arrows/chevron-right.svg?react';
 import {useAuthStore} from '@/stores/authStore';
 import {useMutation} from '@tanstack/react-query';
-import {useNavigate} from 'react-router-dom';
 
 const SettingSupportPage = () => {
-  const navigate = useNavigate();
   const {logout} = useAuthStore();
 
   const logoutMutation = useMutation({
     mutationFn: async () => {
       await postLogout();
       logout();
-      navigate('/');
     },
     onError: (error) => alert(error.message),
   });
@@ -20,9 +17,8 @@ const SettingSupportPage = () => {
   const withdrawMutation = useMutation({
     mutationFn: async () => {
       await deleteWithdraw();
-      logout();
       alert('회원 탈퇴가 완료되었습니다.');
-      navigate('/');
+      logout();
     },
     onError: (error) => alert(error.message),
   });
