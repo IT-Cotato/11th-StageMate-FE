@@ -20,14 +20,14 @@ const PostHeaderInfo = ({
   const titleClass =
     variant === 'detail'
       ? 'text-[32px] font-bold leading-[110%]'
-      : 'text-2xl font-medium leading-[110%]';
+      : 'text-[18px] font-medium leading-[110%]';
   {
     /* 글쓴이, 날짜, 조회수 */
   }
   const metaTextClass =
     variant === 'detail'
       ? 'text-lg text-gray-2 font-light leading-[140%]'
-      : 'text-[15px] text-gray-2 font-light leading-[140%]';
+      : 'text-[12px] text-gray-2 font-light leading-[140%]';
 
   return (
     <div className='flex flex-col gap-6'>
