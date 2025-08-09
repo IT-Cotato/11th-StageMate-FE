@@ -338,6 +338,7 @@ const SignupFormPage = () => {
         title={'회원가입'}
         onLeftClick={() => navigate('/signup-condition')}
         onRightClick={() => navigate('/')}
+        className='pt-23'
       />
       <div className='py-40 px-16 flex flex-col gap-60'>
         <h1 className='text-[#141313] text-[32px] font-bold leading-[140%]'>

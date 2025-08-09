@@ -7,12 +7,15 @@ import PostHeaderInfo from './PostHeaderInfo';
 
 interface PostListItemProps {
   post: Post;
+  onClick?: () => void;
 }
 
-const PostListItem = ({post}: PostListItemProps) => {
+const PostListItem = ({post, onClick}: PostListItemProps) => {
   return (
     <article className='flex flex-col justify-center pb-8 border-b border-b-primary-5'>
-      <div className='flex justify-between items-center px-16'>
+      <div
+        className='flex justify-between items-center px-16 cursor-pointer'
+        onClick={onClick}>
         {/* 왼쪽: 제목 + 작성자 + 날짜 + 조회수 */}
         <PostHeaderInfo
           title={post.title}
@@ -26,16 +29,16 @@ const PostListItem = ({post}: PostListItemProps) => {
         <div className='flex items-center justify-center gap-4 text-sm text-gray-500'>
           <span className='flex flex-col items-center gap-[3px]'>
             {post.isLiked ? (
-              <FullHeart className='w-[30px] h-[30px] text-secondary-50' />
+              <FullHeart className='w-[30px] h-[30px]' />
             ) : (
-              <EmptyHeart className='w-[30px] h-[30px] text-secondary-50 stroke-secondary' />
+              <EmptyHeart className='w-[30px] h-[30px] stroke-secondary' />
             )}
             <span className='text-black font-normal leading-[140%]'>
               {post.likeCount}
             </span>
           </span>
           <span className='flex flex-col items-center gap-[3px]'>
-            <Chat className='w-[30px] h-[30px] text-secondary-50' />
+            <Chat className='w-[30px] h-[30px] text-secondary' />
             <span className='text-black font-normal leading-[140%]'>
               {post.commentCount}
             </span>

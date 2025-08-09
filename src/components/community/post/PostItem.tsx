@@ -10,18 +10,26 @@ import type {Post} from '@/types/community';
 
 interface PostItemProps {
   post: Post;
+  onPostClick?: () => void;
+  onLikeClick?: () => void;
 }
 
-const PostItem = ({post}: PostItemProps) => {
+const PostItem = ({post, onPostClick, onLikeClick}: PostItemProps) => {
   return (
-    <div className='w-full h-48 flex flex-row items-center bg-[#ffffff] px-9 py-6 gap-10'>
+    <div
+      className='w-full h-48 flex flex-row items-center bg-[#ffffff] px-9 py-6 gap-10 cursor-pointer'
+      onClick={onPostClick}>
       <div className='flex-1'>{post.title}</div>
-      <div className='flex flex-row items-end'>
-        <button>
+      <div className='flex flex-row gap-2'>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onLikeClick?.();
+          }}>
           {post.isLiked ? (
             <FullHeart width={25} height={25} />
           ) : (
-            <EmptyHeart className='stroke-secondary' width={25} height={25} />
+            <EmptyHeart className='stroke-secondary' width={23} height={25} />
           )}
         </button>
         <span>{post.likeCount}</span>

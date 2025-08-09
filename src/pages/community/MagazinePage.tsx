@@ -16,7 +16,7 @@ const MagazinePage = () => {
   };
 
   return (
-    <div className='relative'>
+    <div className='relative px-16'>
       {/* 정렬 선택 */}
       <div className='flex flex-col justify-start items-end absolute top-[-20px] right-0'>
         <div className='flex flex-col items-start w-93 gap-1'>

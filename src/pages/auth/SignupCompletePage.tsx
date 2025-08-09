@@ -15,6 +15,7 @@ const SignupCompletePage = () => {
         title='회원가입'
         onLeftClick={() => navigate('/signup-form')}
         onRightClick={() => navigate('/')}
+        className='pt-23'
       />
 
       <div className='flex flex-col gap-64 pt-40 pl-16 pr-17'>

@@ -5,7 +5,7 @@ import TextAlign from '@tiptap/extension-text-align';
 import {Color, FontSize, TextStyle} from '@tiptap/extension-text-style';
 import Highlight from '@tiptap/extension-highlight';
 import PlaceHolder from '@tiptap/extension-placeholder';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {CustomLink} from './lib/CustomLink';
 
 interface ContentEditorProps {
@@ -77,6 +77,12 @@ const ContentEditor = ({defaultContent}: ContentEditorProps) => {
       },
     },
   });
+
+  useEffect(() => {
+    if (bodyEditor && defaultContent !== bodyEditor.getHTML()) {
+      bodyEditor.commands.setContent(defaultContent);
+    }
+  }, [defaultContent, bodyEditor]);
   return (
     <div className='flex flex-col'>
       <EditorContent

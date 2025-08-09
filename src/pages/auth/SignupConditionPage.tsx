@@ -57,6 +57,7 @@ const SignupConditionPage = () => {
         title='회원가입'
         onLeftClick={() => navigate('/login')}
         onRightClick={() => navigate('/')}
+        className='pt-23'
       />
 
       <div className='pt-40 px-16 flex flex-col items-start gap-62 self-stretch'>

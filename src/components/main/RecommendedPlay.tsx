@@ -2,6 +2,7 @@ import ChevronRight from '@/assets/chevrons/chevron-right.svg?react';
 import PlayTag from './PlayTag';
 import RecommendedPlayList from './RecommendedPlayList';
 import {mockRecommendedPlays} from '@/mocks/mockRecommendedPlays';
+import {useNavigate} from 'react-router-dom';
 
 const categories = [
   [
@@ -15,12 +16,17 @@ const categories = [
 ] as const;
 
 const RecommendedPlay = () => {
+  const navigate = useNavigate();
   return (
     <div className='flex flex-col w-full bg-white rounded-[20px] pt-[30px] pl-[22px] pb-[20px] gap-20'>
       <div className='w-full flex justify-between items-center'>
         <h1 className='text-gray-30 font-bold text-2xl'>오늘의 추천 공연</h1>
         <div className='flex items-center cursor-pointer mr-[27px]'>
-          <h2 className='text-[16px] font-medium text-primary'>더 보기</h2>
+          <h2
+            className='text-[16px] font-medium text-primary'
+            onClick={() => navigate('/performance')}>
+            더 보기
+          </h2>
           <ChevronRight className='text-primary' />
         </div>
       </div>

@@ -2,7 +2,7 @@ import Logo from '@/assets/logos/main-logo.svg?react';
 import HeaderBackground from '@/assets/main-header-bg/header-bg.svg?url';
 import User from '@/assets/users/user.svg?react';
 import Bell from '@/assets/alerts-feedback/bell.svg?react';
-import SearchBox from '../global/SearchBox';
+import SearchBox from '../search/SearchBox';
 import LoggedInHeader from './LoggedInHeader';
 import LoggedOutHeader from './LoggedOutHeader';
 
@@ -12,7 +12,7 @@ interface MainHeaderProps {
 }
 
 const MainHeader = ({isLoggedIn, username}: MainHeaderProps) => {
-  const headerHeight = isLoggedIn ? 'sm:h-[318px] h-270' : 'sm:h-[285px] h-240';
+  const headerHeight = isLoggedIn ? 'sm:h-[318px] h-250' : 'sm:h-[285px] h-240';
   return (
     <div
       className={`w-full ${headerHeight} rounded-b-[50px] py-15 px-20 flex flex-col relative z-10 gap-[12px] bg-cover`}

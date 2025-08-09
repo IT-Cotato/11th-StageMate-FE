@@ -19,6 +19,7 @@ const LoginPage = () => {
         title={'로그인'}
         onLeftClick={() => navigate('/')}
         onRightClick={() => navigate('/')}
+        className='pt-23'
       />
 
       <div className='pt-32 px-16 flex flex-col items-center gap-20'>

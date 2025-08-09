@@ -10,12 +10,14 @@ interface ScheduleListProps {
   onLikeClick?: (schedule: Schedule) => void;
   onScheduleClick?: (schedule: Schedule) => void;
   onViewMore?: () => void;
+  showViewMoreButton?: boolean;
 }
 
 const ScheduleList = ({
   schedules,
   onLikeClick,
   onViewMore,
+  showViewMoreButton = true,
 }: ScheduleListProps) => {
   return (
     <div className='flex flex-col gap-[10px]'>
@@ -30,7 +32,7 @@ const ScheduleList = ({
       ))}
 
       {/* 더보기 버튼 */}
-      {schedules.length > 0 && (
+      {showViewMoreButton && schedules.length > 0 && (
         <CalendarButton
           text='더 많은 스케줄 더보기'
           variant='default'
