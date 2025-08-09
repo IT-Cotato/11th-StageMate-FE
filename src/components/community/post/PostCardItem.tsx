@@ -14,7 +14,16 @@ interface PostCardItemProps {
   isBookmarked: boolean;
   placeholderText: string;
   onClick?: () => void;
+  variant?: 'regular' | 'compact';
+  className?: string;
 }
+
+const variantVars = {
+  regular:
+    '[--card-w:150px] [--card-h:150px] sm:[--card-w:204px] sm:[--card-h:209px]',
+  compact:
+    '[--card-w:120px] [--card-h:120px] sm:[--card-w:160px] sm:[--card-h:210px]',
+} as const;
 
 const PostCardItem = ({
   title,
@@ -24,10 +33,17 @@ const PostCardItem = ({
   isBookmarked,
   placeholderText,
   onClick,
+  variant = 'regular',
+  className,
 }: PostCardItemProps) => {
+  const vars = variantVars[variant];
+
   return (
-    <li className='flex flex-col cursor-pointer' onClick={onClick}>
-      <div className='relative sm:w-[204px] sm:h-[209px] w-150 h-150 bg-gray-1 rounded-[7px]'>
+    <li
+      className={`flex flex-col shrink-0 cursor-pointer ${vars} ${className ?? ''}`}
+      onClick={onClick}>
+      {/* 사진(썸네일) 박스: 크기만 변수로 제어 */}
+      <div className='relative bg-gray-1 rounded-[7px] w-[var(--card-w)] h-[var(--card-h)]'>
         <BookMark
           className={`absolute top-9 right-9 ${isBookmarked ? 'text-secondary' : ''}`}
         />
@@ -53,8 +69,7 @@ const PostCardItem = ({
             <h2 className='font-semibold sm:text-[18px] text-xs'>{subtitle}</h2>
           )
         )}
-
-        <h1 className='sm:w-[204px] w-100 font-normal sm:text-[22px] text-sm truncate'>
+        <h1 className='font-normal sm:text-[22px] text-sm truncate w-[var(--card-w)]'>
           {title}
         </h1>
       </div>
