@@ -3,38 +3,26 @@ import GoogleLight from '@/assets/brands/google-light.svg?react';
 import TwitterLight from '@/assets/brands/twitter-light.svg?react';
 import AppleLight from '@/assets/brands/apple-light.svg?react';
 
-interface BrandBadgesProps {
-  onFacebookClick: () => void;
-  onGoogleFuncClick: () => void;
-  onTwitterFuncClick: () => void;
-  onAppleFuncClick: () => void;
-}
-
-const BrandBadges = ({
-  onFacebookClick,
-  onGoogleFuncClick,
-  onTwitterFuncClick,
-  onAppleFuncClick,
-}: BrandBadgesProps) => {
+const AuthBrandBadges = () => {
   return (
     <div className='flex items-center gap-20'>
       <div
-        onClick={onFacebookClick}
+        onClick={() => console.log('facebook 버튼 클릭')}
         className='flex w-50 h-50 p-10 items-center justify-center gap-10 rounded-[25px] bg-gray-1'>
         <FacebookLight />
       </div>
       <div
-        onClick={onGoogleFuncClick}
+        onClick={() => console.log('google 버튼 클릭')}
         className='flex w-50 h-50 p-10 items-center justify-center gap-10 rounded-[25px] bg-gray-1'>
         <GoogleLight />
       </div>
       <div
-        onClick={onTwitterFuncClick}
+        onClick={() => console.log('twitter 버튼 클릭')}
         className='flex w-50 h-50 p-10 items-center justify-center gap-10 rounded-[25px] bg-gray-1'>
         <TwitterLight />
       </div>
       <div
-        onClick={onAppleFuncClick}
+        onClick={() => console.log('apple 버튼 클릭')}
         className='flex w-50 h-50 p-10 items-center justify-center gap-10 rounded-[25px] bg-gray-1'>
         <AppleLight />
       </div>
@@ -42,4 +30,4 @@ const BrandBadges = ({
   );
 };
 
-export default BrandBadges;
+export default AuthBrandBadges;
