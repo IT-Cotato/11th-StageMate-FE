@@ -12,6 +12,7 @@ interface PostCardItemProps {
   price?: number | string;
   category: string;
   isBookmarked: boolean;
+  isScrapMagazine?: boolean;
   placeholderText: string;
   onClick?: () => void;
   variant?: 'regular' | 'compact';
@@ -31,6 +32,7 @@ const PostCardItem = ({
   price,
   category,
   isBookmarked,
+  isScrapMagazine = false,
   placeholderText,
   onClick,
   variant = 'regular',
@@ -39,11 +41,10 @@ const PostCardItem = ({
   const vars = variantVars[variant];
 
   return (
-    <li
-      className={`flex flex-col shrink-0 cursor-pointer ${vars} ${className ?? ''}`}
-      onClick={onClick}>
-      {/* 사진(썸네일) 박스: 크기만 변수로 제어 */}
-      <div className='relative bg-gray-1 rounded-[7px] w-[var(--card-w)] h-[var(--card-h)]'>
+    <li className='flex flex-col cursor-pointer' onClick={onClick}>
+      <div
+        className={`relative 
+        ${isScrapMagazine ? 'sm:w-[160px]' : 'sm:w-[204px]'} sm:h-[209px] w-150 h-150 bg-gray-1 rounded-[7px]`}>
         <BookMark
           className={`absolute top-9 right-9 ${isBookmarked ? 'text-secondary' : ''}`}
         />
@@ -57,7 +58,7 @@ const PostCardItem = ({
 
       <div className='w-full h-[56px] flex flex-col'>
         {price !== undefined ? (
-          <div className='text-[18px] font-semibold'>
+          <div className='text-[16px] font-semibold'>
             {price === 0
               ? '무료 나눔'
               : typeof price === 'string'
@@ -66,10 +67,11 @@ const PostCardItem = ({
           </div>
         ) : (
           subtitle && (
-            <h2 className='font-semibold sm:text-[18px] text-xs'>{subtitle}</h2>
+            <h2 className='font-semibold sm:text-[16px] text-xs'>{subtitle}</h2>
           )
         )}
-        <h1 className='font-normal sm:text-[22px] text-sm truncate w-[var(--card-w)]'>
+
+        <h1 className='sm:w-[204px] w-100 font-normal sm:text-[20px] text-sm truncate'>
           {title}
         </h1>
       </div>
