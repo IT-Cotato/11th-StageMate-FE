@@ -15,16 +15,7 @@ interface PostCardItemProps {
   isScrapMagazine?: boolean;
   placeholderText: string;
   onClick?: () => void;
-  variant?: 'regular' | 'compact';
-  className?: string;
 }
-
-const variantVars = {
-  regular:
-    '[--card-w:150px] [--card-h:150px] sm:[--card-w:204px] sm:[--card-h:209px]',
-  compact:
-    '[--card-w:120px] [--card-h:120px] sm:[--card-w:160px] sm:[--card-h:210px]',
-} as const;
 
 const PostCardItem = ({
   title,
@@ -35,11 +26,7 @@ const PostCardItem = ({
   isScrapMagazine = false,
   placeholderText,
   onClick,
-  variant = 'regular',
-  className,
 }: PostCardItemProps) => {
-  const vars = variantVars[variant];
-
   return (
     <li className='flex flex-col cursor-pointer' onClick={onClick}>
       <div
@@ -71,7 +58,10 @@ const PostCardItem = ({
           )
         )}
 
-        <h1 className='sm:w-[204px] w-100 font-normal sm:text-[20px] text-sm truncate'>
+        <h1
+          className={`${
+            isScrapMagazine ? 'sm:w-[160px]' : 'sm:w-[204px]'
+          } w-100 font-normal sm:text-[20px] text-sm truncate`}>
           {title}
         </h1>
       </div>

@@ -22,8 +22,12 @@ const SharePostsPage = () => {
     return mockSharePosts.slice(start, start + ITEMS_PER_PAGE);
   }, [currentPage]);
 
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
-    <div className='flex flex-col px-20 gap-40'>
+    <div className='flex flex-col px-40 gap-40'>
       {/* 상단 */}
       <CommunityListHeader
         title='나눔·거래'
@@ -32,7 +36,7 @@ const SharePostsPage = () => {
       />
 
       {/* 리스트 */}
-      <ul className='grid grid-cols-1 sm:grid-cols-3 gap-y-60 gap-x-24'>
+      <ul className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-y-60 gap-x-24'>
         {currentItems.map((post) => (
           <PostCardItem
             key={post.id}
@@ -41,7 +45,7 @@ const SharePostsPage = () => {
             category={post.category}
             isBookmarked={post.isBookmarked}
             placeholderText='나눔·거래 임시 이미지'
-            variant='compact'
+            isScrapMagazine={true}
           />
         ))}
       </ul>
@@ -53,7 +57,7 @@ const SharePostsPage = () => {
           itemsCountPerPage={ITEMS_PER_PAGE}
           totalItemsCount={totalItemsCount}
           pageRangeDisplayed={5}
-          onChange={setCurrentPage}
+          onChange={handlePageChange}
           innerClass='flex gap-6'
           itemClass='px-5 py-1 text-sm'
           activeClass='font-bold'
