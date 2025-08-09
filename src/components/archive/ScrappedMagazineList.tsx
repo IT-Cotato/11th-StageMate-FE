@@ -51,6 +51,7 @@ const ScrappedMagazineList = () => {
             category={magazine.category}
             isBookmarked={magazine.isBookmarked}
             placeholderText='매거진 임시 이미지'
+            variant='compact'
           />
         ))}
       </ul>
