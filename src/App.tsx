@@ -29,6 +29,11 @@ import SettingActivityPage from './pages/setting/SettingActivityPage';
 import SettingSupportPage from './pages/setting/SettingSupportPage';
 import PerformanceAllPage from './pages/main/PerformanceAllPage';
 import MainPage from './pages/main/MainPage';
+import AnnouncementPage from './pages/setting/AnnouncementPage';
+import AnnouncementDetailPage from './pages/setting/AnnouncementDetailPage';
+import PolicyTermsPage from './pages/setting/PolicyTermsPage';
+import PolicyPrivacyPage from './pages/setting/PolicyPrivacyPage';
+import EnquirePage from './pages/setting/EnquirePage';
 
 function App() {
   return (
@@ -66,6 +71,19 @@ function App() {
           <Route
             path='/magazine/:magazineId'
             element={<MagazineDetailPage />}
+          />
+
+          {/* settings */}
+          <Route path='/settings/announcement' element={<AnnouncementPage />} />
+          <Route
+            path='/settings/announcement/:id'
+            element={<AnnouncementDetailPage />}
+          />
+          <Route path='/settings/enquire' element={<EnquirePage />} />
+          <Route path='/settings/policy-terms' element={<PolicyTermsPage />} />
+          <Route
+            path='/settings/policy-privacy'
+            element={<PolicyPrivacyPage />}
           />
         </Route>
 
