@@ -4,8 +4,9 @@ import {create} from 'zustand';
 export interface AuthState {
   user: User | null;
   accessToken: string | null;
+  refreshToken: string | null;
   isAuthenticated: boolean;
-  login: (token: string, user: User) => void;
+  login: (accessToken: string, refreshToken: string, user: User) => void;
   logout: () => void;
   checkAuth: () => void;
 }
@@ -13,12 +14,13 @@ export interface AuthState {
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   accessToken: localStorage.getItem('accessToken'),
+  refreshToken: localStorage.getItem('refreshToken'),
   isAuthenticated: false,
 
-  login: (token: string, user: User) => {
-    localStorage.setItem('accessToken', token);
+  login: (accessToken: string, refreshToken: string, user: User) => {
     set({
-      accessToken: token,
+      accessToken,
+      refreshToken,
       user,
       isAuthenticated: true,
     });
