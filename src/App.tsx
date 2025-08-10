@@ -37,6 +37,7 @@ import AnnouncementDetailPage from './pages/setting/AnnouncementDetailPage';
 import PolicyTermsPage from './pages/setting/PolicyTermsPage';
 import PolicyPrivacyPage from './pages/setting/PolicyPrivacyPage';
 import EnquirePage from './pages/setting/EnquirePage';
+import ChangePassword from './pages/setting/ChangePassword';
 
 function App() {
   const {isAuthenticated} = useAuthStore();
@@ -79,6 +80,7 @@ function App() {
                 <Route path='account' element={<SettingAccountPage />} />
                 <Route path='activity' element={<SettingActivityPage />} />
                 <Route path='support' element={<SettingSupportPage />} />
+                <Route path='change-password' element={<ChangePassword />} />
               </Route>
             </Route>
           </Route>
