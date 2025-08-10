@@ -29,6 +29,9 @@ import SettingActivityPage from './pages/setting/SettingActivityPage';
 import SettingSupportPage from './pages/setting/SettingSupportPage';
 import PerformanceAllPage from './pages/main/PerformanceAllPage';
 import MainPage from './pages/main/MainPage';
+import ProtectedRoute from './components/auth/ProtectedRoute';
+import {useAuthStore} from './stores/authStore';
+import {useEffect} from 'react';
 import AnnouncementPage from './pages/setting/AnnouncementPage';
 import AnnouncementDetailPage from './pages/setting/AnnouncementDetailPage';
 import PolicyTermsPage from './pages/setting/PolicyTermsPage';
@@ -36,6 +39,15 @@ import PolicyPrivacyPage from './pages/setting/PolicyPrivacyPage';
 import EnquirePage from './pages/setting/EnquirePage';
 
 function App() {
+  const {isAuthenticated} = useAuthStore();
+
+  useEffect(() => {
+    const checkUserAuth = async () => {
+      await useAuthStore.getState().checkAuth();
+    };
+    checkUserAuth();
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>
@@ -61,11 +73,13 @@ function App() {
             <Route path='/chatRoom/:id' element={<ChatRoomPage />} />
             <Route path='/performance' element={<PerformanceAllPage />} />
 
-            {/* settings */}
-            <Route path='/settings' element={<SettingLayout />}>
-              <Route path='account' element={<SettingAccountPage />} />
-              <Route path='activity' element={<SettingActivityPage />} />
-              <Route path='support' element={<SettingSupportPage />} />
+            {/* 로그인 된 상태만 접근 가능 */}
+            <Route element={<ProtectedRoute isLoggedIn={isAuthenticated} />}>
+              <Route path='/settings' element={<SettingLayout />}>
+                <Route path='account' element={<SettingAccountPage />} />
+                <Route path='activity' element={<SettingActivityPage />} />
+                <Route path='support' element={<SettingSupportPage />} />
+              </Route>
             </Route>
           </Route>
           <Route

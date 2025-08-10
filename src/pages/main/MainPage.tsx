@@ -5,11 +5,11 @@ import type {Schedule} from '@/types/schedule';
 import RecommendedPlay from '@/components/main/RecommendedPlay';
 import {mockSchedules} from '@/mocks/mockSchedules';
 import OnboardingWrapper from '@/components/modal/OnboardingModal/OnboardingWrapper';
+import {useAuthStore} from '@/stores/authStore';
 
 export default function MainPage() {
   /** mock user data */
-  const isLoggedIn = false;
-  const username = '민아';
+  const {user, isAuthenticated} = useAuthStore();
   const [isOnboardingDone, setIsOnboardingDone] = useState(false);
   const [schedules, setSchedules] = useState<Schedule[]>(mockSchedules);
 
@@ -23,14 +23,14 @@ export default function MainPage() {
 
   return (
     <div className='relative'>
-      {!isLoggedIn && !isOnboardingDone && (
+      {!isAuthenticated && !isOnboardingDone && (
         <OnboardingWrapper onDone={() => setIsOnboardingDone(true)} />
       )}
       <div className='bg-black flex flex-col items-center'>
-        <MainHeader isLoggedIn={isLoggedIn} username={username} />
+        <MainHeader isLoggedIn={isAuthenticated} username={user?.name} />
         <div className='p-[12px] flex flex-col w-full gap-[12px]'>
           <WeekCalendar
-            isLoggedIn={isLoggedIn}
+            isLoggedIn={isAuthenticated}
             schedules={schedules}
             onLikeClick={handleLikeClick}
             onScheduleClick={(schedule) =>
