@@ -3,9 +3,11 @@ import CommunityLogo from '@/assets/logos/community-logo.svg?react';
 import Bell from '@/assets/alerts-feedback/bell.svg?react';
 import User from '@/assets/users/user.svg?react';
 import SearchBox from '../../search/SearchBox';
+import {useNavigate} from 'react-router-dom';
 
 const CommunityMainHeader = () => {
   const [hasBorder, setHasBorder] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,7 +27,10 @@ const CommunityMainHeader = () => {
       <CommunityLogo className='w-37' />
       <SearchBox variant='community' />
       <div className='flex flex-row gap-18'>
-        <Bell className='cursor-pointer sm:w-30 sm:h-30 w-25 h-25' />
+        <Bell
+          className='cursor-pointer sm:w-30 sm:h-30 w-25 h-25'
+          onClick={() => navigate('/notification')}
+        />
         <User className='cursor-pointer sm:w-30 sm:h-30 w-25 h-25' />
       </div>
     </div>
