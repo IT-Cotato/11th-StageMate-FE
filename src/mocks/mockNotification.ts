@@ -1,0 +1,86 @@
+export const mockNotifications = [
+  {
+    id: 1,
+    type: 'COMMENT_ON_MY_POST',
+    postTitle: '오늘 공연 민아배우님 연기 미쳤다',
+    createdAt: '2025-08-08T09:32:00Z',
+  },
+  {
+    id: 2,
+    type: 'REPLY_TO_MY_COMMENT',
+    postTitle: '오늘 제일 최애 파트가 어디였어?',
+    createdAt: '2025-08-09T12:32:00Z',
+  },
+  {
+    id: 3,
+    type: 'COMMENT_ON_MY_POST',
+    postTitle: '커튼콜 때 감동받아서 울 뻔했어',
+    createdAt: '2025-08-10T09:32:00Z',
+  },
+  {
+    id: 4,
+    type: 'REPLY_TO_MY_COMMENT',
+    postTitle: '민아배우님 표정 디테일 장난 아니야',
+    createdAt: '2025-07-31T14:32:00Z',
+  },
+  {
+    id: 5,
+    type: 'COMMENT_ON_MY_POST',
+    postTitle: '이 장면 연출 너무 좋지 않았어?',
+    createdAt: '2025-08-01T14:32:00Z',
+  },
+  {
+    id: 6,
+    type: 'REPLY_TO_MY_COMMENT',
+    postTitle: '무대 세트 구성 진짜 예술이었음',
+    createdAt: '2025-08-02T14:32:00Z',
+  },
+  {
+    id: 7,
+    type: 'REPLY_TO_MY_COMMENT',
+    postTitle: '다음에도 또 보러 갈 사람?',
+    createdAt: '2025-08-04T14:32:00Z',
+  },
+  {
+    id: 8,
+    type: 'COMMENT_ON_MY_POST',
+    postTitle: '음악이랑 조명 타이밍이 딱 맞아서 소름',
+    createdAt: '2025-07-29T14:32:00Z',
+  },
+  {
+    id: 9,
+    type: 'REPLY_TO_MY_COMMENT',
+    postTitle: '오늘 넘버 중 최고는 뭐였다고 생각해?',
+    createdAt: '2025-07-28T14:32:00Z',
+  },
+  {
+    id: 10,
+    type: 'REPLY_TO_MY_COMMENT',
+    postTitle: '의상 컨셉 완전 찰떡이었음',
+    createdAt: '2025-07-21T14:32:00Z',
+  },
+  {
+    id: 11,
+    type: 'COMMENT_ON_MY_POST',
+    postTitle: '민아배우님 이번 연기 대상감 아닐까?',
+    createdAt: '2025-08-06T10:32:00Z',
+  },
+  {
+    id: 12,
+    type: 'REPLY_TO_MY_COMMENT',
+    postTitle: '오늘 자리에서 무대 잘 보였어?',
+    createdAt: '2025-08-05T11:32:00Z',
+  },
+  {
+    id: 13,
+    type: 'REPLY_TO_MY_COMMENT',
+    postTitle: '이 대사에서 울컥한 사람 나뿐이야?',
+    createdAt: '2025-08-03T14:32:00Z',
+  },
+  {
+    id: 14,
+    type: 'COMMENT_ON_MY_POST',
+    postTitle: '마지막 장면 여운이 아직도 남아있어',
+    createdAt: '2025-08-02T09:32:00Z',
+  },
+];
