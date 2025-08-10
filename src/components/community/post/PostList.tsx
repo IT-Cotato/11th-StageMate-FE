@@ -5,11 +5,10 @@
  */
 
 import PostItem from './PostItem';
-import LoadMoreButton from '../common/LoadMoreButton';
-import CommunityCategory from '../common/CommunityCategory';
 import type {Post} from '@/types/community';
 import useCommunityListNavigation from '@/hooks/useCommunityListNavigation';
 import useCommunityNavigation from '@/hooks/useCommunityNavigation';
+import LoadMoreButton from '@/components/global/LoadMoreButton';
 
 type PostListVariant = 'hot' | 'tip' | 'daily';
 
@@ -18,45 +17,54 @@ interface PostListProps {
   title: string;
   posts: Post[];
   variant: PostListVariant;
-  onClick: () => void; // 카테고리별로 이동하는 함수
 }
-
-const PostList = ({icon, title, posts, variant, onClick}: PostListProps) => {
+const PostList = ({icon, title, posts, variant}: PostListProps) => {
   const {goToCommunityCategory} = useCommunityListNavigation();
   const {goToPostDetail} = useCommunityNavigation();
 
+  const handleClick = (post: Post) => () =>
+    goToPostDetail(post.category, post.id);
+
   return (
-    <div className='flex flex-col gap-10'>
-      <div className='flex flex-row gap-6 items-center'>
-        {icon}
-        <h1 className='text-xl font-bold'>{title}</h1>
+    <div className='flex flex-col gap-15'>
+      <div className='flex flex-row justify-between items-end'>
+        <div className=' flex flex-row gap-10 items-center'>
+          {icon}
+          <h1 className='text-xl font-bold'>{title}</h1>
+        </div>
+        <LoadMoreButton onClick={() => goToCommunityCategory(variant)} />
       </div>
 
-      {posts.map((post) => {
-        const handleClick = () => goToPostDetail(post.category, post.id);
-
-        {
-          /** hot 게시물 */
-        }
-        if (variant === 'hot') {
-          return (
+      {variant === 'hot' ? (
+        <div className='bg-[#fff] rounded-[20px] w-full px-20 py-7 flex flex-col gap-4 border border-primary-4'>
+          {posts.map((post) => (
             <div
               key={post.id}
-              className='w-full h-48 flex flex-row items-center bg-[#fff] px-9 py-6 gap-10'
-              onClick={handleClick}>
-              <CommunityCategory category={post.category} />
-              <PostItem post={post} />
+              className='flex flex-row gap-10 pb-4 cursor-pointer items-center'
+              onClick={handleClick(post)}>
+              {/* 카테고리명 + 게시판 표시 */}
+              <h1 className='font-semibold text-[18px] whitespace-nowrap shrink-0'>
+                {post.category !== '나눔 · 거래'
+                  ? `${post.category}게시판`
+                  : post.category}
+              </h1>
+              {/* 게시물 내용 */}
+              <PostItem post={post} variant='hot' />
             </div>
-          );
-        }
-        {
-          /** 일상, 꿀팁 게시물 */
-        }
-        return <PostItem key={post.id} post={post} onPostClick={handleClick} />;
-      })}
-      <LoadMoreButton
-        onClick={onClick ?? (() => goToCommunityCategory(variant))}
-      />
+          ))}
+        </div>
+      ) : (
+        /** 일상, 꿀팁 게시물 */
+        <div className='bg-[#fff] rounded-[20px] w-full p-5 flex flex-col gap-4'>
+          {posts.map((post, idx) => (
+            <div
+              key={post.id}
+              className={`pb-4 ${idx !== posts.length - 1 ? 'border-b border-primary-5' : ''}`}>
+              <PostItem post={post} onPostClick={handleClick(post)} />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

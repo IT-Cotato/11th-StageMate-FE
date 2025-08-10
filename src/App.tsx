@@ -32,6 +32,11 @@ import MainPage from './pages/main/MainPage';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import {useAuthStore} from './stores/authStore';
 import {useEffect} from 'react';
+import AnnouncementPage from './pages/setting/AnnouncementPage';
+import AnnouncementDetailPage from './pages/setting/AnnouncementDetailPage';
+import PolicyTermsPage from './pages/setting/PolicyTermsPage';
+import PolicyPrivacyPage from './pages/setting/PolicyPrivacyPage';
+import EnquirePage from './pages/setting/EnquirePage';
 
 function App() {
   const {isAuthenticated} = useAuthStore();
@@ -80,6 +85,19 @@ function App() {
           <Route
             path='/magazine/:magazineId'
             element={<MagazineDetailPage />}
+          />
+
+          {/* settings */}
+          <Route path='/settings/announcement' element={<AnnouncementPage />} />
+          <Route
+            path='/settings/announcement/:id'
+            element={<AnnouncementDetailPage />}
+          />
+          <Route path='/settings/enquire' element={<EnquirePage />} />
+          <Route path='/settings/policy-terms' element={<PolicyTermsPage />} />
+          <Route
+            path='/settings/policy-privacy'
+            element={<PolicyPrivacyPage />}
           />
         </Route>
 
