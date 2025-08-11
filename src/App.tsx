@@ -32,6 +32,7 @@ import SettingAccountPage from './pages/setting/SettingAccountPage';
 import SettingActivityPage from './pages/setting/SettingActivityPage';
 import SettingSupportPage from './pages/setting/SettingSupportPage';
 import PerformanceAllPage from './pages/main/PerformanceAllPage';
+import SharePostsPage from './pages/community/SharePostsPage';
 import MainPage from './pages/main/MainPage';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import {useAuthStore} from './stores/authStore';
@@ -87,6 +88,9 @@ function App() {
             <Route path='/magazine' element={<MagazinePage />} />
             <Route path='/chat' element={<ChatPage />} />
             <Route path='/chatRoom/:id' element={<ChatRoomPage />} />
+            <Route path='/performance' element={<PerformanceAllPage />} />
+            <Route path='/community/share' element={<SharePostsPage />} />
+
 
             {/* 로그인 된 상태만 접근 가능 */}
             <Route element={<ProtectedRoute isLoggedIn={isAuthenticated} />}>

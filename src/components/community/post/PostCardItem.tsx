@@ -58,7 +58,10 @@ const PostCardItem = ({
           )
         )}
 
-        <h1 className='sm:w-[204px] w-100 font-normal sm:text-[20px] text-sm truncate'>
+        <h1
+          className={`${
+            isScrapMagazine ? 'sm:w-[160px]' : 'sm:w-[204px]'
+          } w-100 font-normal sm:text-[20px] text-sm truncate`}>
           {title}
         </h1>
       </div>
