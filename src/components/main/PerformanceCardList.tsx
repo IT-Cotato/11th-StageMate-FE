@@ -3,21 +3,25 @@ import Pagination from 'react-js-pagination';
 import PerformanceCard from '@/components/main/PerformanceCard';
 import {usePerformanceStore} from '@/stores/usePerformanceStore';
 import '@/styles/skeleton.css';
+
 const ITEMS_PER_PAGE = 9;
 
-const PerformanceCardList = () => {
-  const {
-    performances,
-    totalItemsCount,
-    loading,
-    currentPage,
-    setCurrentPage,
-    fetchPerformances,
-  } = usePerformanceStore();
+type Perf = (typeof mockPerformance)[number];
 
-  useEffect(() => {
-    fetchPerformances();
-  }, [fetchPerformances]);
+interface PerformanceCardListProps {
+  mode: 'external' | 'selectable';
+  onSelect?: (item: Perf) => void;
+  selectedKey?: string | null;
+  items?: Perf[];
+}
+
+const PerformanceCardList = ({
+  mode,
+  onSelect,
+  selectedKey = null,
+}: PerformanceCardListProps) => {
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
 
   // todo: 로딩 표시, 공연 없음 예외 처리
   // 임시로 스켈레톤 표시
@@ -54,11 +58,35 @@ const PerformanceCardList = () => {
     );
 
   return (
-    <div className='flex flex-col items-center gap-10'>
+    <div className='flex flex-col gap-10'>
       <div className='grid grid-cols-3 gap-x-10 sm:gap-y-20 gap-y-15 px-4'>
-        {performances.map((performance) => (
-          <PerformanceCard key={performance.url} {...performance} />
-        ))}
+
+        {currentItems.map((p) =>
+          mode === 'external' ? (
+            <PerformanceCard
+              key={p.performanceName}
+              variant='external'
+              url={p.url || '#'}
+              performanceName={p.performanceName}
+              imageUrl={p.imageUrl}
+              theaterName={p.theaterName}
+              startDate={p.startDate}
+              endDate={p.endDate}
+            />
+          ) : (
+            <PerformanceCard
+              key={p.performanceName}
+              variant='selectable'
+              selected={selectedKey === p.performanceName}
+              onSelect={() => onSelect?.(p)}
+              performanceName={p.performanceName}
+              imageUrl={p.imageUrl}
+              theaterName={p.theaterName}
+              startDate={p.startDate}
+              endDate={p.endDate}
+            />
+          )
+        )}
       </div>
 
       <div className='flex justify-center mt-6'>
