@@ -1,7 +1,7 @@
 import ChevronLeft from '@/assets/chevrons/chevron-left.svg?react';
 import WritePost from '@/assets/nav-icons/write-post.svg?react';
 
-interface Props {
+interface CommunityHeaderProps {
   title: string;
   onBack: () => void;
   onWrite: () => void;
@@ -13,7 +13,7 @@ export default function CommunityListHeader({
   onBack,
   onWrite,
   className,
-}: Props) {
+}: CommunityHeaderProps) {
   return (
     <div className={`flex justify-between items-center ${className ?? ''}`}>
       <div className='flex items-center'>
