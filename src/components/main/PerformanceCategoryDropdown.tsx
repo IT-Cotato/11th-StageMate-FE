@@ -1,22 +1,18 @@
-import {useRef, useState} from 'react';
+import {useState, useRef} from 'react';
 import ChevronDown from '@/assets/chevrons/chevron-down.svg?react';
 import {performanceGenre} from '@/constant';
 import useClickOutside from '@/hooks/useClickOutside';
+import {usePerformanceStore} from '@/stores/usePerformanceStore';
 
-type Props = {
-  selectedMainCategory: '전체' | '뮤지컬' | '연극';
-  setSelectedMainCategory: (category: '전체' | '뮤지컬' | '연극') => void;
-  selectedSubCategory: string | null;
-  setSelectedSubCategory: (category: string | null) => void;
-};
+const PerformanceCategoryDropdown = () => {
+  const {
+    mainCategory: selectedMainCategory,
+    subCategory: selectedSubCategory,
+    setMainCategory: setSelectedMainCategory,
+    setSubCategory: setSelectedSubCategory,
+  } = usePerformanceStore();
 
-const PerformanceCategoryDropdown = ({
-  selectedMainCategory,
-  setSelectedMainCategory,
-  selectedSubCategory,
-  setSelectedSubCategory,
-}: Props) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [stage, setStage] = useState<'main' | 'sub'>('main');
   const dropdownRef = useRef(null);
 
@@ -25,11 +21,17 @@ const PerformanceCategoryDropdown = ({
     setStage('main');
   };
 
-  const handleMainCategoryClick = (category: '뮤지컬' | '연극') => {
+  const handleMainCategoryClick = (category: '뮤지컬' | '연극' | '전체') => {
     setSelectedMainCategory(category);
-    setStage('sub');
-  };
+    setSelectedSubCategory(null);
 
+    if (category === '전체') {
+      setIsDropdownOpen(false);
+      setStage('main');
+    } else {
+      setStage('sub');
+    }
+  };
   const handleSubCategoryClick = (sub: string) => {
     setSelectedSubCategory(sub);
     setIsDropdownOpen(false);
@@ -48,7 +50,7 @@ const PerformanceCategoryDropdown = ({
     if (stage === 'main') {
       return (
         <>
-          {['뮤지컬', '연극'].map((category) => (
+          {['전체', '뮤지컬', '연극'].map((category) => (
             <button
               key={category}
               onClick={(e) => {
@@ -92,11 +94,11 @@ const PerformanceCategoryDropdown = ({
 
   return (
     <div
-      className='flex flex-row relative text-primary justify-end'
+      className='flex flex-row relative text-primary justify-end px-16'
       ref={dropdownRef}>
       <div
         onClick={toggleDropDown}
-        className='flex flex-row cursor-pointer sm:gap-36 gap-10'>
+        className='flex flex-row cursor-pointer sm:gap-20 gap-10'>
         <span className='sm:text-[18px] text-[14px] font-medium'>
           {selectedSubCategory ?? selectedMainCategory}
         </span>
