@@ -1,0 +1,105 @@
+.react-datepicker {
+  border-radius: 20px !important;
+  box-sizing: border-box;
+  width: 100%;
+  overflow: hidden;
+
+  border: 1px solid var(--color-gray-1);
+  font-family: 'Pretendard', sans-serif !important;
+}
+
+@media (min-width: 640px) {
+  .react-datepicker {
+    width: 382px;
+  }
+}
+@media (max-width: 640px) {
+  .react-datepicker {
+    width: 310px;
+  }
+}
+.react-datepicker__header {
+  background-color: transparent !important;
+  border-bottom: none !important;
+}
+
+/* 달력 전체 여백 */
+.react-datepicker__month {
+  margin-top: 2px !important;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 5px;
+
+  @media (min-width: 640px) {
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 5px;
+  }
+}
+
+/* 요일 이름 줄 */
+.react-datepicker__day-names {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 4px;
+
+  @media (min-width: 640px) {
+    gap: 10px;
+    padding: 0 20px;
+  }
+}
+
+/* 요일 줄 */
+.react-datepicker__week {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 28px;
+  margin: 6px 0;
+  font-family: Pretendard;
+  gap: 6px;
+
+  @media (min-width: 640px) {
+    height: 40px;
+    margin: 8px 0;
+    gap: 10px;
+  }
+}
+
+/* 요일, 날짜 공통 */
+.react-datepicker__day-name,
+.react-datepicker__day {
+  width: 30px !important;
+  height: 30px !important;
+  font-size: 14px;
+  color: #000000 !important;
+  font-family: Pretendard;
+  background-color: #ffffff;
+  display: inline-flex !important;
+  justify-content: center;
+  align-items: center;
+
+  @media (min-width: 640px) {
+    font-size: 18px;
+    width: 34px !important;
+    height: 34px !important;
+  }
+}
+
+/* 선택된 날짜 */
+.react-datepicker__day--selected {
+  background-color: var(--color-primary-3) !important;
+  border-radius: 50% !important;
+}
+
+/* 키보드 포커스 스타일 제거 */
+.react-datepicker__day--keyboard-selected {
+  background-color: #ffffff !important;
+}
+
+/* 이전/다음 달 날짜 */
+.react-datepicker__day--outside-month {
+  color: var(--color-gray-2) !important;
+}
