@@ -8,6 +8,7 @@ import ButtonFill from '@/components/global/ButtonFill';
 import ChevronDown from '@/assets/chevrons/chevron-down.svg?react';
 import ChevronUp from '@/assets/chevrons/chevron-up.svg?react';
 import {useReportFormStore} from '@/stores/useReportFormStore';
+import useClickOutside from '@/hooks/useClickOutside';
 
 const CalendarReportLocationPage = () => {
   const {setHeaderProps} = useOutletContext<{
@@ -37,22 +38,10 @@ const CalendarReportLocationPage = () => {
   }, []);
 
   // 바깥 클릭 닫기
-  useEffect(() => {
-    const onDocClick = (e: MouseEvent) => {
-      if (!isDropdownOpen) return;
-      const target = e.target as Node;
-      if (
-        menuRef.current &&
-        !menuRef.current.contains(target) &&
-        triggerRef.current &&
-        !triggerRef.current.contains(target)
-      ) {
-        setIsDropdownOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', onDocClick);
-    return () => document.removeEventListener('mousedown', onDocClick);
-  }, [isDropdownOpen]);
+  useClickOutside({
+    ref: triggerRef,
+    onClickOutside: () => setIsDropdownOpen(false),
+  });
 
   // ESC 닫기
   useEffect(() => {
