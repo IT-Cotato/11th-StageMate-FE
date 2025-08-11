@@ -22,6 +22,10 @@ import ScrappedMagazineList from './components/archive/ScrappedMagazineList';
 import SearchPage from './pages/SearchPage';
 import ChatRoomPage from './pages/community/ChatRoomPage';
 import ChatPage from './pages/community/ChatPage';
+import CalendarReportPage from './pages/calendar/CalendarReportPage';
+import CalendarReportLocationPage from './pages/calendar/CalendarReportLocation';
+import CalendarReportPerformancePage from './pages/calendar/CalendarReportPerformancePage';
+import CalendarLayout from './layout/CalendarLayout';
 import CalendarPage from './pages/calendar/CalendarPage';
 import SettingLayout from './layout/SettingLayout';
 import SettingAccountPage from './pages/setting/SettingAccountPage';
@@ -30,8 +34,25 @@ import SettingSupportPage from './pages/setting/SettingSupportPage';
 import PerformanceAllPage from './pages/main/PerformanceAllPage';
 import SharePostsPage from './pages/community/SharePostsPage';
 import MainPage from './pages/main/MainPage';
+import ProtectedRoute from './components/auth/ProtectedRoute';
+import {useAuthStore} from './stores/authStore';
+import {useEffect} from 'react';
+import AnnouncementPage from './pages/setting/AnnouncementPage';
+import AnnouncementDetailPage from './pages/setting/AnnouncementDetailPage';
+import PolicyTermsPage from './pages/setting/PolicyTermsPage';
+import PolicyPrivacyPage from './pages/setting/PolicyPrivacyPage';
+import EnquirePage from './pages/setting/EnquirePage';
 
 function App() {
+  const {isAuthenticated} = useAuthStore();
+
+  useEffect(() => {
+    const checkUserAuth = async () => {
+      await useAuthStore.getState().checkAuth();
+    };
+    checkUserAuth();
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>
@@ -47,7 +68,19 @@ function App() {
               <Route path='scrap-magazine' element={<ScrappedMagazineList />} />
               <Route path='scrap-post' element={<ScrappedPostList />} />
             </Route>
+          </Route>
+          <Route element={<CalendarLayout />}>
+            <Route path='/calendar/report' element={<CalendarReportPage />} />
+            <Route
+              path='/calendar/report/location'
+              element={<CalendarReportLocationPage />}
+            />
+            <Route
+              path='/calendar/report/performance'
+              element={<CalendarReportPerformancePage />}
+            />
             <Route path='/calendar' element={<CalendarPage />} />
+            <Route path='/performance' element={<PerformanceAllPage />} />
           </Route>
           <Route element={<CommunityMainLayout />}>
             <Route path='/community' element={<CommunityMainPage />} />
@@ -58,16 +91,32 @@ function App() {
             <Route path='/performance' element={<PerformanceAllPage />} />
             <Route path='/community/share' element={<SharePostsPage />} />
 
-            {/* settings */}
-            <Route path='/settings' element={<SettingLayout />}>
-              <Route path='account' element={<SettingAccountPage />} />
-              <Route path='activity' element={<SettingActivityPage />} />
-              <Route path='support' element={<SettingSupportPage />} />
+
+            {/* 로그인 된 상태만 접근 가능 */}
+            <Route element={<ProtectedRoute isLoggedIn={isAuthenticated} />}>
+              <Route path='/settings' element={<SettingLayout />}>
+                <Route path='account' element={<SettingAccountPage />} />
+                <Route path='activity' element={<SettingActivityPage />} />
+                <Route path='support' element={<SettingSupportPage />} />
+              </Route>
             </Route>
           </Route>
           <Route
             path='/magazine/:magazineId'
             element={<MagazineDetailPage />}
+          />
+
+          {/* settings */}
+          <Route path='/settings/announcement' element={<AnnouncementPage />} />
+          <Route
+            path='/settings/announcement/:id'
+            element={<AnnouncementDetailPage />}
+          />
+          <Route path='/settings/enquire' element={<EnquirePage />} />
+          <Route path='/settings/policy-terms' element={<PolicyTermsPage />} />
+          <Route
+            path='/settings/policy-privacy'
+            element={<PolicyPrivacyPage />}
           />
         </Route>
 

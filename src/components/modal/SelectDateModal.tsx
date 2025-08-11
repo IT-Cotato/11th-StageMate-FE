@@ -15,6 +15,7 @@ import useScrollLockWithRestore from '@/hooks/useScrollLockwithRestore';
 
 interface SelectDateModalProps {
   onClick: (selectedDate: Date) => void;
+  onClose?: () => void;
 }
 
 const SelectDateModal = ({onClick}: SelectDateModalProps) => {
