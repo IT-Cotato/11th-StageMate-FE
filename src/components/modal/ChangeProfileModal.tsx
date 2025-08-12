@@ -86,7 +86,7 @@ const ChangeProfileModal = ({onBackdropClick}: ChangeProfileModalProps) => {
               onClick={() => fileInputRef.current?.click()}
               type='button'
               disabled={changeProfileMutation.isPending}>
-              <div className='flex items-center justify-center w-100 h-100 bg-gray-1'>
+              <div className='flex items-center justify-center w-100 h-100 bg-gray-1 hover:opacity-80 transition-opacity'>
                 <File className='text-primary w-37' />
               </div>
               <p className='text-xl leading-[140%]'>파일에서 선택</p>
@@ -105,7 +105,7 @@ const ChangeProfileModal = ({onBackdropClick}: ChangeProfileModalProps) => {
               onClick={handleCameraClick}
               type='button'
               disabled={changeProfileMutation.isPending}>
-              <div className='flex items-center justify-center w-100 h-100 bg-gray-1'>
+              <div className='flex items-center justify-center w-100 h-100 bg-gray-1 hover:opacity-80 transition-opacity'>
                 <Camera className='text-primary w-60 h-60' />
               </div>
               <p className='text-xl leading-[140%]'>촬영하기</p>
