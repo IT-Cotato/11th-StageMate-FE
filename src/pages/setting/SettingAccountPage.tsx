@@ -1,3 +1,5 @@
+import {useNavigate} from 'react-router-dom';
+
 // 임시 계정 정보
 const accountInfo = {
   id: '아이디',
@@ -8,6 +10,8 @@ const accountInfo = {
 };
 
 const SettingAccountPage = () => {
+  const navigate = useNavigate();
+
   return (
     <div className='flex flex-col gap-29'>
       {/* info */}
@@ -41,7 +45,9 @@ const SettingAccountPage = () => {
 
       {/* change pw */}
       <div className='flex justify-end'>
-        <button className='py-4 px-10 min-w-80 border border-solid border-primary bg-white_1 text-[15px] leading-[140%] text-primary'>
+        <button
+          onClick={() => navigate('/settings/change-password')}
+          className='py-4 px-10 min-w-80 border border-solid border-primary bg-white_1 text-[15px] leading-[140%] text-primary hover:cursor-pointer'>
           비밀번호 변경
         </button>
       </div>

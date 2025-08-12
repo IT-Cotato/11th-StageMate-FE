@@ -42,6 +42,7 @@ import AnnouncementDetailPage from './pages/setting/AnnouncementDetailPage';
 import PolicyTermsPage from './pages/setting/PolicyTermsPage';
 import PolicyPrivacyPage from './pages/setting/PolicyPrivacyPage';
 import EnquirePage from './pages/setting/EnquirePage';
+import ChangePassword from './pages/setting/ChangePassword';
 import NotificationPage from './pages/NotificationPage';
 
 function App() {
@@ -92,11 +93,10 @@ function App() {
             <Route path='/performance' element={<PerformanceAllPage />} />
             <Route path='/community/share' element={<SharePostsPage />} />
 
-
             <Route path='/performance' element={<PerformanceAllPage />} />
             <Route path='/notification' element={<NotificationPage />} />
 
-            {/* 로그인 된 상태만 접근 가능 */}
+            {/* settings */}
             <Route element={<ProtectedRoute isLoggedIn={isAuthenticated} />}>
               <Route path='/settings' element={<SettingLayout />}>
                 <Route path='account' element={<SettingAccountPage />} />
@@ -111,17 +111,19 @@ function App() {
           />
 
           {/* settings */}
-          <Route path='/settings/announcement' element={<AnnouncementPage />} />
-          <Route
-            path='/settings/announcement/:id'
-            element={<AnnouncementDetailPage />}
-          />
-          <Route path='/settings/enquire' element={<EnquirePage />} />
-          <Route path='/settings/policy-terms' element={<PolicyTermsPage />} />
-          <Route
-            path='/settings/policy-privacy'
-            element={<PolicyPrivacyPage />}
-          />
+          <Route element={<ProtectedRoute isLoggedIn={isAuthenticated} />}>
+            <Route path='settings'>
+              <Route path='announcement' element={<AnnouncementPage />} />
+              <Route
+                path='announcement/:id'
+                element={<AnnouncementDetailPage />}
+              />
+              <Route path='enquire' element={<EnquirePage />} />
+              <Route path='policy-terms' element={<PolicyTermsPage />} />
+              <Route path='policy-privacy' element={<PolicyPrivacyPage />} />
+              <Route path='change-password' element={<ChangePassword />} />
+            </Route>
+          </Route>
         </Route>
 
         {/* NavigationBar가 없어야하는 페이지 */}
