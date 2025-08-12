@@ -1,7 +1,7 @@
 import BackButtonTitleHeader from '@/components/global/BackButtonTitleHeader';
 import BlockedUser from '@/components/setting/BlockedUser';
 import {mockList} from '@/mocks/mockBlockedUsers';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import Pagination from 'react-js-pagination';
 const ITEMS_PER_PAGE = 10;
 
@@ -12,6 +12,14 @@ const BlockedUserPage = () => {
   const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
   const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
   const currentItems = blockedUserList.slice(indexOfFirstItem, indexOfLastItem);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }, [currentPage]);
+
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };

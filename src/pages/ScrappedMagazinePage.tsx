@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import Pagination from 'react-js-pagination';
 import {mockMagazine} from '@/mocks/mockMagazine';
 import PostCardItem from '@/components/community/post/PostCardItem';
@@ -20,6 +20,13 @@ const ScrappedMagazinePage = () => {
     indexOfFirstItem,
     indexOfLastItem
   );
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }, [currentPage]);
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);

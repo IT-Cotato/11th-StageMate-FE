@@ -1,10 +1,9 @@
-import {useMemo, useState} from 'react';
+import {useMemo, useState, useEffect} from 'react';
 import Pagination from 'react-js-pagination';
 import {mockSharePosts} from '@/mocks/mockSharePosts';
 import {useNavigate} from 'react-router-dom';
 import PostCardItem from '@/components/community/post/PostCardItem';
 import CommunityListHeader from '@/components/community/common/CommunityListHeader';
-import useScrollToTop from '@/hooks/useScrollToTop';
 
 const ITEMS_PER_PAGE = 6;
 
@@ -12,7 +11,13 @@ const SharePostsPage = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
 
-  useScrollToTop(currentPage);
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }, [currentPage]);
+
   const totalItemsCount = mockSharePosts.length;
 
   const currentItems = useMemo(() => {

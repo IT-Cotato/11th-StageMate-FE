@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import Pagination from 'react-js-pagination';
 import {mockPosts} from '@/mocks/mockPosts';
 import PostListItem from '@/components/community/post/PostListItem';
@@ -12,6 +12,14 @@ const ScrappedPostPage = () => {
   const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
   const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
   const currentItems = scrappedPost.slice(indexOfFirstItem, indexOfLastItem);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }, [currentPage]);
+
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
