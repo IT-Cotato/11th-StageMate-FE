@@ -9,7 +9,7 @@ import TicketAddModal from '../modal/TicketAddModal';
 import CameraUnavailableModal from '../modal/CameraUnavailableModal';
 import {useArchiveStore} from '@/stores/useArchiveStore';
 import CalendarLayout from '../calendar/CalendarLayout';
-import '../styles/react-big-calendar-custom.css';
+import '@/styles/react-big-calendar-custom.css';
 
 const ArchiveCalendar = () => {
   const navigate = useNavigate();

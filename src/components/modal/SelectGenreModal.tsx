@@ -1,8 +1,8 @@
 import {genreGroups} from '@/constant';
 import PlayTag from '../main/PlayTag';
 interface SelectGenreModalProps {
-  selectedGenre: string | null;
-  setSelectedGenre: (genre: string | null) => void;
+  selectedGenre: string[];
+  setSelectedGenre: (genre: string) => void;
   onClose: () => void;
 }
 
@@ -24,8 +24,8 @@ const SelectGenreModal = ({
               <PlayTag
                 key={genre}
                 text={genre}
-                selected={selectedGenre === genre}
-                onClick={setSelectedGenre}
+                selected={selectedGenre.includes(genre)}
+                onClick={() => setSelectedGenre(genre)}
               />
             ))}
           </div>

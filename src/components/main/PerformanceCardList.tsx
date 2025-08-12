@@ -1,30 +1,92 @@
-import {useState} from 'react';
+import {useEffect} from 'react';
 import Pagination from 'react-js-pagination';
 import PerformanceCard from '@/components/main/PerformanceCard';
-import {mockPerformance} from '@/mocks/mockPerformance';
+import {usePerformanceStore} from '@/stores/usePerformanceStore';
+import '@/styles/skeleton.css';
 
 const ITEMS_PER_PAGE = 9;
 
-const PerformanceCardList = () => {
+type Perf = (typeof mockPerformance)[number];
+
+interface PerformanceCardListProps {
+  mode: 'external' | 'selectable';
+  onSelect?: (item: Perf) => void;
+  selectedKey?: string | null;
+  items?: Perf[];
+}
+
+const PerformanceCardList = ({
+  mode,
+  onSelect,
+  selectedKey = null,
+}: PerformanceCardListProps) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const totalItemsCount = mockPerformance.length;
 
-  const indexOfLast = currentPage * ITEMS_PER_PAGE;
-  const indexOfFirst = indexOfLast - ITEMS_PER_PAGE;
+  // todo: 로딩 표시, 공연 없음 예외 처리
+  // 임시로 스켈레톤 표시
+  if (loading) {
+    return (
+      <div className='grid grid-cols-3 gap-x-10 sm:gap-y-20 gap-y-15 px-4'>
+        {Array(ITEMS_PER_PAGE)
+          .fill(0)
+          .map((_, i) => (
+            <div
+              key={i}
+              className='sm:w-180 w-110 sm:h-[314px] flex flex-col gap-2 text-center p-2 bg-white rounded-lg'>
+              {/* 이미지 자리 shimmer */}
+              <div className='skeleton-shimmer rounded-[20px] h-[200px] w-full mb-2' />
 
-  const currentItems = mockPerformance.slice(indexOfFirst, indexOfLast);
+              {/* 제목 shimmer */}
+              <div className='skeleton-shimmer h-20 w-4/5 mx-auto mb-1 rounded' />
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
+              {/* 날짜 shimmer */}
+              <div className='skeleton-shimmer h-16 w-3/5 mx-auto mb-1 rounded' />
+
+              {/* 극장명 shimmer */}
+              <div className='skeleton-shimmer h-16 w-1/2 mx-auto rounded' />
+            </div>
+          ))}
+      </div>
+    );
+  }
+  if (!performances || performances.length === 0)
+    return (
+      <div className='flex items-center justify-center py-20 text-red-500 text-lg font-semibold'>
+        공연 목록을 불러오지 못했습니다.
+      </div>
+    );
 
   return (
-    <div className='flex flex-col items-center gap-10'>
+    <div className='flex flex-col gap-10'>
       <div className='grid grid-cols-3 gap-x-10 sm:gap-y-20 gap-y-15 px-4'>
-        {currentItems.map((performance, index) => (
-          <PerformanceCard key={index} {...performance} />
-        ))}
+
+        {currentItems.map((p) =>
+          mode === 'external' ? (
+            <PerformanceCard
+              key={p.performanceName}
+              variant='external'
+              url={p.url || '#'}
+              performanceName={p.performanceName}
+              imageUrl={p.imageUrl}
+              theaterName={p.theaterName}
+              startDate={p.startDate}
+              endDate={p.endDate}
+            />
+          ) : (
+            <PerformanceCard
+              key={p.performanceName}
+              variant='selectable'
+              selected={selectedKey === p.performanceName}
+              onSelect={() => onSelect?.(p)}
+              performanceName={p.performanceName}
+              imageUrl={p.imageUrl}
+              theaterName={p.theaterName}
+              startDate={p.startDate}
+              endDate={p.endDate}
+            />
+          )
+        )}
       </div>
 
       <div className='flex justify-center mt-6'>
@@ -32,8 +94,8 @@ const PerformanceCardList = () => {
           activePage={currentPage}
           itemsCountPerPage={ITEMS_PER_PAGE}
           totalItemsCount={totalItemsCount}
-          pageRangeDisplayed={5}
-          onChange={handlePageChange}
+          pageRangeDisplayed={10}
+          onChange={(page) => setCurrentPage(page)}
           innerClass='flex gap-6'
           itemClass='px-5 py-1 text-sm'
           activeClass='font-bold'
