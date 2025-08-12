@@ -4,7 +4,6 @@ import type {PageHeaderProps} from '@/components/global/PageHeader';
 import {useNavigate} from 'react-router-dom';
 import PerformanceCardList from '@/components/main/PerformanceCardList';
 import PerformanceCategoryDropdown from '@/components/main/PerformanceCategoryDropdown';
-import {useState} from 'react';
 
 const PerformanceAllPage = () => {
   const {setHeaderProps} = useOutletContext<{
@@ -39,6 +38,7 @@ const PerformanceAllPage = () => {
         selectedSubCategory={selectedSubCategory}
         setSelectedSubCategory={setSelectedSubCategory}
       />
+
 
       <PerformanceCardList mode='external' />
     </div>

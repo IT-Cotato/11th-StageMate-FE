@@ -24,4 +24,8 @@ export const ENDPOINT = {
 
   // mypage
   MYPAGE_INFO: 'api/v1/mypage/account-info',
+
+  //performance
+  PERFORMANCE: '/api/v1/performance',
+  PERFORMANCE_RECOMMEND: '/api/v1/performance/recommend',
 };
