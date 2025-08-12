@@ -74,13 +74,12 @@ function App() {
             <Route path='/chatRoom/:id' element={<ChatRoomPage />} />
             <Route path='/performance' element={<PerformanceAllPage />} />
 
-            {/* 로그인 된 상태만 접근 가능 */}
+            {/* settings */}
             <Route element={<ProtectedRoute isLoggedIn={isAuthenticated} />}>
               <Route path='/settings' element={<SettingLayout />}>
                 <Route path='account' element={<SettingAccountPage />} />
                 <Route path='activity' element={<SettingActivityPage />} />
                 <Route path='support' element={<SettingSupportPage />} />
-                <Route path='change-password' element={<ChangePassword />} />
               </Route>
             </Route>
           </Route>
@@ -90,17 +89,19 @@ function App() {
           />
 
           {/* settings */}
-          <Route path='/settings/announcement' element={<AnnouncementPage />} />
-          <Route
-            path='/settings/announcement/:id'
-            element={<AnnouncementDetailPage />}
-          />
-          <Route path='/settings/enquire' element={<EnquirePage />} />
-          <Route path='/settings/policy-terms' element={<PolicyTermsPage />} />
-          <Route
-            path='/settings/policy-privacy'
-            element={<PolicyPrivacyPage />}
-          />
+          <Route element={<ProtectedRoute isLoggedIn={isAuthenticated} />}>
+            <Route path='settings'>
+              <Route path='announcement' element={<AnnouncementPage />} />
+              <Route
+                path='announcement/:id'
+                element={<AnnouncementDetailPage />}
+              />
+              <Route path='enquire' element={<EnquirePage />} />
+              <Route path='policy-terms' element={<PolicyTermsPage />} />
+              <Route path='policy-privacy' element={<PolicyPrivacyPage />} />
+              <Route path='change-password' element={<ChangePassword />} />
+            </Route>
+          </Route>
         </Route>
 
         {/* NavigationBar가 없어야하는 페이지 */}
