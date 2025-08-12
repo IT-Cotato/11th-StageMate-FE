@@ -44,6 +44,7 @@ import ScrappedMagazinePage from './pages/ScrappedMagazinePage';
 import ScrappedPostPage from './pages/ScrappedPostPage';
 import WrittenPostPage from './pages/WrittenPostPage';
 import WrittenCommentPage from './pages/WrittenCommentPage';
+import BlockedUserPage from './pages/BlockedUserPage';
 
 function App() {
   const {isAuthenticated, isLoading} = useAuthStore();
@@ -106,6 +107,7 @@ function App() {
               <Route path='/scrap-post' element={<ScrappedPostPage />} />
               <Route path='/written-post' element={<WrittenPostPage />} />
               <Route path='/written-comment' element={<WrittenCommentPage />} />
+              <Route path='/blocked-user' element={<BlockedUserPage />} />
 
               <Route path='/settings' element={<SettingLayout />}>
                 <Route path='account' element={<SettingAccountPage />} />
