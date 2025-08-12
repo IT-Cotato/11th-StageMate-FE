@@ -4,7 +4,7 @@ import {useQuery} from '@tanstack/react-query';
 
 const PolicyPrivacyPage = () => {
   const {data, isLoading, isError} = useQuery({
-    queryKey: ['privacyTerms'],
+    queryKey: ['policyPrivacy'],
     queryFn: () => getPolicyPrivacy(),
   });
 
