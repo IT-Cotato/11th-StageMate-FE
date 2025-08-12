@@ -10,8 +10,15 @@ import {useAuthStore} from '@/stores/authStore';
 export default function MainPage() {
   /** mock user data */
   const {user, isAuthenticated} = useAuthStore();
-  const [isOnboardingDone, setIsOnboardingDone] = useState(false);
+  const [isOnboardingDone, setIsOnboardingDone] = useState(
+    localStorage.getItem('isOnboardingDone') === 'true'
+  );
   const [schedules, setSchedules] = useState<Schedule[]>(mockSchedules);
+
+  const handleOnboardingDone = () => {
+    setIsOnboardingDone(true);
+    localStorage.setItem('isOnboardingDone', 'true');
+  };
 
   const handleLikeClick = (clicked: Schedule) => {
     setSchedules((prev) =>
@@ -22,9 +29,9 @@ export default function MainPage() {
   };
 
   return (
-    <div className='relative'>
+    <div className='relative min-h-screen'>
       {!isAuthenticated && !isOnboardingDone && (
-        <OnboardingWrapper onDone={() => setIsOnboardingDone(true)} />
+        <OnboardingWrapper onDone={handleOnboardingDone} />
       )}
       <div className='bg-black flex flex-col items-center'>
         <MainHeader isLoggedIn={isAuthenticated} username={user?.name} />
