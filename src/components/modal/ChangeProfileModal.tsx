@@ -17,7 +17,14 @@ const ChangeProfileModal = ({onBackdropClick}: ChangeProfileModalProps) => {
   const [showCameraModal, setShowCameraModal] = useState<boolean>(false);
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-  useClickOutside({ref: targetRef, onClickOutside: onBackdropClick});
+  useClickOutside({
+    ref: targetRef,
+    onClickOutside: onBackdropClick,
+    exclude: (target) => {
+      // Modal 영역 클릭 시 제외 (Portal로 렌더링된 Modal 체크)
+      return target.closest('[role="dialog"]') !== null;
+    },
+  });
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) {
@@ -87,16 +94,18 @@ const ChangeProfileModal = ({onBackdropClick}: ChangeProfileModalProps) => {
               onChange={handleFileChange}
             />
           </div>
+
+          {showCameraModal && (
+            <Modal
+              content={cameraModal.content}
+              rightText='확인'
+              onRightClick={() => setShowCameraModal(false)}
+              onBackdropClick={() => setShowCameraModal(false)}
+              closeOnBackdrop={true}
+            />
+          )}
         </div>
       </div>
-
-      {showCameraModal && (
-        <Modal
-          content={cameraModal.content}
-          rightText='확인'
-          onRightClick={() => setShowCameraModal(false)}
-        />
-      )}
     </Portal>
   );
 };
