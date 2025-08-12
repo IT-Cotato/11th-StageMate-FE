@@ -78,3 +78,16 @@ export const getNociesDetail = async (id: number) => {
     throw new Error(errorMessage);
   }
 };
+
+export const getPolicyPrivacy = async () => {
+  try {
+    const response = await privateAxios.get(ENDPOINT.MYPAGE_PRIVACY);
+    return response.data.data;
+  } catch (error: any) {
+    // const status = error.response.data.status;
+    const code = error.response.data.code;
+    const errorMessage = getErrorMessage(code);
+    console.error('An unexpected error occurred:', error);
+    throw new Error(errorMessage);
+  }
+};
