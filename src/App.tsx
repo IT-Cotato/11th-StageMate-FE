@@ -49,9 +49,12 @@ import ChangePassword from './pages/setting/ChangePassword';
 import NotificationPage from './pages/NotificationPage';
 import useScrollToTop from './hooks/useScrollToTop';
 
-function App() {
+const ScrollManager = () => {
   useScrollToTop();
+  return null;
+};
 
+function App() {
   const {isAuthenticated, isLoading} = useAuthStore();
 
   useEffect(() => {
@@ -63,6 +66,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <ScrollManager />
       <Routes>
         {/* NavigationBar가 필요한 페이지 */}
         <Route element={<MainLayout />}>
