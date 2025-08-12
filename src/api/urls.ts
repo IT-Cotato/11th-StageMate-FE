@@ -29,6 +29,7 @@ export const ENDPOINT = {
   MYPAGE_NOTICES_DETAIL: (id: number) => `api/v1/mypage/notices/${id}`,
   MYPAGE_PRIVACY: 'api/v1/mypage/policy/privacy',
   MYPAGE_TERMS: 'api/v1/mypage/policy/terms',
+  MYPAGE_PROFILE_IMAGE: 'api/v1/mypage/profile-image',
 
   //performance
   PERFORMANCE: '/api/v1/performance',

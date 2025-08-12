@@ -104,3 +104,20 @@ export const getPolicyTerms = async () => {
     throw new Error(errorMessage);
   }
 };
+
+export const putProfileImage = async (formData: FormData) => {
+  try {
+    const response = await privateAxios.put(ENDPOINT.MYPAGE_PROFILE_IMAGE, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data.data;
+  } catch (error: any) {
+    // const status = error.response.data.status;
+    const code = error.response.data.code;
+    const errorMessage = getErrorMessage(code);
+    console.error('An unexpected error occurred:', error);
+    throw new Error(errorMessage);
+  }
+};

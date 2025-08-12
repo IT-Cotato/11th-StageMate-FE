@@ -5,6 +5,9 @@ import File from '@/assets/archive/archive-ticket-file.svg?react';
 import Camera from '@/assets/community/editor-icons/editor-icon-camera.svg?react';
 import Modal from '../global/Modal';
 import {cameraModal} from '@/constants/modalConstants';
+import {useMutation} from '@tanstack/react-query';
+import {putProfileImage} from '@/api/mypageApi';
+import {useAuthStore} from '@/stores/authStore';
 
 interface ChangeProfileModalProps {
   onBackdropClick: () => void;
@@ -16,6 +19,15 @@ const ChangeProfileModal = ({onBackdropClick}: ChangeProfileModalProps) => {
   const cameraInputRef = useRef<HTMLInputElement | null>(null);
   const [showCameraModal, setShowCameraModal] = useState<boolean>(false);
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+  const {setProfileImage} = useAuthStore();
+
+  const changeProfileMutation = useMutation({
+    mutationFn: putProfileImage,
+    onSuccess: (data) => {
+      setProfileImage(data);
+    },
+  });
 
   useClickOutside({
     ref: targetRef,
@@ -33,8 +45,9 @@ const ChangeProfileModal = ({onBackdropClick}: ChangeProfileModalProps) => {
 
     const formData = new FormData();
     formData.append('image', e.target.files[0]);
-    console.log('formData', formData);
+    changeProfileMutation.mutate(formData);
     e.target.value = '';
+    onBackdropClick();
   };
 
   const handleCameraClick = () => {

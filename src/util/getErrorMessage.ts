@@ -45,6 +45,10 @@ const getErrorMessage = (code: string): string => {
     case 'COMMON-009':
       return '인증이 필요합니다.';
 
+    // image
+    case 'IMAGE-001':
+      return '이미지 업로드에 실패했습니다.';
+
     // default
     default:
       return '서비스 이용에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.';
