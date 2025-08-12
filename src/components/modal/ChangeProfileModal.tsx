@@ -1,6 +1,6 @@
 import Portal from '@/components/global/Portal';
 import useClickOutside from '@/hooks/useClickOutside';
-import {useRef, useState} from 'react';
+import {useCallback, useRef, useState} from 'react';
 import File from '@/assets/archive/archive-ticket-file.svg?react';
 import Camera from '@/assets/community/editor-icons/editor-icon-camera.svg?react';
 import Modal from '../global/Modal';
@@ -8,6 +8,7 @@ import {cameraModal} from '@/constants/modalConstants';
 import {useMutation} from '@tanstack/react-query';
 import {putProfileImage} from '@/api/mypageApi';
 import {useAuthStore} from '@/stores/authStore';
+import LoadingOverlay from '../global/LoadingOverlay';
 
 interface ChangeProfileModalProps {
   onBackdropClick: () => void;
@@ -26,6 +27,10 @@ const ChangeProfileModal = ({onBackdropClick}: ChangeProfileModalProps) => {
     mutationFn: putProfileImage,
     onSuccess: (data) => {
       setProfileImage(data);
+      onBackdropClick();
+    },
+    onError: () => {
+      console.error('프로필 이미지 업로드 실패');
     },
   });
 
@@ -38,25 +43,30 @@ const ChangeProfileModal = ({onBackdropClick}: ChangeProfileModalProps) => {
     },
   });
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) {
-      return;
-    }
+  const handleFileChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
 
-    const formData = new FormData();
-    formData.append('image', e.target.files[0]);
-    changeProfileMutation.mutate(formData);
-    e.target.value = '';
-    onBackdropClick();
-  };
+      const formData = new FormData();
+      formData.append('image', file);
+      changeProfileMutation.mutate(formData);
+      e.target.value = '';
+    },
+    [changeProfileMutation]
+  );
 
-  const handleCameraClick = () => {
+  const handleCameraClick = useCallback(() => {
     if (!isMobile) {
       setShowCameraModal(true);
     } else {
       cameraInputRef.current?.click();
     }
-  };
+  }, [isMobile]);
+
+  const handleCameraModalClose = useCallback(() => {
+    setShowCameraModal(false);
+  }, []);
 
   return (
     <Portal>
@@ -73,7 +83,9 @@ const ChangeProfileModal = ({onBackdropClick}: ChangeProfileModalProps) => {
             {/* 파일에서 선택(갤러리 선택) */}
             <button
               className='flex flex-col justify-center items-center gap-14 min-w-127 cursor-pointer'
-              onClick={() => fileInputRef.current?.click()}>
+              onClick={() => fileInputRef.current?.click()}
+              type='button'
+              disabled={changeProfileMutation.isPending}>
               <div className='flex items-center justify-center w-100 h-100 bg-gray-1'>
                 <File className='text-primary w-37' />
               </div>
@@ -88,12 +100,12 @@ const ChangeProfileModal = ({onBackdropClick}: ChangeProfileModalProps) => {
             />
 
             {/* 카메라 연동 - 웹 접근 제한 */}
-            <button className='flex flex-col justify-center items-center gap-14 min-w-127 cursor-pointer'>
-              <div
-                onClick={() => {
-                  handleCameraClick();
-                }}
-                className='flex items-center justify-center w-100 h-100 bg-gray-1'>
+            <button
+              className='flex flex-col justify-center items-center gap-14 min-w-127 cursor-pointer'
+              onClick={handleCameraClick}
+              type='button'
+              disabled={changeProfileMutation.isPending}>
+              <div className='flex items-center justify-center w-100 h-100 bg-gray-1'>
                 <Camera className='text-primary w-60 h-60' />
               </div>
               <p className='text-xl leading-[140%]'>촬영하기</p>
@@ -112,8 +124,20 @@ const ChangeProfileModal = ({onBackdropClick}: ChangeProfileModalProps) => {
             <Modal
               content={cameraModal.content}
               rightText='확인'
-              onRightClick={() => setShowCameraModal(false)}
-              onBackdropClick={() => setShowCameraModal(false)}
+              onRightClick={handleCameraModalClose}
+              onBackdropClick={handleCameraModalClose}
+              closeOnBackdrop={true}
+            />
+          )}
+
+          {changeProfileMutation.isPending && <LoadingOverlay />}
+
+          {changeProfileMutation.isError && (
+            <Modal
+              content='이미지 업로드에 실패했습니다.'
+              rightText='확인'
+              onRightClick={changeProfileMutation.reset}
+              onBackdropClick={changeProfileMutation.reset}
               closeOnBackdrop={true}
             />
           )}
