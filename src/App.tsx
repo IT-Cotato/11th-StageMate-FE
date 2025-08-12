@@ -17,8 +17,6 @@ import CommunityContentLayout from './layout/CommunityContentLayout';
 import MagazinePage from './pages/community/MagazinePage';
 import MagazineDetailPage from './pages/community/MagazineDetailPage';
 import ArchiveWritePage from './pages/archive/ArchiveWritePage';
-import ScrappedPostList from './components/archive/ScrappedPostList';
-import ScrappedMagazineList from './components/archive/ScrappedMagazineList';
 import SearchPage from './pages/SearchPage';
 import ChatRoomPage from './pages/community/ChatRoomPage';
 import ChatPage from './pages/community/ChatPage';
@@ -42,9 +40,11 @@ import AnnouncementDetailPage from './pages/setting/AnnouncementDetailPage';
 import PolicyTermsPage from './pages/setting/PolicyTermsPage';
 import PolicyPrivacyPage from './pages/setting/PolicyPrivacyPage';
 import EnquirePage from './pages/setting/EnquirePage';
+import ScrappedMagazinePage from './pages/ScrappedMagazinePage';
+import ScrappedPostPage from './pages/ScrappedPostPage';
 
 function App() {
-  const {isAuthenticated} = useAuthStore();
+  const {isAuthenticated, isLoading} = useAuthStore();
 
   useEffect(() => {
     const checkUserAuth = async () => {
@@ -65,8 +65,6 @@ function App() {
               <Route index element={<ArchivePage />} />
               <Route path='write' element={<ArchiveWritePage />} />
               <Route path=':id' element={<ArchiveWritePage />} />
-              <Route path='scrap-magazine' element={<ScrappedMagazineList />} />
-              <Route path='scrap-post' element={<ScrappedPostList />} />
             </Route>
           </Route>
           <Route element={<CalendarLayout />}>
@@ -91,9 +89,20 @@ function App() {
             <Route path='/performance' element={<PerformanceAllPage />} />
             <Route path='/community/share' element={<SharePostsPage />} />
 
-
             {/* 로그인 된 상태만 접근 가능 */}
-            <Route element={<ProtectedRoute isLoggedIn={isAuthenticated} />}>
+            <Route
+              element={
+                <ProtectedRoute
+                  isLoggedIn={isAuthenticated}
+                  isLoading={isLoading}
+                />
+              }>
+              <Route
+                path='/scrap-magazine'
+                element={<ScrappedMagazinePage />}
+              />
+              <Route path='/scrap-post' element={<ScrappedPostPage />} />
+
               <Route path='/settings' element={<SettingLayout />}>
                 <Route path='account' element={<SettingAccountPage />} />
                 <Route path='activity' element={<SettingActivityPage />} />
