@@ -47,6 +47,12 @@ import WrittenCommentPage from './pages/WrittenCommentPage';
 import BlockedUserPage from './pages/BlockedUserPage';
 import ChangePassword from './pages/setting/ChangePassword';
 import NotificationPage from './pages/NotificationPage';
+import useScrollToTop from './hooks/useScrollToTop';
+
+const ScrollManager = () => {
+  useScrollToTop();
+  return null;
+};
 
 function App() {
   const {isAuthenticated, isLoading} = useAuthStore();
@@ -60,6 +66,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <ScrollManager />
       <Routes>
         {/* NavigationBar가 필요한 페이지 */}
         <Route element={<MainLayout />}>

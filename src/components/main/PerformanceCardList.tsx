@@ -4,7 +4,6 @@ import PerformanceCard from '@/components/main/PerformanceCard';
 import {usePerformanceStore} from '@/stores/usePerformanceStore';
 import '@/styles/skeleton.css';
 import type {Performance} from '@/types/performance';
-import useScrollToTop from '@/hooks/useScrollToTop';
 
 const ITEMS_PER_PAGE = 9;
 
@@ -32,7 +31,12 @@ const PerformanceCardList = ({
     fetchPerformances();
   }, [fetchPerformances]);
 
-  useScrollToTop(currentPage); // 페이지 바뀔 때마다 스크롤 위로
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }, [currentPage]);
 
   // todo: 로딩 표시, 공연 없음 예외 처리
   // 임시로 스켈레톤 표시
