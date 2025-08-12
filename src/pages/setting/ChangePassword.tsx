@@ -4,7 +4,6 @@ import {useState} from 'react';
 
 type ChangePasswordType = {
   value: string;
-  isValid: boolean;
   isShow: boolean;
 };
 
@@ -16,9 +15,9 @@ interface ChangePasswordState {
 
 const ChangePassword = () => {
   const [passwordState, setPasswordState] = useState<ChangePasswordState>({
-    currentPw: {value: '', isValid: false, isShow: false},
-    newPw: {value: '', isValid: false, isShow: false},
-    newPwCheck: {value: '', isValid: false, isShow: false},
+    currentPw: {value: '', isShow: false},
+    newPw: {value: '', isShow: false},
+    newPwCheck: {value: '', isShow: false},
   });
 
   const handleShowClick = (e: React.MouseEvent<HTMLButtonElement>) => {
