@@ -3,25 +3,36 @@ import Pagination from 'react-js-pagination';
 import PerformanceCard from '@/components/main/PerformanceCard';
 import {usePerformanceStore} from '@/stores/usePerformanceStore';
 import '@/styles/skeleton.css';
+import type {Performance} from '@/types/performance';
+import useScrollToTop from '@/hooks/useScrollToTop';
 
 const ITEMS_PER_PAGE = 9;
 
-type Perf = (typeof mockPerformance)[number];
-
 interface PerformanceCardListProps {
   mode: 'external' | 'selectable';
-  onSelect?: (item: Perf) => void;
+  onSelect?: (item: Performance) => void;
   selectedKey?: string | null;
-  items?: Perf[];
 }
 
 const PerformanceCardList = ({
   mode,
   onSelect,
-  selectedKey = null,
+  selectedKey,
 }: PerformanceCardListProps) => {
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const {
+    performances,
+    totalItemsCount,
+    loading,
+    currentPage,
+    setCurrentPage,
+    fetchPerformances,
+  } = usePerformanceStore();
 
+  useEffect(() => {
+    fetchPerformances();
+  }, [fetchPerformances]);
+
+  useScrollToTop(currentPage); // 페이지 바뀔 때마다 스크롤 위로
 
   // todo: 로딩 표시, 공연 없음 예외 처리
   // 임시로 스켈레톤 표시
@@ -60,30 +71,20 @@ const PerformanceCardList = ({
   return (
     <div className='flex flex-col gap-10'>
       <div className='grid grid-cols-3 gap-x-10 sm:gap-y-20 gap-y-15 px-4'>
-
-        {currentItems.map((p) =>
+        {performances.map((performance) =>
           mode === 'external' ? (
             <PerformanceCard
-              key={p.performanceName}
+              key={performance.url}
               variant='external'
-              url={p.url || '#'}
-              performanceName={p.performanceName}
-              imageUrl={p.imageUrl}
-              theaterName={p.theaterName}
-              startDate={p.startDate}
-              endDate={p.endDate}
+              {...performance}
             />
           ) : (
             <PerformanceCard
-              key={p.performanceName}
+              key={performance.url}
               variant='selectable'
-              selected={selectedKey === p.performanceName}
-              onSelect={() => onSelect?.(p)}
-              performanceName={p.performanceName}
-              imageUrl={p.imageUrl}
-              theaterName={p.theaterName}
-              startDate={p.startDate}
-              endDate={p.endDate}
+              {...performance}
+              selected={selectedKey === performance.performanceName}
+              onSelect={() => onSelect?.(performance)}
             />
           )
         )}
@@ -95,7 +96,9 @@ const PerformanceCardList = ({
           itemsCountPerPage={ITEMS_PER_PAGE}
           totalItemsCount={totalItemsCount}
           pageRangeDisplayed={10}
-          onChange={(page) => setCurrentPage(page)}
+          onChange={(page) => {
+            setCurrentPage(page);
+          }}
           innerClass='flex gap-6'
           itemClass='px-5 py-1 text-sm'
           activeClass='font-bold'

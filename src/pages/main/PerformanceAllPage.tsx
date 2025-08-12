@@ -23,23 +23,9 @@ const PerformanceAllPage = () => {
     });
   }, [setHeaderProps, navigate]);
 
-  const [selectedMainCategory, setSelectedMainCategory] = useState<
-    '전체' | '뮤지컬' | '연극'
-  >('전체');
-  const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(
-    null
-  );
-
   return (
     <div className='flex gap-15 flex-col mb-30'>
-      <PerformanceCategoryDropdown
-        selectedMainCategory={selectedMainCategory}
-        setSelectedMainCategory={setSelectedMainCategory}
-        selectedSubCategory={selectedSubCategory}
-        setSelectedSubCategory={setSelectedSubCategory}
-      />
-
-
+      <PerformanceCategoryDropdown />
       <PerformanceCardList mode='external' />
     </div>
   );
