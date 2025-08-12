@@ -42,6 +42,7 @@ import AnnouncementDetailPage from './pages/setting/AnnouncementDetailPage';
 import PolicyTermsPage from './pages/setting/PolicyTermsPage';
 import PolicyPrivacyPage from './pages/setting/PolicyPrivacyPage';
 import EnquirePage from './pages/setting/EnquirePage';
+import NotificationPage from './pages/NotificationPage';
 
 function App() {
   const {isAuthenticated} = useAuthStore();
@@ -91,6 +92,9 @@ function App() {
             <Route path='/performance' element={<PerformanceAllPage />} />
             <Route path='/community/share' element={<SharePostsPage />} />
 
+
+            <Route path='/performance' element={<PerformanceAllPage />} />
+            <Route path='/notification' element={<NotificationPage />} />
 
             {/* 로그인 된 상태만 접근 가능 */}
             <Route element={<ProtectedRoute isLoggedIn={isAuthenticated} />}>
