@@ -28,6 +28,10 @@ const getErrorMessage = (code: string): string => {
       return '이미 사용 중인 유저 ID입니다.';
     case 'AUTH-017':
       return '이미 사용 중인 닉네임입니다.';
+    case 'AUTH-018':
+      return '현재 비밀번호가 일치하지 않습니다.';
+    case 'AUTH-019':
+      return '기존과 동일한 비밀번호는 사용할 수 없습니다.';
 
     // common
     case 'COMMON-001':
