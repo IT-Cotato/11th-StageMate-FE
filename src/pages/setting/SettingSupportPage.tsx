@@ -1,12 +1,18 @@
 import {deleteWithdraw, postLogout} from '@/api/authApi';
 import ChevronRight from '@/assets/arrows/chevron-right.svg?react';
+import Modal from '@/components/global/Modal';
+import {withdrawComplete, withdrawing} from '@/constants/withdraw';
 import {useAuthStore} from '@/stores/authStore';
 import {useMutation} from '@tanstack/react-query';
+import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 
 const SettingSupportPage = () => {
   const navigate = useNavigate();
   const {logout} = useAuthStore();
+  const [showWithdrawModal, setShowWithdrawModal] = useState<boolean>(false);
+  const [showWithdrawCompleteModal, setShowWithdrawCompleteModal] =
+    useState<boolean>(false);
 
   const logoutMutation = useMutation({
     mutationFn: async () => {
@@ -19,8 +25,7 @@ const SettingSupportPage = () => {
   const withdrawMutation = useMutation({
     mutationFn: async () => {
       await deleteWithdraw();
-      alert('회원 탈퇴가 완료되었습니다.');
-      logout();
+      setShowWithdrawCompleteModal(true);
     },
     onError: (error) => alert(error.message),
   });
@@ -30,6 +35,7 @@ const SettingSupportPage = () => {
   };
 
   const handlewithdrawClick = () => {
+    setShowWithdrawModal(false);
     withdrawMutation.mutate();
   };
 
@@ -76,11 +82,34 @@ const SettingSupportPage = () => {
           로그아웃
         </button>
         <button
-          onClick={handlewithdrawClick}
+          onClick={() => setShowWithdrawModal(true)}
           className='py-4 px-10 min-w-80 border border-solid border-primary bg-white_1 text-[15px] leading-[140%] text-primary hover:cursor-pointer'>
           회원탈퇴
         </button>
       </div>
+
+      {showWithdrawModal && (
+        <Modal
+          title={withdrawing.title}
+          content={withdrawing.content}
+          leftText='취소'
+          rightText='탈퇴'
+          onLeftClick={() => setShowWithdrawModal(false)}
+          onRightClick={handlewithdrawClick}
+        />
+      )}
+
+      {showWithdrawCompleteModal && (
+        <Modal
+          title={withdrawComplete.title}
+          content={withdrawComplete.content}
+          rightText='확인'
+          onRightClick={() => {
+            setShowWithdrawCompleteModal(false);
+            logout();
+          }}
+        />
+      )}
     </div>
   );
 };
