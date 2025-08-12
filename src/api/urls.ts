@@ -28,6 +28,7 @@ export const ENDPOINT = {
   MYPAGE_NOTICES: 'api/v1/mypage/notices',
   MYPAGE_NOTICES_DETAIL: (id: number) => `api/v1/mypage/notices/${id}`,
   MYPAGE_PRIVACY: 'api/v1/mypage/policy/privacy',
+  MYPAGE_TERMS: 'api/v1/mypage/policy/terms',
 
   //performance
   PERFORMANCE: '/api/v1/performance',
