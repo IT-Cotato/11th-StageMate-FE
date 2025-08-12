@@ -17,7 +17,7 @@ export type ImageSearchResponse = {
   items: ImageItem[];
 };
 
-export const getImagesSimple = async (
+export const getImages = async (
   query: string,
   display = 10,
   start = 1
