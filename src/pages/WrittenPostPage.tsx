@@ -1,7 +1,7 @@
 import PostListItem from '@/components/community/post/PostListItem';
 import BackButtonTitleHeader from '@/components/global/BackButtonTitleHeader';
 import {mockPosts} from '@/mocks/mockPosts';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import Pagination from 'react-js-pagination';
 const ITEMS_PER_PAGE = 9;
 
@@ -15,10 +15,6 @@ const WrittenPostPage = () => {
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
-
-  useEffect(() => {
-    window.scrollTo({top: 0, behavior: 'smooth'});
-  }, []);
 
   return (
     <div className='flex flex-col gap-40'>

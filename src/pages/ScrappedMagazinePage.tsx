@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import Pagination from 'react-js-pagination';
 import {mockMagazine} from '@/mocks/mockMagazine';
 import PostCardItem from '@/components/community/post/PostCardItem';
@@ -11,9 +11,6 @@ const ScrappedMagazinePage = () => {
     (magazine) => magazine.isBookmarked
   );
 
-  useEffect(() => {
-    window.scrollTo({top: 0, behavior: 'smooth'});
-  }, []);
   const [currentPage, setCurrentPage] = useState(1);
   const totalItemsCount = scrappedMagazine.length;
 

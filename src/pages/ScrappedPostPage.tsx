@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import Pagination from 'react-js-pagination';
 import {mockPosts} from '@/mocks/mockPosts';
 import PostListItem from '@/components/community/post/PostListItem';
@@ -15,9 +15,7 @@ const ScrappedPostPage = () => {
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
-  useEffect(() => {
-    window.scrollTo({top: 0, behavior: 'smooth'});
-  }, []);
+
   return (
     <div className='flex flex-col gap-40'>
       {/* 상단 */}

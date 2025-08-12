@@ -1,7 +1,7 @@
 import BackButtonTitleHeader from '@/components/global/BackButtonTitleHeader';
 import BlockedUser from '@/components/setting/BlockedUser';
 import {mockList} from '@/mocks/mockBlockedUsers';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import Pagination from 'react-js-pagination';
 const ITEMS_PER_PAGE = 10;
 
@@ -15,10 +15,6 @@ const BlockedUserPage = () => {
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
-
-  useEffect(() => {
-    window.scrollTo({top: 0, behavior: 'smooth'});
-  }, []);
 
   return (
     <div className='flex flex-col gap-40'>
