@@ -2,7 +2,7 @@ import DatePicker from 'react-datepicker';
 import {format} from 'date-fns';
 import {ko} from 'date-fns/locale';
 import 'react-datepicker/dist/react-datepicker.css';
-import '../styles/react-datepicker-custom.css';
+import '@/styles/react-datepicker-custom.css';
 import Calendar from '@/assets/datepicker-calendar.svg?react';
 interface CustomDatePickerProps {
   startDate: Date | null;

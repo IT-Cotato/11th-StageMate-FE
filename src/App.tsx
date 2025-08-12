@@ -45,6 +45,8 @@ import ScrappedPostPage from './pages/ScrappedPostPage';
 import WrittenPostPage from './pages/WrittenPostPage';
 import WrittenCommentPage from './pages/WrittenCommentPage';
 import BlockedUserPage from './pages/BlockedUserPage';
+import ChangePassword from './pages/setting/ChangePassword';
+import NotificationPage from './pages/NotificationPage';
 
 function App() {
   const {isAuthenticated, isLoading} = useAuthStore();
@@ -63,6 +65,11 @@ function App() {
         <Route element={<MainLayout />}>
           <Route path='/' element={<MainPage />} />
           <Route path='/search' element={<SearchPage />} />
+          <Route
+            path='/magazine/:magazineId'
+            element={<MagazineDetailPage />}
+          />
+
           <Route element={<ArchiveLayout />}>
             <Route path='archive'>
               <Route index element={<ArchivePage />} />
@@ -70,6 +77,7 @@ function App() {
               <Route path=':id' element={<ArchiveWritePage />} />
             </Route>
           </Route>
+
           <Route element={<CalendarLayout />}>
             <Route path='/calendar/report' element={<CalendarReportPage />} />
             <Route
@@ -83,6 +91,7 @@ function App() {
             <Route path='/calendar' element={<CalendarPage />} />
             <Route path='/performance' element={<PerformanceAllPage />} />
           </Route>
+
           <Route element={<CommunityMainLayout />}>
             <Route path='/community' element={<CommunityMainPage />} />
             <Route path='/community/:category' element={<FilteredPostList />} />
@@ -92,7 +101,6 @@ function App() {
             <Route path='/performance' element={<PerformanceAllPage />} />
             <Route path='/community/share' element={<SharePostsPage />} />
 
-            {/* 로그인 된 상태만 접근 가능 */}
             <Route
               element={
                 <ProtectedRoute
@@ -108,6 +116,7 @@ function App() {
               <Route path='/written-post' element={<WrittenPostPage />} />
               <Route path='/written-comment' element={<WrittenCommentPage />} />
               <Route path='/blocked-user' element={<BlockedUserPage />} />
+              <Route path='/notification' element={<NotificationPage />} />
 
               <Route path='/settings' element={<SettingLayout />}>
                 <Route path='account' element={<SettingAccountPage />} />
@@ -116,23 +125,20 @@ function App() {
               </Route>
             </Route>
           </Route>
-          <Route
-            path='/magazine/:magazineId'
-            element={<MagazineDetailPage />}
-          />
 
-          {/* settings */}
-          <Route path='/settings/announcement' element={<AnnouncementPage />} />
-          <Route
-            path='/settings/announcement/:id'
-            element={<AnnouncementDetailPage />}
-          />
-          <Route path='/settings/enquire' element={<EnquirePage />} />
-          <Route path='/settings/policy-terms' element={<PolicyTermsPage />} />
-          <Route
-            path='/settings/policy-privacy'
-            element={<PolicyPrivacyPage />}
-          />
+          <Route element={<ProtectedRoute isLoggedIn={isAuthenticated} />}>
+            <Route path='settings'>
+              <Route path='announcement' element={<AnnouncementPage />} />
+              <Route
+                path='announcement/:id'
+                element={<AnnouncementDetailPage />}
+              />
+              <Route path='enquire' element={<EnquirePage />} />
+              <Route path='policy-terms' element={<PolicyTermsPage />} />
+              <Route path='policy-privacy' element={<PolicyPrivacyPage />} />
+              <Route path='change-password' element={<ChangePassword />} />
+            </Route>
+          </Route>
         </Route>
 
         {/* NavigationBar가 없어야하는 페이지 */}
