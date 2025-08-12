@@ -42,6 +42,8 @@ import PolicyPrivacyPage from './pages/setting/PolicyPrivacyPage';
 import EnquirePage from './pages/setting/EnquirePage';
 import ScrappedMagazinePage from './pages/ScrappedMagazinePage';
 import ScrappedPostPage from './pages/ScrappedPostPage';
+import WrittenPostPage from './pages/WrittenPostPage';
+import WrittenCommentPage from './pages/WrittenCommentPage';
 
 function App() {
   const {isAuthenticated, isLoading} = useAuthStore();
@@ -102,6 +104,8 @@ function App() {
                 element={<ScrappedMagazinePage />}
               />
               <Route path='/scrap-post' element={<ScrappedPostPage />} />
+              <Route path='/written-post' element={<WrittenPostPage />} />
+              <Route path='/written-comment' element={<WrittenCommentPage />} />
 
               <Route path='/settings' element={<SettingLayout />}>
                 <Route path='account' element={<SettingAccountPage />} />
