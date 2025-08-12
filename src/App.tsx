@@ -47,8 +47,11 @@ import WrittenCommentPage from './pages/WrittenCommentPage';
 import BlockedUserPage from './pages/BlockedUserPage';
 import ChangePassword from './pages/setting/ChangePassword';
 import NotificationPage from './pages/NotificationPage';
+import useScrollToTop from './hooks/useScrollToTop';
 
 function App() {
+  useScrollToTop();
+
   const {isAuthenticated, isLoading} = useAuthStore();
 
   useEffect(() => {
