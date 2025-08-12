@@ -42,7 +42,7 @@ const SettingSupportPage = () => {
   return (
     <div className='flex flex-col gap-29'>
       {/* info */}
-      <div className='mx-28 py-37 px-33 flex flex-col bg-[#d9d9d9]'>
+      <div className='mx-28 py-37 px-33 flex flex-col bg-[#d9d9d9] rounded-[10px]'>
         <div
           className='flex justify-between items-center hover:cursor-pointer'
           onClick={() => navigate('/settings/announcement')}>
