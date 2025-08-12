@@ -7,6 +7,7 @@ export interface AuthState {
   accessToken: string | null;
   refreshToken: string | null;
   isAuthenticated: boolean;
+  isLoading: boolean;
   login: (accessToken: string, refreshToken: string, user: User) => void;
   logout: () => void;
   checkAuth: () => Promise<void>;
@@ -17,6 +18,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   accessToken: null,
   refreshToken: null,
   isAuthenticated: false,
+  isLoading: true,
 
   login: (accessToken: string, refreshToken: string, user: User) => {
     localStorage.setItem('accessToken', accessToken);
@@ -26,6 +28,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       refreshToken,
       user,
       isAuthenticated: true,
+      isLoading: false,
     });
   },
 
@@ -37,6 +40,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       refreshToken: null,
       user: null,
       isAuthenticated: false,
+      isLoading: false,
     });
   },
 
@@ -53,11 +57,14 @@ export const useAuthStore = create<AuthState>((set, get) => ({
           refreshToken,
           user: userInfo,
           isAuthenticated: true,
+          isLoading: false,
         });
       } catch (error) {
         console.error('Authentication check failed:', error);
         get().logout();
       }
+    } else {
+      set({ isLoading: false });
     }
   },
 }));

@@ -1,40 +1,34 @@
+import BackButtonTitleHeader from '@/components/global/BackButtonTitleHeader';
+import BlockedUser from '@/components/setting/BlockedUser';
+import {mockList} from '@/mocks/mockBlockedUsers';
 import {useEffect, useState} from 'react';
-import ChevronLeft from '@/assets/chevrons/chevron-left.svg?react';
-import {useNavigate} from 'react-router-dom';
 import Pagination from 'react-js-pagination';
-import {mockPosts} from '@/mocks/mockPosts';
-import PostListItem from '../community/post/PostListItem';
-const ITEMS_PER_PAGE = 9;
+const ITEMS_PER_PAGE = 10;
 
-const ScrappedPostList = () => {
-  const navigate = useNavigate();
-  const scrappedPost = mockPosts.filter((post) => post.isScrapped === true);
+const BlockedUserPage = () => {
+  const blockedUserList = mockList;
   const [currentPage, setCurrentPage] = useState(1);
-  const totalItemsCount = scrappedPost.length;
+  const totalItemsCount = blockedUserList.length;
   const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
   const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
-  const currentItems = scrappedPost.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = blockedUserList.slice(indexOfFirstItem, indexOfLastItem);
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
+
   useEffect(() => {
     window.scrollTo({top: 0, behavior: 'smooth'});
   }, []);
+
   return (
-    <div className='flex flex-col px-20 gap-40'>
+    <div className='flex flex-col gap-40'>
       {/* 상단 */}
-      <div className='flex flex-row justify-between items-center mb-6'>
-        <ChevronLeft
-          className='w-50 h-50 cursor-pointer'
-          onClick={() => navigate(-1)}
-        />
-        <span className='text-xl font-extrabold'>스크랩한 글 모아보기</span>
-      </div>
+      <BackButtonTitleHeader title='차단한 사용자 목록' between />
 
       {/* 리스트 */}
       <ul className='flex flex-col gap-10'>
-        {currentItems.map((post, idx) => (
-          <PostListItem key={idx} post={post} />
+        {currentItems.map((user) => (
+          <BlockedUser key={user.id} user={user} />
         ))}
       </ul>
 
@@ -58,4 +52,5 @@ const ScrappedPostList = () => {
     </div>
   );
 };
-export default ScrappedPostList;
+
+export default BlockedUserPage;

@@ -26,7 +26,7 @@ const ArchivePage = () => {
       <div className='flex justify-center'>
         <button
           className='w-100 flex justify-center items-center text-[18px] border-primary border-[1px] rounded-[50px] px-21 py-3 hover:bg-gray-100 hover:font-semibold cursor-pointer'
-          onClick={() => navigate('/archive/scrap-magazine')}>
+          onClick={() => navigate('/scrap-magazine')}>
           더 보기
         </button>
       </div>
@@ -43,7 +43,7 @@ const ArchivePage = () => {
       <div className='flex justify-center'>
         <button
           className='w-100 flex justify-center items-center text-[18px] border-primary border-[1px] rounded-[50px] px-21 py-3 hover:bg-gray-100 hover:font-semibold cursor-pointer'
-          onClick={() => navigate('/archive/scrap-post')}>
+          onClick={() => navigate('/scrap-post')}>
           더 보기
         </button>
       </div>

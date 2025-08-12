@@ -1,14 +1,12 @@
 import {useEffect, useState} from 'react';
 import Pagination from 'react-js-pagination';
-import ChevronLeft from '@/assets/chevrons/chevron-left.svg?react';
 import {mockMagazine} from '@/mocks/mockMagazine';
-import {useNavigate} from 'react-router-dom';
-import PostCardItem from '../community/post/PostCardItem';
+import PostCardItem from '@/components/community/post/PostCardItem';
+import BackButtonTitleHeader from '@/components/global/BackButtonTitleHeader';
 
 const ITEMS_PER_PAGE = 6;
 
-const ScrappedMagazineList = () => {
-  const navigate = useNavigate();
+const ScrappedMagazinePage = () => {
   const scrappedMagazine = mockMagazine.filter(
     (magazine) => magazine.isBookmarked
   );
@@ -31,18 +29,12 @@ const ScrappedMagazineList = () => {
   };
 
   return (
-    <div className='flex flex-col px-20 gap-40'>
+    <div className='flex flex-col gap-40'>
       {/* 상단 */}
-      <div className='flex flex-row justify-between items-center mb-6'>
-        <ChevronLeft
-          className='w-50 h-50 cursor-pointer'
-          onClick={() => navigate(-1)}
-        />
-        <span className='text-xl font-extrabold'>스크랩한 매거진 모아보기</span>
-      </div>
+      <BackButtonTitleHeader title='스크랩한 매거진 모아보기' between />
 
       {/* 리스트 */}
-      <ul className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-y-60 gap-x-24'>
+      <ul className='flex flex-wrap justify-center gap-y-60 gap-x-24'>
         {currentItems.map((magazine, idx) => (
           <PostCardItem
             key={idx}
@@ -77,4 +69,4 @@ const ScrappedMagazineList = () => {
   );
 };
 
-export default ScrappedMagazineList;
+export default ScrappedMagazinePage;

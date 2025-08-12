@@ -61,18 +61,18 @@ const Modal = ({
           className='flex w-478 py-41 px-12 flex-col justify-center items-center gap-35 bg-[#fff] border-1 border-solid border-primary'
           onClick={(e) => e.stopPropagation()}>
           {title && (
-            <h1 className='text-[#000] text-3xl font-bold leading-[110%]'>
+            <h1 className='text-[#000] text-2xl font-bold leading-[110%]'>
               {title}
             </h1>
           )}
 
           {content && (
-            <p className='text-[#000] text-center text-[19px] leading-[120%] whitespace-pre-line'>
+            <p className='text-[#000] text-center text-base leading-[120%] whitespace-pre-line'>
               {content}
             </p>
           )}
           {contentRed && (
-            <p className='text-[#fa0000] text-center text-[15px] leading-[140%] whitespace-pre-line'>
+            <p className='text-[#fa0000] text-center text-base leading-[140%] whitespace-pre-line'>
               {contentRed}
             </p>
           )}
