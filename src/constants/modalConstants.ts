@@ -9,5 +9,6 @@ export const unblockModal = {
 export const cameraModal = {
   content: `웹 브라우저에서는 촬영 기능이 
   지원되지 않습니다.
-  스마트폰 또는 태블릿에서 접속하시면 촬영 기능을 이용하실 수 있어요.`,
+  스마트폰 또는 태블릿에서 접속하시면
+  촬영 기능을 이용하실 수 있어요.`,
 };
