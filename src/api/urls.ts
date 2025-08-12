@@ -25,6 +25,7 @@ export const ENDPOINT = {
   // mypage
   MYPAGE_INFO: 'api/v1/mypage/account-info',
   MYPAGE_CHANGE_PASSWORD: 'api/v1/mypage/change-password',
+  MYPAGE_NOTICES: 'api/v1/mypage/notices',
 
   //performance
   PERFORMANCE: '/api/v1/performance',

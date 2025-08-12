@@ -26,11 +26,6 @@ export const patchPassword = async ({
   newPassword: string;
   newPasswordConfirm: string;
 }) => {
-  console.log({
-    currentPassword,
-    newPassword,
-    newPasswordConfirm,
-  });
   try {
     const response = await privateAxios.patch(ENDPOINT.MYPAGE_CHANGE_PASSWORD, {
       currentPassword,
@@ -38,6 +33,30 @@ export const patchPassword = async ({
       newPasswordConfirm,
     });
     return response;
+  } catch (error: any) {
+    // const status = error.response.data.status;
+    const code = error.response.data.code;
+    const errorMessage = getErrorMessage(code);
+    console.error('An unexpected error occurred:', error);
+    throw new Error(errorMessage);
+  }
+};
+
+export const getNocies = async ({
+  page,
+  size = 6,
+}: {
+  page: number;
+  size?: number;
+}) => {
+  try {
+    const response = await privateAxios.get(ENDPOINT.MYPAGE_NOTICES, {
+      params: {
+        page,
+        size,
+      },
+    });
+    return response.data.data;
   } catch (error: any) {
     // const status = error.response.data.status;
     const code = error.response.data.code;
