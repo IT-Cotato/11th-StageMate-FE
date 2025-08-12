@@ -65,3 +65,16 @@ export const getNocies = async ({
     throw new Error(errorMessage);
   }
 };
+
+export const getNociesDetail = async (id: number) => {
+  try {
+    const response = await privateAxios.get(ENDPOINT.MYPAGE_NOTICES_DETAIL(id));
+    return response.data.data;
+  } catch (error: any) {
+    // const status = error.response.data.status;
+    const code = error.response.data.code;
+    const errorMessage = getErrorMessage(code);
+    console.error('An unexpected error occurred:', error);
+    throw new Error(errorMessage);
+  }
+};

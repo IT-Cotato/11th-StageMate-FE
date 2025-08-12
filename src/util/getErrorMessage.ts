@@ -36,6 +36,8 @@ const getErrorMessage = (code: string): string => {
     // common
     case 'COMMON-001':
       return '세션 만료 혹은 잘못된 세션입니다.';
+    case 'COMMON-003':
+      return '찾을 수 없습니다.';
     case 'COMMON-004':
       return '이미 존재하는 리소스입니다.';
     case 'COMMON-007':
