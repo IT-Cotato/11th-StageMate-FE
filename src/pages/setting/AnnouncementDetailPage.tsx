@@ -1,13 +1,31 @@
+import {getNociesDetail} from '@/api/mypageApi';
 import BackButtonTitleHeader from '@/components/global/BackButtonTitleHeader';
-import {mockAnnouncementDetail} from '@/mocks/mockAnnouncementDetail';
+import {useQuery} from '@tanstack/react-query';
 import {useParams} from 'react-router-dom';
 
 const AnnouncementDetailPage = () => {
   const {id} = useParams();
   const index = Number(id);
-  const data = mockAnnouncementDetail[index];
 
-  if (!data) {
+  const {data, isLoading, isError} = useQuery({
+    queryKey: ['announcementDetail', id],
+    queryFn: () => getNociesDetail(index),
+  });
+
+  if (isLoading) {
+    return (
+      <div>
+        <BackButtonTitleHeader title='공지사항' borderBottom />
+        <div className='py-24 px-20 flex flex-col justify-start items-start gap-29'>
+          <h1 className='text-[#000] text-[34px] font-bold leading-[110%]'>
+            공지사항 불러오는 중 ...
+          </h1>
+        </div>
+      </div>
+    );
+  }
+
+  if (isError) {
     return (
       <div>
         <BackButtonTitleHeader title='공지사항' borderBottom />

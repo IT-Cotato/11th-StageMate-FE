@@ -133,7 +133,7 @@ function App() {
             </Route>
           </Route>
 
-          <Route element={<ProtectedRoute isLoggedIn={isAuthenticated} />}>
+          <Route element={<ProtectedRoute isLoggedIn={isAuthenticated} isLoading={isLoading} />}>
             <Route path='settings'>
               <Route path='announcement' element={<AnnouncementPage />} />
               <Route
