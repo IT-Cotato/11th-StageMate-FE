@@ -16,7 +16,7 @@ export const enquiryCategories = [
     category: '제휴 및 광고 문의',
   },
   {
-    id: 'OTHER(기타)',
+    id: 'OTHER',
     category: '기타',
   },
 ];
