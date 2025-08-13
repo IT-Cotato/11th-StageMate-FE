@@ -7,7 +7,23 @@ import useClickOutside from '@/hooks/useClickOutside';
 const EnquirePage = () => {
   const [openDropdown, setOpenDropdown] = useState<boolean>(false);
   const [category, setCategory] = useState<string>('');
+  const [title, setTitle] = useState<string>('');
+  const [content, setContent] = useState<string>('');
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const isFormValid = () => {
+    const titleValid = title.trim().length >= 3 && title.trim().length <= 100;
+    const categoryValid = category.trim().length > 0;
+    const contentValid =
+      content.trim().length >= 3 && content.trim().length <= 5000;
+    return titleValid && categoryValid && contentValid;
+  };
+
+  const handleSubmit = () => {
+    console.log('제목:', title);
+    console.log('카테고리:', category);
+    console.log('문의 내용:', content);
+  };
 
   useClickOutside({
     ref: dropdownRef,
@@ -26,6 +42,10 @@ const EnquirePage = () => {
           <p className='text-[#000] text-xl font-medium leading-[110%]'>제목</p>
           <input
             type='text'
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            minLength={3}
+            maxLength={100}
             className='h-25 max-w-436 grow border border-solid border-[#000] focus:outline-0 text-[#000] text-xl leading-[110%]'
           />
         </div>
@@ -57,16 +77,15 @@ const EnquirePage = () => {
             문의 내용
           </p>
         </div>
-        <form
-          className='flex flex-col items-center gap-14 self-stretch'
-          onSubmit={(e) => {
-            e.preventDefault();
-            console.log('todo : 문의 api 연동하기');
-          }}>
+        <div className='flex flex-col items-center gap-14 self-stretch'>
           <textarea
             aria-label='enquiry-content'
             name='enquiry-content'
             id='enquiry-content'
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            minLength={3}
+            maxLength={5000}
             placeholder='문의 내용을 작성하세요.'
             className='border-b border-solid border-primary-5 py-16 px-22 
             placeholder:text-gray-2 text-[#000] text-[23px] leading-[110%] resize-none w-full h-398 focus:outline-0'
@@ -74,10 +93,16 @@ const EnquirePage = () => {
 
           <button
             type='submit'
-            className='py-[8.5px] px-28 rounded-[5px] border border-solid border-primary bg-white_1 text-primary text-2xl font-medium leading-[110%]'>
+            onClick={handleSubmit}
+            disabled={!isFormValid()}
+            className={`py-[8.5px] px-28 rounded-[5px] border border-solid text-2xl font-medium leading-[110%] ${
+              isFormValid()
+                ? 'border-primary bg-white_1 text-primary hover:cursor-pointer'
+                : 'border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed'
+            }`}>
             등록하기
           </button>
-        </form>
+        </div>
       </div>
     </div>
   );
@@ -97,7 +122,7 @@ const CategoryDropdown = ({
           key={category.id}
           className='hover:cursor-pointer'
           onClick={() => {
-            setCategory(category.category);
+            setCategory(category.id);
             setOpenDropdown(false);
           }}>
           {category.category}
