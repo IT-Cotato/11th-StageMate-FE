@@ -34,4 +34,7 @@ export const ENDPOINT = {
   //performance
   PERFORMANCE: '/api/v1/performance',
   PERFORMANCE_RECOMMEND: '/api/v1/performance/recommend',
+
+  //naver-image-search
+  IMAGE_SEARCH: '/api/v1/naver/images',
 };

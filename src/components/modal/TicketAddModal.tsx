@@ -3,19 +3,22 @@ import File from '@/assets/archive/archive-ticket-file.svg?react';
 import Camera from '@/assets/community/editor-icons/editor-icon-camera.svg?react';
 import useScrollLockWithRestore from '@/hooks/useScrollLockwithRestore';
 import React, {useRef} from 'react';
+import {useNavigate} from 'react-router-dom';
 
 interface TicketAddModalProps {
-  onComplete: (imageUrl: string) => void;
+  onComplete: (imageUrl: string, imageFile: File) => void;
   setShowCameraModal: () => void;
+  selectedDate: Date;
 }
 
 const TicketAddModal = ({
   onComplete,
   setShowCameraModal,
+  selectedDate,
 }: TicketAddModalProps) => {
   useScrollLockWithRestore(); // 스크롤 락 처리
+  const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   const cameraInputRef = useRef<HTMLInputElement | null>(null);
@@ -27,14 +30,20 @@ const TicketAddModal = ({
     } else {
       cameraInputRef.current?.click();
     }
-  }; // 이미지 검색
-  // todo
+  };
 
+  const handleImageSearch = () => {
+    navigate('/archive/image-search', {
+      state: {
+        selectedDate,
+      },
+    });
+  };
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
-      onComplete(imageUrl);
+      onComplete(imageUrl, file);
     }
     e.target.value = '';
   };
@@ -45,7 +54,9 @@ const TicketAddModal = ({
         <h1 className='sm:text-[27px] text-xl font-medium'>티켓 추가</h1>
         <div className='flex flex-row gap-47'>
           {/** 이미지 검색 */}
-          <button className='flex flex-col items-center sm:w-[127px] w-100'>
+          <button
+            className='flex flex-col items-center sm:w-[127px] w-100'
+            onClick={handleImageSearch}>
             <div className='bg-gray-1 sm:w-100 sm:h-100 w-[50px] h-[50px] flex items-center justify-center cursor-pointer'>
               <Image className='text-primary sm:w-60 sm:h-60 w-45 h-45' />
             </div>

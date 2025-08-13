@@ -3,11 +3,13 @@ import ScrappedMagazine from '@/components/archive/ScrappedMagazine';
 import TopRatedShowList from '@/components/archive/TopRatedShowList';
 import PostListItem from '@/components/community/post/PostListItem';
 import {mockPosts} from '@/mocks/mockPosts';
+import {useAuthStore} from '@/stores/authStore';
 import {useNavigate} from 'react-router-dom';
 
 const ArchivePage = () => {
   const filteredPost = mockPosts.filter((post) => post.isScrapped);
   const navigate = useNavigate();
+  const {user} = useAuthStore();
 
   return (
     <div className='flex flex-col gap-50 sm:px-5 px-10'>
@@ -15,7 +17,7 @@ const ArchivePage = () => {
       <ArchiveCalendar />
       <div className='flex flex-col gap-20'>
         <span className='font-bold text-[23px]'>
-          @@ 님의 5월 공연 평점 순위
+          {user?.name} 님의 5월 공연 평점 순위
         </span>
         <TopRatedShowList />
       </div>
