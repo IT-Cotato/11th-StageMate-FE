@@ -1,10 +1,10 @@
 import Search from '@/assets/search.svg?react';
 import {useState, useRef, useEffect} from 'react';
-import {type ImageItem} from '@/api/searchApi';
 import {useInfiniteImageSearch} from '@/hooks/useInfinityQuery';
 import '@/styles/skeleton.css';
 import {useDebounce} from '@/hooks/useDebounce';
 import {useLocation, useNavigate} from 'react-router-dom';
+import type {ImageItem} from '@/types/search';
 
 const ImageSearchPage = () => {
   const location = useLocation();

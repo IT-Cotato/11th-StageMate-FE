@@ -1,21 +1,6 @@
+import type {ImageSearchResponse} from '@/types/search';
 import {privateAxios} from './axios';
 import {ENDPOINT} from './urls';
-
-export type ImageItem = {
-  title: string;
-  link: string;
-  thumbnail: string;
-  sizeheight: string;
-  sizewidth: string;
-};
-
-export type ImageSearchResponse = {
-  lastBuildDate: string;
-  total: number;
-  start: number;
-  display: number;
-  items: ImageItem[];
-};
 
 export const getImages = async (
   query: string,
