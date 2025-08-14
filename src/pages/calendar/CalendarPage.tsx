@@ -1,5 +1,5 @@
 import {useOutletContext} from 'react-router-dom';
-import {useMemo, useState, useEffect} from 'react';
+import {useMemo, useState, useEffect, useRef} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {getPerformanceSchedules} from '@/api/performanceScheduleApi';
 import CalendarLayout from '@/components/calendar/CalendarLayout';
@@ -11,6 +11,7 @@ import {motion} from 'framer-motion';
 import TagBadge from '@/components/global/TagBadge';
 import type {PageHeaderProps} from '@/components/global/PageHeader';
 import type {Schedule} from '@/types/schedule';
+import {toSchedule} from '@/util/scheduleMapper';
 
 const CalendarPage = () => {
   const {setHeaderProps} = useOutletContext<{
@@ -41,34 +42,31 @@ const CalendarPage = () => {
 
   const [allSchedules, setAllSchedules] = useState<Schedule[]>([]);
 
+  const baseDate = selectedDate ?? currentDate;
+  const year = baseDate.getFullYear();
+  const month = baseDate.getMonth() + 1;
+  const latestFetchId = useRef(0);
+
   useEffect(() => {
+    const fetchId = ++latestFetchId.current;
     let cancelled = false;
+
     (async () => {
       try {
-        const apiData = await getPerformanceSchedules({
-          year: currentDate.getFullYear(),
-          month: currentDate.getMonth() + 1,
-        });
-
-        if (!cancelled) {
-          const formattedSchedules = apiData.map((item, idx) => ({
-            id: `${item.performanceDetailResponse.performanceName}-${item.scheduleDate}-${idx}`,
-            category: item.performanceDetailResponse.performanceType,
-            title: item.title,
-            isLike: item.isScraped,
-            date: new Date(item.scheduleDate),
-          }));
-          setAllSchedules(formattedSchedules);
-        }
+        const apiData = await getPerformanceSchedules({year, month});
+        if (cancelled || fetchId !== latestFetchId.current) return;
+        setAllSchedules(apiData.map(toSchedule));
       } catch (e) {
-        if (!cancelled) setAllSchedules([]);
+        if (!cancelled || fetchId !== latestFetchId.current) return;
+        setAllSchedules([]);
         console.error(e);
       }
     })();
+
     return () => {
       cancelled = true;
     };
-  }, [currentDate]);
+  }, [year, month]);
 
   const toggleGenre = (genre: string) => {
     setSelectedGenres((prevGenres) => {
@@ -123,17 +121,12 @@ const CalendarPage = () => {
   const handleDateClick = (date: Date) => {
     window.scrollTo({top: 0, behavior: 'auto'});
     setSelectedDate(date);
-    setCurrentDate(date);
-    setSelectedGenre(null);
   };
 
   const goToToday = () => {
     const today = new Date();
     setCurrentDate(today);
     setSelectedDate(null);
-    setSelectedYear(today.getFullYear());
-    setSelectedMonth(today.getMonth() + 1);
-    setSelectedGenre(null);
   };
 
   const closeModal = () => {
