@@ -1,19 +1,47 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import MainHeader from '@/components/main/MainHeader';
 import WeekCalendar from '@/components/main/WeekCalendar';
 import type {Schedule} from '@/types/schedule';
 import RecommendedPlay from '@/components/main/RecommendedPlay';
-import {mockSchedules} from '@/mocks/mockSchedules';
+import {getPerformanceSchedules} from '@/api/performanceScheduleApi';
 import OnboardingWrapper from '@/components/modal/OnboardingModal/OnboardingWrapper';
 import {useAuthStore} from '@/stores/authStore';
+import {useNavigate} from 'react-router-dom';
+import {toSchedule} from '@/util/scheduleMapper';
 
 export default function MainPage() {
-  /** mock user data */
   const {user, isAuthenticated} = useAuthStore();
   const [isOnboardingDone, setIsOnboardingDone] = useState(
     localStorage.getItem('isOnboardingDone') === 'true'
   );
-  const [schedules, setSchedules] = useState<Schedule[]>(mockSchedules);
+  const [schedules, setSchedules] = useState<Schedule[]>([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const fetchSchedules = async () => {
+      try {
+        const now = new Date();
+        const apiData = await getPerformanceSchedules({
+          year: now.getFullYear(),
+          month: now.getMonth() + 1,
+        });
+
+        if (cancelled) return;
+        const formatted = apiData.map(toSchedule);
+        setSchedules(formatted);
+      } catch (error) {
+        if (!cancelled) setSchedules([]);
+        console.error('Main Page 스케줄 조회 실패:', error);
+      }
+    };
+
+    fetchSchedules();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const handleOnboardingDone = () => {
     setIsOnboardingDone(true);
@@ -43,7 +71,7 @@ export default function MainPage() {
             onScheduleClick={(schedule) =>
               console.log('Schedule clicked:', schedule)
             }
-            onViewMore={() => console.log('View more clicked')}
+            onViewMore={() => navigate('/calendar')}
           />
           <RecommendedPlay />
         </div>
