@@ -28,4 +28,13 @@ export const ENDPOINT = {
   //performance
   PERFORMANCE: '/api/v1/performance',
   PERFORMANCE_RECOMMEND: '/api/v1/performance/recommend',
+
+  //performanceSchedule
+  PERFORMANCE_SCHEDULE: '/api/v1/performanceSchedule',
+  PERFORMANCE_SCHEDULE_DETAIL: (id: number) =>
+    `/api/v1/performanceSchedule/${id}`,
+  PERFORMANCE_SCHEDULE_UPDATE: (id: number) =>
+    `/api/v1/performanceSchedule/${id}`,
+  PERFORMANCE_SCHEDULE_SCRAP: (id: number) =>
+    `/api/v1/performanceSchedule/${id}/scrap`,
 };
