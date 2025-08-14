@@ -1,7 +1,7 @@
 import {useOutletContext} from 'react-router-dom';
 import {useMemo, useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {mockSchedules} from '@/mocks/mockSchedules';
+import {getPerformanceSchedules} from '@/api/performanceScheduleApi';
 import CalendarLayout from '@/components/calendar/CalendarLayout';
 import ScheduleList from '@/components/main/ScheduleList';
 import SelectDateModal from '@/components/modal/SelectDateModal';
@@ -10,6 +10,7 @@ import ChevronDown from '@/assets/chevrons/chevron-down.svg?react';
 import {motion} from 'framer-motion';
 import TagBadge from '@/components/global/TagBadge';
 import type {PageHeaderProps} from '@/components/global/PageHeader';
+import type {Schedule} from '@/types/schedule';
 
 const CalendarPage = () => {
   const {setHeaderProps} = useOutletContext<{
@@ -33,10 +34,41 @@ const CalendarPage = () => {
   const [selectedMonth, setSelectedMonth] = useState(today.getMonth() + 1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
-  const [selectedGenres, setSelectedGenres] = useState<Set<string>>(new Set()); // 추가된 장르들을 위한 상태
+  const [selectedGenres, setSelectedGenres] = useState<Set<string>>(new Set());
   const [modalStep, setModalStep] = useState<'selectDate' | 'selectGenre'>(
     'selectDate'
   );
+
+  const [allSchedules, setAllSchedules] = useState<Schedule[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const apiData = await getPerformanceSchedules({
+          year: currentDate.getFullYear(),
+          month: currentDate.getMonth() + 1,
+        });
+
+        if (!cancelled) {
+          const formattedSchedules = apiData.map((item, idx) => ({
+            id: `${item.performanceDetailResponse.performanceName}-${item.scheduleDate}-${idx}`,
+            category: item.performanceDetailResponse.performanceType,
+            title: item.title,
+            isLike: item.isScraped,
+            date: new Date(item.scheduleDate),
+          }));
+          setAllSchedules(formattedSchedules);
+        }
+      } catch (e) {
+        if (!cancelled) setAllSchedules([]);
+        console.error(e);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [currentDate]);
 
   const toggleGenre = (genre: string) => {
     setSelectedGenres((prevGenres) => {
@@ -52,12 +84,12 @@ const CalendarPage = () => {
 
   const events = useMemo(
     () =>
-      mockSchedules.map((schedule) => ({
+      allSchedules.map((schedule) => ({
         ...schedule,
         start: schedule.date,
         end: schedule.date,
       })),
-    []
+    [allSchedules]
   );
 
   useEffect(() => {
@@ -68,10 +100,10 @@ const CalendarPage = () => {
 
   const displayDate = selectedDate ?? currentDate;
   const allSchedulesForDate = useMemo(() => {
-    return mockSchedules.filter(
+    return allSchedules.filter(
       (schedule) => schedule.date.toDateString() === displayDate.toDateString()
     );
-  }, [displayDate]);
+  }, [allSchedules, displayDate]);
 
   const filteredSchedules = useMemo(() => {
     if (!selectedGenre) return allSchedulesForDate;
@@ -89,7 +121,7 @@ const CalendarPage = () => {
   }, [allSchedulesForDate, selectedGenres]);
 
   const handleDateClick = (date: Date) => {
-    window.scrollTo(0, 0);
+    window.scrollTo({top: 0, behavior: 'auto'});
     setSelectedDate(date);
     setCurrentDate(date);
     setSelectedGenre(null);
