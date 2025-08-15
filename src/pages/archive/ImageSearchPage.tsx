@@ -14,18 +14,14 @@ const ImageSearchPage = () => {
   const debouncedQuery = useDebounce(query, 500);
   const [brokenImages, setBrokenImages] = useState<Set<string>>(new Set());
   const navigate = useNavigate();
-  const selectedDate =
-    selectedDateFromState instanceof Date
-      ? selectedDateFromState
-      : selectedDateFromState
-        ? new Date(selectedDateFromState)
-        : null;
+  const selectedDate = selectedDateFromState
+    ? new Date(selectedDateFromState)
+    : null;
 
   const onImageClick = (img: ImageItem) => {
     if (window.confirm('이 이미지를 선택하시겠습니까?')) {
       const imageUrl = img.link;
       const imageFile = null;
-
       navigate('/archive/write', {
         state: {
           mode: 'create',
