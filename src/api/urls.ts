@@ -37,4 +37,12 @@ export const ENDPOINT = {
 
   //naver-image-search
   IMAGE_SEARCH: '/api/v1/naver/images',
+
+  //archive
+  ARCHIVE: '/api/v1/archives',
+  ARCHIVE_DETAIL: (archiveId: number) => `/api/v1/archive/${archiveId}`,
+  ARCHIVE_CREATE: '/api/v1/archive',
+  ARCHIVE_UPDATE: (archiveId: number) => `/api/v1/archive/${archiveId}`,
+  ARCHIVE_DELETE: (archiveId: number) => `/api/v1/archive/${archiveId}`,
+  ARCHIVE_TOP_RATING: '/api/v1/archives/top-rating',
 };
