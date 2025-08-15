@@ -9,6 +9,7 @@ export interface RecommendedPerformance {
   performanceType: 'MUSICAL' | 'PLAY';
 }
 export interface Performance {
+  id: string | number;
   performanceName: string;
   url: string;
   startDate: string;
@@ -17,6 +18,9 @@ export interface Performance {
   region: string;
   imageUrl: string;
   performanceType: 'MUSICAL' | 'PLAY';
+  rating?: number;
+  ranking?: number;
+  title?: string;
 }
 
 export interface PerformanceListResponse {
