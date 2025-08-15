@@ -79,7 +79,10 @@ const CalendarReportLocationPage = () => {
     if (selectedId === null) return;
     const place = filteredPlaces.find((p) => p.id === selectedId);
     if (!place) return;
-    setForm({location: place.name});
+    setForm({
+      theaterId: place.id,
+      location: place.name,
+    });
     navigate(-1);
   };
 
