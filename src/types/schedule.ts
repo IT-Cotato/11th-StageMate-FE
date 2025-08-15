@@ -61,3 +61,23 @@ export interface PerformanceScheduleDetailResponse {
   timestamp: string;
   data: ScheduleDetail;
 }
+
+export type PerformanceScheduleReportStatus =
+  | 'APPROVED'
+  | 'REJECTED'
+  | 'PENDING';
+
+export type PerformanceScheduleCategoryType = 'MUSICAL' | 'PLAY' | 'ETC';
+
+export interface PerformanceScheduleCreateRequest {
+  title: string;
+  content: string;
+  url: string;
+  performanceId: number; // 공연 선택 시 id 보관 필요
+  theaterId: number; // 장소 선택 시 id 보관 필요
+  scheduleDate: string; // 'YYYY-MM-DD'
+  scheduleDateStartTime: string; // ISO 8601
+  scheduleDateEndTime: string; // ISO 8601
+  reportDate: string; // ISO 8601 (현재시간)
+  performanceScheduleCategoryTypes: PerformanceScheduleCategoryType[];
+}
