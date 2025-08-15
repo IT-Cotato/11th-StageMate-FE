@@ -1,4 +1,3 @@
-// hooks/useArchive.ts
 import {
   deleteArchive,
   getArchive,
