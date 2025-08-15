@@ -112,7 +112,7 @@ function App() {
                 <Route path='archive'>
                   <Route index element={<ArchivePage />} />
                   <Route path='write' element={<ArchiveWritePage />} />
-                  <Route path=':id' element={<ArchiveWritePage />} />
+                  <Route path='write/:id' element={<ArchiveWritePage />} />
                   <Route path='image-search' element={<ImageSearchPage />} />
                 </Route>
               </Route>
@@ -133,7 +133,13 @@ function App() {
             </Route>
           </Route>
 
-          <Route element={<ProtectedRoute isLoggedIn={isAuthenticated} isLoading={isLoading} />}>
+          <Route
+            element={
+              <ProtectedRoute
+                isLoggedIn={isAuthenticated}
+                isLoading={isLoading}
+              />
+            }>
             <Route path='settings'>
               <Route path='announcement' element={<AnnouncementPage />} />
               <Route
