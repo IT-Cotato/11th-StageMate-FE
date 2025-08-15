@@ -1,4 +1,3 @@
-// components/calendar/ArchiveCalendar.tsx
 import ChevronDown from '@/assets/chevrons/chevron-down.svg?react';
 import Plus from '@/assets/archive/archive-plus.svg?react';
 import {motion} from 'framer-motion';
