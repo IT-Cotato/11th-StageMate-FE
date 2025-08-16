@@ -10,7 +10,7 @@ const CommunityMainLayout = () => {
   return (
     <div className='w-full'>
       <div className='fixed top-0 max-w-[600px] w-full bg-white z-50'>
-        <CommunityMainHeader />
+        <CommunityMainHeader showIcons={false} />
       </div>
 
       <main className='pt-90 px-16'>
