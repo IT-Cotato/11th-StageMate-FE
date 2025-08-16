@@ -8,7 +8,6 @@ import SignupConditionPage from './pages/auth/SignupConditionPage';
 import SignupCompletePage from './pages/auth/SignupCompletePage';
 import CommunityMainLayout from './layout/CommunityMainLayout';
 import CommunityMainPage from './pages/community/CommunityMainPage';
-import FilteredPostList from './components/community/post/FilteredPostList';
 import CommunityEditPage from './pages/community/CommunityEditPage';
 import ArchiveLayout from './layout/ArchiveLayout';
 import CommunityHeaderOnlyLayout from './layout/CommunityHeaderOnlyLayout';
@@ -49,6 +48,7 @@ import ChangePassword from './pages/setting/ChangePassword';
 import NotificationPage from './pages/NotificationPage';
 import useScrollToTop from './hooks/useScrollToTop';
 import ImageSearchPage from './pages/archive/ImageSearchPage';
+import FilteredPostList from './components/community/post/FilteredPostList';
 
 const ScrollManager = () => {
   useScrollToTop();
