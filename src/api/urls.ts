@@ -30,6 +30,7 @@ export const ENDPOINT = {
   MYPAGE_PRIVACY: 'api/v1/mypage/policy/privacy',
   MYPAGE_TERMS: 'api/v1/mypage/policy/terms',
   MYPAGE_PROFILE_IMAGE: 'api/v1/mypage/profile-image',
+  MYPAGE_INQUIRIES: 'api/v1/mypage/inquiries',
 
   //performance
   PERFORMANCE: '/api/v1/performance',
