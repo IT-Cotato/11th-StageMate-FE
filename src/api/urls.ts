@@ -45,5 +45,5 @@ export const ENDPOINT = {
   ARCHIVE_CREATE: '/api/v1/archive',
   ARCHIVE_UPDATE: (archiveId: number) => `/api/v1/archive/${archiveId}`,
   ARCHIVE_DELETE: (archiveId: number) => `/api/v1/archive/${archiveId}`,
-  ARCHIVE_TOP_RATING: '/api/v1/archives/top-rating',
+  ARCHIVE_TOP_RATING: '/api/v2/archives/top-rating',
 };
