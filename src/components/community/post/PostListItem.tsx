@@ -19,8 +19,8 @@ const PostListItem = ({post, onClick}: PostListItemProps) => {
         {/* 왼쪽: 제목 + 작성자 + 날짜 + 조회수 */}
         <PostHeaderInfo
           title={post.title}
-          nickname={post.nickname}
-          date={post.date}
+          nickname={post.author}
+          date={post.createdAt}
           viewCount={post.viewCount}
           variant='list'
         />
