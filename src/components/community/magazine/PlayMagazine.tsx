@@ -1,18 +1,24 @@
 import {useHorizontalScroll} from '@/hooks/useHorizontalScroll';
-import LoadMoreButton from '../common/LoadMoreButton';
+import Picture from '@/assets/community/magazine-picture.svg?react';
 import {mockMagazine} from '@/mocks/mockMagazine';
 import PostCardItem from '../post/PostCardItem';
-import {useNavigate} from 'react-router-dom';
+import useCommunityListNavigation from '@/hooks/useCommunityListNavigation';
+import useCommunityNavigation from '@/hooks/useCommunityNavigation';
+import LoadMoreButton from '@/components/global/LoadMoreButton';
 
 const PlayMagazine = () => {
-  const navigate = useNavigate();
   const listWrapperRef = useHorizontalScroll();
+  const {goToMagazineList} = useCommunityListNavigation();
+  const {goToMagazineDetail} = useCommunityNavigation();
 
   return (
-    <div className='flex flex-col gap-10'>
-      <div className='flex flex-row justify-between items-center'>
-        <h1 className='font-medium text-4xl'>공연 매거진</h1>
-        <LoadMoreButton onClick={() => navigate('/magazine')} variant='fixed' />
+    <div className='flex flex-col gap-15'>
+      <div className='flex flex-row items-end justify-between'>
+        <div className='flex flex-row gap-10 items-center'>
+          <Picture />
+          <h1 className='text-xl font-bold'>공연 매거진</h1>
+        </div>
+        <LoadMoreButton onClick={() => goToMagazineList()} />
       </div>
       <ul className='flex flex-row gap-12 overflow-x-auto' ref={listWrapperRef}>
         {mockMagazine.map((post) => (
@@ -23,7 +29,7 @@ const PlayMagazine = () => {
             category={post.category}
             isBookmarked={post.isBookmarked}
             placeholderText='공연 매거진 임시 이미지'
-            onClick={() => navigate(`/magazine/${post.id}`)}
+            onClick={() => goToMagazineDetail(post.id)}
           />
         ))}
       </ul>

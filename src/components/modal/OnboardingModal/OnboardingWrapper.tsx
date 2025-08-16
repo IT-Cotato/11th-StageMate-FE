@@ -65,16 +65,18 @@ export default function OnboardingWrapper({onDone}: {onDone: () => void}) {
   };
 
   return (
-    <div className='absolute inset-0 z-50 flex items-start justify-center pt-[64px] bg-black/50'>
-      <OnboardingModal
-        message={message}
-        imageSrc={imageSrc}
-        showPrev={step > 0}
-        showNext={!isLast}
-        isLastStep={isLast}
-        onPrev={() => setStep((prev) => prev - 1)}
-        onNext={handleNext}
-      />
+    <div className='fixed inset-0 z-[9999] flex justify-center'>
+      <div className='w-full max-w-[600px] h-full bg-black/50 flex items-center justify-center'>
+        <OnboardingModal
+          message={message}
+          imageSrc={imageSrc}
+          showPrev={step > 0}
+          showNext={!isLast}
+          isLastStep={isLast}
+          onPrev={() => setStep((prev) => prev - 1)}
+          onNext={handleNext}
+        />
+      </div>
     </div>
   );
 }

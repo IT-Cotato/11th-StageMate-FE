@@ -1,13 +1,13 @@
-// 리스트에서 특정 카테고리의 게시글만 필터링하여 보여주는 컴포넌트
-import ChevronLeft from '@/assets/chevrons/chevron-left.svg?react';
-import WritePost from '@/assets/nav-icons/write-post.svg?react';
+import {useMemo} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import PostListItem from './PostListItem';
 import {mockPosts} from '@/mocks/mockPosts';
-import {useMemo} from 'react';
+import useCommunityNavigation from '@/hooks/useCommunityNavigation';
+// 리스트에서 특정 카테고리의 게시글만 필터링하여 보여주는 컴포넌트
+import ChevronLeft from '@/assets/chevrons/chevron-left.svg?react';
+import WritePost from '@/assets/nav-icons/write-post.svg?react';
 import {CATEGORY_MAP} from '@/types/categoryMap';
 import type {CategoryKey, CategoryLabel} from '@/types/categoryMap';
-import useCommunityNavigation from '@/hooks/useCommunityNavigation';
 
 const FilteredPostList = () => {
   const {category} = useParams<{category?: string}>();

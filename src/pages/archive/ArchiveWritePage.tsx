@@ -4,44 +4,51 @@ import RatingInput from '../../components/archive/RatingInput';
 import {useEffect, useRef, useState} from 'react';
 import CustomDatePicker from '@/components/global/CustomDatePicker';
 import {useArchiveStore} from '@/stores/useArchiveStore';
-import {v4 as uuidv4} from 'uuid';
-import type {RecordType} from '@/stores/useArchiveStore';
 import ChevronDown from '@/assets/chevrons/chevron-down.svg?react';
-import ChevronUp from '@/assets/chevrons/chevron-up.svg?react';
+import {
+  useArchiveDetail,
+  useCreateArchive,
+  useDeleteArchive,
+  useUpdateArchive,
+} from '@/hooks/useArchive';
+import useClickOutside from '@/hooks/useClickOutside';
 
 const ArchiveWritePage = () => {
   const {id} = useParams<{id: string}>();
-  const isEditMode = Boolean(id);
-
+  const numericId = id ? Number(id) : null;
+  const isEditMode = numericId !== null;
+  const {data: archiveDetail} = useArchiveDetail(Number(id));
   const location = useLocation();
   const navigate = useNavigate();
 
+  const {mutate: postCreateArchive, isPending: isCreating} = useCreateArchive();
+  const {mutate: putUpdateArchive, isPending: isUpdating} = useUpdateArchive();
+  const {mutate: deleteArchive, isPending: isDeleting} = useDeleteArchive();
+
   // zustand에서 기존 기록 찾기 (수정 모드용)
   const existingRecord = useArchiveStore((state) =>
-    state.records.find((record) => record.id === id)
+    state.records.find((record) => record.id === numericId)
   );
 
   // 추가 모드에서 선택한 날짜, 이미지
   const selectedDateFromState = location.state?.selectedDate;
   const imageUrlFromState = location.state?.imageUrl;
-
-  // Zustand 함수들
-  const addRecord = useArchiveStore((state) => state.addRecord);
-  const updateRecord = useArchiveStore((state) => state.updateRecord);
+  const imageFileFromState = location.state?.imageFile as File | undefined;
 
   // 상태 초기화
   const [startDate, setStartDate] = useState<Date | null>(() => {
-    if (isEditMode && existingRecord) return new Date(existingRecord.date);
+    if (isEditMode && existingRecord)
+      return new Date(existingRecord.viewingDate);
     if (!isEditMode && selectedDateFromState)
       return new Date(selectedDateFromState);
     return null;
   });
-
+  // 입력 폼 상태
   const [title, setTitle] = useState(() =>
     isEditMode && existingRecord ? existingRecord.title : ''
   );
   const [place, setPlace] = useState(() =>
-    isEditMode && existingRecord ? existingRecord.place || '' : ''
+    isEditMode && existingRecord ? existingRecord.theaterName || '' : ''
   );
   const [casting, setCasting] = useState(() =>
     isEditMode && existingRecord ? existingRecord.casting || '' : ''
@@ -58,54 +65,79 @@ const ArchiveWritePage = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        wrapperRef.current &&
-        !wrapperRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    if (isEditMode && archiveDetail?.data) {
+      const record = archiveDetail.data;
+      setTitle(record.title);
+      setPlace(record.theaterName);
+      setCasting(record.casting);
+      setRating(record.rating);
+      setReview(record.review);
+      setMemo(record.memo);
+      setStartDate(new Date(record.viewingDate));
+    }
+  }, [isEditMode, archiveDetail]);
 
-  // 저장 핸들러
+  // 저장/수정 핸들러
   const handleRecord = () => {
-    if (!title) {
-      alert('공연명은 필수입니다.');
-      return;
-    }
-    if (!startDate) {
-      alert('관람일시는 필수입니다.');
-      return;
-    }
+    if (!title) return alert('공연명은 필수입니다.');
+    if (!place) return alert('공연장은 필수입니다.');
+    if (!casting) return alert('출연진은 필수입니다.');
+    if (rating <= 0) return alert('별점은 필수입니다.');
+    if (!review) return alert('감상평은 필수입니다.');
+    const duplicateRecord = useArchiveStore
+      .getState()
+      .records.find(
+        (record) =>
+          record.viewingDate === startDate?.toISOString().split('T')[0]
+      );
 
-    const record: RecordType = {
-      id: isEditMode && existingRecord ? existingRecord.id : uuidv4(),
+    if (!isEditMode && duplicateRecord) {
+      return alert('이미 같은 날짜에 기록이 존재합니다.');
+    }
+    const archiveData = {
       title,
-      date: startDate!,
-      place,
+      viewingDate: startDate!.toISOString().split('T')[0],
       casting,
-      rating,
       review,
+      theaterName: place,
+      rating,
       memo,
-      imageUrl: existingRecord?.imageUrl || imageUrlFromState,
+      naverImageUrl: imageUrlFromState ?? undefined,
     };
 
-    if (isEditMode) {
-      updateRecord(record);
-      console.log('수정된 기록:', record);
+    if (isEditMode && numericId) {
+      // 수정 모드
+      putUpdateArchive(
+        {archiveId: numericId, archiveData},
+        {
+          onSuccess: () => navigate('/archive'),
+        }
+      );
     } else {
-      addRecord(record);
-      console.log('새 기록 추가:', record);
+      // 추가 모드
+      postCreateArchive(
+        {archiveData, imageFile: imageFileFromState},
+        {
+          onSuccess: () => navigate('/archive'),
+        }
+      );
     }
-
-    navigate('/archive'); // 저장 후 아카이브 목록으로 이동
   };
 
+  // 삭제 핸들러
+  const handleDelete = () => {
+    if (!numericId) return;
+    if (confirm('정말 삭제하시겠습니까?')) {
+      deleteArchive(numericId, {
+        onSuccess: () => navigate('/archive'),
+      });
+    }
+  };
+  useClickOutside({
+    ref: wrapperRef,
+    onClickOutside: () => setIsOpen(false),
+  });
   return (
     <div className='flex flex-col justify-center gap-40 px-50'>
       {/* 상단 */}
@@ -113,16 +145,26 @@ const ArchiveWritePage = () => {
         <h1 className='font-bold text-[25px]'>공연 기록</h1>
         <div className='flex flex-row gap-12'>
           {isEditMode ? (
-            <button
-              className='flex w-[62px] h-[32px] justify-center items-center border-[1px] border-primary rounded-[50px] text-[16px] hover:font-semibold active:font-semibold cursor-pointer'
-              onClick={handleRecord}>
-              수정
-            </button>
+            <>
+              <button
+                className='flex w-[70px] h-[32px] justify-center items-center border-[1px] border-primary rounded-[50px] text-[16px] hover:text-white hover:bg-primary  cursor-pointer text-primary'
+                disabled={isUpdating}
+                onClick={handleRecord}>
+                {isUpdating ? '수정 중...' : '수정'}
+              </button>
+              <button
+                className='flex w-[70px] h-[32px] justify-center items-center border-[1px] border-primary rounded-[50px] text-[16px] hover:text-white hover:bg-primary cursor-pointer text-primary'
+                disabled={isDeleting}
+                onClick={handleDelete}>
+                {isDeleting ? '삭제 중...' : '삭제'}
+              </button>
+            </>
           ) : (
             <button
-              className='flex w-[62px] h-[32px] justify-center items-center border-[1px] border-primary rounded-[50px] text-[16px] hover:font-semibold active:font-semibold cursor-pointer'
+              className='flex w-[70px] h-[32px] justify-center items-center border-[1px] border-primary rounded-[50px] text-[16px] hover:text-white hover:bg-primary cursor-pointer text-primary'
+              disabled={isCreating}
               onClick={handleRecord}>
-              기록
+              {isCreating ? '저장 중...' : '기록'}
             </button>
           )}
         </div>
@@ -169,32 +211,37 @@ const ArchiveWritePage = () => {
         </div>
 
         {/* 관람일시 */}
-        <div className='flex flex-row items-center gap-10 justify-center text-center relative'>
+        <div
+          className='flex flex-row items-center justify-center text-center relative'
+          ref={wrapperRef}>
           <label className='w-[100px] sm:text-2xl text-xl font-medium'>
             관람일시
           </label>
 
           {isEditMode && (
-            <button onClick={() => setIsOpen((prev) => !prev)}>
-              {isOpen ? (
-                <ChevronDown className='cursor-pointer' />
-              ) : (
-                <ChevronUp className='cursor-pointer' />
-              )}
+            <button
+              onClick={() => {
+                setIsOpen((prev) => !prev);
+              }}>
+              <ChevronDown
+                className={`cursor-pointer transition-transform duration-300 ${
+                  isOpen ? 'rotate-180' : 'rotate-0'
+                }`}
+              />
             </button>
           )}
-
           <input
             type='text'
             placeholder='날짜를 선택하세요.'
             value={startDate ? startDate.toLocaleDateString() : ''}
-            className='flex-1 sm:max-w-[200px] max-w-[120px] border-b-[1px] border-primary outline-none sm:text-xl text-sm py-2 placeholder:text-gray-400 cursor-pointer'
-            onClick={() => setIsOpen((prev) => !prev)}
+            className='flex-1 sm:max-w-[200px] max-w-[120px] border-b-[1px] border-primary outline-none sm:text-xl text-sm py-2 placeholder:text-gray-400 cursor-pointer ml-10'
+            onClick={() => {
+              setIsOpen((prev) => !prev);
+            }}
             readOnly
           />
-
           {isOpen && isEditMode && (
-            <div className='absolute top-full mt-2 z-50' ref={wrapperRef}>
+            <div className='absolute top-full mt-2 z-50'>
               <CustomDatePicker
                 startDate={startDate}
                 setStartDate={setStartDate}
