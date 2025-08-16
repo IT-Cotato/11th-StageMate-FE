@@ -46,4 +46,11 @@ export const ENDPOINT = {
   ARCHIVE_UPDATE: (archiveId: number) => `/api/v1/archive/${archiveId}`,
   ARCHIVE_DELETE: (archiveId: number) => `/api/v1/archive/${archiveId}`,
   ARCHIVE_TOP_RATING: '/api/v2/archives/top-rating',
+
+  // community
+  COMMUNITY_DETAIL: (postId: number) => `/api/v1/communities/${postId}`,
+  COMMUNITY_LIST: '/api/v1/communities',
+  COMMUNITY_CREATE: '/api/v1/communities',
+  COMMUNITY_UPDATE: (postId: number) => `/api/v1/communities/${postId}`,
+  COMMUNITY_DELETE: (postId: number) => `/api/v1/communities/${postId}`,
 };
