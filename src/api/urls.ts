@@ -53,4 +53,6 @@ export const ENDPOINT = {
   COMMUNITY_CREATE: '/api/v1/communities',
   COMMUNITY_UPDATE: (postId: number) => `/api/v1/communities/${postId}`,
   COMMUNITY_DELETE: (postId: number) => `/api/v1/communities/${postId}`,
+  COMMUNITY_HOT_LIST: '/api/v1/communities/hot',
+  COMMUNITY_TRADE_LIST: '/api/v1/communities/trade',
 };
