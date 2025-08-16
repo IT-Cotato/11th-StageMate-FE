@@ -1,3 +1,4 @@
+import '@/styles/skeleton.css';
 import {useParams} from 'react-router-dom';
 import {getCommunityDetail} from '@/api/community';
 import type {CommunityPostDetail} from '@/types/communityDetail';
@@ -21,20 +22,35 @@ const CommunityPostPage = () => {
 
   const {postId} = useParams();
   const [post, setPost] = useState<CommunityPostDetail | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!postId) return;
+    if (!postId) {
+      setIsLoading(false);
+      return;
+    }
     getCommunityDetail(Number(postId))
       .then(setPost)
       .catch((err) => {
         console.error('게시글 불러오기 실패', err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, [postId]);
   const listWrapperRef = useHorizontalScroll();
 
-if (!post) {
-  return <div className='p-4'>존재하지 않는 게시글입니다.</div>;
-}
+  if (isLoading) {
+    return (
+      <div className='w-full h-screen flex justify-center items-center'>
+        <div className='w-100 h-100 border-4 border-gray-300 border-t-transparent rounded-full animate-spin' />
+      </div>
+    );
+  }
+
+  if (!post) {
+    return <div className='p-4'>존재하지 않는 게시글입니다.</div>;
+  }
 
   return (
     <div className='flex flex-col gap-[21px] pt-[13px] pb-[25px] relative'>
