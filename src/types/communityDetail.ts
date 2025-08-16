@@ -1,7 +1,9 @@
+import type {JSONContent} from '@tiptap/react';
+
 export interface CommunityPostDetail {
   id: number;
   title: string;
-  content: unknown;
+  content: JSONContent;
   authorName: string;
   createdAt: string;
   viewCount: number;

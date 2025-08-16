@@ -1,5 +1,6 @@
 import {useParams} from 'react-router-dom';
-import {mockPosts} from '@/mocks/mockPosts';
+import {getCommunityDetail} from '@/api/community';
+import type {CommunityPostDetail} from '@/types/communityDetail';
 import {useHorizontalScroll} from '@/hooks/useHorizontalScroll';
 import CommunityCategory from '@/components/community/common/CommunityCategory';
 import PostHeaderInfo from '@/components/community/post/PostHeaderInfo';
@@ -7,9 +8,10 @@ import EllipsisVertical from '@/assets/ellipsis/ellipsis-vertical.svg?react';
 import PostImageList from '@/components/community/post/PostImageList';
 import PostComment from '@/components/community/post/PostComment';
 import CommentInput from '@/components/community/post/CommentInput';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import PostOptionModal from '@/components/modal/PostOptionModal';
 import ConfirmModal from '@/components/modal/ConfirmModal';
+import EditorViewer from '@/components/community/post/EditorViewer';
 
 const CommunityPostPage = () => {
   const [showOptions, setShowOptions] = useState(false);
@@ -18,12 +20,21 @@ const CommunityPostPage = () => {
   >(null);
 
   const {postId} = useParams();
-  const post = mockPosts.find((p) => p.id === Number(postId));
+  const [post, setPost] = useState<CommunityPostDetail | null>(null);
+
+  useEffect(() => {
+    if (!postId) return;
+    getCommunityDetail(Number(postId))
+      .then(setPost)
+      .catch((err) => {
+        console.error('게시글 불러오기 실패', err);
+      });
+  }, [postId]);
   const listWrapperRef = useHorizontalScroll();
 
-  if (!post) {
-    return <div className='p-4'>존재하지 않는 게시글입니다.</div>;
-  }
+if (!post) {
+  return <div className='p-4'>존재하지 않는 게시글입니다.</div>;
+}
 
   return (
     <div className='flex flex-col gap-[21px] pt-[13px] pb-[25px] relative'>
@@ -53,18 +64,18 @@ const CommunityPostPage = () => {
 
         <PostHeaderInfo
           title={post.title}
-          nickname={post.nickname}
-          date={post.date}
+          authorName={post.authorName}
+          date={post.createdAt}
           viewCount={post.viewCount}
           variant='detail'
         />
+
         <PostImageList
-          imgUrls={post.imgUrls}
+          imgUrls={post.imageUrls.map((img) => img.url)}
           wrapperRef={listWrapperRef as React.RefObject<HTMLUListElement>}
         />
-        <p className='font-normal text-[16px] leading-[110%] whitespace-pre-wrap break-words'>
-          {post.content}
-        </p>
+
+        <EditorViewer content={post.content} />
       </div>
 
       <PostComment />
