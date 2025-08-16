@@ -1,5 +1,7 @@
 import Comment from '@/assets/notification/comment.svg?react';
+import formatKoreanTime from '@/util/formatKoreanTime';
 import {useNavigate} from 'react-router-dom';
+
 /**
  * 알림 카드 컴포넌트
  * 사용자가 작성한 커뮤니티 글의 댓글에 대한 알림
@@ -18,6 +20,7 @@ const NotificationCard = ({
   postId,
 }: NotificationProps) => {
   const navigate = useNavigate();
+
   return (
     <div
       className='w-[466px] flex items-center justify-between bg-[#DDE1E6]/75 rounded-[20px] py-10 px-20 gap-20 cursor-pointer h-62'
@@ -31,7 +34,7 @@ const NotificationCard = ({
       </div>
 
       <span className='text-[#3C3C3C]/80 text-[13px] min-w-[60px] text-right shrink-0'>
-        {formattedDate}
+        {formatKoreanTime(formattedDate)}
       </span>
     </div>
   );
