@@ -34,7 +34,6 @@
     "react-js-pagination": "^3.0.3",
     "react-router-dom": "^7.6.3",
     "tailwindcss": "^4.1.11",
-    "uuid": "^11.1.0",
     "zustand": "^5.0.6"
   },
   "devDependencies": {

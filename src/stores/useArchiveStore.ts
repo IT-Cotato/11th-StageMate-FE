@@ -1,28 +1,21 @@
+import type {ArchiveRecord} from '@/types/archive';
 import {create} from 'zustand';
 
-export interface RecordType {
-  id: string; // 고유 id
-  title: string;
-  date: Date;
-  imageUrl?: string;
-  place?: string;
-  casting?: string;
-  rating?: number;
-  review?: string;
-  memo?: string;
-}
-
 interface ArchiveStore {
-  records: RecordType[];
-  addRecord: (record: RecordType) => void;
-  updateRecord: (updatedRecord: RecordType) => void;
-  removeRecord: (id: string) => void;
+  records: ArchiveRecord[];
+  addRecord: (record: ArchiveRecord) => void;
+  updateRecord: (updatedRecord: ArchiveRecord) => void;
+  removeRecord: (id: number) => void;
 }
-
-export const useArchiveStore = create<ArchiveStore>((set) => ({
+export const useArchiveStore = create<
+  ArchiveStore & {setRecords: (records: ArchiveRecord[]) => void}
+>((set) => ({
   records: [],
-  addRecord: (record) =>
-    set((state) => ({records: [...state.records, record]})),
+  setRecords: (records) => set({records}),
+  addRecord: (record: ArchiveRecord) =>
+    set((state) => ({
+      records: [...state.records, record],
+    })),
   updateRecord: (updatedRecord) =>
     set((state) => ({
       records: state.records.map((r) =>
