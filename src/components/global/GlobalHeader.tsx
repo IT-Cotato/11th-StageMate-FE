@@ -1,13 +1,13 @@
 import {useEffect, useState} from 'react';
 import CommunityLogo from '@/assets/logos/community-logo.svg?react';
-import SearchBox from '../../search/SearchBox';
+import SearchBox from '../search/SearchBox';
 import Bell from '@/assets/alerts-feedback/bell.svg?react';
 import User from '@/assets/users/user.svg?react';
 import {useNavigate} from 'react-router-dom';
-interface CommunityMainHeaderProps {
+interface GlobalHeaderProps {
   showIcons?: boolean;
 }
-const CommunityMainHeader = ({showIcons = false}: CommunityMainHeaderProps) => {
+const GlobalHeader = ({showIcons = false}: GlobalHeaderProps) => {
   const [hasBorder, setHasBorder] = useState(false);
   const navigate = useNavigate();
 
@@ -46,4 +46,4 @@ const CommunityMainHeader = ({showIcons = false}: CommunityMainHeaderProps) => {
   );
 };
 
-export default CommunityMainHeader;
+export default GlobalHeader;
