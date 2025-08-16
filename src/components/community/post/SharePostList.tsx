@@ -37,8 +37,6 @@ const SharePostList = () => {
           />
         ))}
       </ul>
-      {/** 더보기 버튼 */}
-      <LoadMoreButton onClick={goToShareList} />
     </div>
   );
 };
