@@ -1,5 +1,6 @@
 import {deleteWithdraw, postLogout} from '@/api/authApi';
 import ChevronRight from '@/assets/arrows/chevron-right.svg?react';
+import LoadingOverlay from '@/components/global/LoadingOverlay';
 import Modal from '@/components/global/Modal';
 import {withdrawComplete, withdrawing} from '@/constants/withdraw';
 import {useAuthStore} from '@/stores/authStore';
@@ -109,6 +110,10 @@ const SettingSupportPage = () => {
             logout();
           }}
         />
+      )}
+
+      {(logoutMutation.isPending || withdrawMutation.isPending) && (
+        <LoadingOverlay />
       )}
     </div>
   );
