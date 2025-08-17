@@ -1,18 +1,26 @@
-import {useMemo} from 'react';
+import {useState, useEffect, useMemo} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
+import Pagination from 'react-js-pagination';
 import PostListItem from './PostListItem';
-import {mockPosts} from '@/mocks/mockPosts';
 import useCommunityNavigation from '@/hooks/useCommunityNavigation';
-// 리스트에서 특정 카테고리의 게시글만 필터링하여 보여주는 컴포넌트
 import ChevronLeft from '@/assets/chevrons/chevron-left.svg?react';
 import WritePost from '@/assets/nav-icons/write-post.svg?react';
 import {CATEGORY_MAP} from '@/types/categoryMap';
 import type {CategoryKey, CategoryLabel} from '@/types/categoryMap';
+import {getCommunityPostList} from '@/api/community';
+import type {Post} from '@/types/community';
+
+const ITEMS_PER_PAGE = 10;
 
 const FilteredPostList = () => {
   const {category} = useParams<{category?: string}>();
   const navigate = useNavigate();
   const {goToPostDetail} = useCommunityNavigation();
+
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [totalItemsCount, setTotalItemsCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
 
   const categoryLabel: CategoryLabel | null = useMemo(() => {
     if (category && category in CATEGORY_MAP) {
@@ -21,11 +29,33 @@ const FilteredPostList = () => {
     return null;
   }, [category]);
 
-  const filteredPosts = useMemo(() => {
-    return categoryLabel
-      ? mockPosts.filter((post) => post.category === categoryLabel)
-      : [];
-  }, [categoryLabel]);
+  useEffect(() => {
+    if (!categoryLabel) {
+      setLoading(false);
+      return;
+    }
+    const fetchPosts = async () => {
+      setLoading(true);
+      try {
+        const data = await getCommunityPostList(categoryLabel, currentPage, ITEMS_PER_PAGE);
+        const mappedPosts: Post[] = data.list.map((p) => ({
+          ...p,
+          nickname: p.author,
+          date: p.createdAt,
+          isScrapped: false,
+          bookmarkCount: 0,
+        }));
+        setPosts(mappedPosts);
+        setTotalItemsCount(data.totalElements);
+      } catch (error) {
+        console.error(`${categoryLabel} 게시글 조회 실패`, error);
+      } finally {
+        setLoading(false);
+        window.scrollTo({top: 0, behavior: 'smooth'});
+      }
+    };
+    fetchPosts();
+  }, [categoryLabel, currentPage]);
 
   if (!categoryLabel) {
     return <div className='p-4 font-semibold'>잘못된 경로입니다.</div>;
@@ -35,7 +65,6 @@ const FilteredPostList = () => {
     <div>
       {/* 상단바 */}
       <div className='flex justify-between items-center'>
-        {/* 왼쪽: 뒤로가기 버튼 + 카테고리명 */}
         <div className='flex items-center cursor-pointer'>
           <button
             className='flex items-center justify-center'
@@ -48,8 +77,6 @@ const FilteredPostList = () => {
             {categoryLabel}
           </span>
         </div>
-
-        {/* 오른쪽: 게시글 작성 버튼 */}
         <button
           className='flex items-center gap-[8px] cursor-pointer'
           onClick={() => navigate(`/community/${category}/write`)}>
@@ -62,13 +89,39 @@ const FilteredPostList = () => {
 
       {/* 게시글 리스트 */}
       <div className='flex flex-col mt-[22px] gap-[19px]'>
-        {filteredPosts.map((post) => {
-          const handleClick = () => goToPostDetail(category as string, post.id);
-          return (
-            <PostListItem key={post.id} post={post} onClick={handleClick} />
-          );
-        })}
+        {loading ? (
+          Array.from({length: ITEMS_PER_PAGE}).map((_, index) => (
+            <div key={index} className='skeleton-shimmer h-[88px] w-full rounded-lg'></div>
+          ))
+        ) : (
+          posts.map((post) => {
+            const handleClick = () => goToPostDetail(category as string, post.id);
+            return (
+              <PostListItem key={post.id} post={post} onClick={handleClick} />
+            );
+          })
+        )}
       </div>
+
+      {/* 페이지네이션 */}
+      {!loading && (
+        <div className='flex justify-center mt-20'>
+          <Pagination
+            activePage={currentPage}
+            itemsCountPerPage={ITEMS_PER_PAGE}
+            totalItemsCount={totalItemsCount}
+            pageRangeDisplayed={5}
+            onChange={setCurrentPage}
+            innerClass='flex gap-6'
+            itemClass='px-5 py-1 text-sm'
+            activeClass='font-bold'
+            prevPageText='<'
+            nextPageText='>'
+            firstPageText='<<'
+            lastPageText='>>'
+          />
+        </div>
+      )}
     </div>
   );
 };
