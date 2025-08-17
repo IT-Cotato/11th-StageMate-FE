@@ -56,7 +56,7 @@ const CommunityPostPage = () => {
     <div className='flex flex-col gap-[21px] pt-[13px] pb-[25px] relative'>
       <div className='flex flex-col gap-[21px] px-[17px]'>
         <div className='flex justify-between items-center relative'>
-          <CommunityCategory category={post.category} />
+          <CommunityCategory label={post.tradeCategory || post.category} />
           <EllipsisVertical
             className='w-[26px] h-[26px] cursor-pointer'
             onClick={() => {
