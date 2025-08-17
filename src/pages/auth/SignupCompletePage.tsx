@@ -10,7 +10,7 @@ const SignupCompletePage = () => {
   const {user} = useAuthStore();
 
   return (
-    <div className='w-full sm:w-[600px] mx-auto bg-white'>
+    <div className='w-full sm:w-[600px] mx-auto bg-white shadow-2xl min-h-screen'>
       <PageHeader
         title='회원가입'
         onLeftClick={() => navigate('/signup-form')}
