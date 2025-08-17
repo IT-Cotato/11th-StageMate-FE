@@ -7,7 +7,7 @@ import ChevronLeft from '@/assets/chevrons/chevron-left.svg?react';
 import WritePost from '@/assets/nav-icons/write-post.svg?react';
 import {CATEGORY_MAP} from '@/types/categoryMap';
 import type {CategoryKey, CategoryLabel} from '@/types/categoryMap';
-import {getCommunityPostList} from '@/api/community';
+import {getCommunityPostList, getCommunityHotList} from '@/api/community';
 import type {Post} from '@/types/community';
 
 const ITEMS_PER_PAGE = 10;
@@ -37,7 +37,11 @@ const FilteredPostList = () => {
     const fetchPosts = async () => {
       setLoading(true);
       try {
-        const data = await getCommunityPostList(categoryLabel, currentPage, ITEMS_PER_PAGE);
+        const data =
+          category === 'hot'
+            ? await getCommunityHotList(currentPage, ITEMS_PER_PAGE)
+            : await getCommunityPostList(categoryLabel, currentPage, ITEMS_PER_PAGE);
+
         const mappedPosts: Post[] = data.list.map((p) => ({
           ...p,
           nickname: p.author,
@@ -55,7 +59,7 @@ const FilteredPostList = () => {
       }
     };
     fetchPosts();
-  }, [categoryLabel, currentPage]);
+  }, [category, categoryLabel, currentPage]);
 
   if (!categoryLabel) {
     return <div className='p-4 font-semibold'>잘못된 경로입니다.</div>;
@@ -104,7 +108,7 @@ const FilteredPostList = () => {
       </div>
 
       {/* 페이지네이션 */}
-      {!loading && (
+      {!loading && posts.length > 0 && (
         <div className='flex justify-center mt-20'>
           <Pagination
             activePage={currentPage}
