@@ -42,8 +42,9 @@ export interface Post {
   date: string;
   isScrapped: boolean;
   bookmarkCount: number;
-  imgUrls?: string[]; // 게시글 이미지 URL, 선택적
-  content?: string; // 게시글 내용, 선택적
+  imgUrls?: string[];
+  content?: string;
+  uniqueKey?: string; // 고유한 식별자를 위한 필드
 }
 
 export interface SharePost {
