@@ -1,6 +1,6 @@
 import '@/styles/skeleton.css';
 import {useParams} from 'react-router-dom';
-import {getCommunityDetail} from '@/api/community';
+import {getCommunityDetail} from '@/api/communityApi';
 import type {CommunityPostDetail} from '@/types/communityDetail';
 import {useHorizontalScroll} from '@/hooks/useHorizontalScroll';
 import CommunityCategory from '@/components/community/common/CommunityCategory';

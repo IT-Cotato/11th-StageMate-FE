@@ -6,7 +6,7 @@ import useCommunityListNavigation from '@/hooks/useCommunityListNavigation';
 import useCommunityNavigation from '@/hooks/useCommunityNavigation';
 import {getUrlFromCategoryName} from '@/util/categoryMapper';
 import LoadMoreButton from '@/components/global/LoadMoreButton';
-import {getTradePostList} from '@/api/community';
+import {getTradePostList} from '@/api/communityApi';
 import type {CommunityTradePostSummary} from '@/types/communityList';
 
 const SharePostList = () => {
@@ -58,9 +58,9 @@ const SharePostList = () => {
                 <div className='skeleton-shimmer h-4 w-1/2 mt-1 rounded-lg'></div>
               </li>
             ))
-          : posts.map(post => (
+          : posts.map((post, index) => (
               <PostCardItem
-                key={post.id}
+                key={`${post.id}-${index}`}
                 title={post.title}
                 category={post.category}
                 displayCategory={post.tradeCategory}

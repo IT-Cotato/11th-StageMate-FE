@@ -9,7 +9,7 @@ import type {Post} from '@/types/community';
 import useCommunityListNavigation from '@/hooks/useCommunityListNavigation';
 import useCommunityNavigation from '@/hooks/useCommunityNavigation';
 import LoadMoreButton from '@/components/global/LoadMoreButton';
-import {getCommunityHotList, getCommunityPostList} from '@/api/community';
+import {getCommunityHotList, getCommunityPostList} from '@/api/communityApi';
 import {getUrlFromCategoryName} from '@/util/categoryMapper';
 
 type PostListVariant = 'hot' | 'tip' | 'daily';
@@ -51,6 +51,7 @@ const PostList = ({icon, title, variant}: PostListProps) => {
           category: p.category || '',
           id: p.id,
           title: p.title,
+          uniqueKey: `${p.id}-${p.createdAt}`,
         }));
 
         setPosts(mappedPosts);
@@ -103,7 +104,7 @@ const PostList = ({icon, title, variant}: PostListProps) => {
         <div className='bg-[#fff] rounded-[20px] w-full px-20 py-7 flex flex-col gap-4 border border-primary-4'>
           {posts.map((post) => (
             <div
-              key={post.id}
+              key={post.uniqueKey}
               className='flex flex-row gap-10 pb-4 cursor-pointer items-center'
               onClick={handleClick(post)}>
               {/* 카테고리명 + 게시판 표시 */}
@@ -122,7 +123,7 @@ const PostList = ({icon, title, variant}: PostListProps) => {
         <div className='bg-[#fff] rounded-[20px] w-full p-5 flex flex-col gap-4'>
           {posts.map((post, idx) => (
             <div
-              key={post.id}
+              key={post.uniqueKey}
               className={`pb-4 ${
                 idx !== posts.length - 1 ? 'border-b border-primary-5' : ''
               }`}>

@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import Pagination from 'react-js-pagination';
-import {getTradePostList} from '@/api/community';
+import {getTradePostList} from '@/api/communityApi';
 import type {CommunityTradePostSummary} from '@/types/communityList';
 import {useNavigate} from 'react-router-dom';
 import PostCardItem from '@/components/community/post/PostCardItem';
