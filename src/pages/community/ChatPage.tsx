@@ -1,6 +1,5 @@
 import ChatRoomItem from '@/components/community/chat/ChatRoomItem';
 import useCommunityNavigation from '@/hooks/useCommunityNavigation';
-import Search from '@/assets/search.svg?react';
 import Pagination from 'react-js-pagination';
 import {useQuery} from '@tanstack/react-query';
 import {useState} from 'react';
@@ -39,10 +38,6 @@ const ChatPage = () => {
         <h1 className='p-10 text-[#000] text-3xl font-bold leading-[140%]'>
           실시간 채팅방
         </h1>
-        <Search
-          className='w-35 h-35 hover:cursor-pointer'
-          onClick={() => console.log('todo : 실시간 채팅방 검색 클릭')}
-        />
       </div>
 
       {/* 채팅방 목록 */}
