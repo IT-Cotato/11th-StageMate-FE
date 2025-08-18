@@ -237,7 +237,7 @@ const ChatRoomPage = () => {
     <>
       <div className='flex flex-col bg-white'>
         {/* 메시지 목록 */}
-        <div className='relative flex flex-col gap-15 overflow-y-auto h-675 pt-26 px-10'>
+        <div className='relative flex flex-col gap-15 overflow-y-auto sm:pb-60 py-90 px-10'>
           {messages.map((message) => (
             <div
               key={message.id}
@@ -321,7 +321,7 @@ const ChatRoomPage = () => {
         </div>
 
         {/* 입력창 */}
-        <div className='bg-[#ebebeb] px-13 py-11 flex justify-between items-center '>
+        <div className='fixed sm:bottom-[60px] bottom-[45px] max-w-[600px] w-full bg-[#ebebeb] px-13 py-11 flex justify-between items-center sm:h-[60px] h-[45px]'>
           <div className='flex grow items-center gap-10'>
             <div className='w-37 h-37'>
               <img

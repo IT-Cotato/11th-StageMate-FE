@@ -10,7 +10,7 @@ const ChatRoomItem = ({room, onClick}: ChatRoomItemProps) => {
   return (
     <li className='flex px-14 py-9 bg-[#ffffff] items-center rounded-[10px] text-sm'>
       <Wifi className='mr-32 w-20' />
-      <div className='flex flex-col w-full cursor-pointer'>
+      <div className='flex flex-col w-full'>
         <div className='line-clamp-1'>{room.title}</div>
         <div className='line-clamp-1'>
           오픈 시간: {room.startDate} ~ {room.endDate}

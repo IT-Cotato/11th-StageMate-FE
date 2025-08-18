@@ -13,7 +13,7 @@ const CommunityMainLayout = () => {
         <CommunityMainHeader />
       </div>
 
-      <main className='pt-90 px-16'>
+      <main className='pt-90'>
         <Outlet />
       </main>
     </div>
