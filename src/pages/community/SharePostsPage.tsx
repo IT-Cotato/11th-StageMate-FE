@@ -5,11 +5,13 @@ import type {CommunityTradePostSummary} from '@/types/communityList';
 import {useNavigate} from 'react-router-dom';
 import PostCardItem from '@/components/community/post/PostCardItem';
 import CommunityListHeader from '@/components/community/common/CommunityListHeader';
+import useCommunityNavigation from '@/hooks/useCommunityNavigation';
 
 const ITEMS_PER_PAGE = 6;
 
 const SharePostsPage = () => {
   const navigate = useNavigate();
+  const {goToShareDetail} = useCommunityNavigation();
   const [posts, setPosts] = useState<CommunityTradePostSummary[]>([]);
   const [totalItemsCount, setTotalItemsCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -61,6 +63,7 @@ const SharePostsPage = () => {
                 imageUrl={post.imageUrl}
                 placeholderText='나눔·거래 이미지'
                 isScrapMagazine={true}
+                onClick={() => goToShareDetail(post.id)}
               />
             ))}
       </ul>
