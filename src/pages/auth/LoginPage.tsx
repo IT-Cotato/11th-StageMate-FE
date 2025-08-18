@@ -38,7 +38,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className='w-full sm:w-[600px] mx-auto bg-white'>
+    <div className='w-full sm:w-[600px] mx-auto bg-white shadow-2xl min-h-screen'>
       {/* 헤더 */}
       <PageHeader
         title={'로그인'}
