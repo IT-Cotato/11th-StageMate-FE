@@ -42,8 +42,64 @@ const CommunityPostPage = () => {
 
   if (isLoading) {
     return (
-      <div className='w-full h-screen flex justify-center items-center'>
-        <div className='w-100 h-100 border-4 border-gray-300 border-t-transparent rounded-full animate-spin' />
+      <div className='flex flex-col gap-[21px] pt-[13px] pb-[25px] relative'>
+        <div className='flex flex-col gap-[21px] px-[17px]'>
+          <div className='flex justify-between items-center relative'>
+            <div className='skeleton-shimmer h-[26px] w-[60px] rounded-[10px]' />
+            <div className='skeleton-shimmer h-[26px] w-[26px] rounded' />
+          </div>
+
+          <div className='flex flex-col gap-[12px]'>
+            <div className='skeleton-shimmer h-[32px] w-3/4 rounded' />
+            <div className='flex items-center gap-[8px]'>
+              <div className='skeleton-shimmer h-[20px] w-[80px] rounded' />
+              <div className='skeleton-shimmer h-[20px] w-[100px] rounded' />
+              <div className='skeleton-shimmer h-[20px] w-[60px] rounded' />
+            </div>
+          </div>
+
+          <div className='flex gap-[8px] overflow-x-auto'>
+            {Array.from({length: 3}).map((_, index) => (
+              <div
+                key={index}
+                className='skeleton-shimmer w-[120px] h-[120px] rounded-[10px] flex-shrink-0'
+              />
+            ))}
+          </div>
+
+          <div className='flex flex-col gap-[8px] min-h-[200px]'>
+            <div className='skeleton-shimmer h-[20px] w-full rounded' />
+            <div className='skeleton-shimmer h-[20px] w-5/6 rounded' />
+            <div className='skeleton-shimmer h-[20px] w-4/5 rounded' />
+            <div className='skeleton-shimmer h-[20px] w-full rounded' />
+            <div className='skeleton-shimmer h-[20px] w-3/4 rounded' />
+            <div className='skeleton-shimmer h-[20px] w-5/6 rounded' />
+            <div className='skeleton-shimmer h-[20px] w-full rounded' />
+            <div className='skeleton-shimmer h-[20px] w-4/5 rounded' />
+          </div>
+        </div>
+
+        <div className='flex flex-col gap-[16px] px-[17px]'>
+          <div className='skeleton-shimmer h-[20px] w-[60px] rounded' />
+          {Array.from({length: 3}).map((_, index) => (
+            <div key={index} className='flex flex-col gap-[8px]'>
+              <div className='flex items-center gap-[8px]'>
+                <div className='skeleton-shimmer h-[32px] w-[32px] rounded-full' />
+                <div className='skeleton-shimmer h-[16px] w-[80px] rounded' />
+                <div className='skeleton-shimmer h-[14px] w-[60px] rounded' />
+              </div>
+              <div className='skeleton-shimmer h-[16px] w-3/4 rounded ml-[40px]' />
+            </div>
+          ))}
+        </div>
+
+        <div className='flex items-center justify-between w-full bg-[#EBEBEB] px-[8px] py-[11px]'>
+          <div className='flex items-center gap-[20px] flex-1'>
+            <div className='skeleton-shimmer h-[37px] w-[37px] rounded-full' />
+            <div className='skeleton-shimmer h-[20px] flex-1 rounded' />
+          </div>
+          <div className='skeleton-shimmer h-[20px] w-[20px] rounded' />
+        </div>
       </div>
     );
   }
