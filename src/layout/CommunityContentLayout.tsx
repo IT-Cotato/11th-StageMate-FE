@@ -9,7 +9,7 @@ import {Outlet} from 'react-router-dom';
 const CommunityContentLayout = () => {
   return (
     <div className='w-full min-h-screen flex justify-center overflow-x-hidden'>
-      <div className='relative w-full max-w-[600px] pb-[90px]'>
+      <div className='relative w-full max-w-[600px] pb-[90px] shadow-2xl'>
         <header className='w-full max-w-[600px] fixed top-0 left-1/2 -translate-x-1/2 z-50'>
           <ContentHeader showShare={true} />
         </header>
