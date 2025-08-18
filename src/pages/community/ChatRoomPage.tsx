@@ -1,7 +1,6 @@
 import {dummyChatRoom} from '@/mocks/mockChat';
 import type {ChatMessage} from '@/types/chat';
 import {useCallback, useEffect, useRef, useState} from 'react';
-import ChevronLeft from '@/assets/arrows/chevron-left.svg?react';
 import ChevronRight from '@/assets/arrows/chevron-right.svg?react';
 import EllipsisVertical from '@/assets/ellipsis/ellipsis-vertical.svg?react';
 import Send from '@/assets/community/send.svg?react';
@@ -14,13 +13,16 @@ import {
   PopupChatCaution,
   PopupReport,
 } from '@/constant';
-import {useParams} from 'react-router-dom';
+import {useLocation, useParams} from 'react-router-dom';
 import Portal from '@/components/global/Portal';
 import Ban from '@/assets/community/modal-icons/ban.svg?react';
 import Exclamation from '@/assets/community/modal-icons/exclamation.svg?react';
+import BackButtonTitleHeader from '@/components/global/BackButtonTitleHeader';
 
 const ChatRoomPage = () => {
   const {id} = useParams<{id: string}>(); // 채팅 방 번호
+  const location = useLocation();
+  const receivedData = location.state;
   const [messages, setMessages] = // 채팅 더미 데이터
     useState<ChatMessage[]>(
       dummyChatRoom.id === Number(id) ? dummyChatRoom.messages : []
@@ -234,18 +236,6 @@ const ChatRoomPage = () => {
   return (
     <>
       <div className='flex flex-col bg-white'>
-        {/* 헤더 */}
-        <div className='bg-white flex items-center justify-between'>
-          <div className='inline-flex items-center'>
-            <button onClick={() => window.history.back()}>
-              <ChevronLeft className='w-58 h-51 hover:cursor-pointer' />
-            </button>
-            <h1 className='text-[#000] text-xl font-bold leading-[140%]'>
-              {dummyChatRoom.name}
-            </h1>
-          </div>
-        </div>
-
         {/* 메시지 목록 */}
         <div className='relative flex flex-col gap-15 overflow-y-auto h-675 pt-26 px-10'>
           {messages.map((message) => (
@@ -323,6 +313,11 @@ const ChatRoomPage = () => {
             </div>
           ))}
           <div ref={autoScrollRef} />
+        </div>
+
+        {/* 헤더 */}
+        <div className='fixed top-65 pt-25 max-w-[600px] w-full bg-white'>
+          <BackButtonTitleHeader title={receivedData.title} />
         </div>
 
         {/* 입력창 */}

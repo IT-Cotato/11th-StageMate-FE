@@ -46,7 +46,7 @@ const ChatPage = () => {
           <ChatRoomItem
             key={room.chatRoomId}
             room={room}
-            onClick={() => goToChatRoomDetail(room.chatRoomId)}
+            onClick={() => goToChatRoomDetail(room.chatRoomId, room.title)}
           />
         ))}
       </div>
