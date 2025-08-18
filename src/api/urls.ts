@@ -46,9 +46,12 @@ export const ENDPOINT = {
   ARCHIVE_UPDATE: (archiveId: number) => `/api/v1/archive/${archiveId}`,
   ARCHIVE_DELETE: (archiveId: number) => `/api/v1/archive/${archiveId}`,
   ARCHIVE_TOP_RATING: '/api/v2/archives/top-rating',
+  
   //search
   SEARCH_POPULAR: '/api/v1/search/popular',
   SEARCH: '/api/v1/search',
+
   //notification
   NOTIFICATION: '/api/v1/notifications',
+
 };

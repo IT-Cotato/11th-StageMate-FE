@@ -9,7 +9,7 @@ export interface RecommendedPerformance {
   performanceType: 'MUSICAL' | 'PLAY';
 }
 export interface Performance {
-  id: string | number;
+  id?: string | number;
   performanceName: string;
   url: string;
   startDate: string;
@@ -21,6 +21,7 @@ export interface Performance {
   rating?: number;
   ranking?: number;
   title?: string;
+  chatRoomId?: number;
 }
 
 export interface PerformanceListResponse {
