@@ -10,6 +10,7 @@ import useCommunityListNavigation from '@/hooks/useCommunityListNavigation';
 import useCommunityNavigation from '@/hooks/useCommunityNavigation';
 import LoadMoreButton from '@/components/global/LoadMoreButton';
 import {getCommunityHotList, getCommunityPostList} from '@/api/community';
+import {getUrlFromCategoryName} from '@/util/categoryMapper';
 
 type PostListVariant = 'hot' | 'tip' | 'daily';
 
@@ -62,8 +63,10 @@ const PostList = ({icon, title, variant}: PostListProps) => {
     fetchPosts();
   }, [variant, title]);
 
-  const handleClick = (post: Post) => () =>
-    goToPostDetail(post.category, post.id);
+  const handleClick = (post: Post) => () => {
+    const englishCategory = getUrlFromCategoryName(post.category);
+    goToPostDetail(englishCategory, post.id);
+  };
 
   if (loading) {
     return (
