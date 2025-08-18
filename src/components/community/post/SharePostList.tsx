@@ -3,6 +3,8 @@ import Diamond from '@/assets/community/share-post-diamond.svg?react';
 import {useHorizontalScroll} from '@/hooks/useHorizontalScroll';
 import PostCardItem from './PostCardItem';
 import useCommunityListNavigation from '@/hooks/useCommunityListNavigation';
+import useCommunityNavigation from '@/hooks/useCommunityNavigation';
+import {getUrlFromCategoryName} from '@/util/categoryMapper';
 import LoadMoreButton from '@/components/global/LoadMoreButton';
 import {getTradePostList} from '@/api/community';
 import type {CommunityTradePostSummary} from '@/types/communityList';
@@ -12,6 +14,12 @@ const SharePostList = () => {
   const [loading, setLoading] = useState(true);
   const listWrapperRef = useHorizontalScroll();
   const {goToShareList} = useCommunityListNavigation();
+  const {goToPostDetail} = useCommunityNavigation();
+
+  const handleClick = (post: CommunityTradePostSummary) => {
+    const englishCategory = getUrlFromCategoryName('나눔 · 거래');
+    goToPostDetail(englishCategory, post.id);
+  };
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -50,7 +58,7 @@ const SharePostList = () => {
                 <div className='skeleton-shimmer h-4 w-1/2 mt-1 rounded-lg'></div>
               </li>
             ))
-          : posts.map((post) => (
+          : posts.map(post => (
               <PostCardItem
                 key={post.id}
                 title={post.title}
@@ -59,6 +67,7 @@ const SharePostList = () => {
                 isBookmarked={post.isScrapped}
                 imageUrl={post.imageUrl}
                 placeholderText='나눔 거래 이미지'
+                onClick={() => handleClick(post)}
               />
             ))}
       </ul>
