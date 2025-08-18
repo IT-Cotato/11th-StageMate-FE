@@ -56,7 +56,7 @@ const SearchBox = ({variant = 'main'}: SearchBoxProps) => {
     },
     community: {
       wrapper:
-        'w-full max-w-[325px] h-[52px] flex flex-row items-center rounded-[3px] px-[17px]',
+        'w-full max-w-[325px] h-[52px] flex flex-row items-center rounded-[3px] px-[17px] ml-75',
       input: 'w-full flex-1 focus:outline-none text-[16px] px-20 text-gray',
     },
   };
@@ -85,13 +85,13 @@ const SearchBox = ({variant = 'main'}: SearchBoxProps) => {
       />
 
       <div
-        className={`absolute top-[calc(100%-15px)] right-0 transition-all duration-300 ease-in-out overflow-visible ${
+        className={`absolute top-[calc(100%-15px)] right-0 transition-all duration-300 ease-in-out overflow-visible z-90 ${
           isDropdownOpen
             ? 'opacity-100 translate-y-0 max-h-96'
             : 'opacity-0 -translate-y-2 max-h-0'
         }`}>
         <div
-          className='bg-white rounded-b-[10px] w-280 shadow-xs'
+          className='bg-white rounded-b-[10px] w-310 shadow-xs'
           ref={dropdownRef}>
           <SearchPopularDropdown isDropdownOpen />
         </div>
