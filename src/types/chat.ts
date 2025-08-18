@@ -12,8 +12,9 @@ export type ChatMessage = {
   isMe: boolean;
 };
 
-export type ChatRoom = {
-  id: number;
-  name: string;
-  messages: ChatMessage[];
+export type ChatRoomType = {
+  chatRoomId: number;
+  title: string;
+  startDate: string;
+  endDate: string;
 };
