@@ -1,13 +1,30 @@
 import Users from '@/assets/community/live-chat-users.svg?react';
-import {mockChatRooms} from '@/mocks/mockChatRooms';
 import ChatRoomItem from './ChatRoomItem';
 import useCommunityNavigation from '@/hooks/useCommunityNavigation';
 import useCommunityListNavigation from '@/hooks/useCommunityListNavigation';
 import LoadMoreButton from '@/components/global/LoadMoreButton';
+import {useQuery} from '@tanstack/react-query';
+import {getChatRoom} from '@/api/chatApi';
+import type {ChatRoomType} from '@/types/chat';
 
 const ChatRoomList = () => {
   const {goToChatRoomDetail} = useCommunityNavigation();
   const {goToChatRoomList} = useCommunityListNavigation();
+
+  const {data, isLoading, error} = useQuery({
+    queryKey: ['chatRoomList'],
+    queryFn: () => getChatRoom({page: 0}),
+  });
+
+  if (isLoading) {
+    return <div>채팅방 불러오는 중 ...</div>;
+  }
+
+  if (error) {
+    return <div>채팅방을 불러오는 데 실패했습니다.</div>;
+  }
+
+  const chatRoomList = (data?.list || []).slice(0, 3);
 
   return (
     <div className='flex flex-col gap-15'>
@@ -21,13 +38,15 @@ const ChatRoomList = () => {
       </div>
 
       {/** 채팅방 리스트 렌더링 */}
-      {mockChatRooms.map((room) => (
-        <ChatRoomItem
-          key={room.id}
-          room={room}
-          onClick={() => goToChatRoomDetail(room.id)}
-        />
-      ))}
+      <div className='flex flex-col gap-10'>
+        {chatRoomList.map((room: ChatRoomType) => (
+          <ChatRoomItem
+            key={room.chatRoomId}
+            room={room}
+            onClick={() => goToChatRoomDetail(room.chatRoomId)}
+          />
+        ))}
+      </div>
     </div>
   );
 };
