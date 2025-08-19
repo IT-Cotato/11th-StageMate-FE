@@ -10,20 +10,34 @@ import {CustomLink} from './lib/CustomLink';
 
 interface ContentEditorProps {
   defaultContent: string;
+  title?: string;
+  onTitleChange?: (title: string) => void;
+  onContentChange?: (content: string) => void;
+  onImagesChange?: (images: File[]) => void;
 }
 
-const ContentEditor = ({defaultContent}: ContentEditorProps) => {
+const ContentEditor = ({
+  defaultContent,
+  title = '',
+  onTitleChange,
+  onContentChange,
+  onImagesChange,
+}: ContentEditorProps) => {
   {
     /** 이미지 입력 tiptap 이용 x 수동 구현 */
   }
-  const [images, setImages] = useState<string[]>([]);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
 
   const handleImageUpload = (files: FileList | null) => {
     if (!files) return;
-    const newImages = Array.from(files).map((file) =>
-      URL.createObjectURL(file)
-    );
-    setImages((prev) => [...prev, ...newImages]);
+    const newFiles = Array.from(files);
+    const newUrls = newFiles.map((file) => URL.createObjectURL(file));
+
+    const updatedFiles = [...imageFiles, ...newFiles];
+    setImageFiles(updatedFiles);
+    onImagesChange?.(updatedFiles);
+    setImageUrls((prev) => [...prev, ...newUrls]);
   };
 
   {
@@ -39,11 +53,15 @@ const ContentEditor = ({defaultContent}: ContentEditorProps) => {
         emptyEditorClass: 'is-editor-empty',
       }),
     ],
-    content: '',
+    content: title,
     editorProps: {
       attributes: {
         class: 'outline-none text-[32px] font-bold',
       },
+    },
+    onUpdate: ({editor}) => {
+      const text = editor.getText();
+      onTitleChange?.(text);
     },
   });
 
@@ -53,7 +71,9 @@ const ContentEditor = ({defaultContent}: ContentEditorProps) => {
 
   const bodyEditor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        link: false, // StarterKit의 기본 Link 비활성화
+      }),
       TextStyle,
       Color,
       Highlight.configure({multicolor: true}),
@@ -76,6 +96,10 @@ const ContentEditor = ({defaultContent}: ContentEditorProps) => {
         class: 'outline-none text-base text-2xl',
       },
     },
+    onUpdate: ({editor}) => {
+      const html = editor.getHTML();
+      onContentChange?.(html);
+    },
   });
 
   useEffect(() => {
@@ -83,6 +107,12 @@ const ContentEditor = ({defaultContent}: ContentEditorProps) => {
       bodyEditor.commands.setContent(defaultContent);
     }
   }, [defaultContent, bodyEditor]);
+
+  useEffect(() => {
+    if (titleEditor && title !== titleEditor.getText()) {
+      titleEditor.commands.setContent(title);
+    }
+  }, [title, titleEditor]);
   return (
     <div className='flex flex-col'>
       <EditorContent
@@ -98,7 +128,7 @@ const ContentEditor = ({defaultContent}: ContentEditorProps) => {
       <hr className='w-full h-[1px] bg-primary opacity-15 border-0' />
       <div className='image-scroll-container overflow-x-auto whitespace-nowrap py-4'>
         {/** 이미지 나열 태그 */}
-        {images.map((src, idx) => (
+        {imageUrls.map((src, idx) => (
           <img
             key={idx}
             src={src}
