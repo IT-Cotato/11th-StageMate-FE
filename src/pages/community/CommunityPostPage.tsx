@@ -312,7 +312,7 @@ const CommunityPostPage = () => {
 
         <PostHeaderInfo
           title={post.title}
-          authorName={post.authorName}
+          nickname={post.authorName}
           date={formatKoreanTime(post.createdAt)}
           viewCount={post.viewCount}
           variant='detail'
