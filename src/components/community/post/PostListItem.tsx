@@ -4,13 +4,15 @@ import EmptyHeart from '@/assets/hearts/empty-heart.svg?react';
 import FullHeart from '@/assets/hearts/full-heart.svg?react';
 import Chat from '@/assets/community/community-chat.svg?react';
 import PostHeaderInfo from './PostHeaderInfo';
+import formatKoreanTime from '@/util/formatKoreanTime';
 
 interface PostListItemProps {
   post: Post;
   onClick?: () => void;
+  onLikeClick?: () => void;
 }
 
-const PostListItem = ({post, onClick}: PostListItemProps) => {
+const PostListItem = ({post, onClick, onLikeClick}: PostListItemProps) => {
   return (
     <article className='flex flex-col justify-center pb-8 border-b border-b-primary-5'>
       <div
@@ -20,7 +22,7 @@ const PostListItem = ({post, onClick}: PostListItemProps) => {
         <PostHeaderInfo
           title={post.title}
           nickname={post.nickname}
-          date={post.date}
+          date={formatKoreanTime(post.date)}
           viewCount={post.viewCount}
           variant='list'
         />
@@ -28,13 +30,18 @@ const PostListItem = ({post, onClick}: PostListItemProps) => {
         {/* 오른쪽: 좋아요 + 댓글 */}
         <div className='flex items-center justify-center gap-16 text-sm text-gray-500'>
           <span className='flex flex-col items-center gap-[3px]'>
-            <span className='w-20 h-20 flex items-center justify-center'>
+            <button 
+              className='w-20 h-20 flex items-center justify-center'
+              onClick={(e) => {
+                e.stopPropagation();
+                onLikeClick?.();
+              }}>
               {post.isLiked ? (
                 <FullHeart className='w-full h-full' />
               ) : (
                 <EmptyHeart className='w-full h-full stroke-secondary' />
               )}
-            </span>
+            </button>
             <span className='text-black font-normal text-[12px] leading-[140%]'>
               {post.likeCount}
             </span>
