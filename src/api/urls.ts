@@ -38,6 +38,7 @@ export const ENDPOINT = {
 
   //performanceSchedule
   PERFORMANCE_SCHEDULE: '/api/v1/performanceSchedule',
+  PERFORMANCE_SCHEDULE_V2: '/api/v2/performanceSchedule',
   PERFORMANCE_SCHEDULE_DETAIL: (id: number) =>
     `/api/v1/performanceSchedule/${id}`,
   PERFORMANCE_SCHEDULE_UPDATE: (id: number) =>
