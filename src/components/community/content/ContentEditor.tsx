@@ -1,4 +1,4 @@
-import {useEditor, EditorContent} from '@tiptap/react';
+import {useEditor, EditorContent, type JSONContent} from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import EditorMenuBar from './EditorMenuBar';
 import TextAlign from '@tiptap/extension-text-align';
@@ -9,10 +9,10 @@ import {useEffect, useState} from 'react';
 import {CustomLink} from './lib/CustomLink';
 
 interface ContentEditorProps {
-  defaultContent: string;
+  defaultContent: string | JSONContent;
   title?: string;
   onTitleChange?: (title: string) => void;
-  onContentChange?: (content: string) => void;
+  onContentChange?: (content: string | JSONContent) => void;
   onImagesChange?: (images: File[]) => void;
 }
 
@@ -23,9 +23,6 @@ const ContentEditor = ({
   onContentChange,
   onImagesChange,
 }: ContentEditorProps) => {
-  {
-    /** 이미지 입력 tiptap 이용 x 수동 구현 */
-  }
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [imageUrls, setImageUrls] = useState<string[]>([]);
 
@@ -40,9 +37,6 @@ const ContentEditor = ({
     setImageUrls((prev) => [...prev, ...newUrls]);
   };
 
-  {
-    /** 제목 에디터 */
-  }
   const titleEditor = useEditor({
     extensions: [
       StarterKit,
@@ -65,14 +59,10 @@ const ContentEditor = ({
     },
   });
 
-  {
-    /** 본문 에디터 */
-  }
-
   const bodyEditor = useEditor({
     extensions: [
       StarterKit.configure({
-        link: false, // StarterKit의 기본 Link 비활성화
+        link: false,
       }),
       TextStyle,
       Color,
@@ -97,14 +87,17 @@ const ContentEditor = ({
       },
     },
     onUpdate: ({editor}) => {
-      const html = editor.getHTML();
-      onContentChange?.(html);
+      const json = editor.getJSON();
+      onContentChange?.(json);
     },
   });
 
   useEffect(() => {
-    if (bodyEditor && defaultContent !== bodyEditor.getHTML()) {
-      bodyEditor.commands.setContent(defaultContent);
+    if (bodyEditor && defaultContent) {
+      const currentContent = bodyEditor.getJSON();
+      if (JSON.stringify(defaultContent) !== JSON.stringify(currentContent)) {
+        bodyEditor.commands.setContent(defaultContent);
+      }
     }
   }, [defaultContent, bodyEditor]);
 
@@ -127,7 +120,6 @@ const ContentEditor = ({
       <EditorMenuBar editor={bodyEditor} onImageUpload={handleImageUpload} />
       <hr className='w-full h-[1px] bg-primary opacity-15 border-0' />
       <div className='image-scroll-container overflow-x-auto whitespace-nowrap py-4'>
-        {/** 이미지 나열 태그 */}
         {imageUrls.map((src, idx) => (
           <img
             key={idx}
