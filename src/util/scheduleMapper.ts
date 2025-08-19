@@ -13,12 +13,12 @@ const normalize = (raw: string): keyof typeof LABEL => {
   return 'ETC';
 };
 
-export function toSchedule(item: ScheduleListItem, idx: number): Schedule {
+export function toSchedule(item: ScheduleListItem): Schedule {
   const perf = item.performanceDetailResponse;
   const type = normalize(perf.performanceType);
 
   return {
-    id: `${perf.performanceName}-${item.scheduleDate}-${idx}`,
+    id: String(perf.id), // 일단 performanceId 사용
     category: LABEL[type],
     title: item.title,
     isLike: item.isScraped,
