@@ -62,10 +62,14 @@ const SharePostList = () => {
               <PostCardItem
                 key={`${post.id}-${index}`}
                 title={post.title}
-                category={post.category}
+                category='나눔 · 거래'
                 displayCategory={post.tradeCategory}
                 isBookmarked={post.isScrapped}
-                imageUrl={post.imageUrl}
+                imageUrl={
+                  post.imageUrl && post.imageUrl !== 'basic'
+                    ? post.imageUrl
+                    : undefined
+                }
                 placeholderText='나눔 거래 이미지'
                 onClick={() => handleClick(post)}
               />

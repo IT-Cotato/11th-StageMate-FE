@@ -10,7 +10,12 @@ import useCommunityListNavigation from '@/hooks/useCommunityListNavigation';
 import useCommunityNavigation from '@/hooks/useCommunityNavigation';
 import LoadMoreButton from '@/components/global/LoadMoreButton';
 import {getCommunityHotList, getCommunityPostList} from '@/api/communityApi';
-import {getUrlFromCategoryName} from '@/util/categoryMapper';
+import {
+  apiToUiCategory,
+  getSlugFromUi,
+  type WriteableUiCategory,
+} from '@/util/categoryMapper';
+import type {ApiPost} from '@/types/community';
 
 type PostListVariant = 'hot' | 'tip' | 'daily';
 
@@ -38,20 +43,27 @@ const PostList = ({icon, title, variant}: PostListProps) => {
                 5
               );
 
-        const mappedPosts: Post[] = response.list.map((p) => ({
-          ...p,
-          nickname: p.author,
-          date: p.createdAt,
-          isScrapped: false,
-          bookmarkCount: 0,
-          likeCount: p.likeCount || 0,
-          commentCount: p.commentCount || 0,
-          isLiked: p.isLiked || false,
-          viewCount: p.viewCount || 0,
-          category: p.category || '',
+        const mappedPosts: Post[] = response.list.map((p: ApiPost) => ({
           id: p.id,
           title: p.title,
-          uniqueKey: `${p.id}-${p.createdAt}`,
+          nickname: p.author ?? '',
+          date: p.createdAt ?? '',
+          likeCount: p.likeCount ?? 0,
+          commentCount: p.commentCount ?? 0,
+          isLiked: p.isLiked ?? false,
+          viewCount: p.viewCount ?? 0,
+          isScrapped: false,
+          bookmarkCount: 0,
+          // UI 라벨로 표준화
+          category:
+            apiToUiCategory[p.category as '일상' | '꿀팁' | '나눔거래'] ?? '',
+          uniqueKey: String(p.id),
+          // 이미지 표준화: detail(list) 대응
+          imgUrls: Array.isArray(p.imageUrls)
+            ? p.imageUrls.map((img) => img.url)
+            : p.imageUrl && p.imageUrl !== 'basic'
+              ? [p.imageUrl]
+              : [],
         }));
 
         setPosts(mappedPosts);
@@ -65,8 +77,8 @@ const PostList = ({icon, title, variant}: PostListProps) => {
   }, [variant, title]);
 
   const handleClick = (post: Post) => () => {
-    const englishCategory = getUrlFromCategoryName(post.category);
-    goToPostDetail(englishCategory, post.id);
+    const slug = getSlugFromUi(post.category as WriteableUiCategory);
+    goToPostDetail(slug, post.id);
   };
 
   if (loading) {
