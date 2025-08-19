@@ -8,7 +8,9 @@ const ScrappedMagazine = () => {
   );
   const listWrapperRef = useHorizontalScroll();
   return (
-    <ul className='px-15 flex flex-row overflow-x-auto' ref={listWrapperRef}>
+    <ul
+      className='px-15 flex flex-row overflow-x-auto gap-17'
+      ref={listWrapperRef}>
       {bookmarkedMagazines.map((post) => (
         <PostCardItem
           title={post.title}

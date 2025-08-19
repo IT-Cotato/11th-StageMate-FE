@@ -1,4 +1,4 @@
-import CommunityMainHeader from '@/components/community/common/CommunityMainHeader';
+import GlobalHeader from '@/components/global/GlobalHeader';
 import {useState} from 'react';
 import PageHeader from '@/components/global/PageHeader';
 import type {PageHeaderProps} from '@/components/global/PageHeader';
@@ -16,7 +16,7 @@ const CalendarLayout = () => {
     <div className='w-full min-h-screen flex justify-center overflow-x-hidden'>
       <div className='relative w-full max-w-[600px]'>
         <div className='fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-[600px] z-50 bg-white flex flex-col gap-20'>
-          <CommunityMainHeader />
+          <GlobalHeader />
           <PageHeader {...headerProps} />
         </div>
 

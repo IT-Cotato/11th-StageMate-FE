@@ -1,6 +1,8 @@
 import BackButtonTitleHeader from '@/components/global/BackButtonTitleHeader';
 import EyeOpen from '@/assets/eye-open.svg?react';
-import {useState} from 'react';
+import React, {useState} from 'react';
+import {useMutation} from '@tanstack/react-query';
+import {patchPassword} from '@/api/mypageApi';
 
 type ChangePasswordType = {
   value: string;
@@ -20,6 +22,18 @@ const ChangePassword = () => {
     newPwCheck: {value: '', isShow: false},
   });
 
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const {name, value} = e.target;
+
+    setPasswordState((prev) => ({
+      ...prev,
+      [name]: {
+        ...prev[name as keyof ChangePasswordState],
+        value,
+      },
+    }));
+  };
+
   const handleShowClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const formElement = (e.target as HTMLElement).closest('form');
@@ -35,6 +49,24 @@ const ChangePassword = () => {
         },
       }));
     }
+  };
+
+  const changePasswordMutation = useMutation({
+    mutationFn: patchPassword,
+    onSuccess: () => {
+      alert('비밀번호 변경이 완료되었습니다.');
+    },
+    onError: (error) => {
+      alert(error);
+    },
+  });
+
+  const handleChangePasswordClick = () => {
+    changePasswordMutation.mutate({
+      currentPassword: passwordState.currentPw.value,
+      newPassword: passwordState.newPw.value,
+      newPasswordConfirm: passwordState.newPwCheck.value,
+    });
   };
 
   return (
@@ -53,6 +85,7 @@ const ChangePassword = () => {
               <input
                 type={passwordState.currentPw.isShow ? 'text' : 'password'}
                 name='currentPw'
+                onChange={handleChangeInput}
                 minLength={8}
                 maxLength={16}
                 placeholder='기존 비밀번호를 입력해주세요'
@@ -76,6 +109,7 @@ const ChangePassword = () => {
               <input
                 type={passwordState.newPw.isShow ? 'text' : 'password'}
                 name='newPw'
+                onChange={handleChangeInput}
                 minLength={8}
                 maxLength={16}
                 placeholder='새로운 비밀번호를 입력해주세요'
@@ -99,6 +133,7 @@ const ChangePassword = () => {
               <input
                 type={passwordState.newPwCheck.isShow ? 'text' : 'password'}
                 name='newPwCheck'
+                onChange={handleChangeInput}
                 minLength={8}
                 maxLength={16}
                 placeholder='새로운 비밀번호를 다시 입력해주세요'
@@ -113,7 +148,9 @@ const ChangePassword = () => {
           </div>
         </div>
 
-        <button className='self-stretch mx-10 py-11 rounded-[5px] border border-solid border-black bg-primary-2 text-white text-xl font-medium leading-20 hover:cursor-pointer'>
+        <button
+          onClick={handleChangePasswordClick}
+          className='self-stretch mx-10 py-11 rounded-[5px] border border-solid border-black bg-primary-2 text-white text-xl font-medium leading-20 hover:cursor-pointer'>
           확인
         </button>
       </div>

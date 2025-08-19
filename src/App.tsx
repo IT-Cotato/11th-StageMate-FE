@@ -8,7 +8,6 @@ import SignupConditionPage from './pages/auth/SignupConditionPage';
 import SignupCompletePage from './pages/auth/SignupCompletePage';
 import CommunityMainLayout from './layout/CommunityMainLayout';
 import CommunityMainPage from './pages/community/CommunityMainPage';
-import FilteredPostList from './components/community/post/FilteredPostList';
 import CommunityEditPage from './pages/community/CommunityEditPage';
 import ArchiveLayout from './layout/ArchiveLayout';
 import CommunityHeaderOnlyLayout from './layout/CommunityHeaderOnlyLayout';
@@ -48,6 +47,8 @@ import BlockedUserPage from './pages/BlockedUserPage';
 import ChangePassword from './pages/setting/ChangePassword';
 import NotificationPage from './pages/NotificationPage';
 import useScrollToTop from './hooks/useScrollToTop';
+import ImageSearchPage from './pages/archive/ImageSearchPage';
+import FilteredPostList from './components/community/post/FilteredPostList';
 
 const ScrollManager = () => {
   useScrollToTop();
@@ -76,14 +77,6 @@ function App() {
             path='/magazine/:magazineId'
             element={<MagazineDetailPage />}
           />
-
-          <Route element={<ArchiveLayout />}>
-            <Route path='archive'>
-              <Route index element={<ArchivePage />} />
-              <Route path='write' element={<ArchiveWritePage />} />
-              <Route path=':id' element={<ArchiveWritePage />} />
-            </Route>
-          </Route>
 
           <Route element={<CalendarLayout />}>
             <Route path='/calendar/report' element={<CalendarReportPage />} />
@@ -115,6 +108,14 @@ function App() {
                   isLoading={isLoading}
                 />
               }>
+              <Route element={<ArchiveLayout />}>
+                <Route path='archive'>
+                  <Route index element={<ArchivePage />} />
+                  <Route path='write' element={<ArchiveWritePage />} />
+                  <Route path='write/:id' element={<ArchiveWritePage />} />
+                  <Route path='image-search' element={<ImageSearchPage />} />
+                </Route>
+              </Route>
               <Route
                 path='/scrap-magazine'
                 element={<ScrappedMagazinePage />}
@@ -124,7 +125,6 @@ function App() {
               <Route path='/written-comment' element={<WrittenCommentPage />} />
               <Route path='/blocked-user' element={<BlockedUserPage />} />
               <Route path='/notification' element={<NotificationPage />} />
-
               <Route path='/settings' element={<SettingLayout />}>
                 <Route path='account' element={<SettingAccountPage />} />
                 <Route path='activity' element={<SettingActivityPage />} />
@@ -133,7 +133,13 @@ function App() {
             </Route>
           </Route>
 
-          <Route element={<ProtectedRoute isLoggedIn={isAuthenticated} />}>
+          <Route
+            element={
+              <ProtectedRoute
+                isLoggedIn={isAuthenticated}
+                isLoading={isLoading}
+              />
+            }>
             <Route path='settings'>
               <Route path='announcement' element={<AnnouncementPage />} />
               <Route

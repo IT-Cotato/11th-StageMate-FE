@@ -10,6 +10,8 @@ import {postLogin} from '@/api/authApi';
 import {useMutation} from '@tanstack/react-query';
 import {useAuthStore} from '@/stores/authStore';
 import {getMypageInfo} from '@/api/mypageApi';
+import LoadingOverlay from '@/components/global/LoadingOverlay';
+import Modal from '@/components/global/Modal';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -29,7 +31,6 @@ const LoginPage = () => {
       login(loginRes.accessToken, loginRes.refreshToken, userInfo);
       navigate('/');
     },
-    onError: (error) => alert(error.message),
   });
 
   const handleLoginClick = () => {
@@ -37,7 +38,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className='w-full sm:w-[600px] mx-auto bg-white'>
+    <div className='w-full sm:w-[600px] mx-auto bg-white shadow-2xl min-h-screen'>
       {/* 헤더 */}
       <PageHeader
         title={'로그인'}
@@ -93,6 +94,16 @@ const LoginPage = () => {
         {/* brands */}
         <AuthBrandBadges />
       </div>
+
+      {/* 상태 모달 & 오버레이 */}
+      {loginMutation.isPending && <LoadingOverlay />}
+      {loginMutation.isError && (
+        <Modal
+          content={loginMutation.error.message}
+          rightText='확인'
+          onRightClick={() => loginMutation.reset()}
+        />
+      )}
     </div>
   );
 };

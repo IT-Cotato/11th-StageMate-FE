@@ -1,6 +1,7 @@
-import type {Post} from '@/types/community';
 import Heart from '@/assets/hearts/empty-heart.svg?react';
 import Chat from '@/assets/community/community-chat.svg?react';
+import type {Post} from '@/types/community';
+
 interface SearchCommunityItemProps {
   post: Post;
 }
@@ -10,9 +11,9 @@ const SearchCommunityItem = ({post}: SearchCommunityItemProps) => {
       <div>
         <span className='sm:text-[18px] text-[16px]'>{post.title}</span>
         <div className='flex flex-row gap-4 text-[12px] items-center'>
-          <span>{post.date} |</span>
+          <span>{post.createdAt} |</span>
           <span>조회수 {post.viewCount} |</span>
-          <span>작성자 {post.nickname} </span>
+          <span>작성자 {post.author} </span>
         </div>
       </div>
 

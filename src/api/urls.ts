@@ -24,6 +24,13 @@ export const ENDPOINT = {
 
   // mypage
   MYPAGE_INFO: 'api/v1/mypage/account-info',
+  MYPAGE_CHANGE_PASSWORD: 'api/v1/mypage/change-password',
+  MYPAGE_NOTICES: 'api/v1/mypage/notices',
+  MYPAGE_NOTICES_DETAIL: (id: number) => `api/v1/mypage/notices/${id}`,
+  MYPAGE_PRIVACY: 'api/v1/mypage/policy/privacy',
+  MYPAGE_TERMS: 'api/v1/mypage/policy/terms',
+  MYPAGE_PROFILE_IMAGE: 'api/v1/mypage/profile-image',
+  MYPAGE_INQUIRIES: 'api/v1/mypage/inquiries',
 
   //performance
   PERFORMANCE: '/api/v1/performance',
@@ -37,4 +44,31 @@ export const ENDPOINT = {
     `/api/v1/performanceSchedule/${id}`,
   PERFORMANCE_SCHEDULE_SCRAP: (id: number) =>
     `/api/v1/performanceSchedule/${id}/scrap`,
+
+  //naver-image-search
+  IMAGE_SEARCH: '/api/v1/naver/images',
+
+  //archive
+  ARCHIVE: '/api/v1/archives',
+  ARCHIVE_DETAIL: (archiveId: number) => `/api/v1/archive/${archiveId}`,
+  ARCHIVE_CREATE: '/api/v1/archive',
+  ARCHIVE_UPDATE: (archiveId: number) => `/api/v1/archive/${archiveId}`,
+  ARCHIVE_DELETE: (archiveId: number) => `/api/v1/archive/${archiveId}`,
+  ARCHIVE_TOP_RATING: '/api/v2/archives/top-rating',
+
+  // community
+  COMMUNITY_DETAIL: (postId: number) => `/api/v1/communities/${postId}`,
+  COMMUNITY_LIST: '/api/v1/communities',
+  COMMUNITY_CREATE: '/api/v1/communities',
+  COMMUNITY_UPDATE: (postId: number) => `/api/v1/communities/${postId}`,
+  COMMUNITY_DELETE: (postId: number) => `/api/v1/communities/${postId}`,
+  COMMUNITY_HOT_LIST: '/api/v1/communities/hot',
+  COMMUNITY_TRADE_LIST: '/api/v1/communities/trade',
+
+  //search
+  SEARCH_POPULAR: '/api/v1/search/popular',
+  SEARCH: '/api/v1/search',
+
+  //notification
+  NOTIFICATION: '/api/v1/notifications',
 };

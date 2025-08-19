@@ -28,16 +28,26 @@ const getErrorMessage = (code: string): string => {
       return '이미 사용 중인 유저 ID입니다.';
     case 'AUTH-017':
       return '이미 사용 중인 닉네임입니다.';
+    case 'AUTH-018':
+      return '현재 비밀번호가 일치하지 않습니다.';
+    case 'AUTH-019':
+      return '기존과 동일한 비밀번호는 사용할 수 없습니다.';
 
     // common
     case 'COMMON-001':
       return '세션 만료 혹은 잘못된 세션입니다.';
+    case 'COMMON-003':
+      return '찾을 수 없습니다.';
     case 'COMMON-004':
       return '이미 존재하는 리소스입니다.';
     case 'COMMON-007':
       return '아이디 또는 비밀번호가 일치하지 않습니다.';
     case 'COMMON-009':
       return '인증이 필요합니다.';
+
+    // image
+    case 'IMAGE-001':
+      return '이미지 업로드에 실패했습니다.';
 
     // default
     default:

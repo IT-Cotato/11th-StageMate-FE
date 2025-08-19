@@ -1,41 +1,51 @@
 import ChevronDown from '@/assets/chevrons/chevron-down.svg?react';
-import ChevronUp from '@/assets/chevrons/chevron-up.svg?react';
 import Plus from '@/assets/archive/archive-plus.svg?react';
 import {motion} from 'framer-motion';
-import {useMemo, useRef, useState} from 'react';
+import {useRef, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import SelectDateModal from '../modal/SelectDateModal';
 import TicketAddModal from '../modal/TicketAddModal';
 import CameraUnavailableModal from '../modal/CameraUnavailableModal';
-import {useArchiveStore} from '@/stores/useArchiveStore';
 import CalendarLayout from '../calendar/CalendarLayout';
 import '@/styles/react-big-calendar-custom.css';
+import {useCalendarStore} from '@/stores/useCalendarStore';
+import {useArchive} from '@/hooks/useArchive';
+import {useArchiveStore} from '@/stores/useArchiveStore';
+import useClickOutside from '@/hooks/useClickOutside';
 
 const ArchiveCalendar = () => {
   const navigate = useNavigate();
   const today = new Date();
 
+  const {year, month, setYearMonth} = useCalendarStore();
   const [currentDate, setCurrentDate] = useState(today);
-  const [selectedYear, setSelectedYear] = useState(today.getFullYear());
-  const [selectedMonth, setSelectedMonth] = useState(today.getMonth() + 1);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const [selectedDate, setSelectedDate] = useState<Date>(today);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showCameraModal, setShowCameraModal] = useState(false);
   const [modalStep, setModalStep] = useState<'selectDate' | 'ticketAdd'>(
     'selectDate'
   );
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useArchive();
+  const records = useArchiveStore((state) => state.records);
 
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
   const months = Array.from({length: 12}, (_, i) => i + 1);
 
-  const handleSelectMonth = (month: number) => {
-    const updatedDate = new Date(selectedYear, month - 1, 1);
-    setSelectedMonth(month);
+  const handleSelectMonth = (selectedMonth: number) => {
+    const updatedDate = new Date(year, selectedMonth - 1, 1);
     setCurrentDate(updatedDate);
+    setYearMonth(year, selectedMonth);
     setIsDropdownOpen(false);
   };
+  useClickOutside({
+    ref: dropdownRef,
+    onClickOutside: () => {
+      if (isDropdownOpen) toggleDropdown();
+    },
+  });
 
   const handleDateClick = (date: Date) => {
     window.scrollTo(0, 0);
@@ -49,18 +59,13 @@ const ArchiveCalendar = () => {
     setModalStep('selectDate');
   };
 
-  const records = useArchiveStore((state) => state.records);
-
-  // zustand records를 events 타입으로 변환
-  const events = useMemo(
-    () =>
-      records.map((record) => ({
-        ...record,
-        start: new Date(record.date), // string 변환
-        end: new Date(record.date),
-      })),
-    [records]
-  );
+  const events = records.map((record) => ({
+    id: record.id,
+    title: record.title,
+    start: new Date(record.viewingDate),
+    end: new Date(record.viewingDate),
+    imageUrl: record.imageUrl,
+  }));
 
   return (
     <div className='w-full flex flex-col' ref={dropdownRef}>
@@ -70,24 +75,24 @@ const ArchiveCalendar = () => {
           className='flex items-center gap-1 cursor-pointer'
           onClick={() => !isModalOpen && toggleDropdown()}>
           <p className='text-[18px] text-primary font-medium'>
-            {selectedYear}년 {selectedMonth}월
+            {year}년 {month}월
           </p>
-          {isDropdownOpen ? (
-            <ChevronUp className='text-primary' />
-          ) : (
-            <ChevronDown className='text-primary' />
-          )}
+          <ChevronDown
+            className={`text-primary transition-transform duration-300 ${
+              isDropdownOpen ? 'rotate-180' : 'rotate-0'
+            }`}
+          />
         </div>
 
         {isDropdownOpen && (
-          <div className='absolute top-full mt-2 z-10 bg-white rounded-[10px] w-[93px] shadow-xl'>
+          <div className='absolute top-full mt-2 z-10 bg-[#fff] rounded-[10px] w-[93px] shadow-xl'>
             <ul className='px-3 py-3'>
-              {months.map((month) => (
+              {months.map((m) => (
                 <li
-                  key={month}
+                  key={m}
                   className='text-[16px] text-primary font-medium cursor-pointer hover:bg-gray-100 hover:font-bold'
-                  onClick={() => handleSelectMonth(month)}>
-                  {month}월
+                  onClick={() => handleSelectMonth(m)}>
+                  {m}월
                 </li>
               ))}
             </ul>
@@ -95,7 +100,6 @@ const ArchiveCalendar = () => {
         )}
 
         {/* 기록하기 버튼 */}
-
         <div
           onClick={() => setIsModalOpen(true)}
           className='flex flex-row gap-10 items-center justify-center border border-primary text-primary rounded-[20px] hover:font-bold cursor-pointer px-10 py-5 shadow-xs'>
@@ -114,23 +118,18 @@ const ArchiveCalendar = () => {
             onDateClick={handleDateClick}
             onEventClick={(event) => {
               navigate('/archive/write', {
-                state: {
-                  mode: 'edit',
-                  existingRecord: event,
-                  imageUrl: event.imageUrl,
-                },
+                state: {mode: 'edit', archiveId: Number(event.id)},
               });
             }}
             onNavigateDate={(date) => {
               setCurrentDate(date);
-              setSelectedYear(date.getFullYear());
-              setSelectedMonth(date.getMonth() + 1);
+              setYearMonth(date.getFullYear(), date.getMonth() + 1);
             }}
           />
         </div>
       </div>
 
-      {/* 모달 렌더링 */}
+      {/* 모달 */}
       {isModalOpen && (
         <>
           <div
@@ -152,23 +151,20 @@ const ArchiveCalendar = () => {
                 if (info.point.y > 300) closeModal();
               }}>
               <SelectDateModal
-                onClick={(selectedDate) => {
+                onClick={(date) => {
                   setModalStep('ticketAdd');
-                  setSelectedDate(selectedDate);
+                  setSelectedDate(date);
                 }}
               />
             </motion.div>
           ) : (
             <div className='fixed bottom-0 left-1/2 -translate-x-1/2 z-50 w-[600px]'>
               <TicketAddModal
+                selectedDate={selectedDate}
                 setShowCameraModal={() => setShowCameraModal(true)}
-                onComplete={(imageUrl: string) => {
+                onComplete={(imageUrl, imageFile) => {
                   navigate('/archive/write', {
-                    state: {
-                      mode: 'create',
-                      selectedDate,
-                      imageUrl,
-                    },
+                    state: {mode: 'create', selectedDate, imageUrl, imageFile},
                   });
                   closeModal();
                 }}

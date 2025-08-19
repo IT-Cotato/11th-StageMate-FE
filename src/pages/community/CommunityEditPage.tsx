@@ -49,7 +49,7 @@ const CommunityEditPage = () => {
             .map((categoryName) => (
               <CommunityCategory
                 key={categoryName}
-                category={categoryName}
+                label={categoryName}
                 isSelected={selectedCategory === categoryName}
                 onClick={() => handleCategoryClick(categoryName)}
               />

@@ -11,6 +11,7 @@ export interface AuthState {
   login: (accessToken: string, refreshToken: string, user: User) => void;
   logout: () => void;
   checkAuth: () => Promise<void>;
+  setProfileImage: (img: string) => void;
 }
 
 export const useAuthStore = create<AuthState>((set, get) => ({
@@ -64,7 +65,19 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         get().logout();
       }
     } else {
-      set({ isLoading: false });
+      set({isLoading: false});
+    }
+  },
+
+  setProfileImage: (img: string) => {
+    const user = get().user;
+    if (user) {
+      set({
+        user: {
+          ...user,
+          profileImageUrl: img,
+        },
+      });
     }
   },
 }));
