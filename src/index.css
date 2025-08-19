@@ -4,6 +4,11 @@
 
 @import 'tailwindcss';
 
+/* ProseMirror CSS */
+.ProseMirror {
+  white-space: pre-wrap;
+}
+
 :root {
   font-family: Pretendard;
   background-color: #f5f5f5;
