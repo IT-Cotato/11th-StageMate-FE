@@ -1,6 +1,11 @@
 import '@/styles/skeleton.css';
-import {useParams, useNavigate} from 'react-router-dom';
-import {getCommunityDetail, deleteCommunityPost} from '@/api/communityApi';
+import {useParams} from 'react-router-dom';
+import {
+  getCommunityDetail,
+  deleteCommunityPost,
+  toggleCommunityPostLike,
+  toggleCommunityPostScrap,
+} from '@/api/communityApi';
 import type {CommunityPostDetail} from '@/types/communityDetail';
 import {useHorizontalScroll} from '@/hooks/useHorizontalScroll';
 import CommunityCategory from '@/components/community/common/CommunityCategory';
@@ -9,11 +14,44 @@ import EllipsisVertical from '@/assets/ellipsis/ellipsis-vertical.svg?react';
 import PostImageList from '@/components/community/post/PostImageList';
 import PostComment from '@/components/community/post/PostComment';
 import CommentInput from '@/components/community/post/CommentInput';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef, useCallback} from 'react';
 import PostOptionModal from '@/components/modal/PostOptionModal';
 import ConfirmModal from '@/components/modal/ConfirmModal';
 import EditorViewer from '@/components/community/post/EditorViewer';
 import {getUrlFromCategoryName, type UiCategory} from '@/util/categoryMapper';
+import {useCommunityPostSafe} from '@/components/community/context/useCommunityPost';
+import formatKoreanTime from '@/util/formatKoreanTime';
+import type {JSONContent} from '@tiptap/react';
+
+const decodeHtml = (s: string) =>
+  s
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'");
+
+const stripTags = (s: string) => decodeHtml(s).replace(/<[^>]*>/g, '');
+
+const normalizeTiptapJSON = (node: unknown): JSONContent => {
+  if (!node) return {} as JSONContent;
+  if (Array.isArray(node))
+    return {type: 'doc', content: node.map(normalizeTiptapJSON)} as JSONContent;
+  if (typeof node === 'object' && node !== null) {
+    const objNode = node as Record<string, unknown>;
+    if (objNode.type === 'text' && typeof objNode.text === 'string') {
+      return {...objNode, text: stripTags(objNode.text)} as JSONContent;
+    }
+    if (Array.isArray(objNode.content)) {
+      return {
+        ...objNode,
+        content: objNode.content.map(normalizeTiptapJSON),
+      } as JSONContent;
+    }
+    return objNode as JSONContent;
+  }
+  return {} as JSONContent;
+};
 
 const CommunityPostPage = () => {
   const [showOptions, setShowOptions] = useState(false);
@@ -23,34 +61,110 @@ const CommunityPostPage = () => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const {postId} = useParams();
-  const navigate = useNavigate();
   const [post, setPost] = useState<CommunityPostDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const hasLoaded = useRef(false);
+  const communityContext = useCommunityPostSafe();
 
   useEffect(() => {
-    if (!postId) {
+    if (!postId || hasLoaded.current) {
       setIsLoading(false);
       return;
     }
+
+    hasLoaded.current = true;
+
     getCommunityDetail(Number(postId))
-      .then(setPost)
+      .then((loadedPost) => {
+        setPost(loadedPost);
+
+        // Context에 게시글 데이터 설정
+        if (communityContext) {
+          communityContext.setPostData({
+            postId: Number(postId),
+            likeCount: loadedPost.likeCount || 0,
+            scrapCount: loadedPost.scrapCount || 0,
+            commentCount: loadedPost.commentCount || 0,
+            isLiked: loadedPost.liked || false,
+            isScrapped: loadedPost.scrapped || false,
+          });
+        }
+      })
       .catch((err) => {
         console.error('게시글 불러오기 실패', err);
+        setPost(null);
       })
       .finally(() => {
         setIsLoading(false);
       });
   }, [postId]);
+
+  // 좋아요 핸들러
+  const handleLike = useCallback(async () => {
+    if (!postId || !communityContext) return;
+
+    try {
+      await toggleCommunityPostLike(Number(postId));
+
+      // 현재 상태를 기반으로 토글
+      communityContext.setPostData({
+        postId: Number(postId),
+        likeCount: communityContext.isLiked
+          ? communityContext.likeCount - 1
+          : communityContext.likeCount + 1,
+        scrapCount: communityContext.scrapCount,
+        commentCount: communityContext.commentCount,
+        isLiked: !communityContext.isLiked,
+        isScrapped: communityContext.isScrapped,
+      });
+    } catch (error) {
+      console.error('좋아요 처리 실패:', error);
+    }
+  }, [postId, communityContext]);
+
+  // 스크랩 핸들러
+  const handleScrap = useCallback(async () => {
+    if (!postId || !communityContext) return;
+
+    try {
+      await toggleCommunityPostScrap(Number(postId));
+
+      // 현재 상태를 기반으로 토글
+      communityContext.setPostData({
+        postId: Number(postId),
+        likeCount: communityContext.likeCount,
+        scrapCount: communityContext.isScrapped
+          ? communityContext.scrapCount - 1
+          : communityContext.scrapCount + 1,
+        commentCount: communityContext.commentCount,
+        isLiked: communityContext.isLiked,
+        isScrapped: !communityContext.isScrapped,
+      });
+    } catch (error) {
+      console.error('스크랩 처리 실패:', error);
+    }
+  }, [postId, communityContext]);
+
+  // 핸들러 설정 (postId가 변경될 때만 실행)
+  useEffect(() => {
+    if (!communityContext || !postId) return;
+
+    communityContext.setHandlers({
+      onLikeClick: handleLike,
+      onScrapClick: handleScrap,
+    });
+  }, [postId]); // postId가 변경될 때만 실행
+
   const listWrapperRef = useHorizontalScroll();
 
   const handleDelete = async () => {
     if (!postId || isDeleting) return;
-    
+
     setIsDeleting(true);
     try {
       await deleteCommunityPost(Number(postId));
       alert('게시글이 삭제되었습니다.');
-      navigate('/community');
+      window.location.href = '/community';
     } catch (error) {
       console.error('게시글 삭제 실패:', error);
       alert('게시글 삭제에 실패했습니다.');
@@ -131,7 +245,28 @@ const CommunityPostPage = () => {
   }
 
   if (!post) {
-    return <div className='p-4'>존재하지 않는 게시글입니다.</div>;
+    return (
+      <div className='flex flex-col gap-[21px] pt-[13px] pb-[25px] relative'>
+        <div className='flex flex-col gap-[21px] px-[17px]'>
+          <div className='flex justify-between items-center relative'>
+            <div className='skeleton-shimmer h-[26px] w-[60px] rounded-[10px]' />
+            <div className='skeleton-shimmer h-[26px] w-[26px] rounded' />
+          </div>
+
+          <div className='skeleton-shimmer h-[40px] w-full rounded' />
+
+          <div className='flex flex-col gap-2'>
+            <div className='skeleton-shimmer h-[20px] w-full rounded' />
+            <div className='skeleton-shimmer h-[20px] w-3/4 rounded' />
+            <div className='skeleton-shimmer h-[20px] w-1/2 rounded' />
+          </div>
+
+          <div className='skeleton-shimmer h-[200px] w-full rounded' />
+
+          <div className='skeleton-shimmer h-[20px] w-[20px] rounded' />
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -153,10 +288,18 @@ const CommunityPostPage = () => {
                 showDelete
                 onSelect={(type) => {
                   if (type === 'edit' && post) {
-                    const category = post.tradeCategory ? '나눔 · 거래' : post.category;
-                    const categoryUrl = getUrlFromCategoryName(category as UiCategory);
-                    navigate(`/community/${categoryUrl}/edit/${postId}`);
-                  } else if (type === 'delete' || type === 'report' || type === 'block') {
+                    const category = post.tradeCategory
+                      ? '나눔 · 거래'
+                      : post.category;
+                    const categoryUrl = getUrlFromCategoryName(
+                      category as UiCategory
+                    );
+                    window.location.href = `/community/${categoryUrl}/edit/${postId}`;
+                  } else if (
+                    type === 'delete' ||
+                    type === 'report' ||
+                    type === 'block'
+                  ) {
                     setConfirmType(type);
                   }
                   setShowOptions(false);
@@ -170,7 +313,7 @@ const CommunityPostPage = () => {
         <PostHeaderInfo
           title={post.title}
           authorName={post.authorName}
-          date={post.createdAt}
+          date={formatKoreanTime(post.createdAt)}
           viewCount={post.viewCount}
           variant='detail'
         />
@@ -180,7 +323,14 @@ const CommunityPostPage = () => {
           wrapperRef={listWrapperRef as React.RefObject<HTMLUListElement>}
         />
 
-        <EditorViewer content={post.content} />
+        {typeof post.content === 'string' ? (
+          <div
+            className='prose'
+            dangerouslySetInnerHTML={{__html: decodeHtml(post.content)}}
+          />
+        ) : (
+          <EditorViewer content={normalizeTiptapJSON(post.content)} />
+        )}
       </div>
 
       <PostComment />
