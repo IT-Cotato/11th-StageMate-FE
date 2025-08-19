@@ -7,8 +7,9 @@ export interface Schedule {
   date: Date;
 }
 
-// 목록 조회와 상세 조회 API 모두에 이 구조가 포함
+// 목록 조회와 상세 조회 API
 export interface PerformanceDetailResponse {
+  id: number;
   performanceName: string;
   url: string;
   startDate: string;
@@ -33,16 +34,16 @@ export interface ScheduleListItem {
   performanceScheduleReportCategoryTypes: string[];
 }
 
-// 공연 스케줄 목록 API의 전체 응답
+// 공연 스케줄 목록 API
 export interface PerformanceScheduleListResponse {
   status: string;
   timestamp: string;
   data: ScheduleListItem[];
 }
 
-// 공연 스케줄 상세 API (GET /performanceSchedule/{id})의 상세 정보
+// 공연 스케줄 상세 API
 export interface ScheduleDetail {
-  id: string; // 상세 조회에만 id가 포함
+  id: string;
   title: string;
   content: string;
   url: string;
@@ -55,7 +56,7 @@ export interface ScheduleDetail {
   performanceDetailResponse: PerformanceDetailResponse;
 }
 
-// 공연 스케줄 상세 API의 전체 응답
+// 공연 스케줄 상세 API
 export interface PerformanceScheduleDetailResponse {
   status: string;
   timestamp: string;
@@ -73,11 +74,25 @@ export interface PerformanceScheduleCreateRequest {
   title: string;
   content: string;
   url: string;
-  performanceId: number; // 공연 선택 시 id 보관 필요
-  theaterId: number; // 장소 선택 시 id 보관 필요
-  scheduleDate: string; // 'YYYY-MM-DD'
-  scheduleDateStartTime: string; // ISO 8601
-  scheduleDateEndTime: string; // ISO 8601
-  reportDate: string; // ISO 8601 (현재시간)
+  performanceId: number;
+  theaterId: number;
+  scheduleDate: string;
+  scheduleDateStartTime: string;
+  scheduleDateEndTime: string;
+  reportDate: string;
   performanceScheduleCategoryTypes: PerformanceScheduleCategoryType[];
+}
+
+export interface PerformanceSchedulePaginatedData {
+  list: ScheduleListItem[];
+  currentPage: number;
+  pageSize: number;
+  totalElements: number;
+  totalPages: number;
+}
+
+export interface PerformanceSchedulePaginatedResponse {
+  status: string;
+  timestamp: string;
+  data: PerformanceSchedulePaginatedData;
 }
