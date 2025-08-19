@@ -9,7 +9,7 @@ import type {Post} from '@/types/community';
 import useCommunityListNavigation from '@/hooks/useCommunityListNavigation';
 import useCommunityNavigation from '@/hooks/useCommunityNavigation';
 import LoadMoreButton from '@/components/global/LoadMoreButton';
-import {getCommunityHotList, getCommunityPostList} from '@/api/communityApi';
+import {getCommunityHotList, getCommunityPostList, toggleCommunityPostLike} from '@/api/communityApi';
 import {
   apiToUiCategory,
   getSlugFromUi,
@@ -81,6 +81,28 @@ const PostList = ({icon, title, variant}: PostListProps) => {
     goToPostDetail(slug, post.id);
   };
 
+  const handleLike = (post: Post) => async () => {
+    try {
+      await toggleCommunityPostLike(post.id);
+      // 해당 게시글의 좋아요 상태 업데이트
+      setPosts(prevPosts => 
+        prevPosts.map(p => 
+          p.id === post.id 
+            ? {
+                ...p,
+                isLiked: !p.isLiked,
+                likeCount: p.isLiked ? p.likeCount - 1 : p.likeCount + 1
+              }
+            : p
+        )
+      );
+    } catch (error) {
+      console.error('좋아요 처리 실패:', error);
+      alert('좋아요 처리에 실패했습니다.');
+    }
+  };
+
+
   if (loading) {
     return (
       <div className='flex flex-col gap-15'>
@@ -126,7 +148,12 @@ const PostList = ({icon, title, variant}: PostListProps) => {
                   : post.category}
               </h1>
               {/* 게시물 내용 */}
-              <PostItem post={post} variant='hot' />
+              <PostItem 
+                post={post} 
+                variant='hot' 
+                onPostClick={handleClick(post)}
+                onLikeClick={handleLike(post)}
+              />
             </div>
           ))}
         </div>
@@ -139,7 +166,11 @@ const PostList = ({icon, title, variant}: PostListProps) => {
               className={`pb-4 ${
                 idx !== posts.length - 1 ? 'border-b border-primary-5' : ''
               }`}>
-              <PostItem post={post} onPostClick={handleClick(post)} />
+              <PostItem 
+                post={post} 
+                onPostClick={handleClick(post)} 
+                onLikeClick={handleLike(post)}
+              />
             </div>
           ))}
         </div>
