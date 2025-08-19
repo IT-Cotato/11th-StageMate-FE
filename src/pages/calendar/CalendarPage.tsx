@@ -1,7 +1,10 @@
 import {useOutletContext} from 'react-router-dom';
 import {useMemo, useState, useEffect, useRef} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {getPerformanceSchedules} from '@/api/performanceScheduleApi';
+import {
+  getPerformanceSchedules,
+  getPerformanceSchedulesPaginated,
+} from '@/api/performanceScheduleApi';
 import CalendarLayout from '@/components/calendar/CalendarLayout';
 import ScheduleList from '@/components/main/ScheduleList';
 import SelectDateModal from '@/components/modal/SelectDateModal';
@@ -12,6 +15,8 @@ import TagBadge from '@/components/global/TagBadge';
 import type {PageHeaderProps} from '@/components/global/PageHeader';
 import type {Schedule} from '@/types/schedule';
 import {toSchedule} from '@/util/scheduleMapper';
+// import {togglePerformanceScheduleScrap} from '@/api/performanceSchedulePrivateApi';
+const ITEMS_PER_PAGE = 10;
 
 const CalendarPage = () => {
   const {setHeaderProps} = useOutletContext<{
@@ -41,6 +46,10 @@ const CalendarPage = () => {
   );
 
   const [allSchedules, setAllSchedules] = useState<Schedule[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [paginatedSchedules, setPaginatedSchedules] = useState<Schedule[]>([]);
+  const [isLoadingPaginated, setIsLoadingPaginated] = useState(false);
 
   const baseDate = selectedDate ?? currentDate;
   const year = baseDate.getFullYear();
@@ -96,6 +105,40 @@ const CalendarPage = () => {
     setSelectedMonth(base.getMonth() + 1);
   }, [selectedDate, currentDate]);
 
+  // 선택된 날짜에 대한 페이지네이션 데이터 로드
+  useEffect(() => {
+    if (!selectedDate) {
+      setPaginatedSchedules([]);
+      setTotalPages(0);
+      return;
+    }
+
+    const fetchPaginatedData = async () => {
+      setIsLoadingPaginated(true);
+      try {
+        const result = await getPerformanceSchedulesPaginated({
+          year: selectedDate.getFullYear(),
+          month: selectedDate.getMonth() + 1,
+          day: selectedDate.getDate(),
+          page: currentPage,
+          size: ITEMS_PER_PAGE,
+        });
+
+        const schedules = result.list.map(toSchedule);
+        setPaginatedSchedules(schedules);
+        setTotalPages(result.totalPages);
+      } catch (error) {
+        console.error('페이지네이션 데이터 로드 실패:', error);
+        setPaginatedSchedules([]);
+        setTotalPages(0);
+      } finally {
+        setIsLoadingPaginated(false);
+      }
+    };
+
+    fetchPaginatedData();
+  }, [selectedDate, currentPage]);
+
   const displayDate = selectedDate ?? currentDate;
   const allSchedulesForDate = useMemo(() => {
     return allSchedules.filter(
@@ -104,11 +147,20 @@ const CalendarPage = () => {
   }, [allSchedules, displayDate]);
 
   const filteredSchedules = useMemo(() => {
+    // 날짜가 선택된 경우 페이지네이션된 데이터 사용
+    if (selectedDate) {
+      if (!selectedGenre) return paginatedSchedules;
+      return paginatedSchedules.filter(
+        (schedule) => schedule.category === selectedGenre
+      );
+    }
+
+    // 날짜가 선택되지 않은 경우 기존 로직 사용
     if (!selectedGenre) return allSchedulesForDate;
     return allSchedulesForDate.filter(
       (schedule) => schedule.category === selectedGenre
     );
-  }, [allSchedulesForDate, selectedGenre]);
+  }, [allSchedulesForDate, selectedGenre, selectedDate, paginatedSchedules]);
 
   const uniqueCategories = useMemo(() => {
     const dateCategories = new Set(
@@ -121,6 +173,7 @@ const CalendarPage = () => {
   const handleDateClick = (date: Date) => {
     window.scrollTo({top: 0, behavior: 'auto'});
     setSelectedDate(date);
+    setCurrentPage(1); // 날짜 변경 시 첫 페이지로 리셋
   };
 
   const goToToday = () => {
@@ -201,10 +254,51 @@ const CalendarPage = () => {
                 ))}
               </div>
             )}
-            <ScheduleList
-              schedules={filteredSchedules}
-              showViewMoreButton={false}
-            />
+            {isLoadingPaginated ? (
+              <div className='space-y-12'>
+                {Array.from({length: ITEMS_PER_PAGE}).map((_, index) => (
+                  <div
+                    key={index}
+                    className='w-516 h-53 bg-gray-200 rounded animate-pulse'></div>
+                ))}
+              </div>
+            ) : (
+              <ScheduleList
+                schedules={filteredSchedules}
+                // TODO: BE에서 performanceScheduleId 제공하면 활성화
+                // onLikeClick={async (schedule) => { ... }}
+                showLike={true}
+                showViewMoreButton={false}
+              />
+            )}
+
+            {/* 페이지네이션 (선택된 날짜의 총 페이지가 1보다 클 때만 표시) */}
+            {selectedDate && totalPages > 1 && (
+              <div className='flex justify-center items-center gap-10 mt-20'>
+                <button
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.max(prev - 1, 1))
+                  }
+                  disabled={currentPage <= 1}
+                  className='px-12 py-6 border-primary border rounded-[6px] text-primary disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100'>
+                  이전
+                </button>
+
+                <span className='text-sm text-primary'>
+                  {currentPage} / {totalPages}
+                </span>
+
+                <button
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                  }
+                  disabled={currentPage >= totalPages}
+                  className='px-12 py-6 border-primary border rounded-[6px] text-primary disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 '>
+                  다음
+                </button>
+              </div>
+            )}
+
             <button
               className='bg-primary font-bold text-[15px] text-white w-full py-5.5 rounded-[10px] cursor-pointer'
               onClick={() => navigate('/calendar/report')}>
