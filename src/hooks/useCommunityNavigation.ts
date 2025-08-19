@@ -12,7 +12,7 @@ const useCommunityNavigation = () => {
   };
 
   const goToShareDetail = (id: number) => {
-    navigate(`/share/${id}`);
+    navigate(`/community/share/${id}`);
   };
 
   const goToMagazineDetail = (id: number) => {

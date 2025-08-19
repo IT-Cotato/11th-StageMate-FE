@@ -3,13 +3,13 @@
  * props: 일상, 꿀팁, 나눔거래 */
 
 interface CommunityCategoryProps {
-  category: string;
+  label: string;
   isSelected?: boolean;
   onClick?: () => void;
 }
 
 const CommunityCategory = ({
-  category,
+  label,
   isSelected,
   onClick,
 }: CommunityCategoryProps) => {
@@ -17,7 +17,7 @@ const CommunityCategory = ({
     <div
       onClick={onClick}
       className={`flex w-[93px] h-[36px] justify-center items-center rounded-[10px] border-[1px] cursor-pointer border-[#7B4CFA] font-semibold bg-[#fff] ${isSelected ? 'bg-primary text-white' : ''}`}>
-      {category}
+      {label}
     </div>
   );
 };
