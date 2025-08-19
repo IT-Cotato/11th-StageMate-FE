@@ -15,7 +15,11 @@ import {
   type WriteableUiCategory,
 } from '@/util/categoryMapper';
 
-import {getCommunityPostList, getCommunityHotList} from '@/api/communityApi';
+import {
+  getCommunityPostList,
+  getCommunityHotList,
+  toggleCommunityPostLike,
+} from '@/api/communityApi';
 import type {ApiPost, Post} from '@/types/community';
 
 const ITEMS_PER_PAGE = 10;
@@ -31,6 +35,8 @@ const FilteredPostList = () => {
     const ui = getCategoryNameFromUrl(category);
     return ui ?? null;
   }, [category]);
+
+  const [posts, setPosts] = useState<Post[]>([]);
 
   const {
     data: postsData,
@@ -79,10 +85,33 @@ const FilteredPostList = () => {
   });
 
   useEffect(() => {
-    if (isSuccess) window.scrollTo({top: 0, behavior: 'smooth'});
-  }, [isSuccess, currentPage]);
+    if (isSuccess && postsData) {
+      setPosts(postsData.posts);
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+  }, [isSuccess, postsData, currentPage]);
 
   const handlePageChange = (pageNumber: number) => setCurrentPage(pageNumber);
+
+  const handleLike = (post: Post) => async () => {
+    try {
+      await toggleCommunityPostLike(post.id);
+      setPosts((prevPosts) =>
+        prevPosts.map((p) =>
+          p.id === post.id
+            ? {
+                ...p,
+                isLiked: !p.isLiked,
+                likeCount: p.isLiked ? p.likeCount - 1 : p.likeCount + 1,
+              }
+            : p
+        )
+      );
+    } catch (error) {
+      console.error('좋아요 처리 실패:', error);
+      alert('좋아요 처리에 실패했습니다.');
+    }
+  };
 
   if (!categoryLabel)
     return <div className='p-4 font-semibold'>잘못된 경로입니다.</div>;
@@ -130,7 +159,7 @@ const FilteredPostList = () => {
                 className='skeleton-shimmer h-[88px] w-full rounded-lg'
               />
             ))
-          : postsData?.posts.map((post, index) => {
+          : posts.map((post, index) => {
               const slug = getSlugFromUi(
                 (post.category === 'HOT'
                   ? '일상'
@@ -143,6 +172,7 @@ const FilteredPostList = () => {
                   key={`${post.id}-${index}`}
                   post={post}
                   onClick={handleClick}
+                  onLikeClick={handleLike(post)}
                 />
               );
             })}
