@@ -1,6 +1,6 @@
 import '@/styles/skeleton.css';
-import {useParams} from 'react-router-dom';
-import {getCommunityDetail} from '@/api/communityApi';
+import {useParams, useNavigate} from 'react-router-dom';
+import {getCommunityDetail, deleteCommunityPost} from '@/api/communityApi';
 import type {CommunityPostDetail} from '@/types/communityDetail';
 import {useHorizontalScroll} from '@/hooks/useHorizontalScroll';
 import CommunityCategory from '@/components/community/common/CommunityCategory';
@@ -13,14 +13,17 @@ import {useState, useEffect} from 'react';
 import PostOptionModal from '@/components/modal/PostOptionModal';
 import ConfirmModal from '@/components/modal/ConfirmModal';
 import EditorViewer from '@/components/community/post/EditorViewer';
+import {getUrlFromCategoryName, type UiCategory} from '@/util/categoryMapper';
 
 const CommunityPostPage = () => {
   const [showOptions, setShowOptions] = useState(false);
   const [confirmType, setConfirmType] = useState<
     null | 'delete' | 'report' | 'block'
   >(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const {postId} = useParams();
+  const navigate = useNavigate();
   const [post, setPost] = useState<CommunityPostDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -39,6 +42,29 @@ const CommunityPostPage = () => {
       });
   }, [postId]);
   const listWrapperRef = useHorizontalScroll();
+
+  const handleDelete = async () => {
+    if (!postId || isDeleting) return;
+    
+    setIsDeleting(true);
+    try {
+      await deleteCommunityPost(Number(postId));
+      alert('게시글이 삭제되었습니다.');
+      navigate('/community');
+    } catch (error) {
+      console.error('게시글 삭제 실패:', error);
+      alert('게시글 삭제에 실패했습니다.');
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const handleConfirm = () => {
+    if (confirmType === 'delete') {
+      handleDelete();
+    }
+    setConfirmType(null);
+  };
 
   if (isLoading) {
     return (
@@ -126,7 +152,14 @@ const CommunityPostPage = () => {
                 showEdit
                 showDelete
                 onSelect={(type) => {
-                  setConfirmType(type);
+                  if (type === 'edit' && post) {
+                    const category = post.tradeCategory ? '나눔 · 거래' : post.category;
+                    const categoryUrl = getUrlFromCategoryName(category as UiCategory);
+                    navigate(`/community/${categoryUrl}/edit/${postId}`);
+                  } else if (type === 'delete' || type === 'report' || type === 'block') {
+                    setConfirmType(type);
+                  }
+                  setShowOptions(false);
                 }}
                 onClose={() => setShowOptions(false)}
               />
@@ -159,9 +192,7 @@ const CommunityPostPage = () => {
             <ConfirmModal
               type={confirmType}
               onCancel={() => setConfirmType(null)}
-              onConfirm={() => {
-                setConfirmType(null);
-              }}
+              onConfirm={handleConfirm}
             />
           </div>
         </div>
