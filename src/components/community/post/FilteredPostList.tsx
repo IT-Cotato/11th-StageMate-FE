@@ -98,7 +98,7 @@ const FilteredPostList = () => {
   }
 
   return (
-    <div>
+    <div className='px-16'>
       {/* 상단바 */}
       <div className='flex justify-between items-center'>
         <div className='flex items-center cursor-pointer'>
