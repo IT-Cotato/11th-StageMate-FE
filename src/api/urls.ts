@@ -72,4 +72,7 @@ export const ENDPOINT = {
 
   //notification
   NOTIFICATION: '/api/v1/notifications',
+
+  //theaters
+  THEATERS: '/api/v1/theaters',
 };
