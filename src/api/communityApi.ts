@@ -54,13 +54,6 @@ export const getTradePostList = async (
   return res.data.data;
 };
 
-/**
- * 커뮤니티 게시글 작성 (POST /api/v1/communities)
- * - multipart/form-data
- * - request: JSON 문자열(Blob)
- * - images: 추가 이미지들
- */
-
 export const createCommunityPost = async (
   request: CommunityPostCreateRequest,
   images: (File | Blob)[] = []
@@ -78,11 +71,6 @@ export const createCommunityPost = async (
   return res.data.data;
 };
 
-/**
- * 커뮤니티 게시글 수정 (PUT /api/v1/communities/{postId})
- * - 기존 이미지를 유지하려면 postData.keepImageIds에 남길 이미지 id 배열 포함
- * - 추가할 이미지는 images로 전송
- */
 export const updateCommunityPost = async (
   postId: number,
   postData: CommunityPostUpdateRequest,
@@ -102,10 +90,18 @@ export const updateCommunityPost = async (
   return res.data.data;
 };
 
-/**
- * 커뮤니티 게시글 삭제 (DELETE /api/v1/communities/{postId})
- * - 소프트 삭제
- */
 export const deleteCommunityPost = async (postId: number): Promise<void> => {
   await privateAxios.delete(ENDPOINT.COMMUNITY_DELETE(postId));
+};
+
+export const toggleCommunityPostLike = async (
+  postId: number
+): Promise<void> => {
+  await privateAxios.post(ENDPOINT.COMMUNITY_LIKE(postId));
+};
+
+export const toggleCommunityPostScrap = async (
+  postId: number
+): Promise<void> => {
+  await privateAxios.post(ENDPOINT.COMMUNITY_SCRAP(postId));
 };
