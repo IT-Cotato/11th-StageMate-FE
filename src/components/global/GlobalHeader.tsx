@@ -22,6 +22,7 @@ const GlobalHeader = ({showIcons = false}: GlobalHeaderProps) => {
   return (
     <div
       className={`w-full h-[65px] bg-white flex flex-row items-center pl-40 ${!showIcons ? 'gap-70' : 'justify-between'}`}>
+
       <div
         className={`absolute bottom-0 left-0 w-full bg-gray-200 transition-opacity duration-300 ${hasBorder ? 'opacity-100' : 'opacity-0'}`}
       />
@@ -33,6 +34,7 @@ const GlobalHeader = ({showIcons = false}: GlobalHeaderProps) => {
 
       {showIcons && (
         <div className='flex flex-row gap-18 mr-30'>
+
           <Bell
             className='w-25 cursor-pointer'
             onClick={() => navigate('/notification')}
