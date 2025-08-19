@@ -164,6 +164,10 @@ function App() {
             path='/community/:category/write'
             element={<CommunityEditPage />}
           />
+          <Route
+            path='/community/:category/edit/:postId'
+            element={<CommunityEditPage />}
+          />
         </Route>
         <Route element={<CommunityContentLayout />}>
           <Route
