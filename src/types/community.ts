@@ -38,8 +38,8 @@ export interface Post {
   commentCount: number;
   isLiked: boolean;
   viewCount: number;
-  nickname: string;
-  date: string;
+  author: string;
+  createdAt: string;
   isScrapped: boolean;
   bookmarkCount: number;
   imgUrls?: string[];

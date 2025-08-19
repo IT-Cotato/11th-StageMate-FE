@@ -136,6 +136,7 @@ const CommunityPostPage = () => {
 
         <PostHeaderInfo
           title={post.title}
+
           authorName={post.authorName}
           date={post.createdAt}
           viewCount={post.viewCount}

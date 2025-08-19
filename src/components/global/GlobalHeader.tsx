@@ -21,17 +21,18 @@ const GlobalHeader = ({showIcons = false}: GlobalHeaderProps) => {
 
   return (
     <div
-      className={`w-full h-[65px] bg-white flex flex-row items-center justify-between px-40  `}>
+      className={`w-full h-[65px] bg-white flex flex-row items-center px-40 `}>
       <div
         className={`absolute bottom-0 left-0 w-full bg-gray-200 transition-opacity duration-300 ${hasBorder ? 'opacity-100' : 'opacity-0'}`}
       />
       <CommunityLogo className='w-30' />
-      <div className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'>
+
+      <div>
         <SearchBox variant='community' />
       </div>
 
       {showIcons && (
-        <div className='flex flex-row gap-18'>
+        <div className='flex flex-row gap-18 ml-20'>
           <Bell
             className='w-25 cursor-pointer'
             onClick={() => navigate('/notification')}
