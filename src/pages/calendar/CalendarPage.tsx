@@ -15,13 +15,14 @@ import TagBadge from '@/components/global/TagBadge';
 import type {PageHeaderProps} from '@/components/global/PageHeader';
 import type {Schedule} from '@/types/schedule';
 import {toSchedule} from '@/util/scheduleMapper';
-// import {togglePerformanceScheduleScrap} from '@/api/performanceSchedulePrivateApi';
+import {useScrapStore} from '@/stores/useScrapStore';
 const ITEMS_PER_PAGE = 10;
 
 const CalendarPage = () => {
   const {setHeaderProps} = useOutletContext<{
     setHeaderProps: React.Dispatch<React.SetStateAction<PageHeaderProps>>;
   }>();
+  const {initializeFromServer} = useScrapStore();
 
   useEffect(() => {
     setHeaderProps({
@@ -65,6 +66,14 @@ const CalendarPage = () => {
         const apiData = await getPerformanceSchedules({year, month});
         if (cancelled || fetchId !== latestFetchId.current) return;
         setAllSchedules(apiData.map(toSchedule));
+        
+        // 전역 스크랩 상태 초기화
+        initializeFromServer(
+          apiData.map(item => ({
+            id: String(item.performanceScheduleId),
+            isScraped: item.isScraped
+          }))
+        );
       } catch (e) {
         if (!cancelled || fetchId !== latestFetchId.current) return;
         setAllSchedules([]);
@@ -75,7 +84,7 @@ const CalendarPage = () => {
     return () => {
       cancelled = true;
     };
-  }, [year, month]);
+  }, [year, month, initializeFromServer]);
 
   const toggleGenre = (genre: string) => {
     setSelectedGenres((prevGenres) => {
@@ -127,6 +136,14 @@ const CalendarPage = () => {
         const schedules = result.list.map(toSchedule);
         setPaginatedSchedules(schedules);
         setTotalPages(result.totalPages);
+        
+        // 페이지네이션 데이터도 전역 스크랩 상태에 반영
+        initializeFromServer(
+          result.list.map(item => ({
+            id: String(item.performanceScheduleId),
+            isScraped: item.isScraped
+          }))
+        );
       } catch (error) {
         console.error('페이지네이션 데이터 로드 실패:', error);
         setPaginatedSchedules([]);
@@ -137,7 +154,7 @@ const CalendarPage = () => {
     };
 
     fetchPaginatedData();
-  }, [selectedDate, currentPage]);
+  }, [selectedDate, currentPage, initializeFromServer]);
 
   const displayDate = selectedDate ?? currentDate;
   const allSchedulesForDate = useMemo(() => {
@@ -265,8 +282,9 @@ const CalendarPage = () => {
             ) : (
               <ScheduleList
                 schedules={filteredSchedules}
-                // TODO: BE에서 performanceScheduleId 제공하면 활성화
-                // onLikeClick={async (schedule) => { ... }}
+                onLikeClick={() => {
+                  // ScheduleItem에서 자체 처리하므로 별도 로직 불필요
+                }}
                 showLike={true}
                 showViewMoreButton={false}
               />
