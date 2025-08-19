@@ -6,15 +6,18 @@ import RecommendedPlay from '@/components/main/RecommendedPlay';
 import {getPerformanceSchedules} from '@/api/performanceScheduleApi';
 import OnboardingWrapper from '@/components/modal/OnboardingModal/OnboardingWrapper';
 import {useAuthStore} from '@/stores/authStore';
+import {useScrapStore} from '@/stores/useScrapStore';
 import {useNavigate} from 'react-router-dom';
 import {toSchedule} from '@/util/scheduleMapper';
 
 export default function MainPage() {
   const {user, isAuthenticated} = useAuthStore();
+  const {initializeFromServer} = useScrapStore();
   const [isOnboardingDone, setIsOnboardingDone] = useState(
     localStorage.getItem('isOnboardingDone') === 'true'
   );
   const [schedules, setSchedules] = useState<Schedule[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,9 +34,19 @@ export default function MainPage() {
         if (cancelled) return;
         const formatted = apiData.map(toSchedule);
         setSchedules(formatted);
+        
+        // 전역 스크랩 상태 초기화
+        initializeFromServer(
+          apiData.map(item => ({
+            id: String(item.performanceScheduleId),
+            isScraped: item.isScraped
+          }))
+        );
       } catch (error) {
         if (!cancelled) setSchedules([]);
         console.error('Main Page 스케줄 조회 실패:', error);
+      } finally {
+        if (!cancelled) setIsLoading(false);
       }
     };
 
@@ -41,19 +54,15 @@ export default function MainPage() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [initializeFromServer]);
 
   const handleOnboardingDone = () => {
     setIsOnboardingDone(true);
     localStorage.setItem('isOnboardingDone', 'true');
   };
 
-  const handleLikeClick = (clicked: Schedule) => {
-    setSchedules((prev) =>
-      prev.map((item) =>
-        item.id === clicked.id ? {...item, isLike: !item.isLike} : item
-      )
-    );
+  const handleLikeClick = () => {
+    // ScheduleItem에서 자체 처리하므로 별도 로직 불필요
   };
 
   return (
@@ -67,6 +76,7 @@ export default function MainPage() {
           <WeekCalendar
             isLoggedIn={isAuthenticated}
             schedules={schedules}
+            isLoading={isLoading}
             onLikeClick={handleLikeClick}
             onScheduleClick={(schedule) =>
               console.log('Schedule clicked:', schedule)
