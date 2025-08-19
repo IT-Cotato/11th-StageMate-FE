@@ -22,6 +22,7 @@ export interface PerformanceDetailResponse {
 
 // 공연 스케줄 목록 API
 export interface ScheduleListItem {
+  performanceScheduleId: number;
   performanceDetailResponse: PerformanceDetailResponse;
   title: string;
   content: string;
