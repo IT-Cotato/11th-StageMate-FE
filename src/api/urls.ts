@@ -58,6 +58,12 @@ export const ENDPOINT = {
   COMMUNITY_SCRAP: (postId: number) => `/api/v1/communities/${postId}/scraps`,
   COMMUNITY_HOT_LIST: '/api/v1/communities/hot',
   COMMUNITY_TRADE_LIST: '/api/v1/communities/trade',
+  COMMUNITY_COMMENT_LIST: (postId: number) => `/api/v1/communities/${postId}/comments`,
+  COMMUNITY_COMMENT_CREATE: (postId: number) => `/api/v1/communities-comments/${postId}`,
+  COMMUNITY_COMMENT_UPDATE: (commentId: number) => `/api/v1/communities-comments/${commentId}`,
+  COMMUNITY_COMMENT_DELETE: (commentId: number) => `/api/v1/communities-comments/${commentId}`,
+  COMMUNITY_REPORT: '/api/v1/reports/community',
+  USER_BLOCK: '/api/v1/users/block',
 
   //search
   SEARCH_POPULAR: '/api/v1/search/popular',
