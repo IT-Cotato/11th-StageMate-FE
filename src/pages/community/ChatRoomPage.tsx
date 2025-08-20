@@ -25,6 +25,7 @@ import {useStompStore} from '@/stores/stompStore';
 import {useMutation, useQuery} from '@tanstack/react-query';
 import {getReportChatCount, postReportChat} from '@/api/chatApi';
 import Lock from '@/assets/lock.svg?react';
+import {postUserBlock} from '@/api/blockApi';
 
 const ChatRoomPage = () => {
   const navigate = useNavigate();
@@ -51,10 +52,9 @@ const ChatRoomPage = () => {
   const menuRef = useRef<HTMLDivElement>(null); // 채팅 메뉴 OR 신고 메뉴 element ref
 
   const [messages, setMessages] = useState<ChatMessageReceived[]>([]);
-  const {isConnected} = useStompStore();
 
   const {user} = useAuthStore();
-  const {chatUsers} = useStompStore();
+  const {isConnected, chatUsers, updateChatUserBlocked} = useStompStore();
 
   const {data: reportCount} = useQuery({
     queryKey: ['reportsChatCount', user?.id],
@@ -67,6 +67,17 @@ const ChatRoomPage = () => {
     mutationFn: postReportChat,
     onSuccess: () => {
       alert('신고가 완료 되었습니다.');
+    },
+    onError: () => {
+      alert('다시 시도해주세요.');
+    },
+  });
+
+  const blockChatMutation = useMutation({
+    mutationFn: postUserBlock,
+    onSuccess: (_, variables) => {
+      updateChatUserBlocked(variables);
+      alert('차단이 완료 되었습니다.');
     },
     onError: () => {
       alert('다시 시도해주세요.');
@@ -223,14 +234,6 @@ const ChatRoomPage = () => {
 
   const handleReportPopupRightClick = // 신고 팝업 - 신고하기
     () => {
-      console.log(
-        'todo : 신고 API 호출',
-        '>',
-        openMenuId,
-        '를',
-        reportType,
-        '로 신고'
-      );
       if (!openMenuId || !reportType) return;
       reportChatMutation.mutate({reason: reportType, chatId: openMenuId});
       setIsReportPopupShow(false);
@@ -255,12 +258,11 @@ const ChatRoomPage = () => {
 
   const handleBlockPopupRightClick = // 차단 팝업 - 차단하기
     () => {
-      if (!openMenuId) {
-        console.error('Missing openMenuId for block action');
-        return;
+      if (!openMenuId) return;
+      const message = messages.find((msg) => msg.chatId === openMenuId);
+      if (message) {
+        blockChatMutation.mutate(message.senderId);
       }
-
-      console.log('todo : 차단 API 호출', '>', openMenuId);
       resetAllMenuStates();
     };
 
@@ -329,7 +331,9 @@ const ChatRoomPage = () => {
                     <div
                       className={`${message.senderId === user.id ? 'bg-primary-4' : 'bg-[#fff]'} rounded-[11px] py-6 px-12`}>
                       <p className='text-[#171717] leading-20 break-words whitespace-break-spaces'>
-                        {message.content}
+                        {senderInfo.isBlocked
+                          ? '차단한 사용자의 메시지입니다.'
+                          : message.content}
                       </p>
                       <span className='flex justify-end text-gray-2 text-sm font-light leading-20'>
                         {message.createdAt}
