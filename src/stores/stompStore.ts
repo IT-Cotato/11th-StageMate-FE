@@ -9,6 +9,8 @@ interface StompState {
   addChatUsers: (usersToAdd: ChatUsersMap) => void;
   hasChatUser: (senderId: number) => boolean;
   getChatUser: (senderId: number) => ChatUsersMap[number] | undefined;
+  updateChatUserBlocked: (senderId: number) => void;
+  resetChatUser: () => void;
 }
 
 export const useStompStore = create<StompState>((set, get) => ({
@@ -26,4 +28,11 @@ export const useStompStore = create<StompState>((set, get) => ({
   getChatUser: (senderId) => {
     return get().chatUsers[senderId];
   },
+  updateChatUserBlocked: (senderId) => {
+    return (get().chatUsers[senderId].isBlocked = true);
+  },
+  resetChatUser: () =>
+    set(() => ({
+      chatUsers: {},
+    })),
 }));
