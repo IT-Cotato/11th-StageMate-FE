@@ -12,7 +12,7 @@ interface PostCardItemProps {
   price?: number | string;
   category: string;
   isScraped: boolean;
-  isScrapMagazine?: boolean;
+  isMagazine?: boolean;
   placeholderText?: string;
   onClick?: () => void;
   onScrapClick?: () => void;
@@ -27,7 +27,7 @@ const PostCardItem = ({
   category,
   displayCategory,
   isScraped,
-  isScrapMagazine = false,
+  isMagazine = false,
   placeholderText,
   onClick,
   onScrapClick,
@@ -37,7 +37,8 @@ const PostCardItem = ({
     <li className='flex flex-col cursor-pointer' onClick={onClick}>
       <div
         className={`relative 
-        ${isScrapMagazine ? 'sm:w-[160px]' : 'sm:w-[204px]'} sm:h-[209px] w-150 h-150 bg-gray-1 rounded-[7px]'`}>
+    ${isMagazine ? 'sm:w-[160px] sm:h-[210px]' : 'sm:w-[204px] sm:h-[209px]'}
+    w-150 h-150 bg-gray-1 rounded-[7px]`}>
         <BookMark
           className={`absolute top-9 right-9 cursor-pointer ${isScraped ? 'text-secondary fill-secondary' : 'text-black fill-black'}`}
           onClick={(e) => {
@@ -56,7 +57,7 @@ const PostCardItem = ({
             {placeholderText}
           </div>
         )}
-        <div className='absolute bottom-7 left-7'>
+        <div className='absolute top-7 left-7'>
           <CategoryBadge text={displayCategory || category} />
         </div>
       </div>
@@ -80,7 +81,7 @@ const PostCardItem = ({
 
         <h1
           className={`${
-            isScrapMagazine ? 'sm:w-[160px]' : 'sm:w-[204px]'
+            isMagazine ? 'sm:w-[160px]' : 'sm:w-[204px]'
           } w-100 font-normal sm:text-[20px] text-sm truncate`}>
           {title}
         </h1>

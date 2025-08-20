@@ -47,7 +47,7 @@ const ScrappedMagazinePage = () => {
             category={magazine.category}
             isScraped={magazine.isScraped}
             imageUrl={magazine.imageUrl}
-            isScrapMagazine={true}
+            isMagazine={true}
             placeholderText={magazine.title}
             onClick={() => goToMagazineDetail(magazine.id)}
           />
