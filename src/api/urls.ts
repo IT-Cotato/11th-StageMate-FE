@@ -63,4 +63,13 @@ export const ENDPOINT = {
   //notification
   NOTIFICATION: '/api/v1/notifications',
 
+  //magazine
+  MAGAZINE: '/api/v1/magazines',
+  MAGAZINE_DETAIL: (magazineId: number) => `/api/v1/magazines/${magazineId}`,
+  MAGAZINE_LATEST: '/api/v1/magazines/latest',
+  MAGAZINE_RECOMMEND: '/api/v1/magazines/recommend',
+  MAGAZINE_SCRAP: (magazineId: number) =>
+    `/api/v1/magazines/${magazineId}/scraps`,
+  MAGAZINE_LIKE: (magazineId: number) =>
+    `/api/v1/magazines/${magazineId}/likes`,
 };

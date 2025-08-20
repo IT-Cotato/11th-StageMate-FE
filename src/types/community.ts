@@ -9,24 +9,25 @@ export interface Magazine {
   id: number;
   category: string;
   title: string;
-  subtitle: string;
-  isBookmarked: boolean;
+  subTitle: string;
+  isScraped: boolean;
+  imageUrl: string;
 }
 
 export interface MagazinePostType {
   id: number;
-  tag: string;
-  isMarked: boolean;
-  imgUrl: string | null;
+  category: string;
+  isScraped: boolean;
+  imageUrl: string | null;
   title: string;
   subTitle: string;
 }
 
 export interface SubMagazinePostType {
   id: number;
-  tag: string;
-  isMarked: boolean;
-  imgUrl: string | null;
+  category: string;
+  isScraped: boolean;
+  imageUrl: string | null;
   title: string;
 }
 
