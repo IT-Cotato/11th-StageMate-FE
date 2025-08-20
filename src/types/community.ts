@@ -191,3 +191,25 @@ export interface Comment {
   createdAt: string;
   replies: Reply[];
 }
+export interface MyPostsResponse {
+  status: string;
+  timestamp: string;
+  data: {
+    list: Post[];
+    currentPage: number;
+    pageSize: number;
+    totalElements: number;
+    totalPages: number;
+  };
+}
+export interface CommentedPostsResponse {
+  status: string;
+  timestamp: string;
+  data: {
+    list: Post[];
+    currentPage: number;
+    pageSize: number;
+    totalElements: number;
+    totalPages: number;
+  };
+}

@@ -4,6 +4,7 @@ import getErrorMessage from '@/util/getErrorMessage';
 import {privateAxios} from './axios';
 import {ENDPOINT} from './urls';
 import type {EnquiryType} from '@/types/enquiry';
+import type {CommentedPostsResponse, MyPostsResponse} from '@/types/community';
 
 export const getMypageInfo = async () => {
   try {
@@ -138,4 +139,30 @@ export const postInquiries = async (data: EnquiryType) => {
     console.error('An unexpected error occurred:', error);
     throw new Error(errorMessage);
   }
+};
+
+export const getMyPosts = async (
+  page = 1,
+  size = 10
+): Promise<MyPostsResponse> => {
+  const {data} = await privateAxios.get<MyPostsResponse>(
+    ENDPOINT.MYPAGE_POSTS,
+    {
+      params: {page, size},
+    }
+  );
+  return data;
+};
+
+export const getCommentedPosts = async (
+  page = 1,
+  size = 10
+): Promise<CommentedPostsResponse> => {
+  const {data} = await privateAxios.get<CommentedPostsResponse>(
+    ENDPOINT.MYPAGE_COMMENTED_POSTS,
+    {
+      params: {page, size},
+    }
+  );
+  return data;
 };

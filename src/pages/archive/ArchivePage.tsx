@@ -8,11 +8,13 @@ import {useAuthStore} from '@/stores/authStore';
 import {useCalendarStore} from '@/stores/useCalendarStore';
 import {useNavigate} from 'react-router-dom';
 import '@/styles/skeleton.css';
+import useCommunityNavigation from '@/hooks/useCommunityNavigation';
 
 const ArchivePage = () => {
   const navigate = useNavigate();
   const {user} = useAuthStore();
   const {month} = useCalendarStore();
+  const {goToPostDetail} = useCommunityNavigation();
 
   // 호출: 상위 4개 매거진
   const {
@@ -95,7 +97,13 @@ const ArchivePage = () => {
               스크랩한 글이 없습니다.
             </div>
           ) : (
-            posts.map((post) => <PostListItem key={post.id} post={post} />)
+            posts.map((post) => (
+              <PostListItem
+                key={post.id}
+                post={post}
+                onClick={() => goToPostDetail(post.category, post.id)}
+              />
+            ))
           )}
         </div>
       </div>

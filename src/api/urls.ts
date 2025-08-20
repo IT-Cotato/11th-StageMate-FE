@@ -31,6 +31,8 @@ export const ENDPOINT = {
   MYPAGE_TERMS: 'api/v1/mypage/policy/terms',
   MYPAGE_PROFILE_IMAGE: 'api/v1/mypage/profile-image',
   MYPAGE_INQUIRIES: 'api/v1/mypage/inquiries',
+  MYPAGE_POSTS: 'api/v1/mypage/posts',
+  MYPAGE_COMMENTED_POSTS: 'api/v1/mypage/commented-posts',
 
   //performance
   PERFORMANCE: '/api/v1/performance',
