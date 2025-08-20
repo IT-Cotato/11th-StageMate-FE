@@ -7,7 +7,6 @@ interface ChatRoomItemProps {
   onClick?: () => void;
 }
 const ChatRoomItem = ({room, onClick}: ChatRoomItemProps) => {
-  console.log(room);
   return (
     <li className='flex px-14 py-9 bg-[#ffffff] items-center rounded-[10px] text-sm'>
       <Wifi className='mr-32 w-20' />

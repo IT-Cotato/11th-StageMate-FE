@@ -40,7 +40,6 @@ const ChatRoomList = () => {
       {/** 채팅방 리스트 렌더링 */}
       <div className='flex flex-col gap-10'>
         {chatRoomList.map((room: ChatRoomType) => {
-          console.log(room);
           return (
             <ChatRoomItem
               key={room.chatRoomId}
