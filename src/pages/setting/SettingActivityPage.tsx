@@ -3,6 +3,7 @@ import {useNavigate} from 'react-router-dom';
 
 const SettingActivityPage = () => {
   const navigate = useNavigate();
+
   return (
     <div className='flex flex-col gap-29'>
       {/* info */}
@@ -45,7 +46,9 @@ const SettingActivityPage = () => {
           <ChevronRight className='w-30 h-30' />
         </div>
         <div className='h-1 bg-[#000] my-12' />
-        <div className='flex justify-between items-center hover:cursor-pointer'>
+        <div
+          onClick={() => navigate('/blocked-user')}
+          className='flex justify-between items-center hover:cursor-pointer'>
           <p className='text-xl font-semibold leading-[140%]'>
             차단한 사용자 확인
           </p>

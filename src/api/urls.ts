@@ -67,6 +67,12 @@ export const ENDPOINT = {
   REPORTS_CHAT_COUNT: 'api/v1/reports/chat/count',
   REPORTS_CHAT: 'api/v1/reports/chat',
 
+  // block
+  USER_BLOCK: '/api/v1/blocks',
+  USER_BLOCK_CHECK: '/api/v1/blocks/check',
+  USER_BLOCKED_LIST: '/api/v1/blocks',
+  USER_UNBLOCKED: (blockedUserId: number) => `/api/v1/blocks/${blockedUserId}`,
+
   // community
   COMMUNITY_DETAIL: (postId: number) => `/api/v1/communities/${postId}`,
   COMMUNITY_LIST: '/api/v1/communities',
@@ -86,7 +92,6 @@ export const ENDPOINT = {
   COMMUNITY_COMMENT_DELETE: (commentId: number) =>
     `/api/v1/communities-comments/${commentId}`,
   COMMUNITY_REPORT: '/api/v1/reports/community',
-  USER_BLOCK: '/api/v1/users/block',
 
   //search
   SEARCH_POPULAR: '/api/v1/search/popular',
