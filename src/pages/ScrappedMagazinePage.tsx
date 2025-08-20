@@ -1,53 +1,55 @@
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import Pagination from 'react-js-pagination';
-import {mockMagazine} from '@/mocks/mockMagazine';
 import PostCardItem from '@/components/community/post/PostCardItem';
 import BackButtonTitleHeader from '@/components/global/BackButtonTitleHeader';
+import {useUserMagazines} from '@/hooks/useUserContents';
+import useCommunityNavigation from '@/hooks/useCommunityNavigation';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 const ITEMS_PER_PAGE = 6;
 
 const ScrappedMagazinePage = () => {
-  const scrappedMagazine = mockMagazine.filter(
-    (magazine) => magazine.isBookmarked
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const {data, isError, isLoading} = useUserMagazines(
+    currentPage,
+    ITEMS_PER_PAGE
   );
+  const magazines = data?.data.list ?? [];
+  const totalItemsCount = data?.data.totalElements ?? 0;
+  const {goToMagazineDetail} = useCommunityNavigation();
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalItemsCount = scrappedMagazine.length;
-
-  const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
-  const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
-  const currentItems = scrappedMagazine.slice(
-    indexOfFirstItem,
-    indexOfLastItem
-  );
-
-  useEffect(() => {
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     });
-  }, [currentPage]);
-
-  const handlePageChange = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
   };
-
+  if (isLoading) return <LoadingSpinner />;
+  if (isError)
+    return (
+      <div className='flex justify-center text-gray-2 text-sm'>
+        매거진을 불러오는 데 실패했습니다.
+      </div>
+    );
   return (
-    <div className='flex flex-col gap-40'>
+    <div className='flex flex-col gap-40 justify-center'>
       {/* 상단 */}
       <BackButtonTitleHeader title='스크랩한 매거진 모아보기' between />
 
       {/* 리스트 */}
-      <ul className='flex flex-wrap justify-center gap-y-60 gap-x-24'>
-        {currentItems.map((magazine, idx) => (
+      <ul className='flex flex-wrap gap-y-60 gap-x-24 px-35'>
+        {magazines.map((magazine) => (
           <PostCardItem
-            key={idx}
+            key={magazine.id}
             title={magazine.title}
-            subtitle={magazine.subtitle}
+            subTitle={magazine.subTitle}
             category={magazine.category}
-            isBookmarked={magazine.isBookmarked}
+            isScraped={magazine.isScraped}
+            imageUrl={magazine.imageUrl}
             isScrapMagazine={true}
-            placeholderText='매거진 임시 이미지'
+            placeholderText={magazine.title}
+            onClick={() => goToMagazineDetail(magazine.id)}
           />
         ))}
       </ul>

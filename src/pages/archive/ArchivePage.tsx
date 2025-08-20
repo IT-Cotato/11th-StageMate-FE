@@ -3,16 +3,32 @@ import ScrappedMagazine from '@/components/archive/ScrappedMagazine';
 import TopRatedShowList from '@/components/archive/TopRatedShowList';
 import PostListItem from '@/components/community/post/PostListItem';
 import LoadMoreButton from '@/components/global/LoadMoreButton';
-import {mockPosts} from '@/mocks/mockPosts';
+import {useUserCommunities, useUserMagazines} from '@/hooks/useUserContents';
 import {useAuthStore} from '@/stores/authStore';
 import {useCalendarStore} from '@/stores/useCalendarStore';
 import {useNavigate} from 'react-router-dom';
+import '@/styles/skeleton.css';
 
 const ArchivePage = () => {
-  const filteredPost = mockPosts.filter((post) => post.isScrapped);
   const navigate = useNavigate();
   const {user} = useAuthStore();
   const {month} = useCalendarStore();
+
+  // 호출: 상위 4개 매거진
+  const {
+    data: magazinesData,
+    isLoading: magLoading,
+    isError: magError,
+  } = useUserMagazines(1, 4);
+  const magazines = magazinesData?.data.list ?? [];
+
+  // 호출: 상위 4개 스크랩 글
+  const {
+    data: postsData,
+    isLoading: postLoading,
+    isError: postError,
+  } = useUserCommunities(1, 4);
+  const posts = postsData?.data.list ?? [];
 
   return (
     <div className='flex flex-col gap-50 sm:px-5 px-10'>
@@ -27,21 +43,60 @@ const ArchivePage = () => {
       <div className='flex flex-col gap-20'>
         <div className='flex flex-row justify-between items-end'>
           <span className='font-bold text-[23px]'>내가 스크랩한 매거진</span>
-          <LoadMoreButton onClick={() => navigate('/scrap-magazine')} />
+          {magazines.length > 0 && (
+            <LoadMoreButton onClick={() => navigate('/scrap-magazine')} />
+          )}
         </div>
-        <ScrappedMagazine />
+
+        {magLoading ? (
+          <div className='flex gap-20 overflow-x-auto'>
+            {[...Array(4)].map((_, idx) => (
+              <div
+                key={idx}
+                className='w-[200px] h-[230px] rounded-lg skeleton-shimmer'
+              />
+            ))}
+          </div>
+        ) : magError ? (
+          <div className='text-red text-sm justify-center'>
+            스크랩한 매거진을 불러오지 못했습니다.
+          </div>
+        ) : magazines.length === 0 ? (
+          <div className='text-gray-2 text-sm text-center'>
+            스크랩한 매거진이 없습니다.
+          </div>
+        ) : (
+          <ScrappedMagazine magazines={magazines} />
+        )}
       </div>
 
       <div className='flex flex-col gap-20'>
         <div className='flex flex-row justify-between items-end'>
           <span className='font-bold text-[23px]'>내가 스크랩한 글</span>
-          <LoadMoreButton onClick={() => navigate('/scrap-post')} />
+          {posts.length > 0 && (
+            <LoadMoreButton onClick={() => navigate('/scrap-post')} />
+          )}
         </div>
 
-        <div className='flex flex-col mt-[22px] gap-[19px]'>
-          {filteredPost.map((post) => (
-            <PostListItem key={post.id} post={post} />
-          ))}
+        <div className='flex flex-col gap-4'>
+          {postLoading ? (
+            [...Array(4)].map((_, idx) => (
+              <div
+                key={idx}
+                className='w-full h-[80px] rounded-lg skeleton-shimmer'
+              />
+            ))
+          ) : postError ? (
+            <div className='text-sm text-red justify-center'>
+              스크랩한 글을 불러오지 못했습니다.
+            </div>
+          ) : posts.length === 0 ? (
+            <div className='text-gray-2 text-sm text-center'>
+              스크랩한 글이 없습니다.
+            </div>
+          ) : (
+            posts.map((post) => <PostListItem key={post.id} post={post} />)
+          )}
         </div>
       </div>
     </div>
