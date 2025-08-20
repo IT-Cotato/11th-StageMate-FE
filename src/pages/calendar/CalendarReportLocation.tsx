@@ -2,7 +2,8 @@ import {useOutletContext, useNavigate} from 'react-router-dom';
 import type {PageHeaderProps} from '@/components/global/PageHeader';
 import {useEffect, useMemo, useRef, useState} from 'react';
 import ScheduleList, {type ListRow} from '@/components/main/ScheduleList';
-import {mockPlaces} from '@/mocks/mockPlaces';
+import {getTheaterList} from '@/api/theaterApi';
+import type {Theater} from '@/types/theater';
 import ButtonStroke from '@/components/global/ButtonStroke';
 import ButtonFill from '@/components/global/ButtonFill';
 import ChevronDown from '@/assets/chevrons/chevron-down.svg?react';
@@ -28,14 +29,30 @@ const CalendarReportLocationPage = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedRegion, setSelectedRegion] = useState<string>('전체');
   const [selectedId, setSelectedId] = useState<number | null | string>(null);
+  const [theaters, setTheaters] = useState<Theater[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const regions = useMemo(() => {
-    const uniq = Array.from(new Set(mockPlaces.map((place) => place.region)));
-    return ['전체', ...uniq];
+  useEffect(() => {
+    const fetchTheaters = async () => {
+      try {
+        const response = await getTheaterList();
+        setTheaters(response.data.list);
+      } catch (error) {
+        console.error('theaters fetch 실패:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchTheaters();
   }, []);
+
+  const regions = useMemo(() => {
+    const uniq = Array.from(new Set(theaters.map((theater) => theater.region)));
+    return ['전체', ...uniq];
+  }, [theaters]);
 
   // 바깥 클릭 닫기
   useClickOutside({
@@ -52,23 +69,23 @@ const CalendarReportLocationPage = () => {
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
-  const filteredPlaces = useMemo(
+  const filteredTheaters = useMemo(
     () =>
       selectedRegion === '전체'
-        ? mockPlaces
-        : mockPlaces.filter((p) => p.region === selectedRegion),
-    [selectedRegion]
+        ? theaters
+        : theaters.filter((t) => t.region === selectedRegion),
+    [selectedRegion, theaters]
   );
 
   const rows: ListRow[] = useMemo(
     () =>
-      filteredPlaces.map((place) => ({
-        id: place.id,
-        title: place.name,
-        category: place.region,
+      filteredTheaters.map((theater, index) => ({
+        id: index + 1,
+        title: theater.theaterName,
+        category: theater.region,
         isLike: false,
       })),
-    [filteredPlaces]
+    [filteredTheaters]
   );
 
   const handleSelect = (row: ListRow) => {
@@ -77,9 +94,14 @@ const CalendarReportLocationPage = () => {
 
   const handleConfirm = () => {
     if (selectedId === null) return;
-    const place = filteredPlaces.find((p) => p.id === selectedId);
-    if (!place) return;
-    setForm({location: place.name});
+    const theater = filteredTheaters.find(
+      (_, index) => index + 1 === selectedId
+    );
+    if (!theater) return;
+    setForm({
+      theaterId: typeof selectedId === 'number' ? selectedId : undefined,
+      location: theater.theaterName,
+    });
     navigate(-1);
   };
 
@@ -134,15 +156,19 @@ const CalendarReportLocationPage = () => {
       </div>
 
       {/* 리스트 */}
-      <ScheduleList
-        schedules={rows}
-        showLike={false}
-        gap={12}
-        selectedRowId={selectedId}
-        onScheduleClick={handleSelect}
-        showViewMoreButton={false}
-        isSelectable={true}
-      />
+      {isLoading ? (
+        <div className='text-center py-20'>로딩 중...</div>
+      ) : (
+        <ScheduleList
+          schedules={rows}
+          showLike={false}
+          gap={12}
+          selectedRowId={selectedId}
+          onScheduleClick={handleSelect}
+          showViewMoreButton={false}
+          isSelectable={true}
+        />
+      )}
 
       {/* 하단 확인 */}
       <div className='pt-[22px] w-full bg-white'>

@@ -36,6 +36,16 @@ export const ENDPOINT = {
   PERFORMANCE: '/api/v1/performance',
   PERFORMANCE_RECOMMEND: '/api/v1/performance/recommend',
 
+  //performanceSchedule
+  PERFORMANCE_SCHEDULE: '/api/v1/performanceSchedule',
+  PERFORMANCE_SCHEDULE_V2: '/api/v2/performanceSchedule',
+  PERFORMANCE_SCHEDULE_DETAIL: (id: number) =>
+    `/api/v1/performanceSchedule/${id}`,
+  PERFORMANCE_SCHEDULE_UPDATE: (id: number) =>
+    `/api/v1/performanceSchedule/${id}`,
+  PERFORMANCE_SCHEDULE_SCRAP: (id: number) =>
+    `/api/v1/performanceSchedule/${id}/scrap`,
+
   //naver-image-search
   IMAGE_SEARCH: '/api/v1/naver/images',
 
@@ -72,6 +82,10 @@ export const ENDPOINT = {
 
   //notification
   NOTIFICATION: '/api/v1/notifications',
+
+
+  //theaters
+  THEATERS: '/api/v1/theaters',
 
   //magazine
   MAGAZINE: '/api/v1/magazines',

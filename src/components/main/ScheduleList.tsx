@@ -38,6 +38,7 @@ const ScheduleList = <RowType extends ListRow = ListRow>({
       {schedules.map((row) => (
         <ScheduleItem
           key={row.id}
+          id={row.id}
           title={row.title}
           category={row.category}
           showLike={showLike}
