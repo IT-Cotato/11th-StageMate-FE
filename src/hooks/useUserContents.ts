@@ -1,3 +1,4 @@
+import {getCommentedPosts, getMyPosts} from '@/api/mypageApi';
 import {getUserCommunities, getUserMagazines} from '@/api/userApi';
 import {keepPreviousData, useQuery} from '@tanstack/react-query';
 
@@ -18,5 +19,23 @@ export const useUserCommunities = (page: number = 1, size: number = 6) => {
     queryFn: () => getUserCommunities(page, size),
     placeholderData: keepPreviousData,
     staleTime: 1000 * 60,
+  });
+};
+
+// 작성한 글 훅
+export const useMyPosts = (page: number, size: number) => {
+  return useQuery({
+    queryKey: ['myPosts', page, size],
+    queryFn: () => getMyPosts(page, size),
+    placeholderData: keepPreviousData,
+  });
+};
+
+// 댓글 단 글 훅
+export const useCommentedPosts = (page: number, size: number) => {
+  return useQuery({
+    queryKey: ['commentedPosts', page, size],
+    queryFn: () => getCommentedPosts(page, size),
+    placeholderData: keepPreviousData,
   });
 };
