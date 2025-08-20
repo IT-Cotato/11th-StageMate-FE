@@ -14,6 +14,7 @@ import {
   getCommunityPostList,
   toggleCommunityPostLike,
 } from '@/api/communityApi';
+import {useScrapStore} from '@/stores/useScrapStore';
 import {
   apiToUiCategory,
   getSlugFromUi,
@@ -33,6 +34,7 @@ const PostList = ({icon, title, variant}: PostListProps) => {
   const [loading, setLoading] = useState(true);
   const {goToCommunityCategory} = useCommunityListNavigation();
   const {goToPostDetail} = useCommunityNavigation();
+  const {initializeFromServer, isLiked, toggleLike, getCounts, setCounts} = useScrapStore();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -71,6 +73,19 @@ const PostList = ({icon, title, variant}: PostListProps) => {
         }));
 
         setPosts(mappedPosts);
+        
+        // 전역 상태 초기화
+        const stateInitData = mappedPosts.map(post => ({
+          id: post.id,
+          type: 'community' as const,
+          isLiked: post.isLiked,
+          isScraped: post.isScrapped || false,
+          likeCount: post.likeCount,
+          scrapCount: post.bookmarkCount || 0,
+          commentCount: post.commentCount,
+        }));
+        initializeFromServer(stateInitData);
+        
       } catch (error) {
         console.error(`${title} 조회 실패`, error);
       } finally {
@@ -86,22 +101,47 @@ const PostList = ({icon, title, variant}: PostListProps) => {
   };
 
   const handleLike = (post: Post) => async () => {
+    const currentCounts = getCounts(post.id, 'community');
+    const isCurrentlyLiked = isLiked(post.id, 'community');
+    
+    // 즉시 전역 상태 업데이트
+    toggleLike(post.id, 'community');
+    setCounts(post.id, 'community', {
+      ...currentCounts,
+      likeCount: isCurrentlyLiked ? currentCounts.likeCount - 1 : currentCounts.likeCount + 1,
+    });
+    
+    // 로컬 상태도 동기화
+    setPosts((prevPosts) =>
+      prevPosts.map((p) =>
+        p.id === post.id
+          ? {
+              ...p,
+              isLiked: !isCurrentlyLiked,
+              likeCount: isCurrentlyLiked ? p.likeCount - 1 : p.likeCount + 1,
+            }
+          : p
+      )
+    );
+
     try {
       await toggleCommunityPostLike(post.id);
-      // 해당 게시글의 좋아요 상태 업데이트
+    } catch (error) {
+      console.error('좋아요 처리 실패:', error);
+      // 실패시 원복
+      toggleLike(post.id, 'community');
+      setCounts(post.id, 'community', currentCounts);
       setPosts((prevPosts) =>
         prevPosts.map((p) =>
           p.id === post.id
             ? {
                 ...p,
-                isLiked: !p.isLiked,
-                likeCount: p.isLiked ? p.likeCount - 1 : p.likeCount + 1,
+                isLiked: isCurrentlyLiked,
+                likeCount: isCurrentlyLiked ? p.likeCount + 1 : p.likeCount - 1,
               }
             : p
         )
       );
-    } catch (error) {
-      console.error('좋아요 처리 실패:', error);
       alert('좋아요 처리에 실패했습니다.');
     }
   };
