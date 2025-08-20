@@ -1,17 +1,17 @@
 import PostListItem from '@/components/community/post/PostListItem';
 import BackButtonTitleHeader from '@/components/global/BackButtonTitleHeader';
-import {mockPosts} from '@/mocks/mockPosts';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import {useMyPosts} from '@/hooks/useUserContents';
+import type {Post} from '@/types/community';
 import {useState, useEffect} from 'react';
 import Pagination from 'react-js-pagination';
+import {useNavigate} from 'react-router-dom';
 const ITEMS_PER_PAGE = 9;
 
 const WrittenPostPage = () => {
-  const scrappedPost = mockPosts.filter((post) => post.isScrapped === true);
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalItemsCount = scrappedPost.length;
-  const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
-  const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
-  const currentItems = scrappedPost.slice(indexOfFirstItem, indexOfLastItem);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const {data, isLoading, isError} = useMyPosts(currentPage, ITEMS_PER_PAGE);
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo({
@@ -23,7 +23,15 @@ const WrittenPostPage = () => {
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
-
+  if (isLoading) return <LoadingSpinner />;
+  if (isError)
+    return (
+      <div className='text-sm text-red justify-center'>
+        작성한 글을 불러오지 못했습니다.
+      </div>
+    );
+  const posts = data?.data.list ?? [];
+  const totalItemsCount = data?.data.totalElements ?? 0;
   return (
     <div className='flex flex-col gap-40'>
       {/* 상단 */}
@@ -31,8 +39,12 @@ const WrittenPostPage = () => {
 
       {/* 리스트 */}
       <ul className='flex flex-col gap-10'>
-        {currentItems.map((post, idx) => (
-          <PostListItem key={idx} post={post} />
+        {posts.map((post: Post) => (
+          <PostListItem
+            key={post.id}
+            post={post}
+            onClick={() => navigate(`/community/${post.category}/${post.id}`)}
+          />
         ))}
       </ul>
 
