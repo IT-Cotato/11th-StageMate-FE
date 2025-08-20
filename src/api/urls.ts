@@ -72,4 +72,8 @@ export const ENDPOINT = {
     `/api/v1/magazines/${magazineId}/scraps`,
   MAGAZINE_LIKE: (magazineId: number) =>
     `/api/v1/magazines/${magazineId}/likes`,
+
+  //user
+  USER_MAGAZINE: '/api/v1/users/magazines',
+  USER_COMMUNITIES: '/api/v1/users/communities',
 };
