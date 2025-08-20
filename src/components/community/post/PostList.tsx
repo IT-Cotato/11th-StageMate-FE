@@ -9,8 +9,13 @@ import type {Post} from '@/types/community';
 import useCommunityListNavigation from '@/hooks/useCommunityListNavigation';
 import useCommunityNavigation from '@/hooks/useCommunityNavigation';
 import LoadMoreButton from '@/components/global/LoadMoreButton';
-import {getCommunityHotList, getCommunityPostList} from '@/api/communityApi';
-import {getUrlFromCategoryName} from '@/util/categoryMapper';
+import {getCommunityHotList, getCommunityPostList, toggleCommunityPostLike} from '@/api/communityApi';
+import {
+  apiToUiCategory,
+  getSlugFromUi,
+  type WriteableUiCategory,
+} from '@/util/categoryMapper';
+import type {ApiPost} from '@/types/community';
 
 type PostListVariant = 'hot' | 'tip' | 'daily';
 
@@ -38,20 +43,27 @@ const PostList = ({icon, title, variant}: PostListProps) => {
                 5
               );
 
-        const mappedPosts: Post[] = response.list.map((p) => ({
-          ...p,
-          nickname: p.author,
-          date: p.createdAt,
-          isScrapped: false,
-          bookmarkCount: 0,
-          likeCount: p.likeCount || 0,
-          commentCount: p.commentCount || 0,
-          isLiked: p.isLiked || false,
-          viewCount: p.viewCount || 0,
-          category: p.category || '',
+        const mappedPosts: Post[] = response.list.map((p: ApiPost) => ({
           id: p.id,
           title: p.title,
-          uniqueKey: `${p.id}-${p.createdAt}`,
+          nickname: p.author ?? '',
+          date: p.createdAt ?? '',
+          likeCount: p.likeCount ?? 0,
+          commentCount: p.commentCount ?? 0,
+          isLiked: p.isLiked ?? false,
+          viewCount: p.viewCount ?? 0,
+          isScrapped: false,
+          bookmarkCount: 0,
+          // UI 라벨로 표준화
+          category:
+            apiToUiCategory[p.category as '일상' | '꿀팁' | '나눔거래'] ?? '',
+          uniqueKey: String(p.id),
+          // 이미지 표준화: detail(list) 대응
+          imgUrls: Array.isArray(p.imageUrls)
+            ? p.imageUrls.map((img) => img.url)
+            : p.imageUrl && p.imageUrl !== 'basic'
+              ? [p.imageUrl]
+              : [],
         }));
 
         setPosts(mappedPosts);
@@ -65,9 +77,31 @@ const PostList = ({icon, title, variant}: PostListProps) => {
   }, [variant, title]);
 
   const handleClick = (post: Post) => () => {
-    const englishCategory = getUrlFromCategoryName(post.category);
-    goToPostDetail(englishCategory, post.id);
+    const slug = getSlugFromUi(post.category as WriteableUiCategory);
+    goToPostDetail(slug, post.id);
   };
+
+  const handleLike = (post: Post) => async () => {
+    try {
+      await toggleCommunityPostLike(post.id);
+      // 해당 게시글의 좋아요 상태 업데이트
+      setPosts(prevPosts => 
+        prevPosts.map(p => 
+          p.id === post.id 
+            ? {
+                ...p,
+                isLiked: !p.isLiked,
+                likeCount: p.isLiked ? p.likeCount - 1 : p.likeCount + 1
+              }
+            : p
+        )
+      );
+    } catch (error) {
+      console.error('좋아요 처리 실패:', error);
+      alert('좋아요 처리에 실패했습니다.');
+    }
+  };
+
 
   if (loading) {
     return (
@@ -114,7 +148,12 @@ const PostList = ({icon, title, variant}: PostListProps) => {
                   : post.category}
               </h1>
               {/* 게시물 내용 */}
-              <PostItem post={post} variant='hot' />
+              <PostItem 
+                post={post} 
+                variant='hot' 
+                onPostClick={handleClick(post)}
+                onLikeClick={handleLike(post)}
+              />
             </div>
           ))}
         </div>
@@ -127,7 +166,11 @@ const PostList = ({icon, title, variant}: PostListProps) => {
               className={`pb-4 ${
                 idx !== posts.length - 1 ? 'border-b border-primary-5' : ''
               }`}>
-              <PostItem post={post} onPostClick={handleClick(post)} />
+              <PostItem 
+                post={post} 
+                onPostClick={handleClick(post)} 
+                onLikeClick={handleLike(post)}
+              />
             </div>
           ))}
         </div>

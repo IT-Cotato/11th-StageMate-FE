@@ -15,6 +15,7 @@ interface PostCardItemProps {
   isScrapMagazine?: boolean;
   placeholderText?: string;
   onClick?: () => void;
+  onScrapClick?: () => void;
   imageUrl?: string;
   displayCategory?: string;
 }
@@ -29,6 +30,7 @@ const PostCardItem = ({
   isScrapMagazine = false,
   placeholderText,
   onClick,
+  onScrapClick,
   imageUrl,
 }: PostCardItemProps) => {
   return (
@@ -37,7 +39,11 @@ const PostCardItem = ({
         className={`relative 
         ${isScrapMagazine ? 'sm:w-[160px]' : 'sm:w-[204px]'} sm:h-[209px] w-150 h-150 bg-gray-1 rounded-[7px]'`}>
         <BookMark
-          className={`absolute top-9 right-9 ${isScraped ? 'text-secondary' : ''}`}
+          className={`absolute top-9 right-9 cursor-pointer ${isScraped ? 'text-secondary fill-secondary' : 'text-black fill-black'}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            onScrapClick?.();
+          }}
         />
         {imageUrl ? (
           <img

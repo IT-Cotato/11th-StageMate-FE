@@ -19,7 +19,7 @@ const CommentItem = ({comment, depth = 0}: CommentItemProps) => {
   const isReply = depth > 0;
   const [showOptions, setShowOptions] = useState(false);
   const [confirmType, setConfirmType] = useState<
-    null | 'delete' | 'report' | 'block'
+    null | 'edit' | 'delete' | 'report' | 'block'
   >(null);
 
   return (
@@ -74,7 +74,7 @@ const CommentItem = ({comment, depth = 0}: CommentItemProps) => {
         )}
       </div>
 
-      {confirmType && (
+      {confirmType && confirmType !== 'edit' && (
         <ConfirmModal
           type={confirmType}
           onCancel={() => setConfirmType(null)}
