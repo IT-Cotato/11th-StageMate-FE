@@ -9,7 +9,11 @@ import type {Post} from '@/types/community';
 import useCommunityListNavigation from '@/hooks/useCommunityListNavigation';
 import useCommunityNavigation from '@/hooks/useCommunityNavigation';
 import LoadMoreButton from '@/components/global/LoadMoreButton';
-import {getCommunityHotList, getCommunityPostList, toggleCommunityPostLike} from '@/api/communityApi';
+import {
+  getCommunityHotList,
+  getCommunityPostList,
+  toggleCommunityPostLike,
+} from '@/api/communityApi';
 import {
   apiToUiCategory,
   getSlugFromUi,
@@ -46,8 +50,8 @@ const PostList = ({icon, title, variant}: PostListProps) => {
         const mappedPosts: Post[] = response.list.map((p: ApiPost) => ({
           id: p.id,
           title: p.title,
-          nickname: p.author ?? '',
-          date: p.createdAt ?? '',
+          author: p.author ?? '',
+          createdAt: p.createdAt ?? '',
           likeCount: p.likeCount ?? 0,
           commentCount: p.commentCount ?? 0,
           isLiked: p.isLiked ?? false,
@@ -85,13 +89,13 @@ const PostList = ({icon, title, variant}: PostListProps) => {
     try {
       await toggleCommunityPostLike(post.id);
       // 해당 게시글의 좋아요 상태 업데이트
-      setPosts(prevPosts => 
-        prevPosts.map(p => 
-          p.id === post.id 
+      setPosts((prevPosts) =>
+        prevPosts.map((p) =>
+          p.id === post.id
             ? {
                 ...p,
                 isLiked: !p.isLiked,
-                likeCount: p.isLiked ? p.likeCount - 1 : p.likeCount + 1
+                likeCount: p.isLiked ? p.likeCount - 1 : p.likeCount + 1,
               }
             : p
         )
@@ -101,7 +105,6 @@ const PostList = ({icon, title, variant}: PostListProps) => {
       alert('좋아요 처리에 실패했습니다.');
     }
   };
-
 
   if (loading) {
     return (
@@ -148,9 +151,9 @@ const PostList = ({icon, title, variant}: PostListProps) => {
                   : post.category}
               </h1>
               {/* 게시물 내용 */}
-              <PostItem 
-                post={post} 
-                variant='hot' 
+              <PostItem
+                post={post}
+                variant='hot'
                 onPostClick={handleClick(post)}
                 onLikeClick={handleLike(post)}
               />
@@ -166,9 +169,9 @@ const PostList = ({icon, title, variant}: PostListProps) => {
               className={`pb-4 ${
                 idx !== posts.length - 1 ? 'border-b border-primary-5' : ''
               }`}>
-              <PostItem 
-                post={post} 
-                onPostClick={handleClick(post)} 
+              <PostItem
+                post={post}
+                onPostClick={handleClick(post)}
                 onLikeClick={handleLike(post)}
               />
             </div>

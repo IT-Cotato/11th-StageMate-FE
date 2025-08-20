@@ -340,7 +340,7 @@ const CommunityPostPage = () => {
 
         <PostHeaderInfo
           title={post.title}
-          authorName={post.authorName}
+          nickname={post.authorName}
           date={post.createdAt}
           viewCount={post.viewCount}
           variant='detail'

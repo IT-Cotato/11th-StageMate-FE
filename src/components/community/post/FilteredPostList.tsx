@@ -65,6 +65,8 @@ const FilteredPostList = () => {
         commentCount: p.commentCount ?? 0,
         isLiked: p.isLiked ?? false,
         viewCount: p.viewCount ?? 0,
+        author: p.author ?? '',
+        createdAt: p.createdAt ?? '',
         nickname: p.author ?? '',
         date: p.createdAt ?? '',
         isScrapped: false,

@@ -90,23 +90,6 @@ export interface Magazine {
   isBookmarked: boolean;
 }
 
-export interface MagazinePostType {
-  id: number;
-  tag: string;
-  isMarked: boolean;
-  imgUrl: string | null;
-  title: string;
-  subTitle: string;
-}
-
-export interface SubMagazinePostType {
-  id: number;
-  tag: string;
-  isMarked: boolean;
-  imgUrl: string | null;
-  title: string;
-}
-
 export interface ContentDoc {
   type: 'doc';
   content?: unknown[];
@@ -181,23 +164,6 @@ export interface CommunityPostCreateRequest {
 
 export interface CommunityPostUpdateRequest extends CommunityPostCreateRequest {
   keepImageIds?: number[];
-}
-
-export interface Post {
-  id: number;
-  category: string;
-  title: string;
-  likeCount: number;
-  commentCount: number;
-  isLiked: boolean;
-  viewCount: number;
-  nickname: string;
-  date: string;
-  isScrapped: boolean;
-  bookmarkCount: number;
-  imgUrls?: string[];
-  content?: string;
-  uniqueKey?: string;
 }
 
 export interface SharePost {

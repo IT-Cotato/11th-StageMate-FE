@@ -20,7 +20,7 @@ const PostListItem = ({post, onClick, onLikeClick}: PostListItemProps) => {
         {/* 왼쪽: 제목 + 작성자 + 날짜 + 조회수 */}
         <PostHeaderInfo
           title={post.title}
-          authorName={post.author}
+          nickname={post.author}
           date={post.createdAt}
           viewCount={post.viewCount}
           variant='list'
@@ -29,7 +29,7 @@ const PostListItem = ({post, onClick, onLikeClick}: PostListItemProps) => {
         {/* 오른쪽: 좋아요 + 댓글 */}
         <div className='flex items-center justify-center gap-16 text-sm text-gray-500'>
           <span className='flex flex-col items-center gap-[3px]'>
-            <button 
+            <button
               className='w-20 h-20 flex items-center justify-center'
               onClick={(e) => {
                 e.stopPropagation();

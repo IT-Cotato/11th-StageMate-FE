@@ -109,7 +109,9 @@ const ContentHeader = ({showShare = true}: ContentHeaderProps) => {
 
         {/* Share 옵션 모달 */}
         {showShareModal && (
-          <div ref={shareModalRef} className='absolute z-40 top-full right-[30px]'>
+          <div
+            ref={shareModalRef}
+            className='absolute z-40 top-full right-[30px]'>
             <PostOptionModal
               showReport
               showBlock
@@ -161,7 +163,7 @@ const ContentHeader = ({showShare = true}: ContentHeaderProps) => {
                 key={report.id}
                 onClick={(e) => {
                   e.stopPropagation();
-                  setSelectedReportReason(getReportReason(report.id));
+                  setSelectedReportReason(getReportReason(Number(report.id)));
                   setShowReportMenu(false);
                   setShowReportConfirm(true);
                 }}
