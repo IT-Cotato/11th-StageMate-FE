@@ -41,6 +41,7 @@ const NotificationPage = () => {
               formattedDate={notification.formattedDate}
               content={notification.content}
               postId={notification.postId}
+              category={notification.category}
             />
           ))}
         </ul>
