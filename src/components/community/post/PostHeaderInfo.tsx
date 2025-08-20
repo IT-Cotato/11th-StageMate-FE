@@ -1,7 +1,7 @@
 // 게시글 헤더 정보 컴포넌트
 interface PostHeaderInfoProps {
   title: string;
-  authorName: string;
+  nickname?: string;
   date: string;
   viewCount: number;
   variant?: 'list' | 'detail'; // 'list'는 게시글 목록, 'detail'은 게시글 상세
@@ -9,7 +9,7 @@ interface PostHeaderInfoProps {
 
 const PostHeaderInfo = ({
   title,
-  authorName,
+  nickname,
   date,
   viewCount,
   variant = 'list',
@@ -33,7 +33,7 @@ const PostHeaderInfo = ({
     <div className='flex flex-col gap-6'>
       <h2 className={titleClass}>{title}</h2>
       <div className='flex items-start gap-10'>
-        <span className={metaTextClass}>{authorName}</span>
+        <span className={metaTextClass}>{nickname}</span>
         <time className={metaTextClass}>{date}</time>
         <span className={metaTextClass}>조회 {viewCount}</span>
       </div>

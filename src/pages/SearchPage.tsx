@@ -58,10 +58,12 @@ const SearchPage = () => {
     setSubmittedKeyword(searchKeyword.trim());
     refetch();
   };
+
   useEffect(() => {
+    setSearchKeyword(keywordFromQuery);
+    setSubmittedKeyword(keywordFromQuery);
+
     if (keywordFromQuery) {
-      setSearchKeyword(keywordFromQuery);
-      setSubmittedKeyword(keywordFromQuery);
       refetch();
     }
   }, [keywordFromQuery, refetch]);

@@ -6,7 +6,7 @@ import useCommunityListNavigation from '@/hooks/useCommunityListNavigation';
 import useCommunityNavigation from '@/hooks/useCommunityNavigation';
 import {getUrlFromCategoryName} from '@/util/categoryMapper';
 import LoadMoreButton from '@/components/global/LoadMoreButton';
-import {getTradePostList} from '@/api/communityApi';
+import {getTradePostList, toggleCommunityPostScrap} from '@/api/communityApi';
 import type {CommunityTradePostSummary} from '@/types/communityList';
 
 const SharePostList = () => {
@@ -19,6 +19,21 @@ const SharePostList = () => {
   const handleClick = (post: CommunityTradePostSummary) => {
     const englishCategory = getUrlFromCategoryName('나눔 · 거래');
     goToPostDetail(englishCategory, post.id);
+  };
+
+  const handleScrapClick = async (postId: number) => {
+    try {
+      await toggleCommunityPostScrap(postId);
+      setPosts(prevPosts => 
+        prevPosts.map(post => 
+          post.id === postId 
+            ? { ...post, isScrapped: !post.isScrapped }
+            : post
+        )
+      );
+    } catch (error) {
+      console.error('스크랩 처리 실패:', error);
+    }
   };
 
   useEffect(() => {
@@ -62,12 +77,18 @@ const SharePostList = () => {
               <PostCardItem
                 key={`${post.id}-${index}`}
                 title={post.title}
-                category={post.category}
+                category='나눔 · 거래'
                 displayCategory={post.tradeCategory}
-                isBookmarked={post.isScrapped}
-                imageUrl={post.imageUrl}
+isScraped={post.isScrapped}
+                imageUrl={
+                  post.imageUrl && post.imageUrl !== 'basic'
+                    ? post.imageUrl
+                    : undefined
+                }
+
                 placeholderText='나눔 거래 이미지'
                 onClick={() => handleClick(post)}
+                onScrapClick={() => handleScrapClick(post.id)}
               />
             ))}
       </ul>

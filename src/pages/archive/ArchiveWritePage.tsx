@@ -1,10 +1,10 @@
-import Search from '@/assets/search.svg?react';
 import {useLocation, useNavigate, useParams} from 'react-router-dom';
 import RatingInput from '../../components/archive/RatingInput';
 import {useEffect, useRef, useState} from 'react';
 import CustomDatePicker from '@/components/global/CustomDatePicker';
 import {useArchiveStore} from '@/stores/useArchiveStore';
 import ChevronDown from '@/assets/chevrons/chevron-down.svg?react';
+import ChevronRight from '@/assets/chevrons/chevron-right.svg?react';
 import {
   useArchiveDetail,
   useCreateArchive,
@@ -12,6 +12,7 @@ import {
   useUpdateArchive,
 } from '@/hooks/useArchive';
 import useClickOutside from '@/hooks/useClickOutside';
+import {useReportFormStore} from '@/stores/useReportFormStore';
 
 const ArchiveWritePage = () => {
   const {id} = useParams<{id: string}>();
@@ -30,6 +31,9 @@ const ArchiveWritePage = () => {
     state.records.find((record) => record.id === numericId)
   );
 
+  // 공연 검색 장소명, 공연명 받아오기
+  const {form, resetForm} = useReportFormStore();
+
   // 추가 모드에서 선택한 날짜, 이미지
   const selectedDateFromState = location.state?.selectedDate;
   const imageUrlFromState = location.state?.imageUrl;
@@ -43,13 +47,20 @@ const ArchiveWritePage = () => {
       return new Date(selectedDateFromState);
     return null;
   });
+
   // 입력 폼 상태
   const [title, setTitle] = useState(() =>
-    isEditMode && existingRecord ? existingRecord.title : ''
+    isEditMode && existingRecord
+      ? existingRecord.title
+      : form?.performance || ''
   );
+
   const [place, setPlace] = useState(() =>
-    isEditMode && existingRecord ? existingRecord.theaterName || '' : ''
+    isEditMode && existingRecord
+      ? existingRecord.theaterName || ''
+      : form?.theaterName || ''
   );
+
   const [casting, setCasting] = useState(() =>
     isEditMode && existingRecord ? existingRecord.casting || '' : ''
   );
@@ -65,6 +76,12 @@ const ArchiveWritePage = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // 페이지 진입 시 무조건 초기화
+    resetForm();
+  }, [resetForm]);
+
   useEffect(() => {
     if (isEditMode && archiveDetail?.data) {
       const record = archiveDetail.data;
@@ -77,6 +94,12 @@ const ArchiveWritePage = () => {
       setStartDate(new Date(record.viewingDate));
     }
   }, [isEditMode, archiveDetail]);
+
+  // form 값 들어올 때마다 반영
+  useEffect(() => {
+    if (form?.performance) setTitle(form.performance);
+    if (form?.theaterName) setPlace(form.theaterName);
+  }, [form]);
 
   // 저장/수정 핸들러
   const handleRecord = () => {
@@ -129,6 +152,7 @@ const ArchiveWritePage = () => {
   const handleDelete = () => {
     if (!numericId) return;
     if (confirm('정말 삭제하시겠습니까?')) {
+      resetForm();
       deleteArchive(numericId, {
         onSuccess: () => navigate('/archive'),
       });
@@ -171,25 +195,20 @@ const ArchiveWritePage = () => {
       </div>
 
       {/* 공연 검색 */}
-      <div className='flex flex-row justify-between bg-gray-200 sm:h-50 h-35 w-full px-10 py-17 items-center rounded-[15px] shadow-md cursor-pointer'>
-        <input
-          type='text'
-          placeholder='공연 검색하기'
-          className='sm:text-xl text-sm outline-none text-gray-2'
-        />
-        <Search
-          className='text-gray-2'
-          onClick={() => console.log('공연 검색 결과 화면으로 이동')}
-        />
+      <div
+        className='flex flex-row justify-between bg-gray-200 sm:h-50 h-35 w-full px-20 py-17 items-center rounded-[15px] shadow-md cursor-pointer hover:bg-gray-200/80'
+        onClick={() => navigate('/calendar/report/performance')}>
+        <div className='sm:text-xl text-sm text-gray-2'>공연 선택하기</div>
+        <ChevronRight className='text-gray-2' />
       </div>
 
       {/* 이미지 영역 */}
       {(existingRecord?.imageUrl || imageUrlFromState) && (
-        <div className='w-full flex items-center justify-center'>
+        <div className='w-full h-[289px] flex items-center justify-center'>
           <img
             src={existingRecord?.imageUrl || imageUrlFromState}
             alt='선택된 티켓 이미지'
-            className='w-[224px] h-[289px]'
+            className='max-h-full object-contain'
           />
         </div>
       )}

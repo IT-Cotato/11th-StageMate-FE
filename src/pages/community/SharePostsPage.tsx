@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import Pagination from 'react-js-pagination';
-import {getTradePostList} from '@/api/communityApi';
+import {getTradePostList, toggleCommunityPostScrap} from '@/api/communityApi';
 import type {CommunityTradePostSummary} from '@/types/communityList';
 import {useNavigate} from 'react-router-dom';
 import PostCardItem from '@/components/community/post/PostCardItem';
@@ -34,6 +34,21 @@ const SharePostsPage = () => {
     fetchPosts();
   }, [currentPage]);
 
+  const handleScrapClick = async (postId: number) => {
+    try {
+      await toggleCommunityPostScrap(postId);
+      setPosts(prevPosts => 
+        prevPosts.map(post => 
+          post.id === postId 
+            ? { ...post, isScrapped: !post.isScrapped }
+            : post
+        )
+      );
+    } catch (error) {
+      console.error('스크랩 처리 실패:', error);
+    }
+  };
+
   return (
     <div className='flex flex-col px-40 gap-40'>
       {/* 상단 */}
@@ -59,11 +74,14 @@ const SharePostsPage = () => {
                 title={post.title}
                 category={post.category}
                 displayCategory={post.tradeCategory}
-                isBookmarked={false}
+
+                isScraped={post.isScrapped}
+
                 imageUrl={post.imageUrl}
                 placeholderText='나눔·거래 이미지'
                 isScrapMagazine={true}
                 onClick={() => goToShareDetail(post.id)}
+                onScrapClick={() => handleScrapClick(post.id)}
               />
             ))}
       </ul>

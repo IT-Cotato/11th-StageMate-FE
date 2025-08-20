@@ -1,4 +1,4 @@
-import {useEditor, EditorContent} from '@tiptap/react';
+import {useEditor, EditorContent, type JSONContent} from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import EditorMenuBar from './EditorMenuBar';
 import TextAlign from '@tiptap/extension-text-align';
@@ -9,26 +9,34 @@ import {useEffect, useState} from 'react';
 import {CustomLink} from './lib/CustomLink';
 
 interface ContentEditorProps {
-  defaultContent: string;
+  defaultContent: string | JSONContent;
+  title?: string;
+  onTitleChange?: (title: string) => void;
+  onContentChange?: (content: string | JSONContent) => void;
+  onImagesChange?: (images: File[]) => void;
 }
 
-const ContentEditor = ({defaultContent}: ContentEditorProps) => {
-  {
-    /** 이미지 입력 tiptap 이용 x 수동 구현 */
-  }
-  const [images, setImages] = useState<string[]>([]);
+const ContentEditor = ({
+  defaultContent,
+  title = '',
+  onTitleChange,
+  onContentChange,
+  onImagesChange,
+}: ContentEditorProps) => {
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
 
   const handleImageUpload = (files: FileList | null) => {
     if (!files) return;
-    const newImages = Array.from(files).map((file) =>
-      URL.createObjectURL(file)
-    );
-    setImages((prev) => [...prev, ...newImages]);
+    const newFiles = Array.from(files);
+    const newUrls = newFiles.map((file) => URL.createObjectURL(file));
+
+    const updatedFiles = [...imageFiles, ...newFiles];
+    setImageFiles(updatedFiles);
+    onImagesChange?.(updatedFiles);
+    setImageUrls((prev) => [...prev, ...newUrls]);
   };
 
-  {
-    /** 제목 에디터 */
-  }
   const titleEditor = useEditor({
     extensions: [
       StarterKit,
@@ -39,21 +47,23 @@ const ContentEditor = ({defaultContent}: ContentEditorProps) => {
         emptyEditorClass: 'is-editor-empty',
       }),
     ],
-    content: '',
+    content: title,
     editorProps: {
       attributes: {
         class: 'outline-none text-[32px] font-bold',
       },
     },
+    onUpdate: ({editor}) => {
+      const text = editor.getText();
+      onTitleChange?.(text);
+    },
   });
-
-  {
-    /** 본문 에디터 */
-  }
 
   const bodyEditor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        link: false,
+      }),
       TextStyle,
       Color,
       Highlight.configure({multicolor: true}),
@@ -76,13 +86,26 @@ const ContentEditor = ({defaultContent}: ContentEditorProps) => {
         class: 'outline-none text-base text-2xl',
       },
     },
+    onUpdate: ({editor}) => {
+      const json = editor.getJSON();
+      onContentChange?.(json);
+    },
   });
 
   useEffect(() => {
-    if (bodyEditor && defaultContent !== bodyEditor.getHTML()) {
-      bodyEditor.commands.setContent(defaultContent);
+    if (bodyEditor && defaultContent) {
+      const currentContent = bodyEditor.getJSON();
+      if (JSON.stringify(defaultContent) !== JSON.stringify(currentContent)) {
+        bodyEditor.commands.setContent(defaultContent);
+      }
     }
   }, [defaultContent, bodyEditor]);
+
+  useEffect(() => {
+    if (titleEditor && title !== titleEditor.getText()) {
+      titleEditor.commands.setContent(title);
+    }
+  }, [title, titleEditor]);
   return (
     <div className='flex flex-col'>
       <EditorContent
@@ -97,8 +120,7 @@ const ContentEditor = ({defaultContent}: ContentEditorProps) => {
       <EditorMenuBar editor={bodyEditor} onImageUpload={handleImageUpload} />
       <hr className='w-full h-[1px] bg-primary opacity-15 border-0' />
       <div className='image-scroll-container overflow-x-auto whitespace-nowrap py-4'>
-        {/** 이미지 나열 태그 */}
-        {images.map((src, idx) => (
+        {imageUrls.map((src, idx) => (
           <img
             key={idx}
             src={src}

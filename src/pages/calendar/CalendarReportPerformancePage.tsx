@@ -27,6 +27,7 @@ const CalendarReportPerformancePage = () => {
       <PerformanceCardList
         mode='selectable'
         selectedKey={selectedKey}
+
         onSelect={(item: Performance) => {
           if (!item.id) {
             console.error('performance id is missing', item);
@@ -43,7 +44,6 @@ const CalendarReportPerformancePage = () => {
             performanceId: idNum,
             performance: label,
           });
-
           navigate(-1);
         }}
       />

@@ -63,6 +63,8 @@ export const ENDPOINT = {
   COMMUNITY_CREATE: '/api/v1/communities',
   COMMUNITY_UPDATE: (postId: number) => `/api/v1/communities/${postId}`,
   COMMUNITY_DELETE: (postId: number) => `/api/v1/communities/${postId}`,
+  COMMUNITY_LIKE: (postId: number) => `/api/v1/communities/${postId}/likes`,
+  COMMUNITY_SCRAP: (postId: number) => `/api/v1/communities/${postId}/scraps`,
   COMMUNITY_HOT_LIST: '/api/v1/communities/hot',
   COMMUNITY_TRADE_LIST: '/api/v1/communities/trade',
 
@@ -73,6 +75,17 @@ export const ENDPOINT = {
   //notification
   NOTIFICATION: '/api/v1/notifications',
 
+
   //theaters
   THEATERS: '/api/v1/theaters',
+
+  //magazine
+  MAGAZINE: '/api/v1/magazines',
+  MAGAZINE_DETAIL: (magazineId: number) => `/api/v1/magazines/${magazineId}`,
+  MAGAZINE_LATEST: '/api/v1/magazines/latest',
+  MAGAZINE_RECOMMEND: '/api/v1/magazines/recommend',
+  MAGAZINE_SCRAP: (magazineId: number) =>
+    `/api/v1/magazines/${magazineId}/scraps`,
+  MAGAZINE_LIKE: (magazineId: number) =>
+    `/api/v1/magazines/${magazineId}/likes`,
 };

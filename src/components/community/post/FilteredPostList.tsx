@@ -6,10 +6,21 @@ import PostListItem from './PostListItem';
 import useCommunityNavigation from '@/hooks/useCommunityNavigation';
 import ChevronLeft from '@/assets/chevrons/chevron-left.svg?react';
 import WritePost from '@/assets/nav-icons/write-post.svg?react';
-import {CATEGORY_MAP} from '@/types/categoryMap';
-import type {CategoryKey, CategoryLabel} from '@/types/categoryMap';
-import {getCommunityPostList, getCommunityHotList} from '@/api/communityApi';
-import type {Post} from '@/types/community';
+
+import {
+  getCategoryNameFromUrl,
+  getSlugFromUi,
+  apiToUiCategory,
+  type UiCategory,
+  type WriteableUiCategory,
+} from '@/util/categoryMapper';
+
+import {
+  getCommunityPostList,
+  getCommunityHotList,
+  toggleCommunityPostLike,
+} from '@/api/communityApi';
+import type {ApiPost, Post} from '@/types/community';
 
 const ITEMS_PER_PAGE = 10;
 
@@ -19,86 +30,102 @@ const FilteredPostList = () => {
   const {goToPostDetail} = useCommunityNavigation();
   const [currentPage, setCurrentPage] = useState(1);
 
-  const categoryLabel: CategoryLabel | null = useMemo(() => {
-    if (category && category in CATEGORY_MAP) {
-      return CATEGORY_MAP[category as CategoryKey];
-    }
-    return null;
+  const categoryLabel: UiCategory | null = useMemo(() => {
+    if (!category) return null;
+    const ui = getCategoryNameFromUrl(category);
+    return ui ?? null;
   }, [category]);
+
+  const [posts, setPosts] = useState<Post[]>([]);
 
   const {
     data: postsData,
     isLoading,
-    error,
     isSuccess,
   } = useQuery({
     queryKey: ['communityPosts', category, currentPage],
     queryFn: async () => {
       if (!categoryLabel) return null;
+      const isHot = category === 'hot';
 
-      try {
-        const data =
-          category === 'hot'
-            ? await getCommunityHotList(currentPage, ITEMS_PER_PAGE)
-            : await getCommunityPostList(
-                categoryLabel,
-                currentPage,
-                ITEMS_PER_PAGE
-              );
+      const data = isHot
+        ? await getCommunityHotList(currentPage, ITEMS_PER_PAGE)
+        : await getCommunityPostList(
+            categoryLabel,
+            currentPage,
+            ITEMS_PER_PAGE
+          );
 
-        const mappedPosts: Post[] = data.list.map((p) => ({
-          ...p,
-          nickname: p.author,
-          date: p.createdAt,
-          isScrapped: false,
-          bookmarkCount: 0,
-        }));
+      const mappedPosts: Post[] = data.list.map((p: ApiPost) => ({
+        id: p.id,
+        category:
+          apiToUiCategory[p.category as '일상' | '꿀팁' | '나눔거래'] ?? '',
+        title: p.title,
+        likeCount: p.likeCount ?? 0,
+        commentCount: p.commentCount ?? 0,
+        isLiked: p.isLiked ?? false,
+        viewCount: p.viewCount ?? 0,
+        nickname: p.author ?? '',
+        date: p.createdAt ?? '',
+        isScrapped: false,
+        bookmarkCount: 0,
+        uniqueKey: String(p.id),
+        imgUrls: Array.isArray(p.imageUrls)
+          ? p.imageUrls.map((img) => img.url)
+          : p.imageUrl && p.imageUrl !== 'basic'
+            ? [p.imageUrl]
+            : [],
+      }));
 
-        return {
-          posts: mappedPosts,
-          totalElements: data.totalElements,
-        };
-      } catch (error) {
-        console.error(`${categoryLabel} 게시글 조회 실패`, error);
-        throw error; // 에러를 다시 throw해야 React Query가 인식함
-      }
+      return {posts: mappedPosts, totalElements: data.totalElements};
     },
-    enabled: !!categoryLabel, // categoryLabel이 있을 때만 쿼리 실행
-    staleTime: 5 * 60 * 1000, // 5분간 데이터를 fresh로 간주
-    gcTime: 10 * 60 * 1000, // cacheTime → gcTime으로 변경 (v5)
+    enabled: !!categoryLabel,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
   });
 
-  // 데이터 로드 성공 시 스크롤을 맨 위로 (useEffect로 분리)
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && postsData) {
+      setPosts(postsData.posts);
       window.scrollTo({top: 0, behavior: 'smooth'});
     }
-  }, [isSuccess, currentPage]);
+  }, [isSuccess, postsData, currentPage]);
 
-  // 페이지 변경 핸들러
-  const handlePageChange = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
+  const handlePageChange = (pageNumber: number) => setCurrentPage(pageNumber);
+
+  const handleLike = (post: Post) => async () => {
+    try {
+      await toggleCommunityPostLike(post.id);
+      setPosts((prevPosts) =>
+        prevPosts.map((p) =>
+          p.id === post.id
+            ? {
+                ...p,
+                isLiked: !p.isLiked,
+                likeCount: p.isLiked ? p.likeCount - 1 : p.likeCount + 1,
+              }
+            : p
+        )
+      );
+    } catch (error) {
+      console.error('좋아요 처리 실패:', error);
+      alert('좋아요 처리에 실패했습니다.');
+    }
   };
 
-  if (!categoryLabel) {
+  if (!categoryLabel)
     return <div className='p-4 font-semibold'>잘못된 경로입니다.</div>;
-  }
 
-  if (error) {
-    return (
-      <div className='p-4 text-center'>
-        <p className='text-red-500 mb-4'>게시글을 불러오는데 실패했습니다.</p>
-        <button
-          onClick={() => window.location.reload()}
-          className='px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600'>
-          다시 시도
-        </button>
-      </div>
-    );
-  }
+  const handleWrite = () => {
+    // HOT은 작성 불가 → 일단 '일상'으로 이동하거나 disable 처리
+    const targetUi: WriteableUiCategory =
+      categoryLabel === 'HOT' ? '일상' : (categoryLabel as WriteableUiCategory);
+    const slug = getSlugFromUi(targetUi);
+    navigate(`/community/${slug}/write`);
+  };
 
   return (
-    <div>
+    <div className='px-16'>
       {/* 상단바 */}
       <div className='flex justify-between items-center'>
         <div className='flex items-center cursor-pointer'>
@@ -115,7 +142,7 @@ const FilteredPostList = () => {
         </div>
         <button
           className='flex items-center gap-[8px] cursor-pointer'
-          onClick={() => navigate(`/community/${category}/write`)}>
+          onClick={handleWrite}>
           <div className='w-[19px] h-[19px]'>
             <WritePost className='w-full h-full' />
           </div>
@@ -132,14 +159,20 @@ const FilteredPostList = () => {
                 className='skeleton-shimmer h-[88px] w-full rounded-lg'
               />
             ))
-          : postsData?.posts.map((post, index) => {
-              const handleClick = () =>
-                goToPostDetail(category as string, post.id);
+          : posts.map((post, index) => {
+              const slug = getSlugFromUi(
+                (post.category === 'HOT'
+                  ? '일상'
+                  : post.category) as WriteableUiCategory
+              );
+              const handleClick = () => goToPostDetail(slug, post.id);
+
               return (
                 <PostListItem
                   key={`${post.id}-${index}`}
                   post={post}
                   onClick={handleClick}
+                  onLikeClick={handleLike(post)}
                 />
               );
             })}
