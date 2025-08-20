@@ -165,24 +165,32 @@ function App() {
         <Route path='/signup-condition' element={<SignupConditionPage />} />
         <Route path='/signup-complete' element={<SignupCompletePage />} />
 
-        {/* NavigationBar가 없고 ContentHeader가 필요한 페이지 */}
-        <Route element={<CommunityHeaderOnlyLayout />}>
-          <Route
-            path='/community/:category/write'
-            element={<CommunityEditPage />}
-          />
-          <Route
-            path='/community/:category/edit/:postId'
-            element={<CommunityEditPage />}
-          />
-        </Route>
-
         {/* NavigationBar가 없고 ContentHeader & FooterBarWrapper가 필요한 페이지 */}
         <Route element={<CommunityContentLayout />}>
           <Route
             path='/community/:category/:postId'
             element={<CommunityPostPage />}
           />
+        </Route>
+
+        {/* NavigationBar가 없고 ContentHeader가 필요한 페이지 - 로그인 필수 */}
+        <Route
+          element={
+            <ProtectedRoute
+              isLoggedIn={isAuthenticated}
+              isLoading={isLoading}
+            />
+          }>
+          <Route element={<CommunityHeaderOnlyLayout />}>
+            <Route
+              path='/community/:category/write'
+              element={<CommunityEditPage />}
+            />
+            <Route
+              path='/community/:category/edit/:postId'
+              element={<CommunityEditPage />}
+            />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
