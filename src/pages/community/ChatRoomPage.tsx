@@ -1,7 +1,5 @@
-import {dummyChatRoom} from '@/mocks/mockChat';
-import type {ChatMessage} from '@/types/chat';
+import type {ChatMessage, ChatMessageReceived} from '@/types/chat';
 import {useCallback, useEffect, useRef, useState} from 'react';
-import ChevronLeft from '@/assets/arrows/chevron-left.svg?react';
 import ChevronRight from '@/assets/arrows/chevron-right.svg?react';
 import EllipsisVertical from '@/assets/ellipsis/ellipsis-vertical.svg?react';
 import Send from '@/assets/community/send.svg?react';
@@ -14,24 +12,32 @@ import {
   PopupChatCaution,
   PopupReport,
 } from '@/constant';
-import {useParams} from 'react-router-dom';
+import {useLocation, useNavigate, useParams} from 'react-router-dom';
 import Portal from '@/components/global/Portal';
 import Ban from '@/assets/community/modal-icons/ban.svg?react';
 import Exclamation from '@/assets/community/modal-icons/exclamation.svg?react';
+import BackButtonTitleHeader from '@/components/global/BackButtonTitleHeader';
+import {useAuthStore} from '@/stores/authStore';
+import userImg from '@/assets/users/user.png';
+import LoadingOverlay from '@/components/global/LoadingOverlay';
+import {activateStomp, deactivateStomp, sendMessage} from '@/api/stompClient';
+import {useStompStore} from '@/stores/stompStore';
+import {useMutation, useQuery} from '@tanstack/react-query';
+import {getReportChatCount, postReportChat} from '@/api/chatApi';
+import Lock from '@/assets/lock.svg?react';
 
 const ChatRoomPage = () => {
+  const navigate = useNavigate();
   const {id} = useParams<{id: string}>(); // 채팅 방 번호
-  const [messages, setMessages] = // 채팅 더미 데이터
-    useState<ChatMessage[]>(
-      dummyChatRoom.id === Number(id) ? dummyChatRoom.messages : []
-    );
+  const location = useLocation();
+  const receivedData = location.state;
   const [inputMessage, setInputMessage] = useState(''); // 내가 입력하는 채팅 input 값
   const [isCautionPopupShow, setIsCautionPopupShow] = useState(true); // 채팅방 입장 주의 팝업 Show
   const [isMessageMenuShow, setIsMessageMenuShow] = useState(false); // 채팅 메뉴 (신고하기, 차단하기) Show
   const [isBlockPopupShow, setIsBlockPopupShow] = useState(false); // 채팅 메뉴 - 차단 팝업 Show
   const [isReportMenuShow, setIsReportMenuShow] = useState(false); // 채팅 메뉴 - 신고 메뉴 Show
   const [isReportPopupShow, setIsReportPopupShow] = useState(false); // 채팅 메뉴 - 신고 팝업 Show
-  const [reportType, setReportType] = useState<number | null>(null); // 신고 종류 번호
+  const [reportType, setReportType] = useState<string | null>(null); // 신고 종류 번호
   const [openMenuId, setOpenMenuId] = useState<string | null>(null); // 점3개 메뉴 누른 메시지 번호
   const [menuPosition, setMenuPosition] = // 채팅 메뉴, 신고 메뉴 위치
     useState<{
@@ -44,7 +50,45 @@ const ChatRoomPage = () => {
   const autoScrollRef = useRef<HTMLDivElement>(null); // 최신 (가장 아래) 메시지로 자동 스크롤하기 위한 ref
   const menuRef = useRef<HTMLDivElement>(null); // 채팅 메뉴 OR 신고 메뉴 element ref
 
-  // const {isConnected, sendMessage} = useWebSocket(dummyChatRoom.id);
+  const [messages, setMessages] = useState<ChatMessageReceived[]>([]);
+  const {isConnected} = useStompStore();
+
+  const {user} = useAuthStore();
+  const {chatUsers} = useStompStore();
+
+  const {data: reportCount} = useQuery({
+    queryKey: ['reportsChatCount', user?.id],
+    queryFn: () =>
+      user ? getReportChatCount([user.id]) : Promise.resolve(null),
+    enabled: !!user?.id,
+  });
+
+  const reportChatMutation = useMutation({
+    mutationFn: postReportChat,
+    onSuccess: () => {
+      alert('신고가 완료 되었습니다.');
+    },
+    onError: () => {
+      alert('다시 시도해주세요.');
+    },
+  });
+
+  useEffect(() => {
+    if (!id) return;
+
+    // 메시지를 받았을 때 실행할 콜백 함수
+    const handleMessageReceived = (newMessage: ChatMessageReceived) => {
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+    };
+
+    // 컴포넌트가 마운트되면, 싱글톤 클라이언트를 활성화하고 구독을 시작합니다.
+    activateStomp(id, handleMessageReceived);
+
+    // 컴포넌트가 언마운트되면, 모든 연결과 구독을 정리합니다.
+    return () => {
+      deactivateStomp();
+    };
+  }, [id]);
 
   /**
    * 자동 스크롤
@@ -96,29 +140,16 @@ const ChatRoomPage = () => {
    * 메시지 전송
    */
   const handleSendMessage = () => {
-    if (
-      inputMessage.trim() // && isConnected
-    ) {
-      const newMessage: ChatMessage = {
-        id: Date.now().toString(),
-        user: {
-          id: 4,
-          name: '둘리',
-          avatar: '/img/profile/mock-profile6.svg',
-        },
-        content: inputMessage.trim(),
-        timestamp: new Date().toLocaleTimeString('ko-KR', {
-          hour: 'numeric',
-          minute: 'numeric',
-          hour12: false,
-        }),
-        isMe: true,
-      };
+    if (!inputMessage.trim() || !user || !user.userId || !id) return;
 
-      setMessages((prev) => [...prev, newMessage]);
-      // sendMessage(inputMessage.trim());
-      setInputMessage('');
-    }
+    const messageToSend: ChatMessage = {
+      roomId: Number(id),
+      senderId: user.id,
+      content: inputMessage,
+    };
+
+    sendMessage(messageToSend);
+    setInputMessage('');
   };
 
   /**
@@ -176,7 +207,7 @@ const ChatRoomPage = () => {
     };
 
   const handleReportTypeClick = // 신고 메뉴 - 신고 종류 클릭
-    (e: React.MouseEvent<HTMLButtonElement>, reportId: number) => {
+    (e: React.MouseEvent<HTMLButtonElement>, reportId: string) => {
       e.stopPropagation();
       setReportType(reportId);
       setIsReportPopupShow(true);
@@ -200,6 +231,8 @@ const ChatRoomPage = () => {
         reportType,
         '로 신고'
       );
+      if (!openMenuId || !reportType) return;
+      reportChatMutation.mutate({reason: reportType, chatId: openMenuId});
       setIsReportPopupShow(false);
       setReportType(null);
       setOpenMenuId(null);
@@ -231,108 +264,129 @@ const ChatRoomPage = () => {
       resetAllMenuStates();
     };
 
+  if (!isConnected) {
+    return (
+      <div>
+        <LoadingOverlay />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div>
+        <Modal
+          content='사용자 정보를 불러올 수 없습니다.'
+          rightText='확인'
+          onRightClick={() => navigate(-1)}
+        />
+      </div>
+    );
+  }
+
   return (
     <>
       <div className='flex flex-col bg-white'>
-        {/* 헤더 */}
-        <div className='bg-white flex items-center justify-between'>
-          <div className='inline-flex items-center'>
-            <button onClick={() => window.history.back()}>
-              <ChevronLeft className='w-58 h-51 hover:cursor-pointer' />
-            </button>
-            <h1 className='text-[#000] text-xl font-bold leading-[140%]'>
-              {dummyChatRoom.name}
-            </h1>
-          </div>
-        </div>
-
         {/* 메시지 목록 */}
-        <div className='relative flex flex-col gap-15 overflow-y-auto h-675 pt-26 px-10'>
-          {messages.map((message) => (
-            <div
-              key={message.id}
-              className={`message-container flex ${message.isMe ? 'justify-end' : 'justify-start'} gap-13 items-start`}>
-              {/* 프로필 & 닉네임 - !isMe */}
-              {!message.isMe && (
-                <div className='flex flex-col justify-center items-center w-57'>
-                  <div className='w-37 h-37 rounded-full'>
-                    <img
-                      src={message.user.avatar}
-                      alt={message.user.name}
-                      className='w-full h-full object-cover'
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).style.display = 'none';
-                      }}
-                    />
-                  </div>
-                  <div className='text-gray-2 text-[13px] leading-20 line-clamp-1'>
-                    {message.user.name.length > 5
-                      ? message.user.name.slice(0, 5) + '…'
-                      : message.user.name}
-                  </div>
-                </div>
-              )}
+        <div className='relative flex flex-col gap-15 overflow-y-auto sm:pb-60 py-90 px-10'>
+          {messages.map((message, index) => {
+            const senderInfo = chatUsers[message.senderId];
 
-              {/* 메시지 */}
-              <div className='flex items-end pt-18'>
-                <div
-                  className={`relative max-w-327 ${message.isMe ? 'mr-11' : 'ml-11'} ${
-                    openMenuId === message.id ? 'relative z-[10000]' : ''
-                  }`}>
-                  {message.isMe ? (
-                    <BubblePrimary4Tail className='absolute top-0 right-[-11px]' />
-                  ) : (
-                    <BubbleWhiteTail className='absolute top-0 left-[-11px]' />
-                  )}
+            return (
+              <div
+                key={index}
+                className={`message-container flex ${message.senderId === user.id ? 'justify-end' : 'justify-start'} gap-13 items-start`}>
+                {/* 프로필 & 닉네임 - !isMe */}
+                {!(message.senderId === user.id) && (
+                  <div className='flex flex-col justify-center items-center w-57'>
+                    <div className='w-37 h-37 rounded-full border border-solid border-primary'>
+                      <img
+                        src={senderInfo?.profileImageUrl || userImg}
+                        alt='profile-image'
+                        className='w-full h-full rounded-full object-cover'
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = 'none';
+                        }}
+                      />
+                    </div>
+                    <div className='text-gray-2 text-[13px] leading-20 line-clamp-1'>
+                      {senderInfo?.nickname || '(알 수 없음)'}
+                    </div>
+                  </div>
+                )}
+
+                {/* 메시지 */}
+                <div className='flex items-end pt-18'>
                   <div
-                    className={`${message.isMe ? 'bg-primary-4' : 'bg-[#fff]'} rounded-[11px] py-6 px-12`}>
-                    <p className='text-[#171717] leading-20 break-words whitespace-break-spaces'>
-                      {message.content}
-                    </p>
-                    <span className='flex justify-end text-gray-2 text-sm font-light leading-20'>
-                      {message.timestamp}
-                    </span>
+                    className={`relative max-w-327 ${message.senderId === user.id ? 'mr-11' : 'ml-11'} ${
+                      openMenuId === message.chatId ? 'relative z-[10000]' : ''
+                    }`}>
+                    {message.senderId === user.id ? (
+                      <BubblePrimary4Tail className='absolute top-0 right-[-11px]' />
+                    ) : (
+                      <BubbleWhiteTail className='absolute top-0 left-[-11px]' />
+                    )}
+                    <div
+                      className={`${message.senderId === user.id ? 'bg-primary-4' : 'bg-[#fff]'} rounded-[11px] py-6 px-12`}>
+                      <p className='text-[#171717] leading-20 break-words whitespace-break-spaces'>
+                        {message.content}
+                      </p>
+                      <span className='flex justify-end text-gray-2 text-sm font-light leading-20'>
+                        {message.createdAt}
+                      </span>
+                    </div>
                   </div>
+
+                  {!(message.senderId === user.id) &&
+                    openMenuId !== message.chatId && (
+                      <button
+                        onClick={(e) =>
+                          handleMessageMenuClick(e, message.chatId)
+                        }
+                        className='relative hover:cursor-pointer'
+                        aria-label='메시지 메뉴'>
+                        <EllipsisVertical className='w-24 h-24' />
+                      </button>
+                    )}
                 </div>
 
-                {!message.isMe && openMenuId !== message.id && (
-                  <button
-                    onClick={(e) => handleMessageMenuClick(e, message.id)}
-                    className='relative hover:cursor-pointer'
-                    aria-label='메시지 메뉴'>
-                    <EllipsisVertical className='w-24 h-24' />
-                  </button>
+                {/* 프로필 - isMe */}
+                {message.senderId === user.id && (
+                  <div className='flex flex-col justify-center items-center w-57'>
+                    <div className='w-37 h-37 rounded-full border border-solid border-primary'>
+                      <img
+                        src={user.profileImageUrl || userImg}
+                        alt='profile-image'
+                        className='w-full h-full rounded-full object-cover'
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = 'none';
+                        }}
+                      />
+                    </div>
+                    <div className='text-gray-2 text-[13px] leading-20 line-clamp-1'>
+                      {user.nickname}
+                    </div>
+                  </div>
                 )}
               </div>
-
-              {/* 프로필 - isMe */}
-              {message.isMe && (
-                <div className='flex flex-col justify-center items-center w-57'>
-                  <div className='w-37 h-37 rounded-full'>
-                    <img
-                      src={message.user.avatar}
-                      alt={message.user.name}
-                      className='w-full h-full object-cover'
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).style.display = 'none';
-                      }}
-                    />
-                  </div>
-                </div>
-              )}
-            </div>
-          ))}
+            );
+          })}
           <div ref={autoScrollRef} />
         </div>
 
+        {/* 헤더 */}
+        <div className='fixed top-65 pt-25 max-w-[600px] w-full bg-white'>
+          <BackButtonTitleHeader title={receivedData.title} />
+        </div>
+
         {/* 입력창 */}
-        <div className='bg-[#ebebeb] px-13 py-11 flex justify-between items-center '>
+        <div className='fixed sm:bottom-[60px] bottom-[45px] max-w-[600px] w-full bg-[#ebebeb] px-13 py-11 flex justify-between items-center sm:h-[60px] h-[45px]'>
           <div className='flex grow items-center gap-10'>
-            <div className='w-37 h-37'>
+            <div className='w-37 h-37 rounded-full border border-solid border-primary'>
               <img
-                src='/img/profile/mock-profile6.svg'
-                alt='내 프로필'
-                className='w-full h-full object-cover'
+                src={user.profileImageUrl || userImg}
+                alt='profile-image'
+                className='w-full h-full rounded-full object-cover'
                 onError={(e) => {
                   (e.target as HTMLImageElement).style.display = 'none';
                 }}
@@ -340,23 +394,32 @@ const ChatRoomPage = () => {
             </div>
 
             <div className='p-10 flex grow'>
-              <textarea
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-                onKeyDown={handleKeyPress}
-                placeholder='댓글을 입력하세요.'
-                className='flex grow justify-center items-center text-base h-18 placeholder:text-gray-2 text-[#000] leading-[110%] border-0 focus:outline-none resize-none line-clamp-1'
-                // disabled={!isConnected}
-              />
+              {reportCount[0]?.reportCount >= 3 ? (
+                <p>채팅 입력이 불가합니다.</p>
+              ) : (
+                <textarea
+                  value={inputMessage}
+                  onChange={(e) => setInputMessage(e.target.value)}
+                  onKeyDown={handleKeyPress}
+                  placeholder='댓글을 입력하세요.'
+                  className='flex grow justify-center items-center text-base h-18 placeholder:text-gray-2 text-[#000] leading-[110%] border-0 focus:outline-none resize-none line-clamp-1'
+                  disabled={!isConnected}
+                />
+              )}
             </div>
           </div>
 
-          <button
-            onClick={handleSendMessage}
-            // disabled={!inputMessage.trim() || !isConnected}
-          >
-            <Send className='w-25 h-25 hover:cursor-pointer' />
-          </button>
+          {reportCount[0]?.reportCount >= 3 ? (
+            <button disabled={true}>
+              <Lock className='w-25 h-25 hover:cursor-pointer' />
+            </button>
+          ) : (
+            <button
+              onClick={handleSendMessage}
+              disabled={!inputMessage.trim() || !isConnected}>
+              <Send className='w-25 h-25 hover:cursor-pointer' />
+            </button>
+          )}
         </div>
       </div>
 

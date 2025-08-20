@@ -21,7 +21,9 @@ const BackButtonTitleHeader = ({
         className='w-58 h-51 ml-[-20px] hover:cursor-pointer'
         onClick={() => navigate(-1)}
       />
-      <h1 className='text-[#000] text-xl font-bold leading-[140%]'>{title}</h1>
+      <h1 className='text-[#000] text-xl font-bold leading-[140%] line-clamp-1'>
+        {title}
+      </h1>
     </div>
   );
 };

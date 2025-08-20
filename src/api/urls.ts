@@ -47,6 +47,14 @@ export const ENDPOINT = {
   ARCHIVE_DELETE: (archiveId: number) => `/api/v1/archive/${archiveId}`,
   ARCHIVE_TOP_RATING: '/api/v2/archives/top-rating',
 
+  // chat
+  CHAT_ROOM: 'api/v1/chat-room',
+  CHAT_PROFILE: 'api/v1/chat/profile',
+
+  // reports
+  REPORTS_CHAT_COUNT: 'api/v1/reports/chat/count',
+  REPORTS_CHAT: 'api/v1/reports/chat',
+
   // community
   COMMUNITY_DETAIL: (postId: number) => `/api/v1/communities/${postId}`,
   COMMUNITY_LIST: '/api/v1/communities',
