@@ -4,7 +4,6 @@ import EmptyHeart from '@/assets/hearts/empty-heart.svg?react';
 import FullHeart from '@/assets/hearts/full-heart.svg?react';
 import Chat from '@/assets/community/community-chat.svg?react';
 import PostHeaderInfo from './PostHeaderInfo';
-import formatKoreanTime from '@/util/formatKoreanTime';
 
 interface PostListItemProps {
   post: Post;
@@ -21,8 +20,8 @@ const PostListItem = ({post, onClick, onLikeClick}: PostListItemProps) => {
         {/* 왼쪽: 제목 + 작성자 + 날짜 + 조회수 */}
         <PostHeaderInfo
           title={post.title}
-          nickname={post.nickname}
-          date={formatKoreanTime(post.date)}
+          authorName={post.author}
+          date={post.createdAt}
           viewCount={post.viewCount}
           variant='list'
         />

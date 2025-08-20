@@ -8,12 +8,12 @@ import BookMark from '@/assets/community/bookmark.svg?react';
 
 interface PostCardItemProps {
   title: string;
-  subtitle?: string;
+  subTitle?: string;
   price?: number | string;
   category: string;
-  isBookmarked: boolean;
+  isScraped: boolean;
   isScrapMagazine?: boolean;
-  placeholderText: string;
+  placeholderText?: string;
   onClick?: () => void;
   onScrapClick?: () => void;
   imageUrl?: string;
@@ -22,11 +22,11 @@ interface PostCardItemProps {
 
 const PostCardItem = ({
   title,
-  subtitle,
+  subTitle,
   price,
   category,
   displayCategory,
-  isBookmarked,
+  isScraped,
   isScrapMagazine = false,
   placeholderText,
   onClick,
@@ -39,7 +39,7 @@ const PostCardItem = ({
         className={`relative 
         ${isScrapMagazine ? 'sm:w-[160px]' : 'sm:w-[204px]'} sm:h-[209px] w-150 h-150 bg-gray-1 rounded-[7px]'`}>
         <BookMark
-          className={`absolute top-9 right-9 cursor-pointer ${isBookmarked ? 'text-secondary fill-secondary' : 'text-black fill-black'}`}
+          className={`absolute top-9 right-9 cursor-pointer ${isScraped ? 'text-secondary fill-secondary' : 'text-black fill-black'}`}
           onClick={(e) => {
             e.stopPropagation();
             onScrapClick?.();
@@ -71,8 +71,10 @@ const PostCardItem = ({
                 : `${price.toLocaleString()}원`}
           </div>
         ) : (
-          subtitle && (
-            <h2 className='font-semibold sm:text-[16px] text-xs'>{subtitle}</h2>
+          subTitle && (
+            <h2 className='font-semibold sm:text-[16px] text-xs w-150 truncate'>
+              {subTitle}
+            </h2>
           )
         )}
 

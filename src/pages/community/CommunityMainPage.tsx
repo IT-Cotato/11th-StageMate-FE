@@ -8,13 +8,9 @@ import PlayMagazine from '@/components/community/magazine/PlayMagazine';
 
 const CommunityMainPage = () => {
   return (
-    <div className='flex flex-col gap-30 mb-12 px-16'>
+    <div className='flex flex-col gap-30 mb-12 px-32'>
       {/** hot 게시물 */}
-      <PostList
-        icon={<Rocket />}
-        title='HOT 게시물'
-        variant='hot'
-      />
+      <PostList icon={<Rocket />} title='HOT 게시물' variant='hot' />
 
       {/** 나눔 거래 게시판 */}
       <SharePostList />
@@ -23,18 +19,10 @@ const CommunityMainPage = () => {
       <ChatRoomList />
 
       {/** 일상 게시물 */}
-      <PostList
-        icon={<MusicalNote />}
-        title='일상 게시물'
-        variant='daily'
-      />
+      <PostList icon={<MusicalNote />} title='일상 게시물' variant='daily' />
 
       {/** 꿀팁 게시물 */}
-      <PostList
-        icon={<School />}
-        title='꿀팁 게시물'
-        variant='tip'
-      />
+      <PostList icon={<School />} title='꿀팁 게시물' variant='tip' />
 
       {/** 공연 매거진 */}
       <PlayMagazine />

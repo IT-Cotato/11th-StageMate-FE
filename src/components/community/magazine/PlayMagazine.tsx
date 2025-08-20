@@ -1,16 +1,24 @@
 import {useHorizontalScroll} from '@/hooks/useHorizontalScroll';
 import Picture from '@/assets/community/magazine-picture.svg?react';
-import {mockMagazine} from '@/mocks/mockMagazine';
 import PostCardItem from '../post/PostCardItem';
 import useCommunityListNavigation from '@/hooks/useCommunityListNavigation';
 import useCommunityNavigation from '@/hooks/useCommunityNavigation';
 import LoadMoreButton from '@/components/global/LoadMoreButton';
+import {useLatestMagazines} from '@/hooks/useMagazine';
+import type {Magazine} from '@/types/community';
 
 const PlayMagazine = () => {
   const listWrapperRef = useHorizontalScroll();
   const {goToMagazineList} = useCommunityListNavigation();
   const {goToMagazineDetail} = useCommunityNavigation();
+  const {data, isLoading, isError} = useLatestMagazines(4);
+  if (isLoading) {
+    return <div>로딩 중...</div>;
+  }
 
+  if (isError) {
+    return <div>에러가 발생했어요.</div>;
+  }
   return (
     <div className='flex flex-col gap-15'>
       <div className='flex flex-row items-end justify-between'>
@@ -21,15 +29,16 @@ const PlayMagazine = () => {
         <LoadMoreButton onClick={() => goToMagazineList()} />
       </div>
       <ul className='flex flex-row gap-12 overflow-x-auto' ref={listWrapperRef}>
-        {mockMagazine.map((post) => (
+        {data?.map((magazine: Magazine) => (
           <PostCardItem
-            key={post.id}
-            title={post.title}
-            subtitle={post.subtitle}
-            category={post.category}
-            isBookmarked={post.isBookmarked}
-            placeholderText='공연 매거진 임시 이미지'
-            onClick={() => goToMagazineDetail(post.id)}
+            key={magazine.id}
+            title={magazine.title}
+            subTitle={magazine.subTitle}
+            category={magazine.category}
+            isScraped={magazine.isScraped}
+            imageUrl={magazine.imageUrl}
+            placeholderText={magazine.title}
+            onClick={() => goToMagazineDetail(magazine.id)}
           />
         ))}
       </ul>

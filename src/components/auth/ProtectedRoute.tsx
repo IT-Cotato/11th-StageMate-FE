@@ -1,4 +1,5 @@
 import {Navigate, Outlet} from 'react-router-dom';
+import LoadingSpinner from '../ui/LoadingSpinner';
 
 interface ProtectedRouteProps {
   isLoggedIn: boolean;
@@ -12,7 +13,7 @@ const ProtectedRoute = ({
   redirectPath = '/login',
 }: ProtectedRouteProps) => {
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner />;
   }
 
   if (!isLoggedIn) {

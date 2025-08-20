@@ -36,7 +36,7 @@ const PostItem = ({post, onPostClick, onLikeClick, variant}: PostItemProps) => {
          * 그 외 -> 월/일 렌더링
          */}
         {variant !== 'hot' && (
-          <div className='text-sm text-gray-2'>{post.date}</div>
+          <div className='text-sm text-gray-2'>{post.createdAt}</div>
         )}
       </div>
 

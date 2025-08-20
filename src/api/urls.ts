@@ -47,7 +47,6 @@ export const ENDPOINT = {
   ARCHIVE_DELETE: (archiveId: number) => `/api/v1/archive/${archiveId}`,
   ARCHIVE_TOP_RATING: '/api/v2/archives/top-rating',
 
-
   // community
   COMMUNITY_DETAIL: (postId: number) => `/api/v1/communities/${postId}`,
   COMMUNITY_LIST: '/api/v1/communities',
@@ -68,7 +67,17 @@ export const ENDPOINT = {
   //search
   SEARCH_POPULAR: '/api/v1/search/popular',
   SEARCH: '/api/v1/search',
+
   //notification
   NOTIFICATION: '/api/v1/notifications',
 
+  //magazine
+  MAGAZINE: '/api/v1/magazines',
+  MAGAZINE_DETAIL: (magazineId: number) => `/api/v1/magazines/${magazineId}`,
+  MAGAZINE_LATEST: '/api/v1/magazines/latest',
+  MAGAZINE_RECOMMEND: '/api/v1/magazines/recommend',
+  MAGAZINE_SCRAP: (magazineId: number) =>
+    `/api/v1/magazines/${magazineId}/scraps`,
+  MAGAZINE_LIKE: (magazineId: number) =>
+    `/api/v1/magazines/${magazineId}/likes`,
 };
