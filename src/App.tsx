@@ -74,20 +74,6 @@ function App() {
           <Route path='/' element={<MainPage />} />
           <Route path='/search' element={<SearchPage />} />
 
-          <Route element={<CalendarLayout />}>
-            <Route path='/calendar/report' element={<CalendarReportPage />} />
-            <Route
-              path='/calendar/report/location'
-              element={<CalendarReportLocationPage />}
-            />
-            <Route
-              path='/calendar/report/performance'
-              element={<CalendarReportPerformancePage />}
-            />
-            <Route path='/calendar' element={<CalendarPage />} />
-            <Route path='/performance' element={<PerformanceAllPage />} />
-          </Route>
-
           {/* NavigationBar가 필요한 페이지 - 로그인 필수 */}
           <Route
             element={
@@ -96,6 +82,20 @@ function App() {
                 isLoading={isLoading}
               />
             }>
+            <Route element={<CalendarLayout />}>
+              <Route path='/calendar/report' element={<CalendarReportPage />} />
+              <Route
+                path='/calendar/report/location'
+                element={<CalendarReportLocationPage />}
+              />
+              <Route
+                path='/calendar/report/performance'
+                element={<CalendarReportPerformancePage />}
+              />
+              <Route path='/calendar' element={<CalendarPage />} />
+              <Route path='/performance' element={<PerformanceAllPage />} />
+            </Route>
+
             <Route path='settings'>
               <Route path='announcement' element={<AnnouncementPage />} />
               <Route
@@ -119,7 +119,6 @@ function App() {
               element={<MagazineDetailPage />}
             />
             <Route path='/chat' element={<ChatPage />} />
-            <Route path='/chatRoom/:id' element={<ChatRoomPage />} />
             <Route path='/performance' element={<PerformanceAllPage />} />
             <Route path='/community/share' element={<SharePostsPage />} />
 
@@ -139,6 +138,14 @@ function App() {
                   <Route path='image-search' element={<ImageSearchPage />} />
                 </Route>
               </Route>
+
+              <Route path='/settings' element={<SettingLayout />}>
+                <Route path='account' element={<SettingAccountPage />} />
+                <Route path='activity' element={<SettingActivityPage />} />
+                <Route path='support' element={<SettingSupportPage />} />
+              </Route>
+
+              <Route path='/chatRoom/:id' element={<ChatRoomPage />} />
               <Route
                 path='/scrap-magazine'
                 element={<ScrappedMagazinePage />}
@@ -148,11 +155,6 @@ function App() {
               <Route path='/written-comment' element={<WrittenCommentPage />} />
               <Route path='/blocked-user' element={<BlockedUserPage />} />
               <Route path='/notification' element={<NotificationPage />} />
-              <Route path='/settings' element={<SettingLayout />}>
-                <Route path='account' element={<SettingAccountPage />} />
-                <Route path='activity' element={<SettingActivityPage />} />
-                <Route path='support' element={<SettingSupportPage />} />
-              </Route>
             </Route>
           </Route>
         </Route>
