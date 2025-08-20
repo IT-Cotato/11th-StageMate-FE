@@ -28,7 +28,6 @@ const ContentHeader = ({showShare = true}: ContentHeaderProps) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const shareModalRef = useRef<HTMLDivElement>(null);
 
-  // useClickOutside 훅 사용
   useClickOutside({
     ref: shareModalRef,
     onClickOutside: () => setShowShareModal(false),

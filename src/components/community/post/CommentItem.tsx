@@ -63,9 +63,7 @@ const CommentItem = ({
 
         <EllipsisVertical
           className='w-[24px] h-[24px] cursor-pointer'
-          onClick={() => {
-            setShowOptions((prev) => !prev);
-          }}
+          onClick={() => setShowOptions(true)}
         />
 
         {showOptions && (

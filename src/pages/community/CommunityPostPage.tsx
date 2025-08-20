@@ -24,6 +24,7 @@ import EditorViewer from '@/components/community/post/EditorViewer';
 import {getUrlFromCategoryName, type UiCategory} from '@/util/categoryMapper';
 import {useCommunityPostSafe} from '@/components/community/context/useCommunityPost';
 import type {JSONContent} from '@tiptap/react';
+import useClickOutside from '@/hooks/useClickOutside';
 
 const decodeHtml = (s: string) =>
   s
@@ -73,7 +74,22 @@ const CommunityPostPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const hasLoaded = useRef(false);
   const communityContext = useCommunityPostSafe();
-  const {isLiked, isScraped, setLiked, setScrapped, getCounts, setCounts, toggleLike, toggleScrap} = useScrapStore();
+  const {
+    isLiked,
+    isScraped,
+    setLiked,
+    setScrapped,
+    getCounts,
+    setCounts,
+    toggleLike,
+    toggleScrap,
+  } = useScrapStore();
+  const optionModalRef = useRef<HTMLDivElement>(null);
+
+  useClickOutside({
+    ref: optionModalRef,
+    onClickOutside: () => setShowOptions(false),
+  });
 
   useEffect(() => {
     if (!postId || hasLoaded.current) {
@@ -99,13 +115,15 @@ const CommunityPostPage = () => {
             isScrapped: loadedPost.scrapped || false,
           });
         }
-        
+
         // 전역 상태 초기화
-        const allComments = loadedPost.comments?.flatMap(comment =>
-          [comment, ...(comment.children || [])]
-        ) || [];
+        const allComments =
+          loadedPost.comments?.flatMap((comment) => [
+            comment,
+            ...(comment.children || []),
+          ]) || [];
         const totalCommentCount = allComments.length;
-        
+
         setLiked(postIdNum, 'community', loadedPost.liked || false);
         setScrapped(postIdNum, 'community', loadedPost.scrapped || false);
         setCounts(postIdNum, 'community', {
@@ -130,12 +148,14 @@ const CommunityPostPage = () => {
     const postIdNum = Number(postId);
     const currentCounts = getCounts(postIdNum, 'community');
     const isCurrentlyLiked = isLiked(postIdNum, 'community');
-    
+
     // 즉시 전역 상태 업데이트
     toggleLike(postIdNum, 'community');
     setCounts(postIdNum, 'community', {
       ...currentCounts,
-      likeCount: isCurrentlyLiked ? currentCounts.likeCount - 1 : currentCounts.likeCount + 1,
+      likeCount: isCurrentlyLiked
+        ? currentCounts.likeCount - 1
+        : currentCounts.likeCount + 1,
     });
 
     try {
@@ -155,12 +175,14 @@ const CommunityPostPage = () => {
     const postIdNum = Number(postId);
     const currentCounts = getCounts(postIdNum, 'community');
     const isCurrentlyScrapped = isScraped(postIdNum, 'community');
-    
+
     // 즉시 전역 상태 업데이트
     toggleScrap(postIdNum, 'community');
     setCounts(postIdNum, 'community', {
       ...currentCounts,
-      scrapCount: isCurrentlyScrapped ? currentCounts.scrapCount - 1 : currentCounts.scrapCount + 1,
+      scrapCount: isCurrentlyScrapped
+        ? currentCounts.scrapCount - 1
+        : currentCounts.scrapCount + 1,
     });
 
     try {
@@ -331,7 +353,9 @@ const CommunityPostPage = () => {
           />
 
           {showOptions && (
-            <div className='absolute z-40 top-full right-0'>
+            <div
+              className='absolute z-40 top-full right-0'
+              ref={optionModalRef}>
               <PostOptionModal
                 showEdit
                 showDelete
