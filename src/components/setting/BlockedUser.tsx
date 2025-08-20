@@ -6,13 +6,15 @@ import {useState} from 'react';
 
 interface BlockeUserProps {
   user: BlockedUserType;
+  unblockClick: () => void;
 }
 
-const BlockedUser = ({user}: BlockeUserProps) => {
+const BlockedUser = ({user, unblockClick}: BlockeUserProps) => {
   const [showModal, setShowModal] = useState<boolean>(false);
 
   const handleUnblockClick = () => {
     console.log(user.id, '차단해제 클릭');
+    unblockClick();
     setShowModal(false);
   };
 
