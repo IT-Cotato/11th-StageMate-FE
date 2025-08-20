@@ -38,7 +38,7 @@ const SettingActivityPage = () => {
         <div className='h-1 bg-[#000] my-12' />
         <div
           className='flex justify-between items-center hover:cursor-pointer'
-          onClick={() => navigate('/written-magazine')}>
+          onClick={() => navigate('/scrap-magazine')}>
           <p className='text-xl font-semibold leading-[140%]'>
             스크랩한 매거진 모아보기
           </p>
