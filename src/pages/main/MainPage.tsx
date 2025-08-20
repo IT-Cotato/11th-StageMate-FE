@@ -34,12 +34,13 @@ export default function MainPage() {
         if (cancelled) return;
         const formatted = apiData.map(toSchedule);
         setSchedules(formatted);
-        
+
         // 전역 스크랩 상태 초기화
         initializeFromServer(
-          apiData.map(item => ({
-            id: String(item.performanceScheduleId),
-            isScraped: item.isScraped
+          apiData.map((item) => ({
+            id: item.performanceScheduleId,
+            type: 'performanceSchedule',
+            isScraped: item.isScraped,
           }))
         );
       } catch (error) {

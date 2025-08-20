@@ -18,7 +18,7 @@ export function toSchedule(item: ScheduleListItem): Schedule {
   const type = normalize(perf.performanceType);
 
   return {
-    id: String(item.performanceScheduleId),
+    id: item.performanceScheduleId,
     category: LABEL[type],
     title: perf.performanceName,
     isLike: item.isScraped,
