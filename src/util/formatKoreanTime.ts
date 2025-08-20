@@ -13,7 +13,6 @@ const formatKoreanTime = (dateString: string) => {
   try {
     let date: Date | null = null;
 
-    // 서버에서 HH:mm 형태만 오는 경우 (오늘 날짜로 가정하고 9시간 추가)
     if (/^\d{2}:\d{2}$/.test(dateString)) {
       const today = new Date();
       const [hours, minutes] = dateString.split(':').map(Number);
@@ -21,7 +20,7 @@ const formatKoreanTime = (dateString: string) => {
         today.getFullYear(),
         today.getMonth(),
         today.getDate(),
-        hours + 9,
+        hours,
         minutes
       );
       return format(date, 'a h:mm', {locale: ko});
