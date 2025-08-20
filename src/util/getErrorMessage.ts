@@ -51,6 +51,20 @@ const getErrorMessage = (code: string): string => {
     case 'IMAGE-001':
       return '이미지 업로드에 실패했습니다.';
 
+    // community
+    case 'COMMUNITY-002':
+      return '게시글이 존재하지 않음';
+    case 'COMMUNITY-006':
+      return '댓글이 존재하지 않음';
+    case 'COMMUNITY-008':
+      return '사용자를 찾을 수 없음';
+    case 'COMMUNITY-011':
+      return '잘못된 대상 타입';
+    case 'COMMUNITY-012':
+      return '자기 자신을 차단';
+    case 'COMMUNITY-013':
+      return '이미 차단한 사용자';
+
     // default
     default:
       return '서비스 이용에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.';
