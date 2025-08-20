@@ -42,6 +42,8 @@ const getErrorMessage = (code: string): string => {
       return '이미 존재하는 리소스입니다.';
     case 'COMMON-007':
       return '아이디 또는 비밀번호가 일치하지 않습니다.';
+    case 'COMMON-008':
+      return '사용자를 찾을 수 없습니다.';
     case 'COMMON-009':
       return '인증이 필요합니다.';
 
