@@ -15,8 +15,10 @@ import {
 } from '@/hooks/useMagazine';
 import type {SubMagazinePostType} from '@/types/community';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import {useAuthStore} from '@/stores/authStore';
 
 const MagazineDetailPage = () => {
+  const {user} = useAuthStore();
   const {magazineId} = useParams<{magazineId?: string}>();
   const listWrapperRef = useHorizontalScroll();
   const navigate = useNavigate();
@@ -77,39 +79,42 @@ const MagazineDetailPage = () => {
                 </h3>
               </div>
             </div>
-            <div className='flex gap-20'>
-              <div className='flex gap-14'>
-                <div
-                  className='flex flex-col items-center gap-2 hover:cursor-pointer'
-                  onClick={() => toggleLike(data.isLiked)}>
-                  {data.isLiked ? (
-                    <FullHeart className='w-27 h-27 aspect-square' />
-                  ) : (
-                    <EmptyHeart className='w-27 h-27 aspect-square stroke-2 stroke-black' />
-                  )}
-                  <p className='text-[#000] text-center font-roboto text-sm font-medium leading-[110%]'>
-                    {data.likeCount}
-                  </p>
-                </div>
-                <div
-                  className='flex flex-col items-center gap-2 hover:cursor-pointer'
-                  onClick={() => toggleScrap(data.isScraped)}>
-                  {data.isScraped ? (
-                    <BookMark className='text-secondary w-27 h-27 aspect-square' />
-                  ) : (
-                    <BookMark className='w-27 h-27 aspect-square' />
-                  )}
-                  <p className='text-[#000] text-center font-roboto text-sm font-medium leading-[110%]'>
-                    {data.scrapCount}
-                  </p>
+            {/* 로그인 된 경우에만 좋아요/스크랩 표시 */}
+            {user && (
+              <div className='flex gap-20'>
+                <div className='flex gap-14'>
+                  <div
+                    className='flex flex-col items-center gap-2 hover:cursor-pointer'
+                    onClick={() => toggleLike()}>
+                    {data.isLiked ? (
+                      <FullHeart className='w-27 h-27 aspect-square' />
+                    ) : (
+                      <EmptyHeart className='w-27 h-27 aspect-square stroke-2 stroke-black' />
+                    )}
+                    <p className='text-[#000] text-center font-roboto text-sm font-medium leading-[110%]'>
+                      {data.likeCount}
+                    </p>
+                  </div>
+
+                  <div
+                    className='flex flex-col items-center gap-2 hover:cursor-pointer'
+                    onClick={() => toggleScrap()}>
+                    {data.isScraped ? (
+                      <BookMark className='text-secondary w-27 h-27 aspect-square' />
+                    ) : (
+                      <BookMark className='w-27 h-27 aspect-square' />
+                    )}
+                    <p className='text-[#000] text-center font-roboto text-sm font-medium leading-[110%]'>
+                      {data.scrapCount}
+                    </p>
+                  </div>
                 </div>
               </div>
-
-              <Share
-                onClick={handleShareClick}
-                className='fill-[#21272a] w-27 h-27 aspect-square hover:cursor-pointer'
-              />
-            </div>
+            )}
+            <Share
+              onClick={handleShareClick}
+              className='fill-[#21272a] w-27 h-27 aspect-square hover:cursor-pointer'
+            />
           </div>
 
           {/* 매거진 컨텐츠 */}

@@ -9,7 +9,7 @@ export const getMagazines = async (page: number = 1, size: number = 6) => {
 };
 
 export const getMagazineDetail = async (magazineId: number) => {
-  const response = await publicAxios.get(ENDPOINT.MAGAZINE_DETAIL(magazineId));
+  const response = await privateAxios.get(ENDPOINT.MAGAZINE_DETAIL(magazineId));
   return response.data.data;
 };
 
