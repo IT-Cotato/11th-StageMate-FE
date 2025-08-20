@@ -31,6 +31,8 @@ export const ENDPOINT = {
   MYPAGE_TERMS: 'api/v1/mypage/policy/terms',
   MYPAGE_PROFILE_IMAGE: 'api/v1/mypage/profile-image',
   MYPAGE_INQUIRIES: 'api/v1/mypage/inquiries',
+  MYPAGE_POSTS: 'api/v1/mypage/posts',
+  MYPAGE_COMMENTED_POSTS: 'api/v1/mypage/commented-posts',
 
   //performance
   PERFORMANCE: '/api/v1/performance',
@@ -75,10 +77,14 @@ export const ENDPOINT = {
   COMMUNITY_SCRAP: (postId: number) => `/api/v1/communities/${postId}/scraps`,
   COMMUNITY_HOT_LIST: '/api/v1/communities/hot',
   COMMUNITY_TRADE_LIST: '/api/v1/communities/trade',
-  COMMUNITY_COMMENT_LIST: (postId: number) => `/api/v1/communities/${postId}/comments`,
-  COMMUNITY_COMMENT_CREATE: (postId: number) => `/api/v1/communities-comments/${postId}`,
-  COMMUNITY_COMMENT_UPDATE: (commentId: number) => `/api/v1/communities-comments/${commentId}`,
-  COMMUNITY_COMMENT_DELETE: (commentId: number) => `/api/v1/communities-comments/${commentId}`,
+  COMMUNITY_COMMENT_LIST: (postId: number) =>
+    `/api/v1/communities/${postId}/comments`,
+  COMMUNITY_COMMENT_CREATE: (postId: number) =>
+    `/api/v1/communities-comments/${postId}`,
+  COMMUNITY_COMMENT_UPDATE: (commentId: number) =>
+    `/api/v1/communities-comments/${commentId}`,
+  COMMUNITY_COMMENT_DELETE: (commentId: number) =>
+    `/api/v1/communities-comments/${commentId}`,
   COMMUNITY_REPORT: '/api/v1/reports/community',
   USER_BLOCK: '/api/v1/users/block',
 
@@ -88,7 +94,6 @@ export const ENDPOINT = {
 
   //notification
   NOTIFICATION: '/api/v1/notifications',
-
 
   //theaters
   THEATERS: '/api/v1/theaters',
