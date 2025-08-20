@@ -37,11 +37,9 @@ const SharePostsPage = () => {
   const handleScrapClick = async (postId: number) => {
     try {
       await toggleCommunityPostScrap(postId);
-      setPosts(prevPosts => 
-        prevPosts.map(post => 
-          post.id === postId 
-            ? { ...post, isScrapped: !post.isScrapped }
-            : post
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post.id === postId ? {...post, isScrapped: !post.isScrapped} : post
         )
       );
     } catch (error) {
@@ -74,10 +72,14 @@ const SharePostsPage = () => {
                 title={post.title}
                 category={post.category}
                 displayCategory={post.tradeCategory}
-
                 isScraped={post.isScrapped}
-
-                imageUrl={post.imageUrl}
+                imageUrl={
+                  post.imageUrl &&
+                  post.imageUrl !== 'basic' &&
+                  !(Array.isArray(post.imageUrl) && post.imageUrl.length === 0)
+                    ? post.imageUrl
+                    : 'https://storage.googleapis.com/stagemate_bucket/44af2609-ee66-4119-8c45-162bbb799b27'
+                }
                 placeholderText='나눔·거래 이미지'
                 isScrapMagazine={true}
                 onClick={() => goToShareDetail(post.id)}
