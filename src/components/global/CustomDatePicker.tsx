@@ -27,7 +27,6 @@ const CustomDatePicker = ({
       onChange={handleChange}
       inline
       locale={ko}
-      onClickOutside={() => setIsOpen(false)}
       renderCustomHeader={({date}) => (
         <div className='flex items-center gap-20 mb-10 mt-10 bg-[#fff] px-30'>
           <div className='flex flex-row items-center gap-20'>

@@ -11,7 +11,7 @@ const TopRatedShowList = () => {
   if (isLoading) {
     return (
       <div className='flex items-center justify-center'>
-        <ul className='flex flex-row sm:gap-50 gap-25'>
+        <ul className='flex flex-row gap-40'>
           {Array.from({length: 3}).map((_, index) => (
             <li key={index} className='flex flex-col gap-1 items-center'>
               <div className='skeleton-shimmer sm:w-[138px] sm:h-[180px] w-100 h-170 rounded-lg' />
@@ -32,7 +32,7 @@ const TopRatedShowList = () => {
 
   return (
     <div className='flex items-center justify-center'>
-      <ul className='flex flex-row sm:gap-50 gap-25'>
+      <ul className='flex flex-row gap-40'>
         {data.data.map((performance: Performance, index: number) => (
           <li
             key={performance.id}

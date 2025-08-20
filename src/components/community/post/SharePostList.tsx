@@ -79,12 +79,13 @@ const SharePostList = () => {
                 title={post.title}
                 category='나눔 · 거래'
                 displayCategory={post.tradeCategory}
-                isBookmarked={post.isScrapped}
+isScraped={post.isScrapped}
                 imageUrl={
                   post.imageUrl && post.imageUrl !== 'basic'
                     ? post.imageUrl
                     : undefined
                 }
+
                 placeholderText='나눔 거래 이미지'
                 onClick={() => handleClick(post)}
                 onScrapClick={() => handleScrapClick(post.id)}

@@ -20,7 +20,6 @@ import ConfirmModal from '@/components/modal/ConfirmModal';
 import EditorViewer from '@/components/community/post/EditorViewer';
 import {getUrlFromCategoryName, type UiCategory} from '@/util/categoryMapper';
 import {useCommunityPostSafe} from '@/components/community/context/useCommunityPost';
-import formatKoreanTime from '@/util/formatKoreanTime';
 import type {JSONContent} from '@tiptap/react';
 
 const decodeHtml = (s: string) =>
@@ -312,8 +311,8 @@ const CommunityPostPage = () => {
 
         <PostHeaderInfo
           title={post.title}
-          nickname={post.authorName}
-          date={formatKoreanTime(post.createdAt)}
+          authorName={post.authorName}
+          date={post.createdAt}
           viewCount={post.viewCount}
           variant='detail'
         />
