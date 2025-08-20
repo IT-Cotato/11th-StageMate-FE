@@ -14,6 +14,8 @@ import EllipsisVertical from '@/assets/ellipsis/ellipsis-vertical.svg?react';
 import PostImageList from '@/components/community/post/PostImageList';
 import PostComment from '@/components/community/post/PostComment';
 import CommentInput from '@/components/community/post/CommentInput';
+import {reportCommunity} from '@/api/communityApi';
+import type {ReportReason} from '@/types/communityDetail';
 import {useState, useEffect, useRef, useCallback} from 'react';
 import PostOptionModal from '@/components/modal/PostOptionModal';
 import ConfirmModal from '@/components/modal/ConfirmModal';
@@ -58,6 +60,12 @@ const CommunityPostPage = () => {
     null | 'delete' | 'report' | 'block'
   >(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [replyTarget, setReplyTarget] = useState<{
+    id: number;
+    authorName: string;
+  } | null>(null);
+  const [selectedReportReason, setSelectedReportReason] =
+    useState<ReportReason | null>(null);
 
   const {postId} = useParams();
   const [post, setPost] = useState<CommunityPostDetail | null>(null);
@@ -172,9 +180,30 @@ const CommunityPostPage = () => {
     }
   };
 
+  const handleReport = async () => {
+    if (!postId || !selectedReportReason) return;
+
+    try {
+      await reportCommunity({
+        targetId: Number(postId),
+        targetType: 'POST',
+        reason: selectedReportReason,
+      });
+      alert('신고가 접수되었습니다.');
+    } catch (error) {
+      console.error('신고 실패:', error);
+      alert('신고에 실패했습니다.');
+    } finally {
+      setSelectedReportReason(null);
+      setConfirmType(null);
+    }
+  };
+
   const handleConfirm = () => {
     if (confirmType === 'delete') {
       handleDelete();
+    } else if (confirmType === 'report') {
+      handleReport();
     }
     setConfirmType(null);
   };
@@ -332,8 +361,26 @@ const CommunityPostPage = () => {
         )}
       </div>
 
-      <PostComment />
-      <CommentInput />
+      <PostComment
+        comments={post?.comments || []}
+        onCommentChange={() => {
+          // 댓글 변경 시 게시글 새로고침
+          window.location.reload();
+        }}
+        onReplyClick={(commentId: number, authorName: string) => {
+          setReplyTarget({id: commentId, authorName});
+        }}
+        selectedCommentId={replyTarget?.id || null}
+      />
+      <CommentInput
+        parentId={replyTarget?.id || null}
+        placeholder={replyTarget ? '대댓글을 입력하세요' : '댓글을 입력하세요.'}
+        onCommentCreated={() => {
+          // 댓글 작성 후 새로고침 트리거
+          setReplyTarget(null);
+          window.location.reload();
+        }}
+      />
 
       {confirmType && (
         <div className='fixed inset-0 z-50 flex justify-center items-center'>

@@ -17,6 +17,7 @@ export interface CommunityPostDetail {
   membersOnly: boolean;
   liked: boolean;
   scrapped: boolean;
+  comments?: CommunityComment[];
 }
 
 // 게시글 작성 요청 타입
@@ -40,4 +41,41 @@ export interface CommunityPostUpdateRequest {
   membersOnly: boolean;
   remainImageIds: number[]; // 기존 이미지 중 유지할 id
   // 추가 이미지는 FormData에 새로 넣음
+}
+
+// 댓글 관련 타입
+export interface CommunityComment {
+  id: number;
+  content: string;
+  writer: string;
+  time: string;
+  isEdited: boolean;
+  children: CommunityComment[];
+}
+
+// 댓글 작성 요청 타입
+export interface CommunityCommentCreateRequest {
+  parentId?: number | null;
+  content: string;
+}
+
+// 댓글 수정 요청 타입
+export interface CommunityCommentUpdateRequest {
+  content: string;
+}
+
+// 신고 관련 타입
+export type ReportTargetType = 'POST' | 'COMMENT';
+export type ReportReason =
+  | 'BAIT'
+  | 'LEAK_IMPERSONATION_FRAUD'
+  | 'COMMERCIAL_AD'
+  | 'ILLEGAL_CONTENT'
+  | 'OBSCENE'
+  | 'ABUSE';
+
+export interface CommunityReportRequest {
+  targetId: number;
+  targetType: ReportTargetType;
+  reason: ReportReason;
 }

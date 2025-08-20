@@ -3,6 +3,10 @@ import type {
   CommunityPostDetail,
   CommunityPostCreateRequest,
   CommunityPostUpdateRequest,
+  CommunityComment,
+  CommunityCommentCreateRequest,
+  CommunityCommentUpdateRequest,
+  CommunityReportRequest,
 } from '@/types/communityDetail';
 import {ENDPOINT} from './urls';
 import type {
@@ -104,4 +108,44 @@ export const toggleCommunityPostScrap = async (
   postId: number
 ): Promise<void> => {
   await privateAxios.post(ENDPOINT.COMMUNITY_SCRAP(postId));
+};
+
+// 댓글 관련 API
+export const getCommunityComments = async (
+  postId: number
+): Promise<CommunityComment[]> => {
+  const res = await privateAxios.get<{data: CommunityComment[]}>(
+    ENDPOINT.COMMUNITY_COMMENT_LIST(postId)
+  );
+  return res.data.data;
+};
+
+export const createCommunityComment = async (
+  postId: number,
+  request: CommunityCommentCreateRequest
+): Promise<void> => {
+  await privateAxios.post(ENDPOINT.COMMUNITY_COMMENT_CREATE(postId), request);
+};
+
+export const updateCommunityComment = async (
+  commentId: number,
+  request: CommunityCommentUpdateRequest
+): Promise<void> => {
+  await privateAxios.put(ENDPOINT.COMMUNITY_COMMENT_UPDATE(commentId), request);
+};
+
+export const deleteCommunityComment = async (commentId: number): Promise<void> => {
+  await privateAxios.delete(ENDPOINT.COMMUNITY_COMMENT_DELETE(commentId));
+};
+
+// 신고 관련 API
+export const reportCommunity = async (
+  request: CommunityReportRequest
+): Promise<void> => {
+  await privateAxios.post(ENDPOINT.COMMUNITY_REPORT, request);
+};
+
+// 차단 관련 API
+export const blockUser = async (userId: number): Promise<void> => {
+  await privateAxios.post(ENDPOINT.USER_BLOCK, { userId });
 };

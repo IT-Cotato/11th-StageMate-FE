@@ -1,20 +1,43 @@
 import {useState} from 'react';
+import {useParams} from 'react-router-dom';
+import {createCommunityComment} from '@/api/communityApi';
 import Send from '@/assets/community/send.svg?react';
 
-const CommentInput = () => {
+interface CommentInputProps {
+  onCommentCreated?: () => void;
+  parentId?: number | null;
+  placeholder?: string;
+}
+
+const CommentInput = ({
+  onCommentCreated,
+  parentId = null,
+  placeholder = '댓글을 입력하세요.',
+}: CommentInputProps) => {
+  const {postId} = useParams();
   const [comment, setComment] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async () => {
     const trimmed = comment.trim();
-    if (!trimmed) return;
+    console.log('CommentInput handleSubmit - parentId:', parentId);
+    if (!trimmed || !postId || isSubmitting) return;
 
     try {
-      // TODO: 댓글 등록 API 연결
-      console.log('댓글 등록:', trimmed);
+      setIsSubmitting(true);
+      const requestData = {
+        content: trimmed,
+        parentId,
+      };
+      console.log('API 요청 데이터:', requestData);
+      await createCommunityComment(Number(postId), requestData);
       setComment('');
+      onCommentCreated?.();
     } catch (error) {
       console.error('댓글 등록 실패:', error);
-      // TODO: 사용자에게 알림 처리
+      alert('댓글 등록에 실패했습니다.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -29,13 +52,13 @@ const CommentInput = () => {
       <div className='flex items-center gap-[20px]'>
         {/* TODO: 로그인 시 사용자 프로필 이미지로 대체 */}
         <img
-          src='/img/profile/mock-profile6.svg'
+          src='/default-profile.svg'
           alt='프로필 이미지'
           className='w-[37px] h-[37px] rounded-full'
         />
         <input
           type='text'
-          placeholder='댓글을 입력하세요.'
+          placeholder={placeholder}
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -45,7 +68,7 @@ const CommentInput = () => {
 
       <Send
         onClick={handleSubmit}
-        className='inline-block cursor-pointer'
+        className={`inline-block ${isSubmitting ? 'cursor-not-allowed' : 'cursor-pointer'}`}
         role='button'
         aria-label='댓글 등록'
       />
