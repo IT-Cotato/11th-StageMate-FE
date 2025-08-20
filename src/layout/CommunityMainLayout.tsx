@@ -3,14 +3,14 @@
  * 커뮤니티 메인 페이지, 게시판 목록 페이지, 채팅방
  */
 
-import CommunityMainHeader from '@/components/community/common/CommunityMainHeader';
+import GlobalHeader from '@/components/global/GlobalHeader';
 import {Outlet} from 'react-router-dom';
 
 const CommunityMainLayout = () => {
   return (
     <div className='w-full'>
       <div className='fixed top-0 max-w-[600px] w-full bg-white z-50'>
-        <CommunityMainHeader />
+        <GlobalHeader showIcons={false} />
       </div>
 
       <main className='pt-90'>

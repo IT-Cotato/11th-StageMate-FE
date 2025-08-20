@@ -73,10 +73,6 @@ function App() {
         <Route element={<MainLayout />}>
           <Route path='/' element={<MainPage />} />
           <Route path='/search' element={<SearchPage />} />
-          <Route
-            path='/magazine/:magazineId'
-            element={<MagazineDetailPage />}
-          />
 
           <Route element={<CalendarLayout />}>
             <Route path='/calendar/report' element={<CalendarReportPage />} />
@@ -96,11 +92,14 @@ function App() {
             <Route path='/community' element={<CommunityMainPage />} />
             <Route path='/community/:category' element={<FilteredPostList />} />
             <Route path='/magazine' element={<MagazinePage />} />
+            <Route
+              path='/magazine/:magazineId'
+              element={<MagazineDetailPage />}
+            />
             <Route path='/chat' element={<ChatPage />} />
             <Route path='/chatRoom/:id' element={<ChatRoomPage />} />
             <Route path='/performance' element={<PerformanceAllPage />} />
             <Route path='/community/share' element={<SharePostsPage />} />
-
             <Route
               element={
                 <ProtectedRoute
@@ -162,6 +161,10 @@ function App() {
         <Route element={<CommunityHeaderOnlyLayout />}>
           <Route
             path='/community/:category/write'
+            element={<CommunityEditPage />}
+          />
+          <Route
+            path='/community/:category/edit/:postId'
             element={<CommunityEditPage />}
           />
         </Route>

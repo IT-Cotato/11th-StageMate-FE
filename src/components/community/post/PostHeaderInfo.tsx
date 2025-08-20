@@ -1,7 +1,7 @@
 // 게시글 헤더 정보 컴포넌트
 interface PostHeaderInfoProps {
   title: string;
-  nickname: string;
+  nickname?: string;
   date: string;
   viewCount: number;
   variant?: 'list' | 'detail'; // 'list'는 게시글 목록, 'detail'은 게시글 상세

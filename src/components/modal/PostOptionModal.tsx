@@ -11,7 +11,7 @@ interface PostOptionModalProps {
   showDelete?: boolean;
   showReport?: boolean;
   showBlock?: boolean;
-  onSelect: (type: 'delete' | 'report' | 'block') => void;
+  onSelect: (type: 'edit' | 'delete' | 'report' | 'block') => void;
   onClose: () => void;
 }
 
@@ -37,7 +37,12 @@ const PostOptionModal = ({
       )}
 
       {showEdit && (
-        <button className='group flex items-center justify-between gap-7 px-5 py-2 cursor-pointer'>
+        <button 
+          onClick={() => {
+            onSelect('edit');
+            onClose();
+          }}
+          className='group flex items-center justify-between gap-7 px-5 py-2 cursor-pointer'>
           <div className='flex items-center gap-7'>
             <Pencil className='w-24 h-24' />
             <span>수정</span>

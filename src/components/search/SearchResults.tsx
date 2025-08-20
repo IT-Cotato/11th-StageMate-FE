@@ -1,79 +1,77 @@
-import {mockTickets} from '@/mocks/mockTickets';
-import {useState} from 'react';
 import TicketItem from './TicketItem';
-import {mockPosts} from '@/mocks/mockPosts';
-import ChatRoomItem from '../community/chat/ChatRoomItem';
-import {mockChatRooms} from '@/mocks/mockChatRooms';
 import SearchCommunityItem from './SearchCommunityItem';
 import {useHorizontalScroll} from '@/hooks/useHorizontalScroll';
+import type {SearchResultData} from '@/types/search';
+import '@/styles/skeleton.css';
 
-const SearchResults = () => {
-  const [ticketOrder, setTicketOrder] = useState<'정확도 순' | '공연 임박순'>(
-    '정확도 순'
-  );
+interface SearchResultsProps {
+  data: SearchResultData | undefined;
+  isLoading: boolean;
+  isError: boolean;
+}
+
+const SearchResults = ({data, isLoading, isError}: SearchResultsProps) => {
   const scrollRef = useHorizontalScroll();
-  const sortedTickets = [...mockTickets].sort((a, b) => {
-    if (ticketOrder === '정확도 순') {
-      return b.accuracyScore - a.accuracyScore;
-    } else {
-      return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
-    }
-  });
+  if (isError) return <div>검색 결과를 불러오는 중 오류가 발생했습니다.</div>;
+  if (isLoading)
+    return (
+      <div className='flex flex-col gap-30 bg-white'>
+        {Array.from({length: 3}).map((_, idx) => (
+          <div
+            key={idx}
+            className='rounded-[10px] h-70 w-full skeleton-shimmer'
+          />
+        ))}
+      </div>
+    );
+
+  if (!data || (data.performances.length === 0 && data.community.length === 0))
+    return (
+      <div className='flex justify-center text-gray-2'>
+        검색 결과가 없습니다.
+      </div>
+    );
+
   return (
     <div className='flex flex-col gap-30'>
-      {/** 티켓 */}
-      <div className='flex flex-col gap-10'>
-        <div className='flex flex-row justify-between items-center'>
-          <span className='font-bold text-xl text-primary'>
-            티켓 ({mockTickets.length})
-          </span>
-          <div className='flex flex-row text-[16px] text-gray-2 gap-5 cursor-pointer'>
-            <span
-              className={ticketOrder === '정확도 순' ? 'font-bold' : ''}
-              onClick={() => setTicketOrder('정확도 순')}>
-              정확도 순
-            </span>
-            <span>|</span>
-            <span
-              className={ticketOrder === '공연 임박순' ? 'font-bold' : ''}
-              onClick={() => setTicketOrder('공연 임박순')}>
-              공연 임박순
+      {/** 티켓/공연 */}
+      {data.performances && data.performances.length > 0 && (
+        <div className='flex flex-col gap-10'>
+          <div className='flex flex-row justify-between items-center'>
+            <span className='font-bold text-xl text-primary ml-5'>
+              티켓 ({data.performances.length})
             </span>
           </div>
-        </div>
-        <ul className='overflow-x-auto' ref={scrollRef}>
-          <div className='flex flex-row gap-10 w-max'>
-            {sortedTickets.map((ticket) => (
+          <ul
+            className='overflow-x-auto flex gap-10 w-max bg-white'
+            ref={scrollRef}>
+            {data?.performances.map((ticket) => (
               <TicketItem
-                key={ticket.id}
-                title={ticket.title}
+                key={ticket.chatRoomId || ticket.performanceName}
+                performanceName={ticket.performanceName}
                 startDate={ticket.startDate}
                 endDate={ticket.endDate}
-                imgUrl={ticket.imgUrl}
+                imgUrl={ticket.imageUrl}
                 theaterName={ticket.theaterName}
+                url={ticket.url}
+                chatRoomId={ticket.chatRoomId ?? null}
               />
             ))}
-          </div>
-        </ul>
-      </div>
+          </ul>
+        </div>
+      )}
 
-      <div className='flex flex-col gap-10'>
-        <span className='font-bold text-xl text-primary'>
-          커뮤니티 ({mockPosts.length})
-        </span>
-        {mockPosts.map((post) => (
-          <SearchCommunityItem key={post.id} post={post} />
-        ))}
-      </div>
-
-      <div className='flex flex-col gap-10 mb-60'>
-        <span className='font-bold text-xl text-primary'>
-          채팅방 ({mockChatRooms.length})
-        </span>
-        {mockChatRooms.map((room) => (
-          <ChatRoomItem key={room.id} room={room} />
-        ))}
-      </div>
+      {/** 커뮤니티 */}
+      {data.community && data.community.length > 0 && (
+        <div className='flex flex-col gap-10'>
+          <span className='font-bold text-xl text-primary ml-5'>
+            커뮤니티 ({data.community.length})
+          </span>
+          {data?.community.map((post) => (
+            <SearchCommunityItem key={post.id} post={post} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -8,6 +8,7 @@ export interface ReportForm {
   date?: Date | null;
   genre?: string[];
   url?: string;
+  theaterName?: string;
 }
 
 const initialForm: ReportForm = {
@@ -18,6 +19,7 @@ const initialForm: ReportForm = {
   date: null,
   genre: [],
   url: '',
+  theaterName: '',
 };
 
 interface ReportFormStore {

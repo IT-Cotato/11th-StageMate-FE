@@ -1,41 +1,133 @@
-import {useMemo} from 'react';
+import {useState, useMemo, useEffect} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
+import {useQuery} from '@tanstack/react-query';
+import Pagination from 'react-js-pagination';
 import PostListItem from './PostListItem';
-import {mockPosts} from '@/mocks/mockPosts';
 import useCommunityNavigation from '@/hooks/useCommunityNavigation';
-// 리스트에서 특정 카테고리의 게시글만 필터링하여 보여주는 컴포넌트
 import ChevronLeft from '@/assets/chevrons/chevron-left.svg?react';
 import WritePost from '@/assets/nav-icons/write-post.svg?react';
-import {CATEGORY_MAP} from '@/types/categoryMap';
-import type {CategoryKey, CategoryLabel} from '@/types/categoryMap';
+
+import {
+  getCategoryNameFromUrl,
+  getSlugFromUi,
+  apiToUiCategory,
+  type UiCategory,
+  type WriteableUiCategory,
+} from '@/util/categoryMapper';
+
+import {
+  getCommunityPostList,
+  getCommunityHotList,
+  toggleCommunityPostLike,
+} from '@/api/communityApi';
+import type {ApiPost, Post} from '@/types/community';
+
+const ITEMS_PER_PAGE = 10;
 
 const FilteredPostList = () => {
   const {category} = useParams<{category?: string}>();
   const navigate = useNavigate();
   const {goToPostDetail} = useCommunityNavigation();
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const categoryLabel: CategoryLabel | null = useMemo(() => {
-    if (category && category in CATEGORY_MAP) {
-      return CATEGORY_MAP[category as CategoryKey];
-    }
-    return null;
+  const categoryLabel: UiCategory | null = useMemo(() => {
+    if (!category) return null;
+    const ui = getCategoryNameFromUrl(category);
+    return ui ?? null;
   }, [category]);
 
-  const filteredPosts = useMemo(() => {
-    return categoryLabel
-      ? mockPosts.filter((post) => post.category === categoryLabel)
-      : [];
-  }, [categoryLabel]);
+  const [posts, setPosts] = useState<Post[]>([]);
 
-  if (!categoryLabel) {
+  const {
+    data: postsData,
+    isLoading,
+    isSuccess,
+  } = useQuery({
+    queryKey: ['communityPosts', category, currentPage],
+    queryFn: async () => {
+      if (!categoryLabel) return null;
+      const isHot = category === 'hot';
+
+      const data = isHot
+        ? await getCommunityHotList(currentPage, ITEMS_PER_PAGE)
+        : await getCommunityPostList(
+            categoryLabel,
+            currentPage,
+            ITEMS_PER_PAGE
+          );
+
+      const mappedPosts: Post[] = data.list.map((p: ApiPost) => ({
+        id: p.id,
+        category:
+          apiToUiCategory[p.category as '일상' | '꿀팁' | '나눔거래'] ?? '',
+        title: p.title,
+        likeCount: p.likeCount ?? 0,
+        commentCount: p.commentCount ?? 0,
+        isLiked: p.isLiked ?? false,
+        viewCount: p.viewCount ?? 0,
+        nickname: p.author ?? '',
+        date: p.createdAt ?? '',
+        isScrapped: false,
+        bookmarkCount: 0,
+        uniqueKey: String(p.id),
+        imgUrls: Array.isArray(p.imageUrls)
+          ? p.imageUrls.map((img) => img.url)
+          : p.imageUrl && p.imageUrl !== 'basic'
+            ? [p.imageUrl]
+            : [],
+      }));
+
+      return {posts: mappedPosts, totalElements: data.totalElements};
+    },
+    enabled: !!categoryLabel,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+  });
+
+  useEffect(() => {
+    if (isSuccess && postsData) {
+      setPosts(postsData.posts);
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+  }, [isSuccess, postsData, currentPage]);
+
+  const handlePageChange = (pageNumber: number) => setCurrentPage(pageNumber);
+
+  const handleLike = (post: Post) => async () => {
+    try {
+      await toggleCommunityPostLike(post.id);
+      setPosts((prevPosts) =>
+        prevPosts.map((p) =>
+          p.id === post.id
+            ? {
+                ...p,
+                isLiked: !p.isLiked,
+                likeCount: p.isLiked ? p.likeCount - 1 : p.likeCount + 1,
+              }
+            : p
+        )
+      );
+    } catch (error) {
+      console.error('좋아요 처리 실패:', error);
+      alert('좋아요 처리에 실패했습니다.');
+    }
+  };
+
+  if (!categoryLabel)
     return <div className='p-4 font-semibold'>잘못된 경로입니다.</div>;
-  }
+
+  const handleWrite = () => {
+    // HOT은 작성 불가 → 일단 '일상'으로 이동하거나 disable 처리
+    const targetUi: WriteableUiCategory =
+      categoryLabel === 'HOT' ? '일상' : (categoryLabel as WriteableUiCategory);
+    const slug = getSlugFromUi(targetUi);
+    navigate(`/community/${slug}/write`);
+  };
 
   return (
-    <div>
+    <div className='px-16'>
       {/* 상단바 */}
       <div className='flex justify-between items-center'>
-        {/* 왼쪽: 뒤로가기 버튼 + 카테고리명 */}
         <div className='flex items-center cursor-pointer'>
           <button
             className='flex items-center justify-center'
@@ -48,11 +140,9 @@ const FilteredPostList = () => {
             {categoryLabel}
           </span>
         </div>
-
-        {/* 오른쪽: 게시글 작성 버튼 */}
         <button
           className='flex items-center gap-[8px] cursor-pointer'
-          onClick={() => navigate(`/community/${category}/write`)}>
+          onClick={handleWrite}>
           <div className='w-[19px] h-[19px]'>
             <WritePost className='w-full h-full' />
           </div>
@@ -62,13 +152,51 @@ const FilteredPostList = () => {
 
       {/* 게시글 리스트 */}
       <div className='flex flex-col mt-[22px] gap-[19px]'>
-        {filteredPosts.map((post) => {
-          const handleClick = () => goToPostDetail(category as string, post.id);
-          return (
-            <PostListItem key={post.id} post={post} onClick={handleClick} />
-          );
-        })}
+        {isLoading
+          ? Array.from({length: ITEMS_PER_PAGE}).map((_, index) => (
+              <div
+                key={index}
+                className='skeleton-shimmer h-[88px] w-full rounded-lg'
+              />
+            ))
+          : posts.map((post, index) => {
+              const slug = getSlugFromUi(
+                (post.category === 'HOT'
+                  ? '일상'
+                  : post.category) as WriteableUiCategory
+              );
+              const handleClick = () => goToPostDetail(slug, post.id);
+
+              return (
+                <PostListItem
+                  key={`${post.id}-${index}`}
+                  post={post}
+                  onClick={handleClick}
+                  onLikeClick={handleLike(post)}
+                />
+              );
+            })}
       </div>
+
+      {/* 페이지네이션 */}
+      {!isLoading && postsData && postsData.posts.length > 0 && (
+        <div className='flex justify-center mt-20'>
+          <Pagination
+            activePage={currentPage}
+            itemsCountPerPage={ITEMS_PER_PAGE}
+            totalItemsCount={postsData.totalElements}
+            pageRangeDisplayed={5}
+            onChange={handlePageChange}
+            innerClass='flex gap-6'
+            itemClass='px-5 py-1 text-sm'
+            activeClass='font-bold'
+            prevPageText='<'
+            nextPageText='>'
+            firstPageText='<<'
+            lastPageText='>>'
+          />
+        </div>
+      )}
     </div>
   );
 };

@@ -17,11 +17,13 @@ const MainMagazine = ({magazine}: MainMagazineProps) => {
         onClick={() => goToMagazineDetail(magazine.id)}
         className='flex flex-col w-full h-378 justify-start items-center gap-10 px-16 py-13 bg-[#DDE1E6] rounded-[10px] bg-no-repeat bg-center bg-cover hover:cursor-pointer'
         style={
-          magazine.imgUrl ? {backgroundImage: `url(${magazine.imgUrl})`} : {}
+          magazine.imageUrl
+            ? {backgroundImage: `url(${magazine.imageUrl})`}
+            : {}
         }>
         <div className='flex w-full justify-between items-center'>
-          <PlayTag text={magazine.tag} />
-          <BookMark className={`${magazine.isMarked && 'text-secondary'}`} />
+          <PlayTag text={magazine.category} />
+          <BookMark className={`${magazine.isScraped && 'text-secondary'}`} />
         </div>
       </div>
 
