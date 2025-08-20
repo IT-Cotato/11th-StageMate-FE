@@ -54,7 +54,8 @@ const ChatRoomPage = () => {
   const [messages, setMessages] = useState<ChatMessageReceived[]>([]);
 
   const {user} = useAuthStore();
-  const {isConnected, chatUsers, updateChatUserBlocked} = useStompStore();
+  const {isConnected, chatUsers, updateChatUserBlocked, resetChatUser} =
+    useStompStore();
 
   const {data: reportCount} = useQuery({
     queryKey: ['reportsChatCount', user?.id],
@@ -98,6 +99,7 @@ const ChatRoomPage = () => {
     // 컴포넌트가 언마운트되면, 모든 연결과 구독을 정리합니다.
     return () => {
       deactivateStomp();
+      resetChatUser();
     };
   }, [id]);
 
