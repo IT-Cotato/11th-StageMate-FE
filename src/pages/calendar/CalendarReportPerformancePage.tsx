@@ -28,7 +28,10 @@ const CalendarReportPerformancePage = () => {
         selectedKey={selectedKey}
         onSelect={(item) => {
           setSelectedKey(item.performanceName);
-          setForm({performance: item.performanceName});
+          setForm({
+            performance: item.performanceName,
+            theaterName: item.theaterName,
+          });
           navigate(-1);
         }}
       />
