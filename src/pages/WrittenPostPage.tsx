@@ -1,17 +1,17 @@
 import PostListItem from '@/components/community/post/PostListItem';
 import BackButtonTitleHeader from '@/components/global/BackButtonTitleHeader';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import useCommunityNavigation from '@/hooks/useCommunityNavigation';
 import {useMyPosts} from '@/hooks/useUserContents';
 import type {Post} from '@/types/community';
 import {useState, useEffect} from 'react';
 import Pagination from 'react-js-pagination';
-import {useNavigate} from 'react-router-dom';
 const ITEMS_PER_PAGE = 9;
 
 const WrittenPostPage = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const {data, isLoading, isError} = useMyPosts(currentPage, ITEMS_PER_PAGE);
-  const navigate = useNavigate();
+  const {goToPostDetail} = useCommunityNavigation();
 
   useEffect(() => {
     window.scrollTo({
@@ -43,7 +43,7 @@ const WrittenPostPage = () => {
           <PostListItem
             key={post.id}
             post={post}
-            onClick={() => navigate(`/community/${post.category}/${post.id}`)}
+            onClick={() => goToPostDetail(post.category, post.id)}
           />
         ))}
       </ul>

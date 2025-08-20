@@ -5,12 +5,12 @@ import PostListItem from '@/components/community/post/PostListItem';
 import BackButtonTitleHeader from '@/components/global/BackButtonTitleHeader';
 import {useUserCommunities} from '@/hooks/useUserContents';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
-import {useNavigate} from 'react-router-dom';
+import useCommunityNavigation from '@/hooks/useCommunityNavigation';
 const ITEMS_PER_PAGE = 9;
 
 const ScrappedPostPage = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const navigate = useNavigate();
+  const {goToPostDetail} = useCommunityNavigation();
   const {data, isLoading, isError} = useUserCommunities(
     currentPage,
     ITEMS_PER_PAGE
@@ -40,7 +40,9 @@ const ScrappedPostPage = () => {
             <PostListItem
               key={post.id}
               post={post}
-              onClick={() => navigate(`/community/${post.category}/${post.id}`)}
+              onClick={() => {
+                goToPostDetail(post.category, post.id);
+              }}
             />
           ))}
         </ul>
