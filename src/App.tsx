@@ -163,7 +163,17 @@ function App() {
         <Route path='/signup-form' element={<SignupFormPage />} />
         <Route path='/login' element={<LoginPage />} />
         <Route path='/signup-condition' element={<SignupConditionPage />} />
-        <Route path='/signup-complete' element={<SignupCompletePage />} />
+
+        {/* NavigationBar가 없어야하는 페이지 - 로그인 필수 */}
+        <Route
+          element={
+            <ProtectedRoute
+              isLoggedIn={isAuthenticated}
+              isLoading={isLoading}
+            />
+          }>
+          <Route path='/signup-complete' element={<SignupCompletePage />} />
+        </Route>
 
         {/* NavigationBar가 없고 ContentHeader & FooterBarWrapper가 필요한 페이지 */}
         <Route element={<CommunityContentLayout />}>
