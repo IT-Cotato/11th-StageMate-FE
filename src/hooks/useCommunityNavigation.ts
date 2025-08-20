@@ -12,15 +12,18 @@ const useCommunityNavigation = () => {
   };
 
   const goToShareDetail = (id: number) => {
-    navigate(`/share/${id}`);
+    navigate(`/community/share/${id}`);
   };
 
   const goToMagazineDetail = (id: number) => {
     navigate(`/magazine/${id}`);
   };
 
-  const goToChatRoomDetail = (id: number) => {
-    navigate(`/chatRoom/${id}`);
+  const goToChatRoomDetail = (
+    id: number,
+    title: string = '방 이름을 불러올 수 없습니다.'
+  ) => {
+    navigate(`/chatRoom/${id}`, {state: {title}});
   };
 
   return {

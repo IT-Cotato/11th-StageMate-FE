@@ -16,6 +16,7 @@ export interface WeekDate {
 interface WeekCalendarProps {
   isLoggedIn: boolean;
   schedules?: Schedule[];
+  isLoading?: boolean;
   onLikeClick?: (schedule: Schedule) => void;
   onScheduleClick?: (schedule: Schedule) => void;
   onViewMore?: () => void;
@@ -38,6 +39,7 @@ function generateWeekDates(currentDate: Date, selectedDate: Date): WeekDate[] {
 const WeekCalendar = ({
   isLoggedIn,
   schedules = [],
+  isLoading = false,
   onLikeClick,
   onScheduleClick,
   onViewMore,
@@ -71,6 +73,14 @@ const WeekCalendar = ({
     }
 
     if (selectedDateSchedules.length === 0) {
+      if (isLoading) {
+        return (
+          <CalendarButton
+            text='로딩 중...'
+            variant='outline'
+          />
+        );
+      }
       return (
         <CalendarButton
           text='일정이 없습니다. 추가해주세요'

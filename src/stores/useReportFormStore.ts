@@ -5,9 +5,12 @@ export interface ReportForm {
   description: string;
   location?: string;
   performance?: string;
+  performanceId?: number;
+  theaterId?: number;
   date?: Date | null;
   genre?: string[];
   url?: string;
+  theaterName?: string;
 }
 
 const initialForm: ReportForm = {
@@ -15,9 +18,12 @@ const initialForm: ReportForm = {
   description: '',
   location: '',
   performance: '',
+  performanceId: undefined,
+  theaterId: undefined,
   date: null,
   genre: [],
   url: '',
+  theaterName: '',
 };
 
 interface ReportFormStore {

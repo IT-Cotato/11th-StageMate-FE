@@ -1,17 +1,56 @@
-/**
- * 메인 페이지 - 나눔 · 거래 리스트 컴포넌트
- */
-
+import {useState, useEffect} from 'react';
 import Diamond from '@/assets/community/share-post-diamond.svg?react';
-import {mockSharePosts} from '@/mocks/mockSharePosts';
 import {useHorizontalScroll} from '@/hooks/useHorizontalScroll';
 import PostCardItem from './PostCardItem';
 import useCommunityListNavigation from '@/hooks/useCommunityListNavigation';
+import useCommunityNavigation from '@/hooks/useCommunityNavigation';
+import {getUrlFromCategoryName} from '@/util/categoryMapper';
 import LoadMoreButton from '@/components/global/LoadMoreButton';
+import {getTradePostList, toggleCommunityPostScrap} from '@/api/communityApi';
+import type {CommunityTradePostSummary} from '@/types/communityList';
 
 const SharePostList = () => {
+  const [posts, setPosts] = useState<CommunityTradePostSummary[]>([]);
+  const [loading, setLoading] = useState(true);
   const listWrapperRef = useHorizontalScroll();
   const {goToShareList} = useCommunityListNavigation();
+  const {goToPostDetail} = useCommunityNavigation();
+
+  const handleClick = (post: CommunityTradePostSummary) => {
+    const englishCategory = getUrlFromCategoryName('나눔 · 거래');
+    goToPostDetail(englishCategory, post.id);
+  };
+
+  const handleScrapClick = async (postId: number) => {
+    try {
+      await toggleCommunityPostScrap(postId);
+      setPosts(prevPosts => 
+        prevPosts.map(post => 
+          post.id === postId 
+            ? { ...post, isScrapped: !post.isScrapped }
+            : post
+        )
+      );
+    } catch (error) {
+      console.error('스크랩 처리 실패:', error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      setLoading(true);
+      try {
+        const data = await getTradePostList(1, 5);
+        setPosts(data.list);
+      } catch (error) {
+        console.error('나눔·거래 게시글 조회 실패', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPosts();
+  }, []);
+
   return (
     <div className='flex flex-col gap-15'>
       {/** title */}
@@ -26,16 +65,32 @@ const SharePostList = () => {
 
       {/** 게시물 리스트 렌더링 */}
       <ul className='flex flex-row gap-12 overflow-x-auto' ref={listWrapperRef}>
-        {mockSharePosts.map((post) => (
-          <PostCardItem
-            key={post.id}
-            title={post.title}
-            price={post.price}
-            category={post.category}
-            isBookmarked={post.isBookmarked}
-            placeholderText='나눔 거래 임시 이미지'
-          />
-        ))}
+        {loading
+          ? Array.from({length: 5}).map((_, index) => (
+              <li key={index} className='flex-shrink-0'>
+                <div className='skeleton-shimmer w-[150px] h-[150px] rounded-lg'></div>
+                <div className='skeleton-shimmer h-4 w-3/4 mt-2 rounded-lg'></div>
+                <div className='skeleton-shimmer h-4 w-1/2 mt-1 rounded-lg'></div>
+              </li>
+            ))
+          : posts.map((post, index) => (
+              <PostCardItem
+                key={`${post.id}-${index}`}
+                title={post.title}
+                category='나눔 · 거래'
+                displayCategory={post.tradeCategory}
+isScraped={post.isScrapped}
+                imageUrl={
+                  post.imageUrl && post.imageUrl !== 'basic'
+                    ? post.imageUrl
+                    : undefined
+                }
+
+                placeholderText='나눔 거래 이미지'
+                onClick={() => handleClick(post)}
+                onScrapClick={() => handleScrapClick(post.id)}
+              />
+            ))}
       </ul>
     </div>
   );

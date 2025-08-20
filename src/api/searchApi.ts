@@ -1,7 +1,12 @@
-import type {ImageSearchResponse} from '@/types/search';
-import {privateAxios} from './axios';
+import type {
+  ImageSearchResponse,
+  SearchParams,
+  SearchPopularResponse,
+} from '@/types/search';
+import {privateAxios, publicAxios} from './axios';
 import {ENDPOINT} from './urls';
 
+// 네이버 이미지 검색 get
 export const getImages = async (
   query: string,
   display = 10,
@@ -28,4 +33,16 @@ export const getImages = async (
   });
 
   return res.data.data;
+};
+
+// 실시간 인기 검색어 get
+export const getSearchPopular = async (): Promise<SearchPopularResponse> => {
+  const res = await publicAxios.get(ENDPOINT.SEARCH_POPULAR);
+  return res.data;
+};
+
+// 검색하기 get
+export const getSearchResult = async (params: SearchParams) => {
+  const response = await publicAxios.get(ENDPOINT.SEARCH, {params});
+  return response.data;
 };

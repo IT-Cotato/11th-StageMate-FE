@@ -36,6 +36,16 @@ export const ENDPOINT = {
   PERFORMANCE: '/api/v1/performance',
   PERFORMANCE_RECOMMEND: '/api/v1/performance/recommend',
 
+  //performanceSchedule
+  PERFORMANCE_SCHEDULE: '/api/v1/performanceSchedule',
+  PERFORMANCE_SCHEDULE_V2: '/api/v2/performanceSchedule',
+  PERFORMANCE_SCHEDULE_DETAIL: (id: number) =>
+    `/api/v1/performanceSchedule/${id}`,
+  PERFORMANCE_SCHEDULE_UPDATE: (id: number) =>
+    `/api/v1/performanceSchedule/${id}`,
+  PERFORMANCE_SCHEDULE_SCRAP: (id: number) =>
+    `/api/v1/performanceSchedule/${id}/scrap`,
+
   //naver-image-search
   IMAGE_SEARCH: '/api/v1/naver/images',
 
@@ -46,4 +56,54 @@ export const ENDPOINT = {
   ARCHIVE_UPDATE: (archiveId: number) => `/api/v1/archive/${archiveId}`,
   ARCHIVE_DELETE: (archiveId: number) => `/api/v1/archive/${archiveId}`,
   ARCHIVE_TOP_RATING: '/api/v2/archives/top-rating',
+
+  // chat
+  CHAT_ROOM: 'api/v1/chat-room',
+  CHAT_PROFILE: 'api/v1/chat/profile',
+
+  // reports
+  REPORTS_CHAT_COUNT: 'api/v1/reports/chat/count',
+  REPORTS_CHAT: 'api/v1/reports/chat',
+
+  // community
+  COMMUNITY_DETAIL: (postId: number) => `/api/v1/communities/${postId}`,
+  COMMUNITY_LIST: '/api/v1/communities',
+  COMMUNITY_CREATE: '/api/v1/communities',
+  COMMUNITY_UPDATE: (postId: number) => `/api/v1/communities/${postId}`,
+  COMMUNITY_DELETE: (postId: number) => `/api/v1/communities/${postId}`,
+  COMMUNITY_LIKE: (postId: number) => `/api/v1/communities/${postId}/likes`,
+  COMMUNITY_SCRAP: (postId: number) => `/api/v1/communities/${postId}/scraps`,
+  COMMUNITY_HOT_LIST: '/api/v1/communities/hot',
+  COMMUNITY_TRADE_LIST: '/api/v1/communities/trade',
+  COMMUNITY_COMMENT_LIST: (postId: number) => `/api/v1/communities/${postId}/comments`,
+  COMMUNITY_COMMENT_CREATE: (postId: number) => `/api/v1/communities-comments/${postId}`,
+  COMMUNITY_COMMENT_UPDATE: (commentId: number) => `/api/v1/communities-comments/${commentId}`,
+  COMMUNITY_COMMENT_DELETE: (commentId: number) => `/api/v1/communities-comments/${commentId}`,
+  COMMUNITY_REPORT: '/api/v1/reports/community',
+  USER_BLOCK: '/api/v1/users/block',
+
+  //search
+  SEARCH_POPULAR: '/api/v1/search/popular',
+  SEARCH: '/api/v1/search',
+
+  //notification
+  NOTIFICATION: '/api/v1/notifications',
+
+
+  //theaters
+  THEATERS: '/api/v1/theaters',
+
+  //magazine
+  MAGAZINE: '/api/v1/magazines',
+  MAGAZINE_DETAIL: (magazineId: number) => `/api/v1/magazines/${magazineId}`,
+  MAGAZINE_LATEST: '/api/v1/magazines/latest',
+  MAGAZINE_RECOMMEND: '/api/v1/magazines/recommend',
+  MAGAZINE_SCRAP: (magazineId: number) =>
+    `/api/v1/magazines/${magazineId}/scraps`,
+  MAGAZINE_LIKE: (magazineId: number) =>
+    `/api/v1/magazines/${magazineId}/likes`,
+
+  //user
+  USER_MAGAZINE: '/api/v1/users/magazines',
+  USER_COMMUNITIES: '/api/v1/users/communities',
 };

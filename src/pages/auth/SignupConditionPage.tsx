@@ -52,7 +52,7 @@ const SignupConditionPage = () => {
   };
 
   return (
-    <div className='w-full sm:w-[600px] mx-auto bg-white'>
+    <div className='w-full sm:w-[600px] mx-auto bg-white min-h-screen shadow-2xl'>
       <PageHeader
         title='회원가입'
         onLeftClick={() => navigate('/login')}

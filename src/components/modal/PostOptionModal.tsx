@@ -11,7 +11,7 @@ interface PostOptionModalProps {
   showDelete?: boolean;
   showReport?: boolean;
   showBlock?: boolean;
-  onSelect: (type: 'delete' | 'report' | 'block') => void;
+  onSelect: (type: 'reply' | 'edit' | 'delete' | 'report' | 'block') => void;
   onClose: () => void;
 }
 
@@ -27,7 +27,12 @@ const PostOptionModal = ({
   return (
     <div className='flex flex-col bg-[#ffffff] py-4 rounded-[5px] z-50 divide-y divide-gray-1'>
       {showReply && (
-        <button className='group flex items-center justify-between gap-7 px-5 py-2 cursor-pointer'>
+        <button 
+          onClick={() => {
+            onSelect('reply');
+            onClose();
+          }}
+          className='group flex items-center justify-between gap-7 px-5 py-2 cursor-pointer'>
           <div className='flex items-center gap-7'>
             <ArrowReply className='w-24 h-24' />
             <span>답글 달기</span>
@@ -37,7 +42,12 @@ const PostOptionModal = ({
       )}
 
       {showEdit && (
-        <button className='group flex items-center justify-between gap-7 px-5 py-2 cursor-pointer'>
+        <button 
+          onClick={() => {
+            onSelect('edit');
+            onClose();
+          }}
+          className='group flex items-center justify-between gap-7 px-5 py-2 cursor-pointer'>
           <div className='flex items-center gap-7'>
             <Pencil className='w-24 h-24' />
             <span>수정</span>

@@ -54,10 +54,14 @@ export const MagazineOrder = [
 ];
 
 export const genreGroups = [
-  ['창작 뮤지컬', '오리지널/내한 뮤지컬', '라이선스 뮤지컬'],
-  ['넌버벌 퍼포먼스', '아동/가족 뮤지컬', '코미디'],
-  ['드라마', '스릴러', '로맨스'],
-  ['가족', '판타지'],
+  '창작 뮤지컬',
+  '오리지널/내한 뮤지컬',
+  '넌버벌 퍼포먼스',
+  '아동/가족 뮤지컬',
+  '리미티드 런',
+  '라이선스 뮤지컬',
+  '스테디셀러',
+  '아동/가족 연극',
 ];
 
 export const PopupChatCaution = {
@@ -75,12 +79,12 @@ export const PopupBlock = {
 };
 
 export const MenuReport = [
-  {id: 0, text: '낚시 / 놀림 / 도배'},
-  {id: 1, text: '유출 / 사칭 / 사기'},
-  {id: 2, text: '상업적 광고 및 판매'},
-  {id: 3, text: '불법촬영물 등의 유통'},
-  {id: 4, text: '음란물 / 불건전한 대화'},
-  {id: 5, text: '욕설 / 비하'},
+  {id: 'BAIT', text: '낚시 / 놀림 / 도배'},
+  {id: 'LEAK_IMPERSONATION_FRAUD', text: '유출 / 사칭 / 사기'},
+  {id: 'COMMERCIAL_AD', text: '상업적 광고 및 판매'},
+  {id: 'ILLEGAL_CONTENT', text: '불법촬영물 등의 유통'},
+  {id: 'OBSCENE', text: '음란물 / 불건전한 대화'},
+  {id: 'ABUSE', text: '욕설 / 비하'},
 ];
 
 export const PopupReport = {

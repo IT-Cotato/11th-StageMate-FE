@@ -1,40 +1,48 @@
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import Pagination from 'react-js-pagination';
-import {mockPosts} from '@/mocks/mockPosts';
+
 import PostListItem from '@/components/community/post/PostListItem';
 import BackButtonTitleHeader from '@/components/global/BackButtonTitleHeader';
+import {useUserCommunities} from '@/hooks/useUserContents';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 const ITEMS_PER_PAGE = 9;
 
 const ScrappedPostPage = () => {
-  const scrappedPost = mockPosts.filter((post) => post.isScrapped === true);
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalItemsCount = scrappedPost.length;
-  const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
-  const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
-  const currentItems = scrappedPost.slice(indexOfFirstItem, indexOfLastItem);
-
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  }, [currentPage]);
-
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const {data, isLoading, isError} = useUserCommunities(
+    currentPage,
+    ITEMS_PER_PAGE
+  );
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
+  if (isLoading) return <LoadingSpinner />;
+  if (isError)
+    return (
+      <div className='text-sm text-red justify-center'>
+        스크랩한 글을 불러오지 못했습니다.
+      </div>
+    );
 
+  const posts = data?.data.list ?? [];
+  const totalItemsCount = data?.data.totalElements ?? 0;
   return (
     <div className='flex flex-col gap-40'>
       {/* 상단 */}
       <BackButtonTitleHeader title='스크랩한 글 모아보기' between />
 
       {/* 리스트 */}
-      <ul className='flex flex-col gap-10'>
-        {currentItems.map((post, idx) => (
-          <PostListItem key={idx} post={post} />
-        ))}
-      </ul>
+      {posts.length > 0 ? (
+        <ul className='flex flex-col gap-10'>
+          {posts.map((post) => (
+            <PostListItem key={post.id} post={post} />
+          ))}
+        </ul>
+      ) : (
+        <div className='text-gray-500 text-sm text-center'>
+          스크랩한 글이 없습니다.
+        </div>
+      )}
 
       {/* 페이지네이션 */}
       <div className='flex justify-center'>

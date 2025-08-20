@@ -5,21 +5,31 @@
  */
 import EllipsisVertical from '@/assets/ellipsis/ellipsis-vertical.svg?react';
 import ArrowReply from '@/assets/community/modal-icons/arrow-reply.svg?react';
-import type {Comment, Reply} from '@/types/community';
+import type {CommunityComment} from '@/types/communityDetail';
 import PostOptionModal from '@/components/modal/PostOptionModal';
 import ConfirmModal from '@/components/modal/ConfirmModal';
 import {useState} from 'react';
+import {deleteCommunityComment} from '@/api/communityApi';
 
 interface CommentItemProps {
-  comment: Comment | Reply;
+  comment: CommunityComment;
   depth?: number; // 0이면 댓글, 1 이상이면 대댓글
+  onCommentChange?: () => void;
+  onReplyClick?: (commentId: number, authorName: string) => void;
+  isSelected?: boolean;
 }
 
-const CommentItem = ({comment, depth = 0}: CommentItemProps) => {
+const CommentItem = ({
+  comment,
+  depth = 0,
+  onCommentChange,
+  onReplyClick,
+  isSelected = false,
+}: CommentItemProps) => {
   const isReply = depth > 0;
   const [showOptions, setShowOptions] = useState(false);
   const [confirmType, setConfirmType] = useState<
-    null | 'delete' | 'report' | 'block'
+    null | 'edit' | 'delete' | 'report' | 'block'
   >(null);
 
   return (
@@ -27,26 +37,26 @@ const CommentItem = ({comment, depth = 0}: CommentItemProps) => {
       <div
         className={`flex justify-between items-center py-10 border-t border-primary-5 ${
           isReply ? 'pl-[22px] pr-8' : 'px-8'
-        } relative`}>
+        } ${isSelected ? 'bg-primary-4/50' : ''} relative`}>
         <div className='flex items-center gap-6'>
           {isReply && (
             // 대댓글인 경우 화살표 아이콘 표시
             <ArrowReply className='w-[24px] h-[24px] mr-[7px]' />
           )}
           <img
-            src={comment.profileImgUrl}
-            alt={`${comment.nickname}의 프로필`}
+            src={'/default-profile.svg'}
+            alt={`${comment.writer}의 프로필`}
             className='w-[37px] h-[37px] rounded-full stroke-1 stroke-primary'
           />
           <div className='flex flex-col'>
             <strong className='font-light text-xs leading-[140%] text-black'>
-              {comment.nickname}
+              {comment.writer}
             </strong>
             <p className='font-normal text-[15px] leading-[110%] text-black'>
               {comment.content}
             </p>
             <span className='font-light text-[10px] leading-[140%] text-gray-2'>
-              {comment.createdAt}
+              {comment.time}
             </span>
           </div>
         </div>
@@ -66,7 +76,11 @@ const CommentItem = ({comment, depth = 0}: CommentItemProps) => {
               showBlock
               onClose={() => setShowOptions(false)}
               onSelect={(type) => {
-                setConfirmType(type);
+                if (type === 'reply') {
+                  onReplyClick?.(comment.id, comment.writer);
+                } else {
+                  setConfirmType(type);
+                }
                 setShowOptions(false);
               }}
             />
@@ -74,21 +88,35 @@ const CommentItem = ({comment, depth = 0}: CommentItemProps) => {
         )}
       </div>
 
-      {confirmType && (
+      {confirmType && confirmType !== 'edit' && (
         <ConfirmModal
           type={confirmType}
           onCancel={() => setConfirmType(null)}
-          onConfirm={() => {
-            // 여기서 삭제/신고/차단 기능 실행
+          onConfirm={async () => {
+            if (confirmType === 'delete') {
+              try {
+                await deleteCommunityComment(comment.id);
+                onCommentChange?.();
+              } catch (error) {
+                console.error('댓글 삭제 실패:', error);
+                alert('댓글 삭제에 실패했습니다.');
+              }
+            }
+            // 신고/차단 기능은 추후 구현
             setConfirmType(null);
           }}
         />
       )}
 
-      {'replies' in comment &&
-        comment.replies?.map((reply) => (
-          <CommentItem key={reply.id} comment={reply} depth={depth + 1} />
-        ))}
+      {comment.children?.map((child) => (
+        <CommentItem
+          key={child.id}
+          comment={child}
+          depth={depth + 1}
+          onCommentChange={onCommentChange}
+          onReplyClick={onReplyClick}
+        />
+      ))}
     </>
   );
 };
