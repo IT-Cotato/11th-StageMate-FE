@@ -49,4 +49,9 @@ export const ENDPOINT = {
 
   // chat
   CHAT_ROOM: 'api/v1/chat-room',
+  CHAT_PROFILE: 'api/v1/chat/profile',
+
+  // reports
+  REPORTS_CHAT_COUNT: 'api/v1/reports/chat/count',
+  REPORTS_CHAT: 'api/v1/reports/chat',
 };
