@@ -3,6 +3,7 @@ import SearchCommunityItem from './SearchCommunityItem';
 import {useHorizontalScroll} from '@/hooks/useHorizontalScroll';
 import type {SearchResultData} from '@/types/search';
 import '@/styles/skeleton.css';
+import useCommunityNavigation from '@/hooks/useCommunityNavigation';
 
 interface SearchResultsProps {
   data: SearchResultData | undefined;
@@ -12,6 +13,7 @@ interface SearchResultsProps {
 
 const SearchResults = ({data, isLoading, isError}: SearchResultsProps) => {
   const scrollRef = useHorizontalScroll();
+  const {goToPostDetail} = useCommunityNavigation();
   if (isError) return <div>검색 결과를 불러오는 중 오류가 발생했습니다.</div>;
   if (isLoading)
     return (
@@ -43,7 +45,7 @@ const SearchResults = ({data, isLoading, isError}: SearchResultsProps) => {
             </span>
           </div>
           <ul
-            className='overflow-x-auto flex gap-10 w-max bg-white'
+            className='flex flex-nowrap gap-10 overflow-x-auto bg-white px-5'
             ref={scrollRef}>
             {data?.performances.map((ticket) => (
               <TicketItem
@@ -68,7 +70,11 @@ const SearchResults = ({data, isLoading, isError}: SearchResultsProps) => {
             커뮤니티 ({data.community.length})
           </span>
           {data?.community.map((post) => (
-            <SearchCommunityItem key={post.id} post={post} />
+            <SearchCommunityItem
+              key={post.id}
+              post={post}
+              onClick={() => goToPostDetail(post.category, post.id)}
+            />
           ))}
         </div>
       )}
