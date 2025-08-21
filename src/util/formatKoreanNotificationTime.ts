@@ -1,18 +1,19 @@
 import {
   format,
-  isToday,
-  isYesterday,
-  differenceInHours,
-  differenceInMinutes,
   parse,
   isValid,
+  isToday,
+  isYesterday,
+  differenceInMinutes,
+  differenceInHours,
 } from 'date-fns';
 import {ko} from 'date-fns/locale';
 
-const formatKoreanTime = (dateString: string) => {
+const formatKoreanNotificationTime = (dateString: string) => {
   try {
     let date: Date | null = null;
 
+    // 1. 시간만 있는 경우 "HH:MM"
     if (/^\d{2}:\d{2}$/.test(dateString)) {
       const today = new Date();
       const [hours, minutes] = dateString.split(':').map(Number);
@@ -23,12 +24,13 @@ const formatKoreanTime = (dateString: string) => {
         hours,
         minutes
       );
-      return format(date, 'a h:mm', {locale: ko});
     }
-
-    if (/\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}$/.test(dateString)) {
+    // 2. 날짜+시간 있는 경우 "YYYY/MM/DD HH:MM:SS"
+    else if (/\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}$/.test(dateString)) {
       date = parse(dateString, 'yyyy/MM/dd HH:mm:ss', new Date());
-    } else {
+    }
+    // 3. 그 외 일반 날짜 형식
+    else {
       const d = new Date(dateString);
       date = isNaN(d.getTime()) ? null : d;
     }
@@ -41,10 +43,11 @@ const formatKoreanTime = (dateString: string) => {
     // 24시간 미만: 상대 시간
     if (hoursDiff < 24) {
       const minutesDiff = differenceInMinutes(now, date);
-      return minutesDiff < 60 ? `${minutesDiff}분 전` : `${hoursDiff}시간 전`;
+      if (minutesDiff < 60) return `${minutesDiff}분 전`;
+      return `${hoursDiff}시간 전`;
     }
 
-    // 절대 시간
+    // 절대 시간: 오늘/어제/그 외
     if (isToday(date)) return `오늘 ${format(date, 'a h:mm', {locale: ko})}`;
     if (isYesterday(date))
       return `어제 ${format(date, 'a h:mm', {locale: ko})}`;
@@ -55,4 +58,4 @@ const formatKoreanTime = (dateString: string) => {
   }
 };
 
-export default formatKoreanTime;
+export default formatKoreanNotificationTime;

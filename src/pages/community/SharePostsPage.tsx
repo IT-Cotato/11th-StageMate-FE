@@ -37,11 +37,9 @@ const SharePostsPage = () => {
   const handleScrapClick = async (postId: number) => {
     try {
       await toggleCommunityPostScrap(postId);
-      setPosts(prevPosts => 
-        prevPosts.map(post => 
-          post.id === postId 
-            ? { ...post, isScrapped: !post.isScrapped }
-            : post
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post.id === postId ? {...post, isScrapped: !post.isScrapped} : post
         )
       );
     } catch (error) {
@@ -74,12 +72,10 @@ const SharePostsPage = () => {
                 title={post.title}
                 category={post.category}
                 displayCategory={post.tradeCategory}
-
                 isScraped={post.isScrapped}
-
                 imageUrl={post.imageUrl}
                 placeholderText='나눔·거래 이미지'
-                isScrapMagazine={true}
+                isMagazine={true}
                 onClick={() => goToShareDetail(post.id)}
                 onScrapClick={() => handleScrapClick(post.id)}
               />

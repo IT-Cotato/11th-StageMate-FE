@@ -43,6 +43,6 @@ export const getSearchPopular = async (): Promise<SearchPopularResponse> => {
 
 // 검색하기 get
 export const getSearchResult = async (params: SearchParams) => {
-  const response = await publicAxios.get(ENDPOINT.SEARCH, {params});
+  const response = await privateAxios.get(ENDPOINT.SEARCH, {params});
   return response.data;
 };

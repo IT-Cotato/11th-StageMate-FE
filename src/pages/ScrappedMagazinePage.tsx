@@ -33,52 +33,44 @@ const ScrappedMagazinePage = () => {
       </div>
     );
   return (
-    <div className='flex flex-col gap-40 justify-center'>
+    <div className='flex flex-col gap-40 justify-center px-20'>
       {/* 상단 */}
       <BackButtonTitleHeader title='스크랩한 매거진 모아보기' between />
 
       {/* 리스트 */}
-      {magazines.length === 0 ? (
-        <div className='flex flex-col items-center justify-center py-40 text-gray-2 text-sm'>
-          아직 스크랩한 매거진이 없습니다.
-        </div>
-      ) : (
-        <>
-          <ul className='flex flex-wrap gap-y-60 gap-x-24 px-35'>
-            {magazines.map((magazine) => (
-              <PostCardItem
-                key={magazine.id}
-                title={magazine.title}
-                subTitle={magazine.subTitle}
-                category={magazine.category}
-                isScraped={magazine.isScraped}
-                imageUrl={magazine.imageUrl}
-                isScrapMagazine={true}
-                placeholderText={magazine.title}
-                onClick={() => goToMagazineDetail(magazine.id)}
-              />
-            ))}
-          </ul>
+      <ul className='flex gap-y-60 gap-x-20'>
+        {magazines.map((magazine) => (
+          <PostCardItem
+            key={magazine.id}
+            title={magazine.title}
+            subTitle={magazine.subTitle}
+            category={magazine.category}
+            isScraped={magazine.isScraped}
+            imageUrl={magazine.imageUrl}
+            isMagazine={true}
+            placeholderText={magazine.title}
+            onClick={() => goToMagazineDetail(magazine.id)}
+          />
+        ))}
+      </ul>
 
-          {/* 페이지네이션 */}
-          <div className='flex justify-center'>
-            <Pagination
-              activePage={currentPage}
-              itemsCountPerPage={ITEMS_PER_PAGE}
-              totalItemsCount={totalItemsCount}
-              pageRangeDisplayed={5}
-              onChange={handlePageChange}
-              innerClass='flex gap-6'
-              itemClass='px-5 py-1 text-sm'
-              activeClass='font-bold'
-              prevPageText='<'
-              nextPageText='>'
-              firstPageText='<<'
-              lastPageText='>>'
-            />
-          </div>
-        </>
-      )}
+      {/* 페이지네이션 */}
+      <div className='flex justify-center'>
+        <Pagination
+          activePage={currentPage}
+          itemsCountPerPage={ITEMS_PER_PAGE}
+          totalItemsCount={totalItemsCount}
+          pageRangeDisplayed={5}
+          onChange={handlePageChange}
+          innerClass='flex gap-6'
+          itemClass='px-5 py-1 text-sm'
+          activeClass='font-bold'
+          prevPageText='<'
+          nextPageText='>'
+          firstPageText='<<'
+          lastPageText='>>'
+        />
+      </div>
     </div>
   );
 };

@@ -55,7 +55,7 @@ const ArchivePage = () => {
             {[...Array(4)].map((_, idx) => (
               <div
                 key={idx}
-                className='w-[200px] h-[230px] rounded-lg skeleton-shimmer'
+                className='w-[160px] h-[250px] rounded-lg skeleton-shimmer'
               />
             ))}
           </div>
@@ -80,7 +80,7 @@ const ArchivePage = () => {
           )}
         </div>
 
-        <div className='flex flex-col gap-4'>
+        <div className='flex flex-col gap-15'>
           {postLoading ? (
             [...Array(4)].map((_, idx) => (
               <div
