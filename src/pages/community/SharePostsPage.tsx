@@ -57,7 +57,7 @@ const SharePostsPage = () => {
       />
 
       {/* 리스트 */}
-      <ul className='grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-y-60 gap-x-24'>
+      <ul className='flex flex-wrap justify-center gap-y-60 gap-x-20'>
         {loading
           ? Array.from({length: ITEMS_PER_PAGE}).map((_, index) => (
               <div key={index} className='flex flex-col gap-2'>

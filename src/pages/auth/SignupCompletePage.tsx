@@ -20,10 +20,10 @@ const SignupCompletePage = () => {
 
       <div className='flex flex-col gap-64 pt-40 pl-16 pr-17'>
         <div className='flex flex-col px-20'>
-          <h1 className='h-50 self-stretch text-[#141313] text-[32px] font-bold leading-[140%]'>
+          <h1 className='text-[#141313] text-[32px] font-bold leading-[140%] mb-10'>
             {user?.name}님, 새 회원이 되신 것을 축하합니다!
           </h1>
-          <h1 className='flex items-end gap-23 self-stretch text-[#141313] text-[32px] font-bold leading-[140%]'>
+          <h1 className='flex items-end gap-23 text-[#141313] text-[32px] font-bold leading-[140%]'>
             <LogoText />와 즐거운 공연 되세요.
           </h1>
         </div>

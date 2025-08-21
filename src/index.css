@@ -19,6 +19,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+input {
+  min-width: 0px;
+}
+
 @theme {
   --spacing: 1px;
 

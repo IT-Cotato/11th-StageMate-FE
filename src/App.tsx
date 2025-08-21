@@ -74,20 +74,42 @@ function App() {
           <Route path='/' element={<MainPage />} />
           <Route path='/search' element={<SearchPage />} />
 
-          <Route element={<CalendarLayout />}>
-            <Route path='/calendar/report' element={<CalendarReportPage />} />
-            <Route
-              path='/calendar/report/location'
-              element={<CalendarReportLocationPage />}
-            />
-            <Route
-              path='/calendar/report/performance'
-              element={<CalendarReportPerformancePage />}
-            />
-            <Route path='/calendar' element={<CalendarPage />} />
-            <Route path='/performance' element={<PerformanceAllPage />} />
+          {/* NavigationBar가 필요한 페이지 - 로그인 필수 */}
+          <Route
+            element={
+              <ProtectedRoute
+                isLoggedIn={isAuthenticated}
+                isLoading={isLoading}
+              />
+            }>
+            <Route element={<CalendarLayout />}>
+              <Route path='/calendar/report' element={<CalendarReportPage />} />
+              <Route
+                path='/calendar/report/location'
+                element={<CalendarReportLocationPage />}
+              />
+              <Route
+                path='/calendar/report/performance'
+                element={<CalendarReportPerformancePage />}
+              />
+              <Route path='/calendar' element={<CalendarPage />} />
+              <Route path='/performance' element={<PerformanceAllPage />} />
+            </Route>
+
+            <Route path='settings'>
+              <Route path='announcement' element={<AnnouncementPage />} />
+              <Route
+                path='announcement/:id'
+                element={<AnnouncementDetailPage />}
+              />
+              <Route path='enquire' element={<EnquirePage />} />
+              <Route path='policy-terms' element={<PolicyTermsPage />} />
+              <Route path='policy-privacy' element={<PolicyPrivacyPage />} />
+              <Route path='change-password' element={<ChangePassword />} />
+            </Route>
           </Route>
 
+          {/* NavigationBar & GlobalHeader가 필요한 페이지 */}
           <Route element={<CommunityMainLayout />}>
             <Route path='/community' element={<CommunityMainPage />} />
             <Route path='/community/:category' element={<FilteredPostList />} />
@@ -97,9 +119,10 @@ function App() {
               element={<MagazineDetailPage />}
             />
             <Route path='/chat' element={<ChatPage />} />
-            <Route path='/chatRoom/:id' element={<ChatRoomPage />} />
             <Route path='/performance' element={<PerformanceAllPage />} />
             <Route path='/community/share' element={<SharePostsPage />} />
+
+            {/* NavigationBar & GlobalHeader가 필요한 페이지 - 로그인 필수 */}
             <Route
               element={
                 <ProtectedRoute
@@ -127,32 +150,22 @@ function App() {
                 <Route path='/blocked-user' element={<BlockedUserPage />} />
               </Route>
 
-              <Route path='/notification' element={<NotificationPage />} />
               <Route path='/settings' element={<SettingLayout />}>
                 <Route path='account' element={<SettingAccountPage />} />
                 <Route path='activity' element={<SettingActivityPage />} />
                 <Route path='support' element={<SettingSupportPage />} />
               </Route>
-            </Route>
-          </Route>
 
-          <Route
-            element={
-              <ProtectedRoute
-                isLoggedIn={isAuthenticated}
-                isLoading={isLoading}
-              />
-            }>
-            <Route path='settings'>
-              <Route path='announcement' element={<AnnouncementPage />} />
+              <Route path='/chatRoom/:id' element={<ChatRoomPage />} />
               <Route
-                path='announcement/:id'
-                element={<AnnouncementDetailPage />}
+                path='/scrap-magazine'
+                element={<ScrappedMagazinePage />}
               />
-              <Route path='enquire' element={<EnquirePage />} />
-              <Route path='policy-terms' element={<PolicyTermsPage />} />
-              <Route path='policy-privacy' element={<PolicyPrivacyPage />} />
-              <Route path='change-password' element={<ChangePassword />} />
+              <Route path='/scrap-post' element={<ScrappedPostPage />} />
+              <Route path='/written-post' element={<WrittenPostPage />} />
+              <Route path='/written-comment' element={<WrittenCommentPage />} />
+              <Route path='/blocked-user' element={<BlockedUserPage />} />
+              <Route path='/notification' element={<NotificationPage />} />
             </Route>
           </Route>
         </Route>
@@ -161,22 +174,44 @@ function App() {
         <Route path='/signup-form' element={<SignupFormPage />} />
         <Route path='/login' element={<LoginPage />} />
         <Route path='/signup-condition' element={<SignupConditionPage />} />
-        <Route path='/signup-complete' element={<SignupCompletePage />} />
-        <Route element={<CommunityHeaderOnlyLayout />}>
-          <Route
-            path='/community/:category/write'
-            element={<CommunityEditPage />}
-          />
-          <Route
-            path='/community/:category/edit/:postId'
-            element={<CommunityEditPage />}
-          />
+
+        {/* NavigationBar가 없어야하는 페이지 - 로그인 필수 */}
+        <Route
+          element={
+            <ProtectedRoute
+              isLoggedIn={isAuthenticated}
+              isLoading={isLoading}
+            />
+          }>
+          <Route path='/signup-complete' element={<SignupCompletePage />} />
         </Route>
+
+        {/* NavigationBar가 없고 ContentHeader & FooterBarWrapper가 필요한 페이지 */}
         <Route element={<CommunityContentLayout />}>
           <Route
             path='/community/:category/:postId'
             element={<CommunityPostPage />}
           />
+        </Route>
+
+        {/* NavigationBar가 없고 ContentHeader가 필요한 페이지 - 로그인 필수 */}
+        <Route
+          element={
+            <ProtectedRoute
+              isLoggedIn={isAuthenticated}
+              isLoading={isLoading}
+            />
+          }>
+          <Route element={<CommunityHeaderOnlyLayout />}>
+            <Route
+              path='/community/:category/write'
+              element={<CommunityEditPage />}
+            />
+            <Route
+              path='/community/:category/edit/:postId'
+              element={<CommunityEditPage />}
+            />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
