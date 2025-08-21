@@ -75,7 +75,7 @@ const SharePostsPage = () => {
                 isScraped={post.isScrapped}
                 imageUrl={post.imageUrl}
                 placeholderText='나눔·거래 이미지'
-                isScrapMagazine={true}
+                isMagazine={true}
                 onClick={() => goToShareDetail(post.id)}
                 onScrapClick={() => handleScrapClick(post.id)}
               />

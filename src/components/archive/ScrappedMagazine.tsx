@@ -25,7 +25,7 @@ const ScrappedMagazine = ({magazines}: ScrappedMagazineProps) => {
             category={post.category}
             isScraped={post.isScraped}
             imageUrl={post.imageUrl}
-            isScrapMagazine={true}
+            isMagazine={true}
             placeholderText={post.title}
             onClick={() => goToMagazineDetail(post.id)}
           />

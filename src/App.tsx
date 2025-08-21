@@ -137,6 +137,17 @@ function App() {
                   <Route path='write/:id' element={<ArchiveWritePage />} />
                   <Route path='image-search' element={<ImageSearchPage />} />
                 </Route>
+                <Route
+                  path='/scrap-magazine'
+                  element={<ScrappedMagazinePage />}
+                />
+                <Route path='/scrap-post' element={<ScrappedPostPage />} />
+                <Route path='/written-post' element={<WrittenPostPage />} />
+                <Route
+                  path='/written-comment'
+                  element={<WrittenCommentPage />}
+                />
+                <Route path='/blocked-user' element={<BlockedUserPage />} />
               </Route>
 
               <Route path='/settings' element={<SettingLayout />}>
