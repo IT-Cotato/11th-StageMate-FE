@@ -33,12 +33,12 @@ const ScrappedMagazinePage = () => {
       </div>
     );
   return (
-    <div className='flex flex-col gap-40 justify-center'>
+    <div className='flex flex-col gap-40 justify-center px-20'>
       {/* 상단 */}
       <BackButtonTitleHeader title='스크랩한 매거진 모아보기' between />
 
       {/* 리스트 */}
-      <ul className='flex flex-wrap gap-y-60 gap-x-24 px-35'>
+      <ul className='flex gap-y-60 gap-x-20'>
         {magazines.map((magazine) => (
           <PostCardItem
             key={magazine.id}
@@ -47,7 +47,7 @@ const ScrappedMagazinePage = () => {
             category={magazine.category}
             isScraped={magazine.isScraped}
             imageUrl={magazine.imageUrl}
-            isScrapMagazine={true}
+            isMagazine={true}
             placeholderText={magazine.title}
             onClick={() => goToMagazineDetail(magazine.id)}
           />

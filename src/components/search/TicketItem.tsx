@@ -1,4 +1,4 @@
-import {useNavigate} from 'react-router-dom';
+import useCommunityNavigation from '@/hooks/useCommunityNavigation';
 
 interface TicketItemProps {
   performanceName: string;
@@ -19,7 +19,7 @@ const TicketItem = ({
   url,
   chatRoomId,
 }: TicketItemProps) => {
-  const navigate = useNavigate();
+  const {goToChatRoomDetail} = useCommunityNavigation();
   const handleGoToBooking = () => {
     if (url) {
       window.open(url, '_blank');
@@ -46,7 +46,7 @@ const TicketItem = ({
         {chatRoomId && (
           <button
             className='h-30 bg-primary text-white w-full rounded-[10px] text-[11px] cursor-pointer hover:bg-primary/90'
-            onClick={() => navigate(`/chatRoom/${chatRoomId}`)}>
+            onClick={() => goToChatRoomDetail(chatRoomId, performanceName)}>
             채팅방으로 이동
           </button>
         )}

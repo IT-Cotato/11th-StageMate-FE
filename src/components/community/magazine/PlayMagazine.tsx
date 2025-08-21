@@ -38,6 +38,7 @@ const PlayMagazine = () => {
             isScraped={magazine.isScraped}
             imageUrl={magazine.imageUrl}
             placeholderText={magazine.title}
+            isMagazine={true}
             onClick={() => goToMagazineDetail(magazine.id)}
           />
         ))}

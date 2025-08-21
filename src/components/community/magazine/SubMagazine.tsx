@@ -11,7 +11,7 @@ const SubMagazine = ({magazine}: SubMagazineProps) => {
   const {goToMagazineDetail} = useCommunityNavigation();
 
   return (
-    <div className='flex w-250 flex-col items-start gap-12'>
+    <li className='flex shrink-0 w-250 flex-col items-start gap-12'>
       {/* 매거진 이미지 */}
       <div
         onClick={() => goToMagazineDetail(magazine.id)}
@@ -34,7 +34,7 @@ const SubMagazine = ({magazine}: SubMagazineProps) => {
           line-clamp-1 hover:cursor-pointer'>
         {magazine.title}
       </h1>
-    </div>
+    </li>
   );
 };
 

@@ -134,7 +134,9 @@ export const updateCommunityComment = async (
   await privateAxios.put(ENDPOINT.COMMUNITY_COMMENT_UPDATE(commentId), request);
 };
 
-export const deleteCommunityComment = async (commentId: number): Promise<void> => {
+export const deleteCommunityComment = async (
+  commentId: number
+): Promise<void> => {
   await privateAxios.delete(ENDPOINT.COMMUNITY_COMMENT_DELETE(commentId));
 };
 
@@ -143,9 +145,4 @@ export const reportCommunity = async (
   request: CommunityReportRequest
 ): Promise<void> => {
   await privateAxios.post(ENDPOINT.COMMUNITY_REPORT, request);
-};
-
-// 차단 관련 API
-export const blockUser = async (userId: number): Promise<void> => {
-  await privateAxios.post(ENDPOINT.USER_BLOCK, { userId });
 };

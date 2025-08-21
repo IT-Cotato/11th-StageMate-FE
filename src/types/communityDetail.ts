@@ -5,6 +5,7 @@ export interface CommunityPostDetail {
   title: string;
   content: JSONContent;
   authorName: string;
+  authorId: number;
   createdAt: string;
   viewCount: number;
   category: string;

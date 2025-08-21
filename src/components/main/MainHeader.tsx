@@ -22,7 +22,10 @@ const MainHeader = ({isLoggedIn, username}: MainHeaderProps) => {
         backgroundImage: `url("${HeaderBackground}")`,
       }}>
       <div className='flex justify-between items-center'>
-        <Logo className='sm:w-150 w-120' />
+        <Logo
+          className='sm:w-150 w-120 cursor-pointer'
+          onClick={() => navigate('/')}
+        />
         {isLoggedIn && (
           <div className='gap-18 flex flex-row mr-10'>
             <Bell
@@ -31,7 +34,7 @@ const MainHeader = ({isLoggedIn, username}: MainHeaderProps) => {
             />
             <User
               className='cursor-pointer w-25 h-25'
-              onClick={() => navigate('/settings')}
+              onClick={() => navigate('/settings/account')}
             />
           </div>
         )}

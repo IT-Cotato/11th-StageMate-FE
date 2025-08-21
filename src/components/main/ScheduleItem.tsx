@@ -27,11 +27,11 @@ const ScheduleItem = ({
   isSelectable = true,
 }: ScheduleItemProps) => {
   const {isScraped, toggleScrap} = useScrapStore();
-  const currentIsScraped = isScraped(String(id));
+  const currentIsScraped = isScraped(Number(id), 'performanceSchedule');
 
   const handleLikeClick = async () => {
     // 즉시 전역 상태 업데이트
-    toggleScrap(String(id));
+    toggleScrap(Number(id), 'performanceSchedule');
 
     try {
       // 2초 타임아웃으로 API 호출

@@ -3,6 +3,7 @@ export interface Notification {
   title: string;
   content: string;
   formattedDate: string;
+  category: string;
 }
 
 export interface NotificationResponse {

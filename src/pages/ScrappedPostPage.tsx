@@ -5,10 +5,12 @@ import PostListItem from '@/components/community/post/PostListItem';
 import BackButtonTitleHeader from '@/components/global/BackButtonTitleHeader';
 import {useUserCommunities} from '@/hooks/useUserContents';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import useCommunityNavigation from '@/hooks/useCommunityNavigation';
 const ITEMS_PER_PAGE = 9;
 
 const ScrappedPostPage = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const {goToPostDetail} = useCommunityNavigation();
   const {data, isLoading, isError} = useUserCommunities(
     currentPage,
     ITEMS_PER_PAGE
@@ -35,7 +37,13 @@ const ScrappedPostPage = () => {
       {posts.length > 0 ? (
         <ul className='flex flex-col gap-10'>
           {posts.map((post) => (
-            <PostListItem key={post.id} post={post} />
+            <PostListItem
+              key={post.id}
+              post={post}
+              onClick={() => {
+                goToPostDetail(post.category, post.id);
+              }}
+            />
           ))}
         </ul>
       ) : (

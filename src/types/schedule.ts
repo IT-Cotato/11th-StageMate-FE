@@ -1,6 +1,6 @@
 // CalendarPage에서 사용하는 간소화된 스케줄 정보
 export interface Schedule {
-  id: string;
+  id: number;
   category: string;
   title: string;
   isLike?: boolean;

@@ -1,15 +1,18 @@
 /**
- * 커뮤니티 글 작성 페이지, 글 세부 내용 페이지의 레이아웃
+ * 커뮤니티 글 작성 페이지, 게시글 상세 페이지의 레이아웃
  */
 
 import ContentHeader from '@/components/community/content/ContentHeader';
 import ContentFooterBar from '@/components/community/content/ContentFooterBar';
-import {Outlet, useMatch} from 'react-router-dom';
+import {Outlet, useMatch, useParams} from 'react-router-dom';
 import {useCommunityPostSafe} from '@/components/community/context/useCommunityPost';
 import CommunityPostProvider from '@/components/community/context/CommunityPostProvider';
+import {useScrapStore} from '@/stores/useScrapStore';
 
 const FooterBarWrapper = () => {
   const context = useCommunityPostSafe();
+  const {postId} = useParams();
+  const {isLiked, isScraped, getCounts} = useScrapStore();
 
   // URL에서 postId가 있는지 확인 (예: /community/daily/123)
   const isPostDetailPage = useMatch('/community/:category/:postId');
@@ -18,35 +21,34 @@ const FooterBarWrapper = () => {
     return null;
   }
 
-  // Context가 없으면 기본값으로 하단바 표시
-  if (!context) {
-    return (
-      <ContentFooterBar
-        post={{
-          isLiked: false,
-          commentCount: 0,
-          isScrapped: false,
-        }}
-        onLikeClick={() => {}}
-        onScrapClick={() => {}}
-        likeCount={0}
-        scrapCount={0}
-      />
-    );
-  }
+  // 게시글 상세페이지이면 전역 상태에서 데이터 가져오기
+  let likeCount = 0;
+  let scrapCount = 0;
+  let commentCount = 0;
+  let isCurrentlyLiked = false;
+  let isCurrentlyScrapped = false;
 
+  if (postId) {
+    const postIdNum = Number(postId);
+    const counts = getCounts(postIdNum, 'community');
+    likeCount = counts.likeCount;
+    scrapCount = counts.scrapCount;
+    commentCount = counts.commentCount;
+    isCurrentlyLiked = isLiked(postIdNum, 'community');
+    isCurrentlyScrapped = isScraped(postIdNum, 'community');
+  }
 
   return (
     <ContentFooterBar
       post={{
-        isLiked: context.isLiked || false,
-        commentCount: context.commentCount || 0,
-        isScrapped: context.isScrapped || false,
+        isLiked: isCurrentlyLiked,
+        commentCount: commentCount,
+        isScrapped: isCurrentlyScrapped,
       }}
-      onLikeClick={context.onLikeClick}
-      onScrapClick={context.onScrapClick}
-      likeCount={context.likeCount || 0}
-      scrapCount={context.scrapCount || 0}
+      onLikeClick={context?.onLikeClick || (() => {})}
+      onScrapClick={context?.onScrapClick || (() => {})}
+      likeCount={likeCount}
+      scrapCount={scrapCount}
     />
   );
 };
