@@ -357,7 +357,7 @@ const SignupFormPage = () => {
                 value={formState.id.value}
                 onChange={handleChange}
                 placeholder='아이디*'
-                className={`focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-2xl leading-[140%] 'text-gray-3'`}
+                className={`focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-2xl leading-[140%] text-gray-3`}
               />
               <StateButtonStroke
                 text={checkIdMutation.isPending ? '확인 중' : '중복확인'}
@@ -365,7 +365,8 @@ const SignupFormPage = () => {
                 disabled={!formState.id.isValid || checkIdMutation.isPending}
               />
             </div>
-            <h1 className={`self-stretch text-xl leading-[140%] ${idColor}`}>
+            <h1
+              className={`self-stretch text-xl leading-[140%] ${idColor} line-clamp-1`}>
               {idMessage}
             </h1>
           </div>
@@ -381,10 +382,11 @@ const SignupFormPage = () => {
                 value={formState.pw.value}
                 onChange={handleChange}
                 placeholder='비밀번호*'
-                className={`focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-2xl leading-[140%] 'text-gray-3'`}
+                className={`focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-2xl leading-[140%] text-gray-3`}
               />
             </div>
-            <h1 className={`self-stretch text-xl leading-[140%] ${pwColor}`}>
+            <h1
+              className={`self-stretch text-xl leading-[140%] ${pwColor} line-clamp-1`}>
               {pwMessage}
             </h1>
           </div>
@@ -400,7 +402,7 @@ const SignupFormPage = () => {
                 value={formState.pwCheck.value}
                 onChange={handleChange}
                 placeholder='비밀번호 확인*'
-                className={`focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-2xl leading-[140%] 'text-gray-3'`}
+                className={`focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-2xl leading-[140%] text-gray-3`}
               />
               {formState.pwCheck.isValid === true ? (
                 <CheckConfirmed className='w-30 h-30 shrink-0 aspect-square' />
@@ -419,7 +421,7 @@ const SignupFormPage = () => {
                 value={formState.name.value}
                 onChange={handleChange}
                 placeholder='이름*'
-                className={`focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-2xl leading-[140%] 'text-gray-3'`}
+                className={`focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-2xl leading-[140%] text-gray-3`}
               />
             </div>
           </div>
@@ -460,7 +462,7 @@ const SignupFormPage = () => {
                 value={formState.email.value}
                 onChange={handleChange}
                 placeholder='이메일*'
-                className={`focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-2xl leading-[140%] 'text-gray-3'`}
+                className={`focus:border-0 focus:outline-0 flex grow h-60 py-16 px-17 items-center gap-10 bg-gray-1 text-2xl leading-[140%] text-gray-3`}
               />
             </div>
           </div>
