@@ -57,7 +57,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     if (accessToken && refreshToken) {
       try {
         const mypageRes = await getMypageInfo();
-        const userInfo = mypageRes.data;
+        const userInfo = mypageRes;
 
         set({
           accessToken,
