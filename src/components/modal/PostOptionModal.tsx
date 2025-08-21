@@ -3,6 +3,7 @@ import Ban from '@/assets/community/modal-icons/ban.svg?react';
 import Exclamation from '@/assets/community/modal-icons/exclamation.svg?react';
 import Pencil from '@/assets/community/modal-icons/pencil.svg?react';
 import Trash from '@/assets/community/modal-icons/trash.svg?react';
+import Share from '@/assets/community/share.svg?react';
 import ChevronRight from '@/assets/chevrons/chevron-right.svg?react';
 
 interface PostOptionModalProps {
@@ -11,7 +12,8 @@ interface PostOptionModalProps {
   showDelete?: boolean;
   showReport?: boolean;
   showBlock?: boolean;
-  onSelect: (type: 'reply' | 'edit' | 'delete' | 'report' | 'block') => void;
+  showShare?: boolean;
+  onSelect: (type: 'reply' | 'edit' | 'delete' | 'report' | 'block' | 'share') => void;
   onClose: () => void;
 }
 
@@ -21,6 +23,7 @@ const PostOptionModal = ({
   showDelete,
   showReport,
   showBlock,
+  showShare,
   onSelect,
   onClose,
 }: PostOptionModalProps) => {
@@ -96,6 +99,21 @@ const PostOptionModal = ({
           <div className='flex items-center gap-7'>
             <Ban className='w-24 h-24' />
             <span className='text-red'>차단</span>
+          </div>
+          <ChevronRight className='w-16 h-16 opacity-0 group-hover:opacity-100 transition' />
+        </button>
+      )}
+
+      {showShare && (
+        <button
+          onClick={() => {
+            onSelect('share');
+            onClose();
+          }}
+          className='group flex items-center justify-between gap-7 px-5 py-2 cursor-pointer'>
+          <div className='flex items-center gap-7'>
+            <Share className='w-24 h-24' />
+            <span>공유하기</span>
           </div>
           <ChevronRight className='w-16 h-16 opacity-0 group-hover:opacity-100 transition' />
         </button>

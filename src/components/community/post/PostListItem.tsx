@@ -4,6 +4,7 @@ import EmptyHeart from '@/assets/hearts/empty-heart.svg?react';
 import FullHeart from '@/assets/hearts/full-heart.svg?react';
 import Chat from '@/assets/community/community-chat.svg?react';
 import PostHeaderInfo from './PostHeaderInfo';
+import {useScrapStore} from '@/stores/useScrapStore';
 
 interface PostListItemProps {
   post: Post;
@@ -12,6 +13,11 @@ interface PostListItemProps {
 }
 
 const PostListItem = ({post, onClick, onLikeClick}: PostListItemProps) => {
+  const {isLiked, getCounts} = useScrapStore();
+  
+  // 전역 상태에서 실시간으로 좋아요 상태와 카운트 가져오기
+  const isCurrentlyLiked = isLiked(post.id, 'community');
+  const currentCounts = getCounts(post.id, 'community');
   return (
     <article className='flex flex-col justify-center pb-8 border-b border-b-primary-5'>
       <div
@@ -35,14 +41,14 @@ const PostListItem = ({post, onClick, onLikeClick}: PostListItemProps) => {
                 e.stopPropagation();
                 onLikeClick?.();
               }}>
-              {post.isLiked ? (
+              {isCurrentlyLiked ? (
                 <FullHeart className='w-full h-full' />
               ) : (
                 <EmptyHeart className='w-full h-full stroke-secondary' />
               )}
             </button>
             <span className='text-black font-normal text-[12px] leading-[140%]'>
-              {post.likeCount}
+              {currentCounts.likeCount}
             </span>
           </span>
           <span className='flex flex-col items-center gap-[3px]'>
@@ -50,7 +56,7 @@ const PostListItem = ({post, onClick, onLikeClick}: PostListItemProps) => {
               <Chat className='w-full h-full text-secondary mb-[2px]' />
             </span>
             <span className='text-black font-normal text-[12px] leading-[140%]'>
-              {post.commentCount}
+              {currentCounts.commentCount}
             </span>
           </span>
         </div>

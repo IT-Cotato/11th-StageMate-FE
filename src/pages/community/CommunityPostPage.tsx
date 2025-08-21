@@ -8,6 +8,8 @@ import {
 } from '@/api/communityApi';
 import type {CommunityPostDetail} from '@/types/communityDetail';
 import {useHorizontalScroll} from '@/hooks/useHorizontalScroll';
+import {useScrapStore} from '@/stores/useScrapStore';
+import {useAuthStore} from '@/stores/authStore';
 import CommunityCategory from '@/components/community/common/CommunityCategory';
 import PostHeaderInfo from '@/components/community/post/PostHeaderInfo';
 import EllipsisVertical from '@/assets/ellipsis/ellipsis-vertical.svg?react';
@@ -23,6 +25,7 @@ import EditorViewer from '@/components/community/post/EditorViewer';
 import {getUrlFromCategoryName, type UiCategory} from '@/util/categoryMapper';
 import {useCommunityPostSafe} from '@/components/community/context/useCommunityPost';
 import type {JSONContent} from '@tiptap/react';
+import useClickOutside from '@/hooks/useClickOutside';
 
 const decodeHtml = (s: string) =>
   s
@@ -72,6 +75,23 @@ const CommunityPostPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const hasLoaded = useRef(false);
   const communityContext = useCommunityPostSafe();
+  const {user} = useAuthStore();
+  const {
+    isLiked,
+    isScraped,
+    setLiked,
+    setScrapped,
+    getCounts,
+    setCounts,
+    toggleLike,
+    toggleScrap,
+  } = useScrapStore();
+  const optionModalRef = useRef<HTMLDivElement>(null);
+
+  useClickOutside({
+    ref: optionModalRef,
+    onClickOutside: () => setShowOptions(false),
+  });
 
   useEffect(() => {
     if (!postId || hasLoaded.current) {
@@ -85,10 +105,11 @@ const CommunityPostPage = () => {
       .then((loadedPost) => {
         setPost(loadedPost);
 
-        // Context에 게시글 데이터 설정
+        // Context와 전역 상태에 게시글 데이터 설정
+        const postIdNum = Number(postId);
         if (communityContext) {
           communityContext.setPostData({
-            postId: Number(postId),
+            postId: postIdNum,
             likeCount: loadedPost.likeCount || 0,
             scrapCount: loadedPost.scrapCount || 0,
             commentCount: loadedPost.commentCount || 0,
@@ -96,6 +117,14 @@ const CommunityPostPage = () => {
             isScrapped: loadedPost.scrapped || false,
           });
         }
+
+        setLiked(postIdNum, 'community', loadedPost.liked || false);
+        setScrapped(postIdNum, 'community', loadedPost.scrapped || false);
+        setCounts(postIdNum, 'community', {
+          likeCount: loadedPost.likeCount || 0,
+          scrapCount: loadedPost.scrapCount || 0,
+          commentCount: loadedPost.commentCount || 0,
+        });
       })
       .catch((err) => {
         console.error('게시글 불러오기 실패', err);
@@ -108,49 +137,57 @@ const CommunityPostPage = () => {
 
   // 좋아요 핸들러
   const handleLike = useCallback(async () => {
-    if (!postId || !communityContext) return;
+    if (!postId) return;
+
+    const postIdNum = Number(postId);
+    const currentCounts = getCounts(postIdNum, 'community');
+    const isCurrentlyLiked = isLiked(postIdNum, 'community');
+
+    // 즉시 전역 상태 업데이트
+    toggleLike(postIdNum, 'community');
+    setCounts(postIdNum, 'community', {
+      ...currentCounts,
+      likeCount: isCurrentlyLiked
+        ? currentCounts.likeCount - 1
+        : currentCounts.likeCount + 1,
+    });
 
     try {
-      await toggleCommunityPostLike(Number(postId));
-
-      // 현재 상태를 기반으로 토글
-      communityContext.setPostData({
-        postId: Number(postId),
-        likeCount: communityContext.isLiked
-          ? communityContext.likeCount - 1
-          : communityContext.likeCount + 1,
-        scrapCount: communityContext.scrapCount,
-        commentCount: communityContext.commentCount,
-        isLiked: !communityContext.isLiked,
-        isScrapped: communityContext.isScrapped,
-      });
+      await toggleCommunityPostLike(postIdNum);
     } catch (error) {
       console.error('좋아요 처리 실패:', error);
+      // 실패시 원복
+      toggleLike(postIdNum, 'community');
+      setCounts(postIdNum, 'community', currentCounts);
     }
-  }, [postId, communityContext]);
+  }, [postId, isLiked, getCounts, setCounts, toggleLike]);
 
   // 스크랩 핸들러
   const handleScrap = useCallback(async () => {
-    if (!postId || !communityContext) return;
+    if (!postId) return;
+
+    const postIdNum = Number(postId);
+    const currentCounts = getCounts(postIdNum, 'community');
+    const isCurrentlyScrapped = isScraped(postIdNum, 'community');
+
+    // 즉시 전역 상태 업데이트
+    toggleScrap(postIdNum, 'community');
+    setCounts(postIdNum, 'community', {
+      ...currentCounts,
+      scrapCount: isCurrentlyScrapped
+        ? currentCounts.scrapCount - 1
+        : currentCounts.scrapCount + 1,
+    });
 
     try {
-      await toggleCommunityPostScrap(Number(postId));
-
-      // 현재 상태를 기반으로 토글
-      communityContext.setPostData({
-        postId: Number(postId),
-        likeCount: communityContext.likeCount,
-        scrapCount: communityContext.isScrapped
-          ? communityContext.scrapCount - 1
-          : communityContext.scrapCount + 1,
-        commentCount: communityContext.commentCount,
-        isLiked: communityContext.isLiked,
-        isScrapped: !communityContext.isScrapped,
-      });
+      await toggleCommunityPostScrap(postIdNum);
     } catch (error) {
       console.error('스크랩 처리 실패:', error);
+      // 실패시 원복
+      toggleScrap(postIdNum, 'community');
+      setCounts(postIdNum, 'community', currentCounts);
     }
-  }, [postId, communityContext]);
+  }, [postId, isScraped, getCounts, setCounts, toggleScrap]);
 
   // 핸들러 설정 (postId가 변경될 때만 실행)
   useEffect(() => {
@@ -302,18 +339,22 @@ const CommunityPostPage = () => {
       <div className='flex flex-col gap-[21px] px-[17px]'>
         <div className='flex justify-between items-center relative'>
           <CommunityCategory label={post.tradeCategory || post.category} />
-          <EllipsisVertical
-            className='w-[26px] h-[26px] cursor-pointer'
-            onClick={() => {
-              setShowOptions((prev) => !prev);
-            }}
-          />
+          {user?.id === post?.authorId && (
+            <EllipsisVertical
+              className='w-[26px] h-[26px] cursor-pointer'
+              onClick={() => {
+                setShowOptions((prev) => !prev);
+              }}
+            />
+          )}
 
           {showOptions && (
-            <div className='absolute z-40 top-full right-0'>
+            <div
+              className='absolute z-40 top-full right-0'
+              ref={optionModalRef}>
               <PostOptionModal
-                showEdit
-                showDelete
+                showEdit={user?.id === post?.authorId}
+                showDelete={user?.id === post?.authorId}
                 onSelect={(type) => {
                   if (type === 'edit' && post) {
                     const category = post.tradeCategory
@@ -329,6 +370,8 @@ const CommunityPostPage = () => {
                     type === 'block'
                   ) {
                     setConfirmType(type);
+                  } else if (type === 'share') {
+                    // 게시글 옵션에서는 공유 기능 사용하지 않음 (ContentHeader에서 처리)
                   }
                   setShowOptions(false);
                 }}

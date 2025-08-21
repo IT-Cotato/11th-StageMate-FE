@@ -24,11 +24,9 @@ const SharePostList = () => {
   const handleScrapClick = async (postId: number) => {
     try {
       await toggleCommunityPostScrap(postId);
-      setPosts(prevPosts => 
-        prevPosts.map(post => 
-          post.id === postId 
-            ? { ...post, isScrapped: !post.isScrapped }
-            : post
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post.id === postId ? {...post, isScrapped: !post.isScrapped} : post
         )
       );
     } catch (error) {
@@ -79,14 +77,14 @@ const SharePostList = () => {
                 title={post.title}
                 category='나눔 · 거래'
                 displayCategory={post.tradeCategory}
-isScraped={post.isScrapped}
+                isScraped={post.isScrapped}
                 imageUrl={
-                  post.imageUrl && post.imageUrl !== 'basic'
+                  post.imageUrl &&
+                  post.imageUrl !== 'basic' &&
+                  !(Array.isArray(post.imageUrl) && post.imageUrl.length === 0)
                     ? post.imageUrl
-                    : undefined
+                    : 'https://storage.googleapis.com/stagemate_bucket/44af2609-ee66-4119-8c45-162bbb799b27'
                 }
-
-                placeholderText='나눔 거래 이미지'
                 onClick={() => handleClick(post)}
                 onScrapClick={() => handleScrapClick(post.id)}
               />

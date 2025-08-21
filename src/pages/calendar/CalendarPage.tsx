@@ -66,12 +66,13 @@ const CalendarPage = () => {
         const apiData = await getPerformanceSchedules({year, month});
         if (cancelled || fetchId !== latestFetchId.current) return;
         setAllSchedules(apiData.map(toSchedule));
-        
+
         // 전역 스크랩 상태 초기화
         initializeFromServer(
-          apiData.map(item => ({
-            id: String(item.performanceScheduleId),
-            isScraped: item.isScraped
+          apiData.map((item) => ({
+            id: item.performanceScheduleId,
+            type: 'performanceSchedule',
+            isScraped: item.isScraped,
           }))
         );
       } catch (e) {
@@ -136,12 +137,13 @@ const CalendarPage = () => {
         const schedules = result.list.map(toSchedule);
         setPaginatedSchedules(schedules);
         setTotalPages(result.totalPages);
-        
+
         // 페이지네이션 데이터도 전역 스크랩 상태에 반영
         initializeFromServer(
-          result.list.map(item => ({
-            id: String(item.performanceScheduleId),
-            isScraped: item.isScraped
+          result.list.map((item) => ({
+            id: item.performanceScheduleId,
+            type: 'performanceSchedule',
+            isScraped: item.isScraped,
           }))
         );
       } catch (error) {

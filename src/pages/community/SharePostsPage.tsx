@@ -73,7 +73,13 @@ const SharePostsPage = () => {
                 category={post.category}
                 displayCategory={post.tradeCategory}
                 isScraped={post.isScrapped}
-                imageUrl={post.imageUrl}
+                imageUrl={
+                  post.imageUrl &&
+                  post.imageUrl !== 'basic' &&
+                  !(Array.isArray(post.imageUrl) && post.imageUrl.length === 0)
+                    ? post.imageUrl
+                    : 'https://storage.googleapis.com/stagemate_bucket/44af2609-ee66-4119-8c45-162bbb799b27'
+                }
                 placeholderText='나눔·거래 이미지'
                 isMagazine={true}
                 onClick={() => goToShareDetail(post.id)}

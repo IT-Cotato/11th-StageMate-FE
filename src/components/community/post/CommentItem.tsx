@@ -8,8 +8,9 @@ import ArrowReply from '@/assets/community/modal-icons/arrow-reply.svg?react';
 import type {CommunityComment} from '@/types/communityDetail';
 import PostOptionModal from '@/components/modal/PostOptionModal';
 import ConfirmModal from '@/components/modal/ConfirmModal';
-import {useState} from 'react';
+import {useState, useRef} from 'react';
 import {deleteCommunityComment} from '@/api/communityApi';
+import useClickOutside from '@/hooks/useClickOutside';
 
 interface CommentItemProps {
   comment: CommunityComment;
@@ -31,6 +32,12 @@ const CommentItem = ({
   const [confirmType, setConfirmType] = useState<
     null | 'edit' | 'delete' | 'report' | 'block'
   >(null);
+  const optionModalRef = useRef<HTMLDivElement>(null);
+
+  useClickOutside({
+    ref: optionModalRef,
+    onClickOutside: () => setShowOptions(false),
+  });
 
   return (
     <>
@@ -63,13 +70,11 @@ const CommentItem = ({
 
         <EllipsisVertical
           className='w-[24px] h-[24px] cursor-pointer'
-          onClick={() => {
-            setShowOptions((prev) => !prev);
-          }}
+          onClick={() => setShowOptions(true)}
         />
 
         {showOptions && (
-          <div className='absolute z-40 top-full right-0'>
+          <div className='absolute z-40 top-full right-0' ref={optionModalRef}>
             <PostOptionModal
               showReply
               showReport
@@ -78,6 +83,8 @@ const CommentItem = ({
               onSelect={(type) => {
                 if (type === 'reply') {
                   onReplyClick?.(comment.id, comment.writer);
+                } else if (type === 'share') {
+                  // 댓글에서는 공유 기능 사용하지 않음
                 } else {
                   setConfirmType(type);
                 }
