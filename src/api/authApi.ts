@@ -112,8 +112,8 @@ export const postSignupInfo = async (data: SignupInfoType) => {
     const response = await publicAxios.post(ENDPOINT.AUTH_SIGNUP_INFO, data);
     const {accessToken, refreshToken} = response.data.data;
 
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
+    sessionStorage.setItem('accessToken', accessToken);
+    sessionStorage.setItem('refreshToken', refreshToken);
 
     return response.data.data;
   } catch (error: any) {
@@ -125,13 +125,23 @@ export const postSignupInfo = async (data: SignupInfoType) => {
   }
 };
 
-export const postLogin = async (data: LoginInfoType) => {
+export const postLogin = async (
+  data: LoginInfoType,
+  isStayingLoggedIn: boolean
+) => {
   try {
     const response = await publicAxios.post(ENDPOINT.AUTH_LOGIN, data);
     const {accessToken, refreshToken} = response.data.data;
 
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
+    if (isStayingLoggedIn) {
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+      localStorage.setItem('isStayingLoggedIn', 'true');
+    } else {
+      sessionStorage.setItem('accessToken', accessToken);
+      sessionStorage.setItem('refreshToken', refreshToken);
+      localStorage.setItem('isStayingLoggedIn', 'false');
+    }
 
     return response.data.data;
   } catch (error: any) {

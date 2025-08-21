@@ -23,12 +23,15 @@ const LoginPage = () => {
 
   const loginMutation = useMutation({
     mutationFn: async () => {
-      const loginRes = await postLogin({userId: id, password: pw});
+      const loginRes = await postLogin(
+        {userId: id, password: pw},
+        isStayingLoggedIn
+      );
 
       const mypageRes = await getMypageInfo();
       const userInfo = mypageRes;
 
-      login(loginRes.accessToken, loginRes.refreshToken);
+      login(loginRes.accessToken, loginRes.refreshToken, isStayingLoggedIn);
       setUser(userInfo);
       navigate('/');
     },
