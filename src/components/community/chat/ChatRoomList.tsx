@@ -39,13 +39,15 @@ const ChatRoomList = () => {
 
       {/** 채팅방 리스트 렌더링 */}
       <div className='flex flex-col gap-10'>
-        {chatRoomList.map((room: ChatRoomType) => (
-          <ChatRoomItem
-            key={room.chatRoomId}
-            room={room}
-            onClick={() => goToChatRoomDetail(room.chatRoomId)}
-          />
-        ))}
+        {chatRoomList.map((room: ChatRoomType) => {
+          return (
+            <ChatRoomItem
+              key={room.chatRoomId}
+              room={room}
+              onClick={() => goToChatRoomDetail(room.chatRoomId, room.title)}
+            />
+          );
+        })}
       </div>
     </div>
   );
