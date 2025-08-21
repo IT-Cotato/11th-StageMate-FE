@@ -8,7 +8,8 @@ export interface AuthState {
   refreshToken: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (accessToken: string, refreshToken: string, user: User) => void;
+  login: (accessToken: string, refreshToken: string) => void;
+  setUser: (user: User) => void;
   logout: () => void;
   checkAuth: () => Promise<void>;
   setProfileImage: (img: string) => void;
@@ -21,15 +22,20 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   isAuthenticated: false,
   isLoading: true,
 
-  login: (accessToken: string, refreshToken: string, user: User) => {
+  login: (accessToken: string, refreshToken: string) => {
     localStorage.setItem('accessToken', accessToken);
     localStorage.setItem('refreshToken', refreshToken);
     set({
       accessToken,
       refreshToken,
-      user,
       isAuthenticated: true,
       isLoading: false,
+    });
+  },
+
+  setUser: (user: User) => {
+    set({
+      user,
     });
   },
 

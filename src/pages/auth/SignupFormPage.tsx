@@ -28,7 +28,7 @@ import type {FormState} from '@/types/auth';
 
 const SignupFormPage = () => {
   const navigate = useNavigate();
-  const {login} = useAuthStore();
+  const {login, setUser} = useAuthStore();
 
   const [formState, setFormState] = useState<FormState>({
     id: {value: '', isValid: false, isChecked: false, isAvailable: false},
@@ -176,10 +176,11 @@ const SignupFormPage = () => {
 
       // 3. 마이페이지 정보 가져오기
       const mypageRes = await getMypageInfo();
-      const userInfo = mypageRes.data;
+      const userInfo = mypageRes;
 
       // 4. 모든 단계가 성공했을 때 로그인 처리 및 페이지 이동
-      login(signupRes.accessToken, signupRes.refreshToken, userInfo);
+      login(signupRes.accessToken, signupRes.refreshToken);
+      setUser(userInfo);
       navigate('/signup-complete');
     },
     onError: (error: any) => {

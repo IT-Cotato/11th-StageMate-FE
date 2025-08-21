@@ -9,7 +9,7 @@ import type {CommentedPostsResponse, MyPostsResponse} from '@/types/community';
 export const getMypageInfo = async () => {
   try {
     const response = await privateAxios.get(ENDPOINT.MYPAGE_INFO);
-    return response.data;
+    return response.data.data;
   } catch (error: any) {
     // const status = error.response.data.status;
     const code = error.response.data.code;
