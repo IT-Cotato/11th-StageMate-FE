@@ -49,7 +49,7 @@ const CommentInput = ({
 
   return (
     <div className='flex items-center justify-between w-full bg-[#EBEBEB] px-8 py-[11px]'>
-      <div className='flex items-center gap-[20px]'>
+      <div className='flex items-center gap-[20px] w-full'>
         {/* TODO: 로그인 시 사용자 프로필 이미지로 대체 */}
         <img
           src='/default-profile.svg'
@@ -68,7 +68,7 @@ const CommentInput = ({
 
       <Send
         onClick={handleSubmit}
-        className={`inline-block ${isSubmitting ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+        className={`inline-block ${isSubmitting ? 'cursor-not-allowed' : 'cursor-pointer'} shrink-0`}
         role='button'
         aria-label='댓글 등록'
       />
