@@ -88,8 +88,8 @@ const SearchBox = ({variant = 'main'}: SearchBoxProps) => {
       <div
         className={`absolute top-[calc(100%-15px)] right-0 transition-all duration-300 ease-in-out overflow-visible z-90 ${
           isDropdownOpen
-            ? 'opacity-100 translate-y-0 max-h-96'
-            : 'opacity-0 -translate-y-2 max-h-0'
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 -translate-y-2 pointer-events-none'
         }`}>
         <div
           className='bg-white rounded-b-[10px] w-290 shadow-xs'
