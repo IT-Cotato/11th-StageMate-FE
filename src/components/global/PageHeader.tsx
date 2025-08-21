@@ -33,18 +33,18 @@ const PageHeader = ({
       <div className='flex w-full justify-between items-center h-40'>
         <ChevronLeft
           onClick={handleLeftClick}
-          className='sm:w-40 sm:h-40 w-30 aspect-square'
+          className='sm:w-40 sm:h-40 w-30 aspect-square cursor-pointer'
         />
         <p className='text-[#141313] sm:text-2xl text-xl leading-[140%]'>
           {title}
         </p>
         {showHomeIcon ? (
-          <div className='flex justify-center items-center w-40 h-40'>
+          <button className='flex justify-center items-center w-40 h-40'>
             <HomeOutline
               onClick={onRightClick}
               className='sm:w-[22.289px] sm:h-[20.802px] w-17 shrink-0 aspect-[22.29/20.80]'
             />
-          </div>
+          </button>
         ) : (
           <div className='w-40 h-40' />
         )}
