@@ -31,7 +31,7 @@ const MainHeader = ({isLoggedIn, username}: MainHeaderProps) => {
             />
             <User
               className='cursor-pointer w-25 h-25'
-              onClick={() => navigate('/settings')}
+              onClick={() => navigate('/settings/account')}
             />
           </div>
         )}
