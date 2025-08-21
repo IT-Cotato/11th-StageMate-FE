@@ -1,6 +1,7 @@
 import type {User} from '@/types/auth';
 import {create} from 'zustand';
 import {getMypageInfo} from '@/api/mypageApi';
+import {postTokenReissue} from '@/api/authApi';
 
 export interface AuthState {
   user: User | null;
@@ -117,6 +118,33 @@ export const useAuthStore = create<AuthState>((set, get) => ({
           profileImageUrl: img,
         },
       });
+    }
+  },
+
+  refreshAccessToken: async (): Promise<boolean> => {
+    try {
+      const {accessToken, refreshToken} = await postTokenReissue();
+
+      const currentState = get();
+
+      if (currentState.isStayingLoggedIn) {
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
+      } else {
+        sessionStorage.setItem('accessToken', accessToken);
+        sessionStorage.setItem('refreshToken', refreshToken);
+      }
+
+      set({
+        accessToken,
+        refreshToken,
+      });
+
+      return true;
+    } catch (error) {
+      console.error('Token refresh failed:', error);
+      get().logout();
+      return false;
     }
   },
 }));

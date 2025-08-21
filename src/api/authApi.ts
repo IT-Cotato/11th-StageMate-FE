@@ -178,3 +178,29 @@ export const deleteWithdraw = async () => {
     throw new Error(errorMessage);
   }
 };
+
+export const postTokenReissue = async () => {
+  try {
+    const refreshToken =
+      localStorage.getItem('refreshToken') ||
+      sessionStorage.getItem('refreshToken');
+
+    if (!refreshToken) {
+      throw new Error('리프레시 토큰이 없습니다.');
+    }
+
+    const response = await privateAxios.post(ENDPOINT.AUTH_REISSUE);
+
+    const {accessToken, refreshToken: newRefreshToken} = response.data.data;
+
+    return {
+      accessToken,
+      refreshToken: newRefreshToken,
+    };
+  } catch (error: any) {
+    const code = error.response?.data?.code;
+    const errorMessage = getErrorMessage(code);
+    console.error('Token reissue failed:', error);
+    throw new Error(errorMessage);
+  }
+};
