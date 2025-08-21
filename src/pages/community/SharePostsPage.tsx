@@ -81,7 +81,7 @@ const SharePostsPage = () => {
                     : 'https://storage.googleapis.com/stagemate_bucket/44af2609-ee66-4119-8c45-162bbb799b27'
                 }
                 placeholderText='나눔·거래 이미지'
-                isScrapMagazine={true}
+                isMagazine={true}
                 onClick={() => goToShareDetail(post.id)}
                 onScrapClick={() => handleScrapClick(post.id)}
               />

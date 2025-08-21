@@ -1,6 +1,7 @@
 import Comment from '@/assets/notification/comment.svg?react';
-import formatKoreanTime from '@/util/formatKoreanTime';
-import {useNavigate} from 'react-router-dom';
+import useCommunityNavigation from '@/hooks/useCommunityNavigation';
+import {isWriteableUiCategory, reverseCategoryMap} from '@/util/categoryMapper';
+import formatKoreanNotificationTime from '@/util/formatKoreanNotificationTime';
 
 /**
  * 알림 카드 컴포넌트
@@ -12,19 +13,23 @@ interface NotificationProps {
   formattedDate: string;
   content: string;
   postId: number;
+  category: string;
 }
 const NotificationCard = ({
   title,
   formattedDate,
   content,
   postId,
+  category,
 }: NotificationProps) => {
-  const navigate = useNavigate();
-
+  const {goToPostDetail} = useCommunityNavigation();
+  const slugCategory = isWriteableUiCategory(category)
+    ? reverseCategoryMap[category]
+    : 'daily';
   return (
     <div
       className='w-[466px] flex items-center justify-between bg-[#DDE1E6]/75 rounded-[20px] py-10 px-20 gap-20 cursor-pointer h-62'
-      onClick={() => navigate(`/community/${postId}`)}>
+      onClick={() => goToPostDetail(slugCategory, postId)}>
       <div className='flex flex-row gap-20 items-center flex-1 min-w-0'>
         <Comment className='w-27' />
         <div className='flex flex-col min-w-0'>
@@ -34,7 +39,7 @@ const NotificationCard = ({
       </div>
 
       <span className='text-[#3C3C3C]/80 text-[13px] min-w-[60px] text-right shrink-0'>
-        {formatKoreanTime(formattedDate)}
+        {formatKoreanNotificationTime(formattedDate)}
       </span>
     </div>
   );
