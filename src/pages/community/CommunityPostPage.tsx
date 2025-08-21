@@ -110,26 +110,18 @@ const CommunityPostPage = () => {
             postId: postIdNum,
             likeCount: loadedPost.likeCount || 0,
             scrapCount: loadedPost.scrapCount || 0,
-            commentCount: loadedPost.comments?.length || 0,
+            commentCount: loadedPost.commentCount || 0,
             isLiked: loadedPost.liked || false,
             isScrapped: loadedPost.scrapped || false,
           });
         }
-
-        // 전역 상태 초기화
-        const allComments =
-          loadedPost.comments?.flatMap((comment) => [
-            comment,
-            ...(comment.children || []),
-          ]) || [];
-        const totalCommentCount = allComments.length;
 
         setLiked(postIdNum, 'community', loadedPost.liked || false);
         setScrapped(postIdNum, 'community', loadedPost.scrapped || false);
         setCounts(postIdNum, 'community', {
           likeCount: loadedPost.likeCount || 0,
           scrapCount: loadedPost.scrapCount || 0,
-          commentCount: totalCommentCount,
+          commentCount: loadedPost.commentCount || 0,
         });
       })
       .catch((err) => {

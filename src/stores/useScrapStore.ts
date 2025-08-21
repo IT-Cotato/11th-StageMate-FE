@@ -116,12 +116,15 @@ export const useScrapStore = create<ScrapState>((set, get) => ({
           if (item.isScraped) newScrappedSet.add(item.id);
           if (item.isLiked) newLikedSet.add(item.id);
 
-          if (item.likeCount !== undefined && item.scrapCount !== undefined) {
-            const existingCounts = newCounts.get(item.id) || {commentCount: 0};
+          if (
+            item.likeCount !== undefined &&
+            item.scrapCount !== undefined &&
+            item.commentCount !== undefined
+          ) {
             newCounts.set(item.id, {
               likeCount: item.likeCount,
               scrapCount: item.scrapCount,
-              commentCount: item.commentCount ?? existingCounts.commentCount,
+              commentCount: item.commentCount,
             });
           }
         });
@@ -143,11 +146,15 @@ export const useScrapStore = create<ScrapState>((set, get) => ({
         if (item.isScraped) newScrappedSet.add(item.id);
         if (item.isLiked) newLikedSet.add(item.id);
 
-        if (item.likeCount !== undefined && item.scrapCount !== undefined) {
+        if (
+          item.likeCount !== undefined &&
+          item.scrapCount !== undefined &&
+          item.commentCount !== undefined
+        ) {
           newCounts.set(item.id, {
             likeCount: item.likeCount,
             scrapCount: item.scrapCount,
-            commentCount: item.commentCount ?? 0,
+            commentCount: item.commentCount,
           });
         }
       });
