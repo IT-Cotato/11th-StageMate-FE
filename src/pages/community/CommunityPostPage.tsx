@@ -374,6 +374,8 @@ const CommunityPostPage = () => {
                     type === 'block'
                   ) {
                     setConfirmType(type);
+                  } else if (type === 'share') {
+                    // 게시글 옵션에서는 공유 기능 사용하지 않음 (ContentHeader에서 처리)
                   }
                   setShowOptions(false);
                 }}
