@@ -9,6 +9,7 @@ import {
 import type {CommunityPostDetail} from '@/types/communityDetail';
 import {useHorizontalScroll} from '@/hooks/useHorizontalScroll';
 import {useScrapStore} from '@/stores/useScrapStore';
+import {useAuthStore} from '@/stores/authStore';
 import CommunityCategory from '@/components/community/common/CommunityCategory';
 import PostHeaderInfo from '@/components/community/post/PostHeaderInfo';
 import EllipsisVertical from '@/assets/ellipsis/ellipsis-vertical.svg?react';
@@ -74,6 +75,7 @@ const CommunityPostPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const hasLoaded = useRef(false);
   const communityContext = useCommunityPostSafe();
+  const {user} = useAuthStore();
   const {
     isLiked,
     isScraped,
@@ -337,20 +339,22 @@ const CommunityPostPage = () => {
       <div className='flex flex-col gap-[21px] px-[17px]'>
         <div className='flex justify-between items-center relative'>
           <CommunityCategory label={post.tradeCategory || post.category} />
-          <EllipsisVertical
-            className='w-[26px] h-[26px] cursor-pointer'
-            onClick={() => {
-              setShowOptions((prev) => !prev);
-            }}
-          />
+          {user?.id === post?.authorId && (
+            <EllipsisVertical
+              className='w-[26px] h-[26px] cursor-pointer'
+              onClick={() => {
+                setShowOptions((prev) => !prev);
+              }}
+            />
+          )}
 
           {showOptions && (
             <div
               className='absolute z-40 top-full right-0'
               ref={optionModalRef}>
               <PostOptionModal
-                showEdit
-                showDelete
+                showEdit={user?.id === post?.authorId}
+                showDelete={user?.id === post?.authorId}
                 onSelect={(type) => {
                   if (type === 'edit' && post) {
                     const category = post.tradeCategory
