@@ -52,7 +52,7 @@ const SelectDateModal = ({onClick}: SelectDateModalProps) => {
 
   return (
     <div className='fixed sm:bottom-[60px] bottom-[45px] left-0 w-full flex justify-center items-end z-50'>
-      <div className='sm:w-full sm:h-[302px] h-200 bg-white rounded-t-[20px] flex flex-col items-center justify-between px-10 sm:pb-40 pb-10 sm:pt-20 pt-10 font-roboto shadow-sm'>
+      <div className='w-full sm:h-[302px] h-200 bg-white rounded-t-[20px] flex flex-col items-center justify-between px-10 sm:pb-40 pb-10 sm:pt-20 pt-10 font-roboto shadow-sm'>
         {/* 상단 드래그 바 */}
         <div className='sm:w-[200px] w-100 h-[6px] bg-[#D9D9D9] rounded-full mb-4' />
 

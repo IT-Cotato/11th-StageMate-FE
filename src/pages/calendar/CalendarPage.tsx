@@ -331,7 +331,7 @@ const CalendarPage = () => {
       {isModalOpen && (
         <>
           <div
-            className='fixed top-[65px] left-1/2 -translate-x-1/2 w-[600px] h-[500px] bg-gray-3/10 z-40 rounded-[10px]'
+            className='fixed w-full m-auto left-1/2 -translate-x-1/2 max-w-[600px] h-full sm:bottom-[362px] bottom-245 bg-gray-3/10 z-40 rounded-[10px]'
             onClick={closeModal}
           />
 
