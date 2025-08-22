@@ -23,46 +23,60 @@ const PostItem = ({post, onPostClick, onLikeClick, variant}: PostItemProps) => {
   const currentCounts = getCounts(post.id, 'community');
   return (
     <div
-      className='w-full h-55 flex flex-row bg-[#ffffff] px-9 py-6 gap-10 cursor-pointer'
+      className='flex items-center gap-10 w-full bg-[#ffffff] cursor-pointer'
       onClick={onPostClick}>
-      <div className='flex-1 flex flex-col justify-center'>
+      {/* title */}
+      <div className='flex flex-col flex-1'>
         {variant === 'hot' ? (
-          <div className='truncate text-md sm:max-w-250 max-w-100'>
-            {post.title}
-          </div>
+          <div className='line-clamp-1 text-md'>{post.title}</div>
         ) : (
-          <div className='text-md truncate sm:max-w-400 max-w-200'>
-            {post.title}
-          </div>
-        )}
-        {/**
-         * variant가 핫이 아닐 때만 날짜 렌더링
-         * 날짜 로직 수정 todo
-         * 24시간 이내일 경우 -> 시간 렌더링
-         * 그 외 -> 월/일 렌더링
-         */}
-        {variant !== 'hot' && (
-          <div className='text-sm text-gray-2'>{post.createdAt}</div>
+          <>
+            <div className='text-md line-clamp-1'>{post.title}</div>
+            <div className='text-sm text-gray-2'>{post.createdAt}</div>
+            {/* [24시간 이내: 시간], [그 외: 월/일] */}
+          </>
         )}
       </div>
 
-      <div
-        className={`flex flex-col ${variant === 'hot' ? 'justify-center' : 'justify-end'} items-end h-full`}>
-        <div className='flex flex-row gap-3 items-center text-sm'>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onLikeClick?.();
-            }}>
-            {isCurrentlyLiked ? (
-              <FullHeart width={20} height={20} />
-            ) : (
-              <EmptyHeart className='stroke-secondary' width={20} height={20} />
-            )}
-          </button>
-          <span>{currentCounts.likeCount}</span>
-          <Chat className='text-secondary ml-14 w-20 mb-[1px]' />
-          <span>{currentCounts.commentCount}</span>
+      {/* count */}
+      <div className={`flex flex-col items-end`}>
+        <div className='flex justify-end items-center text-sm'>
+          <div className='flex gap-14 '>
+            {/* heart */}
+            <div className='flex items-center gap-2 w-46'>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onLikeClick?.();
+                }}
+                className='m-[2.5px]'>
+                {isCurrentlyLiked ? (
+                  <FullHeart width={20} height={20} />
+                ) : (
+                  <EmptyHeart
+                    className='stroke-secondary'
+                    width={20}
+                    height={20}
+                  />
+                )}
+              </button>
+              <span>
+                {currentCounts.likeCount > 99 ? '99+' : currentCounts.likeCount}
+              </span>
+            </div>
+
+            {/* comment */}
+            <div className='flex items-center gap-2 w-46'>
+              <div className=' m-[2.5px]'>
+                <Chat className='text-secondary w-20' />
+              </div>
+              <span>
+                {currentCounts.commentCount > 99
+                  ? '99+'
+                  : currentCounts.commentCount}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

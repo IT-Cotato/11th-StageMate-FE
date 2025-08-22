@@ -34,7 +34,8 @@ const PostList = ({icon, title, variant}: PostListProps) => {
   const [loading, setLoading] = useState(true);
   const {goToCommunityCategory} = useCommunityListNavigation();
   const {goToPostDetail} = useCommunityNavigation();
-  const {initializeFromServer, isLiked, toggleLike, getCounts, setCounts} = useScrapStore();
+  const {initializeFromServer, isLiked, toggleLike, getCounts, setCounts} =
+    useScrapStore();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -73,9 +74,9 @@ const PostList = ({icon, title, variant}: PostListProps) => {
         }));
 
         setPosts(mappedPosts);
-        
+
         // 전역 상태 초기화
-        const stateInitData = mappedPosts.map(post => ({
+        const stateInitData = mappedPosts.map((post) => ({
           id: post.id,
           type: 'community' as const,
           isLiked: post.isLiked,
@@ -85,7 +86,6 @@ const PostList = ({icon, title, variant}: PostListProps) => {
           commentCount: post.commentCount,
         }));
         initializeFromServer(stateInitData);
-        
       } catch (error) {
         console.error(`${title} 조회 실패`, error);
       } finally {
@@ -103,14 +103,16 @@ const PostList = ({icon, title, variant}: PostListProps) => {
   const handleLike = (post: Post) => async () => {
     const currentCounts = getCounts(post.id, 'community');
     const isCurrentlyLiked = isLiked(post.id, 'community');
-    
+
     // 즉시 전역 상태 업데이트
     toggleLike(post.id, 'community');
     setCounts(post.id, 'community', {
       ...currentCounts,
-      likeCount: isCurrentlyLiked ? currentCounts.likeCount - 1 : currentCounts.likeCount + 1,
+      likeCount: isCurrentlyLiked
+        ? currentCounts.likeCount - 1
+        : currentCounts.likeCount + 1,
     });
-    
+
     // 로컬 상태도 동기화
     setPosts((prevPosts) =>
       prevPosts.map((p) =>
@@ -178,11 +180,12 @@ const PostList = ({icon, title, variant}: PostListProps) => {
       </div>
 
       {variant === 'hot' ? (
-        <div className='bg-[#fff] rounded-[20px] w-full px-20 py-7 flex flex-col gap-4 border border-primary-4'>
+        // hot 게시물
+        <div className='bg-[#fff] rounded-[20px] w-full p-18 flex flex-col gap-21 border border-primary-4'>
           {posts.map((post) => (
             <div
               key={post.uniqueKey}
-              className='flex flex-row gap-10 pb-4 cursor-pointer items-center'
+              className='flex items-center gap-10 cursor-pointer'
               onClick={handleClick(post)}>
               {/* 카테고리명 + 게시판 표시 */}
               <h1 className='font-semibold text-[18px] whitespace-nowrap shrink-0'>
@@ -190,6 +193,7 @@ const PostList = ({icon, title, variant}: PostListProps) => {
                   ? `${post.category}게시판`
                   : post.category}
               </h1>
+
               {/* 게시물 내용 */}
               <PostItem
                 post={post}
@@ -201,14 +205,12 @@ const PostList = ({icon, title, variant}: PostListProps) => {
           ))}
         </div>
       ) : (
-        /** 일상, 꿀팁 게시물 */
-        <div className='bg-[#fff] rounded-[20px] w-full p-5 flex flex-col gap-4'>
+        // 일상, 꿀팁 게시물
+        <div className='bg-[#fff] rounded-[20px] w-full p-10 flex flex-col gap-4'>
           {posts.map((post, idx) => (
             <div
               key={post.uniqueKey}
-              className={`pb-4 ${
-                idx !== posts.length - 1 ? 'border-b border-primary-5' : ''
-              }`}>
+              className={`${idx !== posts.length - 1 ? 'border-b border-primary-5' : ''} `}>
               <PostItem
                 post={post}
                 onPostClick={handleClick(post)}

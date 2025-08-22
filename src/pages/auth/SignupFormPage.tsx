@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import StateButtonStroke from '@/components/auth/StateButtonStroke';
 import ButtonFill from '@/components/global/ButtonFill';
 import PageHeader from '@/components/global/PageHeader';
@@ -28,7 +27,7 @@ import type {FormState} from '@/types/auth';
 
 const SignupFormPage = () => {
   const navigate = useNavigate();
-  const {login} = useAuthStore();
+  const {login, setUser} = useAuthStore();
 
   const [formState, setFormState] = useState<FormState>({
     id: {value: '', isValid: false, isChecked: false, isAvailable: false},
@@ -136,7 +135,7 @@ const SignupFormPage = () => {
   const emailMutation = useMutation({
     mutationFn: postEmailSendCode,
     onSuccess: () => alert('인증번호가 발송되었습니다.'),
-    onError: (error: any) => alert(error.message),
+    onError: (error) => alert(error.message),
   });
 
   // 회원가입 전체 프로세스 Mutation
@@ -154,16 +153,6 @@ const SignupFormPage = () => {
           ? `${formState.year.value}-${formState.month.value}-${formState.day.value}`
           : '';
 
-      console.log('Signup Info', {
-        userId: formState.id.value,
-        email: formState.email.value,
-        password: formState.pw.value,
-        passwordConfirm: formState.pwCheck.value,
-        name: formState.name.value,
-        nickname: formState.nickName.value,
-        birthdate,
-      });
-
       const signupRes = await postSignupInfo({
         userId: formState.id.value,
         email: formState.email.value,
@@ -176,13 +165,14 @@ const SignupFormPage = () => {
 
       // 3. 마이페이지 정보 가져오기
       const mypageRes = await getMypageInfo();
-      const userInfo = mypageRes.data;
+      const userInfo = mypageRes;
 
       // 4. 모든 단계가 성공했을 때 로그인 처리 및 페이지 이동
-      login(signupRes.accessToken, signupRes.refreshToken, userInfo);
+      login(signupRes.accessToken, signupRes.refreshToken);
+      setUser(userInfo);
       navigate('/signup-complete');
     },
-    onError: (error: any) => {
+    onError: (error) => {
       alert(error.message);
     },
   });

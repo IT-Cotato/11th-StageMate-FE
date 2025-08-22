@@ -19,14 +19,6 @@ export const postAgree = async (
   try {
     const tempUserKey = localStorage.getItem('TempUserKey');
 
-    if (!tempUserKey) {
-      throw new Error('임시 사용자 키가 없습니다. 다시 시도해주세요.');
-    }
-
-    if (!SERVICE_TERMS || !PRIVACY_POLICY) {
-      throw new Error('필수 약관에 동의해주세요.');
-    }
-
     const response = await publicAxios.post(ENDPOINT.AUTH_SIGNUP_AGREE, {
       tempUserKey,
       consents: {
@@ -43,7 +35,7 @@ export const postAgree = async (
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
@@ -56,7 +48,7 @@ export const getCheckUserId = async (userId: string) => {
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
@@ -71,7 +63,7 @@ export const getCheckNickname = async (nickname: string) => {
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
@@ -86,7 +78,7 @@ export const postEmailSendCode = async (email: string) => {
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
@@ -102,7 +94,7 @@ export const postEmailVerifyCode = async (data: VerifyCodeType) => {
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
@@ -112,33 +104,43 @@ export const postSignupInfo = async (data: SignupInfoType) => {
     const response = await publicAxios.post(ENDPOINT.AUTH_SIGNUP_INFO, data);
     const {accessToken, refreshToken} = response.data.data;
 
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
+    sessionStorage.setItem('accessToken', accessToken);
+    sessionStorage.setItem('refreshToken', refreshToken);
 
     return response.data.data;
   } catch (error: any) {
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
 
-export const postLogin = async (data: LoginInfoType) => {
+export const postLogin = async (
+  data: LoginInfoType,
+  isStayingLoggedIn: boolean
+) => {
   try {
     const response = await publicAxios.post(ENDPOINT.AUTH_LOGIN, data);
     const {accessToken, refreshToken} = response.data.data;
 
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
+    if (isStayingLoggedIn) {
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+      localStorage.setItem('isStayingLoggedIn', 'true');
+    } else {
+      sessionStorage.setItem('accessToken', accessToken);
+      sessionStorage.setItem('refreshToken', refreshToken);
+      localStorage.setItem('isStayingLoggedIn', 'false');
+    }
 
     return response.data.data;
   } catch (error: any) {
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
@@ -151,7 +153,7 @@ export const postLogout = async () => {
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
@@ -164,7 +166,33 @@ export const deleteWithdraw = async () => {
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
+    throw new Error(errorMessage);
+  }
+};
+
+export const postTokenReissue = async () => {
+  try {
+    const refreshToken =
+      localStorage.getItem('refreshToken') ||
+      sessionStorage.getItem('refreshToken');
+
+    if (!refreshToken) {
+      throw new Error('리프레시 토큰이 없습니다.');
+    }
+
+    const response = await privateAxios.post(ENDPOINT.AUTH_REISSUE);
+
+    const {accessToken, refreshToken: newRefreshToken} = response.data.data;
+
+    return {
+      accessToken,
+      refreshToken: newRefreshToken,
+    };
+  } catch (error: any) {
+    const code = error.response?.data?.code;
+    const errorMessage = getErrorMessage(code);
+    console.error('Token reissue failed:', error);
     throw new Error(errorMessage);
   }
 };

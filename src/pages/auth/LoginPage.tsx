@@ -5,7 +5,6 @@ import ButtonStroke from '@/components/global/ButtonStroke';
 import ButtonFill from '@/components/global/ButtonFill';
 import CustomCheckbox from '@/components/ui/checkbox/CustomCheckbox';
 import {useNavigate} from 'react-router-dom';
-import AuthBrandBadges from '@/components/auth/AuthBrandBadges';
 import {postLogin} from '@/api/authApi';
 import {useMutation} from '@tanstack/react-query';
 import {useAuthStore} from '@/stores/authStore';
@@ -15,7 +14,7 @@ import Modal from '@/components/global/Modal';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const {login} = useAuthStore();
+  const {login, setUser} = useAuthStore();
 
   const [isStayingLoggedIn, setIsStayingLoggedIn] = useState(false);
   const [id, setId] = useState('');
@@ -23,12 +22,16 @@ const LoginPage = () => {
 
   const loginMutation = useMutation({
     mutationFn: async () => {
-      const loginRes = await postLogin({userId: id, password: pw});
+      const loginRes = await postLogin(
+        {userId: id, password: pw},
+        isStayingLoggedIn
+      );
 
       const mypageRes = await getMypageInfo();
-      const userInfo = mypageRes.data;
+      const userInfo = mypageRes;
 
-      login(loginRes.accessToken, loginRes.refreshToken, userInfo);
+      login(loginRes.accessToken, loginRes.refreshToken, isStayingLoggedIn);
+      setUser(userInfo);
       navigate('/');
     },
   });
@@ -92,7 +95,7 @@ const LoginPage = () => {
         </div>
 
         {/* brands */}
-        <AuthBrandBadges />
+        {/* <AuthBrandBadges /> */}
       </div>
 
       {/* 상태 모달 & 오버레이 */}

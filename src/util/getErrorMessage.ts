@@ -10,6 +10,8 @@ const getErrorMessage = (code: string): string => {
       return '아이디 형식이 올바르지 않습니다.';
     case 'AUTH-003':
       return '비밀번호 형식이 올바르지 않습니다.';
+    case 'AUTH-006':
+      return '유효하지 않은 토큰입니다.';
     case 'AUTH-009':
       return '비밀번호가 일치하지 않습니다.';
     case 'AUTH-010':
