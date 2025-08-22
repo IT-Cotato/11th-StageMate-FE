@@ -19,14 +19,6 @@ export const postAgree = async (
   try {
     const tempUserKey = localStorage.getItem('TempUserKey');
 
-    if (!tempUserKey) {
-      throw new Error('임시 사용자 키가 없습니다. 다시 시도해주세요.');
-    }
-
-    if (!SERVICE_TERMS || !PRIVACY_POLICY) {
-      throw new Error('필수 약관에 동의해주세요.');
-    }
-
     const response = await publicAxios.post(ENDPOINT.AUTH_SIGNUP_AGREE, {
       tempUserKey,
       consents: {
@@ -43,7 +35,7 @@ export const postAgree = async (
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
@@ -56,7 +48,7 @@ export const getCheckUserId = async (userId: string) => {
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
@@ -71,7 +63,7 @@ export const getCheckNickname = async (nickname: string) => {
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
@@ -86,7 +78,7 @@ export const postEmailSendCode = async (email: string) => {
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
@@ -102,7 +94,7 @@ export const postEmailVerifyCode = async (data: VerifyCodeType) => {
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
@@ -120,7 +112,7 @@ export const postSignupInfo = async (data: SignupInfoType) => {
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
@@ -148,7 +140,7 @@ export const postLogin = async (
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
@@ -161,7 +153,7 @@ export const postLogout = async () => {
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
@@ -174,7 +166,7 @@ export const deleteWithdraw = async () => {
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };

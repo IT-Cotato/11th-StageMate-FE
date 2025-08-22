@@ -24,7 +24,7 @@ export const getChatRoom = async ({
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
@@ -41,7 +41,7 @@ export const getChatProfile = async (senderIds: number[]) => {
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
@@ -58,7 +58,7 @@ export const getReportChatCount = async (userIds: number[]) => {
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
@@ -71,7 +71,7 @@ export const postReportChat = async (data: ReportChatType) => {
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };

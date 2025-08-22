@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import StateButtonStroke from '@/components/auth/StateButtonStroke';
 import ButtonFill from '@/components/global/ButtonFill';
 import PageHeader from '@/components/global/PageHeader';
@@ -136,7 +135,7 @@ const SignupFormPage = () => {
   const emailMutation = useMutation({
     mutationFn: postEmailSendCode,
     onSuccess: () => alert('인증번호가 발송되었습니다.'),
-    onError: (error: any) => alert(error.message),
+    onError: (error) => alert(error.message),
   });
 
   // 회원가입 전체 프로세스 Mutation
@@ -153,16 +152,6 @@ const SignupFormPage = () => {
         formState.year.value && formState.month.value && formState.day.value
           ? `${formState.year.value}-${formState.month.value}-${formState.day.value}`
           : '';
-
-      console.log('Signup Info', {
-        userId: formState.id.value,
-        email: formState.email.value,
-        password: formState.pw.value,
-        passwordConfirm: formState.pwCheck.value,
-        name: formState.name.value,
-        nickname: formState.nickName.value,
-        birthdate,
-      });
 
       const signupRes = await postSignupInfo({
         userId: formState.id.value,
@@ -183,7 +172,7 @@ const SignupFormPage = () => {
       setUser(userInfo);
       navigate('/signup-complete');
     },
-    onError: (error: any) => {
+    onError: (error) => {
       alert(error.message);
     },
   });

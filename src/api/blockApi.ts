@@ -13,7 +13,7 @@ export const postUserBlock = async (blockedUserId: number) => {
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
@@ -30,7 +30,7 @@ export const getUserBlockCheck = async (userIds: number[]) => {
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
@@ -54,7 +54,7 @@ export const getBlockedList = async ({
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
@@ -69,7 +69,7 @@ export const deleteUserBlocked = async (blockedUserId: number) => {
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };

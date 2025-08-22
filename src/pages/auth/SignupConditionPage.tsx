@@ -46,8 +46,7 @@ const SignupConditionPage = () => {
       console.log('동의 완료:', agreementResult);
       navigate('/signup-form');
     } catch (error) {
-      console.error('약관 동의 처리 중 오류가 발생했습니다:', error);
-      alert('서비스 이용에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      alert(error);
     }
   };
 
