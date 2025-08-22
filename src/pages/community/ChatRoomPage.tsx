@@ -90,20 +90,21 @@ const ChatRoomPage = () => {
 
     // 실제 저장소에서 직접 토큰 읽기 (타이밍 문제 해결)
     const getActualToken = () => {
-      const isStayingLoggedIn = localStorage.getItem('isStayingLoggedIn') === 'true';
+      const isStayingLoggedIn =
+        localStorage.getItem('isStayingLoggedIn') === 'true';
       const token = isStayingLoggedIn
         ? localStorage.getItem('accessToken')
         : sessionStorage.getItem('accessToken');
-      
+
       console.log('🔍 토큰 디버깅:', {
         isStayingLoggedIn,
         fromStorage: token,
         fromAuthStore: accessToken,
         isLoading,
         localStorage: localStorage.getItem('accessToken'),
-        sessionStorage: sessionStorage.getItem('accessToken')
+        sessionStorage: sessionStorage.getItem('accessToken'),
       });
-      
+
       return token;
     };
 
@@ -111,7 +112,12 @@ const ChatRoomPage = () => {
 
     // 인증 상태가 로딩 중이거나 토큰이 없으면 연결하지 않음
     if (isLoading || !actualToken) {
-      console.log('STOMP 연결 대기 중 - isLoading:', isLoading, 'actualToken:', !!actualToken);
+      console.log(
+        'STOMP 연결 대기 중 - isLoading:',
+        isLoading,
+        'actualToken:',
+        !!actualToken
+      );
       return;
     }
 
@@ -437,7 +443,7 @@ const ChatRoomPage = () => {
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
                   onKeyDown={handleKeyPress}
-                  placeholder='댓글을 입력하세요.'
+                  placeholder='메시지 입력'
                   className='flex grow justify-center items-center text-base h-18 placeholder:text-gray-2 text-[#000] leading-[110%] border-0 focus:outline-none resize-none line-clamp-1'
                   disabled={!isConnected}
                 />
