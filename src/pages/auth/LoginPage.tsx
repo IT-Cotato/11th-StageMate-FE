@@ -96,7 +96,7 @@ const LoginPage = () => {
         </div>
 
         {/* brands */}
-        <AuthBrandBadges />
+        {/* <AuthBrandBadges /> */}
       </div>
 
       {/* 상태 모달 & 오버레이 */}
