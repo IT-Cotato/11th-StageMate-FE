@@ -12,12 +12,22 @@ const fetchingUserIds = new Set<number>();
 
 export const activateStomp = (
   roomId: string,
+  accessToken: string,
   onMessageReceived: (message: ChatMessageReceived) => void
 ) => {
-  const accessToken = localStorage.getItem('accessToken');
+  console.log('🚀 STOMP 연결 시작:', {
+    roomId,
+    accessToken: accessToken ? `${accessToken.substring(0, 10)}...` : 'NULL',
+  });
+
+  if (!accessToken) {
+    console.error('🔴 STOMP: 액세스 토큰이 없습니다.');
+    return false;
+  }
 
   if (stompClient) {
-    return;
+    console.log('🔄 STOMP: 기존 클라이언트 재사용');
+    return true;
   }
 
   useStompStore.getState().setConnected(false);
@@ -26,10 +36,15 @@ export const activateStomp = (
   stompClient = Stomp.over(socket);
   stompClient.debug = () => {};
 
+  console.log(
+    '🔗 STOMP 인증 헤더:',
+    `Bearer ${accessToken.substring(0, 10)}...`
+  );
+
   stompClient.connect(
     {Authorization: `Bearer ${accessToken}`},
     () => {
-      console.log('✅ STOMP Singleton: 연결 성공');
+      console.log('✅ STOMP Singleton: 연결 성공', roomId);
       useStompStore.getState().setConnected(true);
 
       subscription = stompClient?.subscribe(
@@ -78,11 +93,22 @@ export const activateStomp = (
       );
     },
     (error: any) => {
-      console.error('🔴 STOMP Singleton: 연결 실패', error);
+      console.error('🔴 STOMP Singleton: 연결 실패', {
+        error,
+        roomId,
+        accessToken: accessToken
+          ? `${accessToken.substring(0, 10)}...`
+          : 'NULL',
+        errorType: typeof error,
+        errorMessage: error?.message || 'Unknown error',
+        wsUrl: `${WS_URL}/ws-stomp`,
+      });
       useStompStore.getState().setConnected(false);
       stompClient = null;
     }
   );
+
+  return true;
 };
 
 export const sendMessage = (messageToSend: ChatMessage) => {

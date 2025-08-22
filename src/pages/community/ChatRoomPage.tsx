@@ -53,7 +53,7 @@ const ChatRoomPage = () => {
 
   const [messages, setMessages] = useState<ChatMessageReceived[]>([]);
 
-  const {user} = useAuthStore();
+  const {user, accessToken, isLoading} = useAuthStore();
   const {isConnected, chatUsers, updateChatUserBlocked, resetChatUser} =
     useStompStore();
 
@@ -88,20 +88,50 @@ const ChatRoomPage = () => {
   useEffect(() => {
     if (!id) return;
 
+    // 실제 저장소에서 직접 토큰 읽기 (타이밍 문제 해결)
+    const getActualToken = () => {
+      const isStayingLoggedIn = localStorage.getItem('isStayingLoggedIn') === 'true';
+      const token = isStayingLoggedIn
+        ? localStorage.getItem('accessToken')
+        : sessionStorage.getItem('accessToken');
+      
+      console.log('🔍 토큰 디버깅:', {
+        isStayingLoggedIn,
+        fromStorage: token,
+        fromAuthStore: accessToken,
+        isLoading,
+        localStorage: localStorage.getItem('accessToken'),
+        sessionStorage: sessionStorage.getItem('accessToken')
+      });
+      
+      return token;
+    };
+
+    const actualToken = getActualToken();
+
+    // 인증 상태가 로딩 중이거나 토큰이 없으면 연결하지 않음
+    if (isLoading || !actualToken) {
+      console.log('STOMP 연결 대기 중 - isLoading:', isLoading, 'actualToken:', !!actualToken);
+      return;
+    }
+
     // 메시지를 받았을 때 실행할 콜백 함수
     const handleMessageReceived = (newMessage: ChatMessageReceived) => {
       setMessages((prevMessages) => [...prevMessages, newMessage]);
     };
 
-    // 컴포넌트가 마운트되면, 싱글톤 클라이언트를 활성화하고 구독을 시작합니다.
-    activateStomp(id, handleMessageReceived);
+    // 실제 토큰으로 STOMP 클라이언트를 활성화하고 구독을 시작합니다.
+    const isConnected = activateStomp(id, actualToken, handleMessageReceived);
+    if (!isConnected) {
+      console.error('STOMP 연결 실패 - 사용된 토큰:', actualToken);
+    }
 
-    // 컴포넌트가 언마운트되면, 모든 연결과 구독을 정리합니다.
+    // 컴포넌트가 언마운트되거나 의존성이 변경되면, 모든 연결과 구독을 정리합니다.
     return () => {
       deactivateStomp();
       resetChatUser();
     };
-  }, [id]);
+  }, [id, isLoading, accessToken, resetChatUser]);
 
   /**
    * 자동 스크롤
