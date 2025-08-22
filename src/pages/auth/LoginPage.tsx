@@ -15,7 +15,7 @@ import Modal from '@/components/global/Modal';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const {login} = useAuthStore();
+  const {login, setUser} = useAuthStore();
 
   const [isStayingLoggedIn, setIsStayingLoggedIn] = useState(false);
   const [id, setId] = useState('');
@@ -23,12 +23,16 @@ const LoginPage = () => {
 
   const loginMutation = useMutation({
     mutationFn: async () => {
-      const loginRes = await postLogin({userId: id, password: pw});
+      const loginRes = await postLogin(
+        {userId: id, password: pw},
+        isStayingLoggedIn
+      );
 
       const mypageRes = await getMypageInfo();
-      const userInfo = mypageRes.data;
+      const userInfo = mypageRes;
 
-      login(loginRes.accessToken, loginRes.refreshToken, userInfo);
+      login(loginRes.accessToken, loginRes.refreshToken, isStayingLoggedIn);
+      setUser(userInfo);
       navigate('/');
     },
   });

@@ -9,12 +9,12 @@ import type {CommentedPostsResponse, MyPostsResponse} from '@/types/community';
 export const getMypageInfo = async () => {
   try {
     const response = await privateAxios.get(ENDPOINT.MYPAGE_INFO);
-    return response.data;
+    return response.data.data;
   } catch (error: any) {
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
@@ -39,7 +39,7 @@ export const patchPassword = async ({
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
@@ -63,7 +63,7 @@ export const getNocies = async ({
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
@@ -76,7 +76,7 @@ export const getNociesDetail = async (id: number) => {
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
@@ -89,7 +89,7 @@ export const getPolicyPrivacy = async () => {
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
@@ -102,7 +102,7 @@ export const getPolicyTerms = async () => {
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
@@ -123,7 +123,7 @@ export const putProfileImage = async (formData: FormData) => {
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };
@@ -136,7 +136,7 @@ export const postInquiries = async (data: EnquiryType) => {
     // const status = error.response.data.status;
     const code = error.response.data.code;
     const errorMessage = getErrorMessage(code);
-    console.error('An unexpected error occurred:', error);
+    console.error(error);
     throw new Error(errorMessage);
   }
 };

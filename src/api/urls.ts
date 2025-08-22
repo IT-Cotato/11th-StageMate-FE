@@ -16,6 +16,9 @@ export const ENDPOINT = {
   // login
   AUTH_LOGIN: 'api/v1/auth/login',
 
+  // accessToken 재발급
+  AUTH_REISSUE: 'api/v1/auth/reissue',
+
   // logout
   AUTH_LOGOUT: 'api/v1/auth/logout',
 
