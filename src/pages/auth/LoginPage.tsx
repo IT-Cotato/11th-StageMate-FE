@@ -5,7 +5,6 @@ import ButtonStroke from '@/components/global/ButtonStroke';
 import ButtonFill from '@/components/global/ButtonFill';
 import CustomCheckbox from '@/components/ui/checkbox/CustomCheckbox';
 import {useNavigate} from 'react-router-dom';
-import AuthBrandBadges from '@/components/auth/AuthBrandBadges';
 import {postLogin} from '@/api/authApi';
 import {useMutation} from '@tanstack/react-query';
 import {useAuthStore} from '@/stores/authStore';
